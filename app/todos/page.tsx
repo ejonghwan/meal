@@ -43,7 +43,7 @@ export default async function TodosPage() {
 	// test
 	const fetchedTodos = await getAllTodo();
 	console.log('???', fetchedTodos)
-	
+
 
 
 	// 넥스트 퍼블릭 안붙이면 클라 컴포에서 읽을 수 없음.
@@ -56,15 +56,15 @@ export default async function TodosPage() {
 		<div>
 
 			<div>
-			test
-			{fetchedTodos.map((item, idx) => {
-				return (
-					<div key={idx}>{item.title}</div>
-				)
-			})}
+				test
+				{fetchedTodos.map((item, idx) => {
+					return (
+						<div key={idx}>{item.title}</div>
+					)
+				})}
 			</div>
-			
-	
+
+
 			<h1 className={title()}>todos Page</h1>
 			<TodosTable todos={res.data ?? []} />
 

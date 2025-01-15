@@ -18,8 +18,8 @@ interface Address {
 }
 
 interface Menu {
-    name: string; 
-    price: number; 
+    name: string;
+    price: number;
     category: string;
 }
 
@@ -32,11 +32,11 @@ interface Menu {
 
 
 const Store: React.FC<Info> = ({ data }) => {
-  return (
-    <div>
-        {data.name}
-    </div>
-  )
+    return (
+        <div>
+            {data.name}
+        </div>
+    )
 }
 
 export default Store

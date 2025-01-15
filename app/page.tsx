@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect,useState } from "react";
+import { useEffect, useState } from "react";
 import { title, subtitle } from "@/components/primitives";
 
 
@@ -31,7 +31,7 @@ bb({ a: 'aa' }, { c: 33 })
 
 
 interface Data {
-	a: string; 
+	a: string;
 	b: number;
 	c: { d: string; }
 }
@@ -44,7 +44,7 @@ cc([{ a: 'aa', b: 3, c: { d: 'dd' } }])
 
 const obj = {
 	a: {
-		b: { c : 'str'}
+		b: { c: 'str' }
 	}
 }
 

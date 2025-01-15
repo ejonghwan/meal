@@ -1,11 +1,11 @@
 import React from 'react'
-import { Info } from '@/types/info' 
+import { Info } from '@/types/info'
 
 
 // 다른 파일에서 받아올 경우
 
 interface OwnProps {
-    data: Info
+  data: Info
 }
 
 
@@ -13,7 +13,7 @@ interface OwnProps {
 const Store: React.FC<OwnProps> = ({ data }) => {
   return (
     <div>
-        {data.name}
+      {data.name}
     </div>
   )
 }

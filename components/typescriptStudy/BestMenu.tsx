@@ -5,7 +5,7 @@ import { Menu } from '@/types/info'
 
 // extends
 interface OwnProps extends Menu {
-    bestMenuFn(name: string): string
+  bestMenuFn(name: string): string
 }
 
 /*
@@ -35,17 +35,17 @@ interface OwnProps extends Omit<Menu, 'price'> {
 const BestMenu = ({ name, category, price, bestMenuFn }: OwnProps) => {
 
 
-    const handleCLick = () => {
-        console.log( bestMenuFn('zzzz') );
-    }
+  const handleCLick = () => {
+    console.log(bestMenuFn('zzzz'));
+  }
 
   return (
     <div>
-        <h1>BestMenu</h1>
-        {name}
-        {category}
-        {price}
-        <button type="button" onClick={handleCLick}>name?</button>
+      <h1>BestMenu</h1>
+      {name}
+      {category}
+      {price}
+      <button type="button" onClick={handleCLick}>name?</button>
     </div>
   )
 }

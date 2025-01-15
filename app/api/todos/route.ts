@@ -10,7 +10,7 @@ export const GET = async (req: NextRequest) => {
 
     const fetchedTodos = await getAllTodo();
     const res = {
-        state:'SUCCES',
+        state: 'SUCCES',
         message: '성공',
         data: fetchedTodos,
     }
@@ -27,12 +27,12 @@ export const GET = async (req: NextRequest) => {
 export const POST = async (req: NextRequest) => {
     // 프론트에서 오는게 req
     const { title } = await req.json();
-    if(!title) return NextResponse.json({ state:'FAILUE', message: 'title을 넣어주세요', }, { status: 422 });
+    if (!title) return NextResponse.json({ state: 'FAILUE', message: 'title을 넣어주세요', }, { status: 422 });
 
 
     const addedTodo = await addTodo({ title })
     const res = {
-        state:'SUCCES',
+        state: 'SUCCES',
         message: '추가',
         data: addedTodo,
     }

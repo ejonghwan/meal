@@ -44,7 +44,7 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
     // const searchParams = request.nextUrl.searchParams;
     // const query = searchParams.get('query')
     const data = await request.json();
-    
-    
+
+
     // return Response.json({ title: data.title, param: params })
 }

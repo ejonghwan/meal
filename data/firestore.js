@@ -1,8 +1,13 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp, getApp } from "firebase/app";
 import { getFirestore, collection, query, getDocs, Timestamp, setDoc, doc, getDoc, deleteDoc, updateDoc } from "firebase/firestore";
-
-// console.log('getapp?', getApp)
+import {
+    getAuth,// authentication 설정
+    signInWithPopup, //google 로그인을 팝업창에 띄우기 위해
+    GoogleAuthProvider, //google login 기능
+    signInWithEmailAndPassword,// email 로그인
+    createUserWithEmailAndPassword, //email 회원가입
+} from 'firebase/auth';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -19,11 +24,28 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app)
 
+// auth 설정
+const auth = getAuth();
+
+
+
+
+//Email 로그인
+export const signupEmail = (email, password) => {
+    return createUserWithEmailAndPassword(auth, email, password);
+};
+
+//Email 회원가입
+export const loginEmail = (email, password) => {
+    return signInWithEmailAndPassword(auth, email, password);
+};
+
+
 
 // 모든 할일 가져오기
 export async function getAllTodo() {
 
-    console.log('여긴오냐 ?')
+    // console.log('여긴오냐 ?')
     // 모든 문서 가져오기
     const q = query(collection(db, "todos"));
     const querySnapshot = await getDocs(q);

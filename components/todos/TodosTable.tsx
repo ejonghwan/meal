@@ -7,34 +7,15 @@ import Input from '@/components/common/Input';
 import Button from '@/components/common/Button';
 import TodoItem from "./TodoItem";
 
+import {Accordion, AccordionItem} from "@nextui-org/accordion";
+
 
 const Todosdiv = ({ todos }: { todos: Todo[] }) => {
 
 
+
   const [stateTodos, setStateodos] = useState(todos)
 
-
-  const [test, setTest] = useState([
-    {
-      created_at: "2025-01-15T08:20:47.684Z",
-      id: "cdXolVC6Ew899ALKPIbN",
-      is_done: false,
-      title: "asdasdasd"
-    },
-    {
-      created_at: "2025-01-15T08:20:47.684Z",
-      id: "cdXolVC6Ew899ALKPIbN",
-      is_done: false,
-      title: "asdasdasd123213123"
-    },
-    {
-      created_at: "2025-01-15T08:20:47.684Z",
-      id: "cdXolVC6Ew899ALKPIbN",
-      is_done: false,
-      title: "asdasdasd hhohoho"
-    },
-  ]
-  )
 
 
   const [text, setText] = useState('');
@@ -43,13 +24,6 @@ const Todosdiv = ({ todos }: { todos: Todo[] }) => {
     const target = e.target as HTMLInputElement;
     setText(target.value)
   }
-
-
-
-
-  useEffect(() => {
-    console.log('todos??', stateTodos)
-  }, [])
 
 
 
@@ -71,21 +45,22 @@ const Todosdiv = ({ todos }: { todos: Todo[] }) => {
 
 
 
-  const handleTestFn = () => {
-    //한번 실행하면 여기를 실행
-    return () => {
-      // 두번 실행하면 여기를 실행 
-      return () => {
-        // 세번 실행하면 여기를 실행 
-      }
-    }
-  }
-
-
-
 
   return (
     <div>
+
+<Accordion>
+      <AccordionItem key="1" aria-label="Accordion 1" title="Accordion 1">
+        aa 1
+      </AccordionItem>
+      <AccordionItem key="2" aria-label="Accordion 2" title="Accordion 2">
+        aa2
+      </AccordionItem>
+      <AccordionItem key="3" aria-label="Accordion 3" title="Accordion 3">
+        aa3
+      </AccordionItem>
+    </Accordion>
+
       <div className="my-[50px]">
         <Input
           attr={{
@@ -115,14 +90,6 @@ const Todosdiv = ({ todos }: { todos: Todo[] }) => {
           <div>완료여부</div>
           <div>생성일</div>
         </div>
-
-
-
-        {test && test.map((item) => (
-          <div key={item.title}>
-            {item.title}
-          </div>
-        ))}
 
         <div>
           {stateTodos && stateTodos.map((todo: Todo) => (

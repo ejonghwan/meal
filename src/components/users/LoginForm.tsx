@@ -75,6 +75,7 @@ const LoginForm = ({ }: Props) => {
                         // placeholder="password"
                         value={user.password}
                         onChange={handleChangeUserInfo}
+                        autoComplete='on'
                     />
                     <Button className='w-full' type='submit' color="primary">로그인</Button>
                 </div>

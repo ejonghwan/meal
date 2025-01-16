@@ -61,6 +61,7 @@ const SignupForm = ({ }: Props) => {
                         // placeholder="email"
                         value={user.email}
                         onChange={handleChangeUserInfo}
+
                     />
                     <Input
                         label="Password"
@@ -72,6 +73,7 @@ const SignupForm = ({ }: Props) => {
                         // placeholder="password"
                         value={user.password}
                         onChange={handleChangeUserInfo}
+                        autoComplete='on'
                     />
                     <Button className='w-full' type='submit' color="primary">회원가입</Button>
                 </div>

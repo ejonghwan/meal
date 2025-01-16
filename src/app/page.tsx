@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react";
-import { title, subtitle } from "@/components/primitives";
+import { title, subtitle } from "@/src/components/primitives";
 
 
 interface Test {

@@ -2,9 +2,9 @@
 
 import React, { useEffect, useState } from "react";
 // import {div, divHeader, div, div, div, div} from "@nextui-org/react";
-import { Todo } from '@/types/index';
-import Input from '@/components/common/Input';
-import Button from '@/components/common/Button';
+import { Todo } from '@/src/types/index';
+import Input from '@/src/components/common/Input';
+import Button from '@/src/components/common/Button';
 import TodoItem from "./TodoItem";
 
 import { Accordion, AccordionItem } from "@nextui-org/accordion";

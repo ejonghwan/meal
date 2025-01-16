@@ -1,5 +1,5 @@
 import React from 'react'
-import { Info } from '@/types/info'
+import { Info } from '@/src/types/info'
 
 
 // 다른 파일에서 받아올 경우

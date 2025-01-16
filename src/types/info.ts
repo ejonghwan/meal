@@ -1,14 +1,14 @@
 export type Info = {
     name: string;
     category: string;
-    address: Address; 
+    address: Address;
     menu: Menu[]
 }
 
 export type Address = {
-    city: string; 
+    city: string;
     detail: string;
-    zipCode: number; 
+    zipCode: number;
 }
 
 export type Menu = {

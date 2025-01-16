@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { signupEmail, loginEmail } from "@/data/firestore";
+import { signupEmail, loginEmail } from "@/src/data/firestore";
 
 /*
 @ path    GET /api/signup

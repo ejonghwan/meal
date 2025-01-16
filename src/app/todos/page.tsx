@@ -1,10 +1,10 @@
 
 
-import { title } from "@/components/primitives";
-import TodosTable from '@/components/todos/TodosTable';
+import { title } from "@/src/components/primitives";
+import TodosTable from '@/src/components/todos/TodosTable';
 
 //test 
-import { getAllTodo, addTodo } from "@/data/firestore";
+import { getAllTodo, addTodo } from "@/src/data/firestore";
 
 /*
 @ path    GET /api/todos

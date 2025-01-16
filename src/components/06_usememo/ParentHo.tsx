@@ -1,8 +1,8 @@
 "use client"
 
 import React, { useCallback, useState, useMemo } from 'react'
-import Children from '@/components/06_usememo/Children'
-import ChildrenHo from '@/components/06_usememo/ChildrenHo'
+import Children from '@/src/components/06_usememo/Children'
+import ChildrenHo from '@/src/components/06_usememo/ChildrenHo'
 
 
 // for (let i = 0; i < 1000000000000; i++) {

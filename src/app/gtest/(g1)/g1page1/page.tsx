@@ -4,7 +4,7 @@ const page = () => {
   return (
     <div>
       g1 page
-    
+
     </div>
   )
 }

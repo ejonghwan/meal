@@ -1,5 +1,5 @@
 import React from 'react'
-import { Menu } from '@/types/info'
+import { Menu } from '@/src/types/info'
 
 
 

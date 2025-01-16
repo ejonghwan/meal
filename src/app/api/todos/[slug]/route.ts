@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { getTodo, deleteTodo, updateTodo } from "@/data/firestore";
+import { getTodo, deleteTodo, updateTodo } from "@/src/data/firestore";
 
 /*
 @ path    GET /api/todos/:id

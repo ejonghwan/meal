@@ -1,7 +1,7 @@
 "use client"
 
 import React, { ChangeEvent, FormEvent, useState } from 'react'
-import { signupEmail, loginEmail } from '@/data/firestore'
+import { signupEmail, loginEmail } from '@/src/data/firestore'
 
 
 interface Props {

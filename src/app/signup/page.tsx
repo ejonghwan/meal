@@ -1,7 +1,7 @@
 import React from 'react'
-import { signupEmail, loginEmail } from '@/data/firestore'
-import SignupForm from '@/components/users/SignupForm'
-import LoginForm from '@/components/users/LoginForm'
+import { signupEmail, loginEmail } from '@/src/data/firestore'
+import SignupForm from '@/src/components/users/SignupForm'
+import LoginForm from '@/src/components/users/LoginForm'
 
 const SignupPage = async () => {
 

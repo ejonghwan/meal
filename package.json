@@ -10,6 +10,7 @@
 	},
 	"dependencies": {
 		"@nextui-org/accordion": "^2.2.7",
+		"@nextui-org/button": "^2.2.9",
 		"@nextui-org/input": "^2.4.8",
 		"@nextui-org/system": "^2.4.6",
 		"@nextui-org/theme": "^2.4.5",
@@ -25,7 +26,7 @@
 		"eslint": "8.48.0",
 		"eslint-config-next": "14.2.1",
 		"firebase": "^10.11.1",
-		"framer-motion": "^11.2.0",
+		"framer-motion": "^11.18.0",
 		"intl-messageformat": "^10.5.0",
 		"next": "14.2.1",
 		"next-themes": "^0.2.1",

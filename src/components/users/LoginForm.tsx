@@ -1,6 +1,8 @@
 "use client"
 
 import React, { ChangeEvent, FormEvent, useState } from 'react'
+import { Input } from "@nextui-org/input";
+import { Button, ButtonGroup } from "@nextui-org/button";
 
 
 interface Props { }
@@ -46,16 +48,40 @@ const LoginForm = ({ }: Props) => {
         }
     }
 
+
     return (
         <div>
+
+            <div className='mb-[50px] pb-[50px]'>test</div>
+
             <form onSubmit={handleLogin}>
-                <div>
-                    <input type="email" name='email' value={user.email} onChange={handleChangeUserInfo} />
+
+                <div className='flex flex-col gap-[20px] zz mt-[20px]'>
+                    <Input
+                        label="Email"
+                        isRequired
+                        className="w-full"
+                        defaultValue=""
+                        type="email"
+                        name='email'
+                        // placeholder="email"
+                        value={user.email}
+                        onChange={handleChangeUserInfo}
+                    />
+                    <Input
+                        label="Password"
+                        isRequired
+                        className="w-full"
+                        defaultValue=""
+                        type="password"
+                        name='password'
+                        // placeholder="password"
+                        value={user.password}
+                        onChange={handleChangeUserInfo}
+                    />
                 </div>
-                <div>
-                    <input type="text" name='password' value={user.password} onChange={handleChangeUserInfo} />
-                </div>
-                <button>login</button>
+                <Button className='w-full' color="primary">Button</Button>
+
             </form>
         </div>
     )

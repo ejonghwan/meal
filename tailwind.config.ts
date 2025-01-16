@@ -1,13 +1,13 @@
+import { nextui } from '@nextui-org/theme'
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   experimental: {
     optimizeUniversalDefaults: true
   },
   content: [
-    './src/components/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/app/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/hooks/**/*.{js,ts,jsx,tsx,mdx}',
-    './src/lib/common/ui/**/*.{js,ts,jsx,tsx,mdx}'
+    './components/**/*.{js,ts,jsx,tsx,mdx}',
+    './app/**/*.{js,ts,jsx,tsx,mdx}',
+    './node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
     extend: {
@@ -35,10 +35,10 @@ module.exports = {
         // 'icon-checkbox03-on':
         //   "url('~/public/images/icons/ico_checkbox03_on.svg')",
         // radio buttons
-        'icon-radio-on': "url('~/public/images/icons/ico_radio_on.svg')",
+        // 'icon-radio-on': "url('~/public/images/icons/ico_radio_on.svg')",
         // 스켈레톤 전용
-        'gradient-custom':
-          'linear-gradient(to right, #D9D9D9 0%, #EDEEF1 50%, #D9D9D9 100%)'
+        // 'gradient-custom':
+        //   'linear-gradient(to right, #D9D9D9 0%, #EDEEF1 50%, #D9D9D9 100%)'
       },
       colors: {
         default: 'black', // text black
@@ -187,7 +187,7 @@ module.exports = {
       },
     }
   },
-  darkMode: 'class',
-  // plugins: [require('tailwindcss-animate')]
+  darkMode: "class",
+  plugins: [nextui()],
 }
 

@@ -51,16 +51,13 @@ const LoginForm = ({ }: Props) => {
 
     return (
         <div>
-
-            <div className='mb-[50px] pb-[50px]'>test</div>
-
             <form onSubmit={handleLogin}>
 
-                <div className='flex flex-col gap-[20px] zz mt-[20px]'>
+                <div className='flex flex-col gap-2 zz mt-[20px]'>
                     <Input
                         label="Email"
                         isRequired
-                        className="w-full"
+                        className="w-full input"
                         defaultValue=""
                         type="email"
                         name='email'
@@ -71,7 +68,7 @@ const LoginForm = ({ }: Props) => {
                     <Input
                         label="Password"
                         isRequired
-                        className="w-full"
+                        className="w-full input"
                         defaultValue=""
                         type="password"
                         name='password'
@@ -79,8 +76,8 @@ const LoginForm = ({ }: Props) => {
                         value={user.password}
                         onChange={handleChangeUserInfo}
                     />
+                    <Button className='w-full' type='submit' color="primary">로그인</Button>
                 </div>
-                <Button className='w-full' color="primary">Button</Button>
 
             </form>
         </div>

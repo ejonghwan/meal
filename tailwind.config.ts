@@ -14,11 +14,11 @@ module.exports = {
       container: {
         center: true,
         screens: {
-          sm: '100%',
-          md: '100%',
-          lg: '100%',
-          xl: '1920px',
-          '2xl': '1920px'
+          // sm: '100%',
+          // md: '100%',
+          // lg: '100%',
+          // xl: '1920px',
+          // '2xl': '1920px'
         }
       },
       backgroundImage: {

@@ -8,8 +8,9 @@ const SignupPage = async () => {
 
     return (
         <>
+            <h2>회원가입</h2>
             <div>
-                signup
+
                 <SignupForm />
 
                 <br />

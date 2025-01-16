@@ -1,7 +1,9 @@
-import "@/src/styles/globals.css";
+
 import { Metadata, Viewport } from "next";
 import { Providers } from "./providers";
-import clsx from "clsx";
+import { fontDefault } from '@/src/lib/ui/font'
+import "@/src/styles/globals.css";
+// import clsx from "clsx";
 
 export const metadata: Metadata = {
 	title: '',
@@ -20,17 +22,16 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children, }: { children: React.ReactNode; }) {
 	return (
-		<html lang="en" suppressHydrationWarning>
+		<html lang="ko" suppressHydrationWarning className={`${fontDefault.variable}`}>
 			<head />
-			<body className={clsx("min-h-screen bg-background font-sans antialiased")}
+			{/* min-h-screen bg-background font-sans antialiased */}
+			<body className={`min-h-screen bg-background antialiased`}
 			>
 				{/* { children } */}
 				<Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>
-					<div className="relative flex flex-col h-screen">
-						<main className="container mx-auto max-w-7xl pt-16 px-6 flex-grow">
-							{children}
-						</main>
-					</div>
+					<main className="">
+						{children}
+					</main>
 				</Providers>
 			</body>
 		</html>

@@ -2,6 +2,8 @@
 
 import React, { ChangeEvent, FormEvent, useState } from 'react'
 import { signupEmail, loginEmail } from '@/src/data/firestore'
+import { Input } from "@nextui-org/input";
+import { Button, ButtonGroup } from "@nextui-org/button";
 
 
 interface Props {
@@ -48,13 +50,32 @@ const SignupForm = ({ }: Props) => {
     return (
         <div>
             <form onSubmit={handleSignup}>
-                <div>
-                    <input type="email" name='email' value={user.email} onChange={handleChangeUserInfo} />
+                <div className='flex flex-col gap-2 zz mt-[20px]'>
+                    <Input
+                        label="Email"
+                        isRequired
+                        className="w-full input"
+                        defaultValue=""
+                        type="email"
+                        name='email'
+                        // placeholder="email"
+                        value={user.email}
+                        onChange={handleChangeUserInfo}
+                    />
+                    <Input
+                        label="Password"
+                        isRequired
+                        className="w-full input"
+                        defaultValue=""
+                        type="password"
+                        name='password'
+                        // placeholder="password"
+                        value={user.password}
+                        onChange={handleChangeUserInfo}
+                    />
+                    <Button className='w-full' type='submit' color="primary">회원가입</Button>
                 </div>
-                <div>
-                    <input type="text" name='password' value={user.password} onChange={handleChangeUserInfo} />
-                </div>
-                <button>signup</button>
+
             </form>
         </div>
     )

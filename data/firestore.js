@@ -25,7 +25,7 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app)
 
 // auth 설정
-const auth = getAuth();
+const auth = getAuth(app);
 
 
 

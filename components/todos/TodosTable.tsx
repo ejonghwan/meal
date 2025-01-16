@@ -7,7 +7,7 @@ import Input from '@/components/common/Input';
 import Button from '@/components/common/Button';
 import TodoItem from "./TodoItem";
 
-import {Accordion, AccordionItem} from "@nextui-org/accordion";
+import { Accordion, AccordionItem } from "@nextui-org/accordion";
 
 
 const Todosdiv = ({ todos }: { todos: Todo[] }) => {
@@ -49,17 +49,17 @@ const Todosdiv = ({ todos }: { todos: Todo[] }) => {
   return (
     <div>
 
-<Accordion>
-      <AccordionItem key="1" aria-label="Accordion 1" title="Accordion 1">
-        aa 1
-      </AccordionItem>
-      <AccordionItem key="2" aria-label="Accordion 2" title="Accordion 2">
-        aa2
-      </AccordionItem>
-      <AccordionItem key="3" aria-label="Accordion 3" title="Accordion 3">
-        aa3
-      </AccordionItem>
-    </Accordion>
+      <Accordion>
+        <AccordionItem key="1" aria-label="Accordion 1" title="Accordion 1">
+          aa 1
+        </AccordionItem>
+        <AccordionItem key="2" aria-label="Accordion 2" title="Accordion 2">
+          aa2
+        </AccordionItem>
+        <AccordionItem key="3" aria-label="Accordion 3" title="Accordion 3">
+          aa3
+        </AccordionItem>
+      </Accordion>
 
       <div className="my-[50px]">
         <Input

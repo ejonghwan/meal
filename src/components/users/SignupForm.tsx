@@ -75,7 +75,7 @@ const SignupForm = ({ }: Props) => {
                         onChange={handleChangeUserInfo}
                         autoComplete='on'
                     />
-                    <Button className='w-full' type='submit' color="primary">회원가입</Button>
+                    <Button className='w-full' type='submit' color="primary">회원가입a</Button>
                 </div>
 
             </form>

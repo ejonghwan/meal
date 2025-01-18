@@ -12,6 +12,8 @@ const Home = () => {
 
 	console.log(arr, removeArr, addArr)
 
+
+
 	return (
 		<div>하지만 다 했죠?</div>
 	)

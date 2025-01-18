@@ -1,6 +1,6 @@
 
 
-import { title } from "@/src/components/primitives";
+// import { title } from "@/src/components/primitives";
 import TodosTable from '@/src/components/todos/TodosTable';
 
 //test 
@@ -65,7 +65,7 @@ export default async function TodosPage() {
 			</div>
 
 
-			<h1 className={title()}>todos Page</h1>
+			<h1>todos Page</h1>
 			<TodosTable todos={res.data ?? []} />
 
 			<br />

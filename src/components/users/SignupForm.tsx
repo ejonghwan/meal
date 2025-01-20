@@ -43,7 +43,7 @@ const SignupForm = ({ }: Props) => {
             body: JSON.stringify({ email: user.email, password: user.password })
         }
 
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/signup/`, options)
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/signup/`, options)
         const data = await res.json();
     }
 

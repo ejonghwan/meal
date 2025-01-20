@@ -40,6 +40,13 @@ export const loginEmail = (email, password) => {
     return signInWithEmailAndPassword(auth, email, password);
 };
 
+export const loadUser = (idToken) => {
+    console.dir(auth.currentUser.getIdToken())
+    // return auth.verifyIdToken(idToken)
+
+}
+
+
 
 
 // 모든 할일 가져오기

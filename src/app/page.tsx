@@ -1,8 +1,14 @@
-"use client"
 
 import React from 'react'
+
+
 // test
 import { useUserStore } from '@/src/store/front/user'
+
+
+
+
+
 
 const Home = () => {
 
@@ -11,6 +17,8 @@ const Home = () => {
 	const { arr, removeArr, addArr } = useUserStore();
 
 	console.log(arr, removeArr, addArr)
+
+
 
 
 

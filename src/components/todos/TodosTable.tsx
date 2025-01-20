@@ -2,9 +2,9 @@
 
 import React, { useEffect, useState } from "react";
 // import {div, divHeader, div, div, div, div} from "@nextui-org/react";
-import { Todo } from '@/src/types/index';
-import Input from '@/src/components/common/Input';
-import Button from '@/src/components/common/Button';
+// import { Todo } from '@/src/types/index';
+// import Input from '@/src/components/common/Input';
+// import Button from '@/src/components/common/Button';
 import TodoItem from "./TodoItem";
 
 import { Accordion, AccordionItem } from "@nextui-org/accordion";
@@ -62,7 +62,7 @@ const Todosdiv = ({ todos }: { todos: Todo[] }) => {
       </Accordion>
 
       <div className="my-[50px]">
-        <Input
+        {/* <Input
           attr={{
             type: "text",
             placeholder: "할일입력",
@@ -79,7 +79,7 @@ const Todosdiv = ({ todos }: { todos: Todo[] }) => {
           }}
           content="할일 입력"
           onClick={handleTodoSubmit}
-        />
+        /> */}
       </div>
 
 

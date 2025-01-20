@@ -8,6 +8,10 @@ interface Prev {
 
 
 export const useUserStore = create(set => ({
+   userInfo: {},
+   setUserInfo: (user: any) => set((prev: Prev) => ({ userInfo: user })),
+
+
    arr: [
       { id: '1', content: 'zz', }
    ],

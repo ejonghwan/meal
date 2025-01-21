@@ -38,3 +38,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+
+# KEY 
+/src/data/serviceAccountKey.json
+/src/data/test.json

@@ -3,7 +3,7 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import { Input } from "@nextui-org/input";
 import { Button, ButtonGroup } from "@nextui-org/button";
-import { cookies } from 'next/headers';
+// import { cookies } from 'next/headers';
 import { useUserStore } from '@/src/store/front/user'
 
 
@@ -73,10 +73,7 @@ const LoginForm = ({ load }: Props) => {
                 method: "GET",
                 headers: {
                     "Content-Type": "application/json",
-                    // 'Cookie': `hohotoken=${token}`,
-                    // "Cookie": "access-token=YOUR-TOKEN;path=/;expires=Session",
-                    // 'hoho': 'zzz',
-                    Authorization: `${token}`,
+                    "x-acc-token": `${token}`,
                 },
                 // body: JSON.stringify({ token: token })
                 // cache: "no-store",
@@ -85,23 +82,12 @@ const LoginForm = ({ load }: Props) => {
 
             const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/load/`, options)
 
-
+            console.log('확인하자아아아아', res)
             const data = await res.json();
         } catch (e) {
             console.error(e)
         }
     }
-
-    useEffect(() => {
-        // handleUserLoad('eyJhbGciOiJSUzI1NiIsImtpZCI6IjBhYmQzYTQzMTc4YzE0MjlkNWE0NDBiYWUzNzM1NDRjMDlmNGUzODciLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vbWVhbC02MmNjYiIsImF1ZCI6Im1lYWwtNjJjY2IiLCJhdXRoX3RpbWUiOjE3MzczNTk4MjksInVzZXJfaWQiOiJQNm9tWHE5aHl3UWkyekYwandJTlI4TlpFeUYzIiwic3ViIjoiUDZvbVhxOWh5d1FpMnpGMGp3SU5SOE5aRXlGMyIsImlhdCI6MTczNzM1OTgyOSwiZXhwIjoxNzM3MzYzNDI5LCJlbWFpbCI6Impqb25ncnJyQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbImpqb25ncnJyQGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.bhAdh_DN3I7gXpiYMeyoRw4FOFqeoCBTq-1JT2pA0K0zQP3kMzK_4umThfugjNBNizsi6V3XxBPJwISxp4heOdIM4jBmDa4ybBc6F7lEx2uTE3ppsA113_2H8Gbp1cV973fQTiKwi8634PIi8tOnWRTJT8rSuOVo74ZcMfK2NfcoEkvX2UfQB4qzkRb3pzbuA_YDDTJxBXlj_qBmA57FvcByUSnE5sFmrkIkhNu-NSFWsuhY2rrb9iQ3CZzY6M49gxPZ10O9fKzIvpina02GsbTI-NARXWAvOZArdSKc_fVZESYSHkL04giCsqz_xifSHAXZnyOpBJrTNhglrDGseQ')
-
-
-        // const cookieStore = cookies();
-        // const accessToken = cookieStore.get('accessToken');
-        // // toDo 로그인을 해도 undefined가 찍힌다.
-        // console.log('accessToken', accessToken);
-
-    }, [])
 
     useEffect(() => {
         console.log('쥬스탄드 상태 체크', userInfo)
@@ -158,3 +144,8 @@ const LoginForm = ({ load }: Props) => {
 }
 
 export default LoginForm
+
+
+
+
+

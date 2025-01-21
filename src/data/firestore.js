@@ -8,7 +8,10 @@ import {
     signInWithEmailAndPassword,// email 로그인
     createUserWithEmailAndPassword, //email 회원가입
 } from 'firebase/auth';
-import jwt from 'jsonwebtoken'
+
+// SDK
+const admin = require("firebase-admin");
+const serviceAccountKey = require("./serviceAccountKey.json");
 
 
 // Your web app's Firebase configuration
@@ -22,13 +25,46 @@ const firebaseConfig = {
     measurementId: process.env.MEASUREMENT_ID
 };
 
+// const serviceAccountKey = {
+//     type: process.env.SDK_TYPE,
+//     project_id: process.env.SDK_PROJECT_ID,
+//     private_key_id: process.env.SDK_PRIVATE_KEY_ID,
+//     private_key: process.env.SDK_PRIVATE_KEY,
+//     client_email: process.env.SDK_CLIENT_EMAIL,
+//     client_id: process.env.SDK_CLIENT_ID,
+//     auth_uri: process.env.SDK_AUTH_URI,
+//     token_uri: process.env.SDK_TOKEN_URI,
+//     auth_provider_x509_cert_url: process.env.SDK_AUTH_PROVIDER_CERT_URL,
+//     client_x509_cert_url: process.env.SDK_CLIENT_CERT_URL,
+//     universe_domain: process.env.SDK_UNIVERSE_DOMAIN
+// }
+
 // Initialize Firebase
 // const app = initializeApp(firebaseConfig);
-const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
+// const app = !getApps().length ? initializeApp(firebaseConfig, { credential: admin.credential.cert(serviceAccountKey) }) : getApp();
+const app = initializeApp(firebaseConfig, { credential: admin.credential.cert(serviceAccountKey) })
 const db = getFirestore(app)
 
 // auth 설정
 const auth = getAuth(app);
+
+console.log('app???????', app)
+
+
+// admin 설정 .env 변수로는 안되네 ? 
+// const serviceAccount = {
+//     type: process.env.SDK_TYPE,
+//     project_id: process.env.SDK_PROJECT_ID,
+//     private_key_id: process.env.SDK_PRIVATE_KEY_ID,
+//     private_key: process.env.SDK_PRIVATE_KEY,
+//     client_email: process.env.SDK_CLIENT_EMAIL,
+//     client_id: process.env.SDK_CLIENT_ID,
+//     auth_uri: process.env.SDK_AUTH_URI,
+//     token_uri: process.env.SDK_TOKEN_URI,
+//     auth_provider_x509_cert_url: process.env.SDK_AUTH_PROVIDER_CERT_URL,
+//     client_x509_cert_url: process.env.SDK_CLIENT_CERT_URL,
+//     universe_domain: process.env.SDK_UNIVERSE_DOMAIN
+// }
 
 
 
@@ -42,10 +78,57 @@ export const loginEmail = (email, password) => {
     return signInWithEmailAndPassword(auth, email, password);
 };
 
-export const loadUser = (idToken) => {
-    const match = jwt.verify(idToken, { ignoreExpiration: true })
-    console.log('load user?????????', idToken, match)
-    // return auth.verifyIdToken(idToken)
+export const accTokenCheck = async (idToken) => {
+    try {
+        const tokenData = await admin.auth().verifyIdToken(idToken)
+        console.log('token info??', tokenData)
+        return tokenData;
+    } catch (e) {
+        console.log('캐치에 걸림 ???', e.code)
+        // 따라서 firebase의 uid가 필요한 경우, decodedIdToken.user_id로 조회할 수 있다.
+        // 토큰이 유효하지 않으면 error로 이어지고, error.code로 조회하면 결과를 볼 수 있다.
+        if (e.code == 'auth/id-token-revoked') {
+            // Token has been revoked. Inform the user to reauthenticate or signOut() the user.
+            console.error('토큰이 취소됐습니다. 로그아웃이나 다시 로그인 해주세요.', e)
+            return { status: 'fail', message: '토큰의 유효기간이 지났습니다. 다시 로그인 해주세요.', code: 1001 }
+        } else if (e.code == 'id-token-expired', e) {
+            // auth / id - token - expired: 유효시간이 지난 토큰
+            console.error('토큰의 유효기간이 지났습니다. 다시 로그인 해주세요')
+            return { status: 'fail', message: '토큰의 유효기간이 지났습니다. 다시 로그인 해주세요.', code: 1002 }
+        } else if (e.code == 'argument-error', e) {
+            // auth / argument - error: 유효하지 않은 토큰
+            console.error('토큰이 유효하지 않습니다 1', e)
+            return { status: 'fail', message: '토큰이 유효하지 않습니다. 1', code: 1003 }
+        } else {
+            console.error('토큰이 유효하지 않습니다 2', e)
+            return { status: 'fail', message: '토큰이 유효하지 않습니다. 2', code: 1004 }
+        }
+    }
+
+}
+
+export const refTokenCheck = async (idToken) => {
+    try {
+        const tokenRes = await admin.auth().verifyIdToken(idToken)
+        console.log('token info??', tokenRes)
+    } catch (e) {
+        console.log(e.code)
+        // 따라서 firebase의 uid가 필요한 경우, decodedIdToken.user_id로 조회할 수 있다.
+        // 토큰이 유효하지 않으면 error로 이어지고, error.code로 조회하면 결과를 볼 수 있다.
+        // auth / id - token - expired: 유효시간이 지난 토큰
+        // auth / argument - error: 유효하지 않은 토큰
+        if (e.code == 'auth/id-token-revoked') {
+            // Token has been revoked. Inform the user to reauthenticate or signOut() the user.
+            console.error('토큰이 취소됐습니다. 로그아웃이나 다시 로그인 해주세요')
+        } else if (e.code == 'id-token-expired') {
+            console.error('토큰의 유효기간이 지났습니다. 다시 로그인 해주세요')
+        } else if (e.code == 'argument-error') {
+            console.error('토큰이 유효하지 않습니다 1')
+        } else {
+            console.error('토큰이 유효하지 않습니다 2')
+        }
+    }
+
 
 }
 
@@ -141,3 +224,103 @@ export async function deleteTodo(id) {
 
 
 // module.exports = { fetchTotos }
+
+
+
+
+
+
+// 로그인 할 떄 마다 토큰 변경됨
+
+
+// {
+//     "state": "SUCCES",
+//     "message": "성공",
+//     "data": {
+//         "user": {
+//             "uid": "gDB76nB6F7ehSQiDs67YSht46ZR2",
+//             "email": "sun87-1@daum.net",
+//             "emailVerified": false,
+//             "isAnonymous": false,
+//             "providerData": [
+//                 {
+//                     "providerId": "password",
+//                     "uid": "sun87-1@daum.net",
+//                     "displayName": null,
+//                     "email": "sun87-1@daum.net",
+//                     "phoneNumber": null,
+//                     "photoURL": null
+//                 }
+//             ],
+//             "stsTokenManager": {
+//                 "refreshToken": "AMf-vBxahFu32nB2PpJfGZX1gMB7pdEl8X0LEtcteqZgCVTHNgG38kSX53_FxZOG7ytLTBXJ2VaYZBR-8Es_ZD_UEAQDemeNvAhOym3H2GAjJTbSqalpGNwNK1udUcSqFXt7tqBKjb7SGm7VMPNw7WOS0S9O5FsYC8xS8YCUalHxX2DrEbp66tfWmAW_DqzJ_uEs6_VPfxCf",
+//                 "accessToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjBhYmQzYTQzMTc4YzE0MjlkNWE0NDBiYWUzNzM1NDRjMDlmNGUzODciLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vbWVhbC02MmNjYiIsImF1ZCI6Im1lYWwtNjJjY2IiLCJhdXRoX3RpbWUiOjE3Mzc0NDYxODQsInVzZXJfaWQiOiJnREI3Nm5CNkY3ZWhTUWlEczY3WVNodDQ2WlIyIiwic3ViIjoiZ0RCNzZuQjZGN2VoU1FpRHM2N1lTaHQ0NlpSMiIsImlhdCI6MTczNzQ0NjE4NCwiZXhwIjoxNzM3NDQ5Nzg0LCJlbWFpbCI6InN1bjg3LTFAZGF1bS5uZXQiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsic3VuODctMUBkYXVtLm5ldCJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.U3v7p4liKsajjNjsV67EKj50PUcs0dSP7waIv3cZX62jVXaP3l84ZZv_Gg-52P47ONDxYn4r89y5UOZukFyEJjGDxK-W1sfZPT__5Ko8MT1hHToJulSTXfDEloaT0WUPMD2nqE3v5FS5jwDMTxijtb8S2O5l2VICVZPZj6WNYVBxwruvYJ6dYhECcliK6UlCo3pWExQ0vmc9jIRIuXzxM562uVu1Uv7T4GrD13VS8NsaVu3cvvCYI1uLssRs5SW92GJZ1xiF0cV5hNVnC-0JZLQf4aHhceIO1raOr9B3MmQUqUlIGv5inqWEDWyqcCBxqDjr9IhI27hzMVrMwP5gTA",
+//                 "expirationTime": 1737449784692
+//             },
+//             "createdAt": "1737038345678",
+//             "lastLoginAt": "1737446184555",
+//             "apiKey": "AIzaSyC_SPYp2L2TDtEZ8eFFZYqeEpd0LlGgI-E",
+//             "appName": "[DEFAULT]"
+//         },
+//         "providerId": null,
+//         "_tokenResponse": {
+//             "kind": "identitytoolkit#VerifyPasswordResponse",
+//             "localId": "gDB76nB6F7ehSQiDs67YSht46ZR2",
+//             "email": "sun87-1@daum.net",
+//             "displayName": "",
+//             "idToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjBhYmQzYTQzMTc4YzE0MjlkNWE0NDBiYWUzNzM1NDRjMDlmNGUzODciLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vbWVhbC02MmNjYiIsImF1ZCI6Im1lYWwtNjJjY2IiLCJhdXRoX3RpbWUiOjE3Mzc0NDYxODQsInVzZXJfaWQiOiJnREI3Nm5CNkY3ZWhTUWlEczY3WVNodDQ2WlIyIiwic3ViIjoiZ0RCNzZuQjZGN2VoU1FpRHM2N1lTaHQ0NlpSMiIsImlhdCI6MTczNzQ0NjE4NCwiZXhwIjoxNzM3NDQ5Nzg0LCJlbWFpbCI6InN1bjg3LTFAZGF1bS5uZXQiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsic3VuODctMUBkYXVtLm5ldCJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.U3v7p4liKsajjNjsV67EKj50PUcs0dSP7waIv3cZX62jVXaP3l84ZZv_Gg-52P47ONDxYn4r89y5UOZukFyEJjGDxK-W1sfZPT__5Ko8MT1hHToJulSTXfDEloaT0WUPMD2nqE3v5FS5jwDMTxijtb8S2O5l2VICVZPZj6WNYVBxwruvYJ6dYhECcliK6UlCo3pWExQ0vmc9jIRIuXzxM562uVu1Uv7T4GrD13VS8NsaVu3cvvCYI1uLssRs5SW92GJZ1xiF0cV5hNVnC-0JZLQf4aHhceIO1raOr9B3MmQUqUlIGv5inqWEDWyqcCBxqDjr9IhI27hzMVrMwP5gTA",
+//             "registered": true,
+//             "refreshToken": "AMf-vBxahFu32nB2PpJfGZX1gMB7pdEl8X0LEtcteqZgCVTHNgG38kSX53_FxZOG7ytLTBXJ2VaYZBR-8Es_ZD_UEAQDemeNvAhOym3H2GAjJTbSqalpGNwNK1udUcSqFXt7tqBKjb7SGm7VMPNw7WOS0S9O5FsYC8xS8YCUalHxX2DrEbp66tfWmAW_DqzJ_uEs6_VPfxCf",
+//             "expiresIn": "3600"
+//         },
+//         "operationType": "signIn"
+//     }
+// }
+
+
+
+
+// 재로그인 
+// {
+//     "state": "SUCCES",
+//     "message": "성공",
+//     "data": {
+//         "user": {
+//             "uid": "gDB76nB6F7ehSQiDs67YSht46ZR2",
+//             "email": "sun87-1@daum.net",
+//             "emailVerified": false,
+//             "isAnonymous": false,
+//             "providerData": [
+//                 {
+//                     "providerId": "password",
+//                     "uid": "sun87-1@daum.net",
+//                     "displayName": null,
+//                     "email": "sun87-1@daum.net",
+//                     "phoneNumber": null,
+//                     "photoURL": null
+//                 }
+//             ],
+//             "stsTokenManager": {
+//                 "refreshToken": "AMf-vBzkZ6AvQpOeAE4SmyugDG9Gx7j4dq8UGpDvP0PJS0wW5MI4D2QXAHiWNaNdQUB7UaLN0mjIS1QV5hFG4DEl4OUbPSG2j0mnmM4goCjVvMsP77pAlrtML2A5jZiKhACMR8yJXe30aldQM8DI_O_O8IEaIw6CdasJCAqx5y7V3_-7clkdABo8P2n-zyOHE0FuhkU2yLVW",
+//                 "accessToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjBhYmQzYTQzMTc4YzE0MjlkNWE0NDBiYWUzNzM1NDRjMDlmNGUzODciLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vbWVhbC02MmNjYiIsImF1ZCI6Im1lYWwtNjJjY2IiLCJhdXRoX3RpbWUiOjE3Mzc0NDYzNTQsInVzZXJfaWQiOiJnREI3Nm5CNkY3ZWhTUWlEczY3WVNodDQ2WlIyIiwic3ViIjoiZ0RCNzZuQjZGN2VoU1FpRHM2N1lTaHQ0NlpSMiIsImlhdCI6MTczNzQ0NjM1NCwiZXhwIjoxNzM3NDQ5OTU0LCJlbWFpbCI6InN1bjg3LTFAZGF1bS5uZXQiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsic3VuODctMUBkYXVtLm5ldCJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.H3cKNg830oaUXiNsh2AtL8nDbwRLAtGdfGu7hJIamwCzvRZTFxR2TZeFGxOtZjO8dCTPOmQweQkR86O4SHsHty5VhXSXBxnKi8-_5t-XnpNR40PGVzQbZnnl-gIjwIblwtsCVSNq0l7_ndd3-ldahNhQgZHm3nrsJ0NG2whoDgyrwTsS-1pXWuzybHC3OgnSOjS4PJne05M44eF6a26xRJhKSCKEQ5Zt78pQWzav2QqFF0PIGIofShj5dokWaePkw1TjTlcSf3SPp_35Jm4sVJc5VqcFUhRi9XUSGZMabhVM2Dey8wKcfgSCdR2WeH6Og5x66pr84_yxcmdJlUvwog",
+//                 "expirationTime": 1737449954657
+//             },
+//             "createdAt": "1737038345678",
+//             "lastLoginAt": "1737446354524",
+//             "apiKey": "AIzaSyC_SPYp2L2TDtEZ8eFFZYqeEpd0LlGgI-E",
+//             "appName": "[DEFAULT]"
+//         },
+//         "providerId": null,
+//         "_tokenResponse": {
+//             "kind": "identitytoolkit#VerifyPasswordResponse",
+//             "localId": "gDB76nB6F7ehSQiDs67YSht46ZR2",
+//             "email": "sun87-1@daum.net",
+//             "displayName": "",
+//             "idToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjBhYmQzYTQzMTc4YzE0MjlkNWE0NDBiYWUzNzM1NDRjMDlmNGUzODciLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vbWVhbC02MmNjYiIsImF1ZCI6Im1lYWwtNjJjY2IiLCJhdXRoX3RpbWUiOjE3Mzc0NDYzNTQsInVzZXJfaWQiOiJnREI3Nm5CNkY3ZWhTUWlEczY3WVNodDQ2WlIyIiwic3ViIjoiZ0RCNzZuQjZGN2VoU1FpRHM2N1lTaHQ0NlpSMiIsImlhdCI6MTczNzQ0NjM1NCwiZXhwIjoxNzM3NDQ5OTU0LCJlbWFpbCI6InN1bjg3LTFAZGF1bS5uZXQiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsic3VuODctMUBkYXVtLm5ldCJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.H3cKNg830oaUXiNsh2AtL8nDbwRLAtGdfGu7hJIamwCzvRZTFxR2TZeFGxOtZjO8dCTPOmQweQkR86O4SHsHty5VhXSXBxnKi8-_5t-XnpNR40PGVzQbZnnl-gIjwIblwtsCVSNq0l7_ndd3-ldahNhQgZHm3nrsJ0NG2whoDgyrwTsS-1pXWuzybHC3OgnSOjS4PJne05M44eF6a26xRJhKSCKEQ5Zt78pQWzav2QqFF0PIGIofShj5dokWaePkw1TjTlcSf3SPp_35Jm4sVJc5VqcFUhRi9XUSGZMabhVM2Dey8wKcfgSCdR2WeH6Og5x66pr84_yxcmdJlUvwog",
+//             "registered": true,
+//             "refreshToken": "AMf-vBzkZ6AvQpOeAE4SmyugDG9Gx7j4dq8UGpDvP0PJS0wW5MI4D2QXAHiWNaNdQUB7UaLN0mjIS1QV5hFG4DEl4OUbPSG2j0mnmM4goCjVvMsP77pAlrtML2A5jZiKhACMR8yJXe30aldQM8DI_O_O8IEaIw6CdasJCAqx5y7V3_-7clkdABo8P2n-zyOHE0FuhkU2yLVW",
+//             "expiresIn": "3600"
+//         },
+//         "operationType": "signIn"
+//     }
+// }

@@ -42,7 +42,7 @@ const firebaseConfig = {
 // Initialize Firebase
 // const app = initializeApp(firebaseConfig);
 // const app = !getApps().length ? initializeApp(firebaseConfig, { credential: admin.credential.cert(serviceAccountKey) }) : getApp();
-const app = initializeApp(firebaseConfig, { credential: admin.credential.cert(serviceAccountKey) })
+const app = !getApps().length ? initializeApp(firebaseConfig, { credential: admin.credential.cert(serviceAccountKey) }) : getApp();
 const db = getFirestore(app)
 
 // auth 설정

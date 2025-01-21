@@ -26,7 +26,6 @@ export const useUser = (id: string) => {
 
 
 
-
 // export const useUser = (id: string) => {
 //     return useQuery(userKeys.detail(), () => fetchUserById(id));
 // }

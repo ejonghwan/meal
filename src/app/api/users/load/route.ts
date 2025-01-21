@@ -6,7 +6,7 @@ import { signupEmail, loginEmail, loadUser } from "@/src/data/firestore";
 @ doc     유저 로드
 @ access  public
 */
-export const GET = async (req: NextRequest) => {
+export const GET = (req: NextRequest) => {
 
     try {
         // const { token } = await req.json();
@@ -15,7 +15,7 @@ export const GET = async (req: NextRequest) => {
 
         console.log(req.headers.get('authorization'))
         const jwt = req.headers.get('authorization')
-        const user = await loadUser(jwt)
+        const user = loadUser(jwt)
         const res = {
             state: 'SUCCES',
             message: '성공',

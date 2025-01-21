@@ -1,5 +1,5 @@
 // Import the functions you need from the SDKs you need
-import { initializeApp, getApp } from "firebase/app";
+import { initializeApp, getApp, getApps } from "firebase/app";
 import { getFirestore, collection, query, getDocs, Timestamp, setDoc, doc, getDoc, deleteDoc, updateDoc } from "firebase/firestore";
 import {
     getAuth,// authentication 설정
@@ -8,6 +8,8 @@ import {
     signInWithEmailAndPassword,// email 로그인
     createUserWithEmailAndPassword, //email 회원가입
 } from 'firebase/auth';
+import jwt from 'jsonwebtoken'
+
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -21,12 +23,12 @@ const firebaseConfig = {
 };
 
 // Initialize Firebase
-const app = initializeApp(firebaseConfig);
+// const app = initializeApp(firebaseConfig);
+const app = !getApps().length ? initializeApp(firebaseConfig) : getApp();
 const db = getFirestore(app)
 
 // auth 설정
 const auth = getAuth(app);
-
 
 
 
@@ -41,7 +43,8 @@ export const loginEmail = (email, password) => {
 };
 
 export const loadUser = (idToken) => {
-    console.dir(auth.currentUser.getIdToken())
+    const match = jwt.verify(idToken, { ignoreExpiration: true })
+    console.log('load user?????????', idToken, match)
     // return auth.verifyIdToken(idToken)
 
 }

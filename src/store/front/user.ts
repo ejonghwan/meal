@@ -14,7 +14,7 @@ interface Prev {
 export const useUserStore = create(devtools(set => ({
    userInfo: {},
    setUserInfo: (user: any) => set((prev: Prev) => {
-      localStorage.setItem("x-acc-token", user.data.stsTokenManager.accessToken);
+      // localStorage.setItem("x-acc-token", user.data.stsTokenManager.accessToken);
       return { userInfo: user }
    }),
    setUserLogin: (user: any) => set((prev) => {

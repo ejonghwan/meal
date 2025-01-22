@@ -7,7 +7,7 @@ import { Button, ButtonGroup } from "@nextui-org/button";
 import { useUserStore } from '@/src/store/front/user'
 
 import { useUserLoad, useUsers, useUser } from '@/src/store/queryies/user/userQueries'
-
+import { onUserLoadAPI } from '@/src/store/queryies/user/userQueryFn'
 
 
 interface Props {
@@ -24,7 +24,7 @@ interface User {
 
 const LoginForm = () => {
 
-    const { userInfo, setUserInfo, setUserLogout } = useUserStore();
+    const { userInfo, setUserInfo, setUserLogin, setUserLogout } = useUserStore();
 
 
 
@@ -56,7 +56,7 @@ const LoginForm = () => {
 
             const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/login/`, options)
             const data = await res.json();
-            setUserInfo(data)
+            // setUserInfo(data)
             setUserLogin(data)
         } catch (e) {
             console.error(e)
@@ -69,13 +69,16 @@ const LoginForm = () => {
 
     // react query test 
 
-    const { data, error, isLoading } = useUserLoad(localStorage.getItem('x-acc-token'));
+    // const { data, error, isLoading } = useUserLoad(localStorage.getItem('x-acc-token'));
+
+    // useEffect(() => {
+    //     // console.log('load????????????????', data.data.email, error, isLoading)
+    //     // setUserInfo(data)
+    //     // setUserLogin(data)
+    //     console.log('load data?', data.state)
+    // }, [data])
 
 
-
-    useEffect(() => {
-        console.log(data, error, isLoading)
-    }, [data, error, isLoading])
 
     // const { data, error, isLoading } = useUsers()
     // const { data: data11, error: error11, isLoading: isLoading11 } = useUser("30")
@@ -84,6 +87,20 @@ const LoginForm = () => {
     //     console.log(data, error, isLoading)
     //     console.log(data11, error11, isLoading11)
     // }, [isLoading, isLoading11])
+
+
+    const test = async () => {
+        const accToken = localStorage.getItem('x-acc-token')
+        if (accToken) {
+            const aa = await onUserLoadAPI(accToken)
+            console.log('aa?????????', aa)
+            setUserInfo(aa)
+        }
+    }
+    useEffect(() => {
+        test()
+    }, [])
+
 
 
 
@@ -133,7 +150,7 @@ const LoginForm = () => {
             <div>user : {userInfo.data && userInfo.data.email}</div>
             <div>
                 <p>user load test</p>
-                <button type='button' onClick={() => handleUserLoad(userInfo.data._tokenResponse.idToken)}>user load </button>
+                <button type='button' onClick={() => handleUserLoad(localStorage.getItem('x-acc-token'))}>user load </button>
             </div>
             <div>
 

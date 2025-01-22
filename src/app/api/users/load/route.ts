@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { signupEmail, loginEmail, accTokenCheck } from "@/src/data/users/index";
+import { auth } from "firebase-admin";
 
 /*
 @ path    GET /api/users/load
@@ -19,11 +20,14 @@ export const GET = async (req: NextRequest) => {
         // 인증토큰 에러일 경우
         if (checked.status === 'fail') return NextResponse.json(checked, { status: 501 })
 
-        console.log('back user???', checked)
+        // 인증토큰 정상일 경우 
+        const user = await auth().getUser(checked.uid)
+
+        // console.log('back user 222???', user)
         const res = {
             state: 'SUCCES',
             message: '성공',
-            data: checked,
+            data: user,
         }
         return NextResponse.json(res, { status: 201 })
     } catch (e) {

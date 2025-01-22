@@ -1,7 +1,7 @@
 "use client"
 
 import React, { ChangeEvent, FormEvent, useState } from 'react'
-import { signupEmail, loginEmail } from '@/src/data/firestore'
+// import { signupEmail, loginEmail } from '@/src/data/firestore'
 import { Input } from "@nextui-org/input";
 import { Button, ButtonGroup } from "@nextui-org/button";
 

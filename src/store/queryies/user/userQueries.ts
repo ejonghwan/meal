@@ -4,10 +4,12 @@ import { fetchUsers, fetchUserById, onUserLoadAPI } from '@/src/store/queryies/u
 
 
 
-export const useUserLoad = (token?: string) => {
+
+// load 는 쿼리로 보낼까 말까 
+export const useUserLoad = (token: string) => {
     // if (!token) return;
     return useQuery({
-        queryKey: userKeys.load(token),
+        queryKey: userKeys.load(),
         queryFn: () => onUserLoadAPI(token),
         staleTime: 60 * 1000,
         gcTime: 300 * 1000

@@ -14,6 +14,7 @@ export const onUserLoadAPI = async (token: string) => {
 
         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/load/`, options)
         console.log('쿼리 펑션 안쪽 api fn 확인하자아아아아', res)
+        return res.json();
         // const data = await res.json();
     } catch (e) {
         console.error(e)

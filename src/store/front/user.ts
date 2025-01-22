@@ -3,7 +3,13 @@ import { devtools } from 'zustand/middleware';
 
 
 
-interface Prev {
+interface UserStore {
+   userInfo: any;
+   setUserInfo: any;
+   setUserLogin: any;
+   setUserLogout: any
+
+
    arr: { id: string, content: string }[],
    addArr: (val: string) => void,
    removeArr: (id: string) => void
@@ -11,20 +17,20 @@ interface Prev {
 
 
 
-export const useUserStore = create(devtools(set => ({
+export const useUserStore = create(devtools<UserStore>(set => ({
    userInfo: {},
-   setUserInfo: (user: any) => set((prev: Prev) => {
+   setUserInfo: (user: any) => set((prev: UserStore) => {
       // localStorage.setItem("x-acc-token", user.data.stsTokenManager.accessToken);
       return { userInfo: user }
    }),
-   setUserLogin: (user: any) => set((prev) => {
+   setUserLogin: (user: any) => set((prev: UserStore) => {
       // login
       console.log('login ????', user)
 
       localStorage.setItem("x-acc-token", user.data.stsTokenManager.accessToken);
       return { userInfo: user }
    }),
-   setUserLogout: (user: any) => set((prev) => {
+   setUserLogout: (user: any) => set((prev: UserStore) => {
       localStorage.removeItem("x-acc-token");
       return { userInfo: {} }
       //logout
@@ -34,11 +40,11 @@ export const useUserStore = create(devtools(set => ({
    arr: [
       { id: '1', content: 'zz', }
    ],
-   addArr: (val: string) => set((prev: Prev) => {
+   addArr: (val: string) => set((prev: UserStore) => {
       console.log('user add ?', val, prev)
       return { arr: [...prev.arr, { content: val, id: new Date().getMilliseconds() + val }] }
    }),
-   removeArr: (id: string) => set((prev: Prev) => ({ arr: prev.arr.filter(e => e.id !== id) }))
+   removeArr: (id: string) => set((prev: UserStore) => ({ arr: prev.arr.filter(e => e.id !== id) }))
 })))
 
 

@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { signupEmail, loginEmail } from "@/src/data/firestore";
+import { signupEmail, loginEmail } from "@/src/data//users";
 
 /*
 @ path    GET /api/login
@@ -13,11 +13,13 @@ export const POST = async (req: NextRequest) => {
     if (!password) return NextResponse.json({ state: 'FAILUE', message: 'password을 넣어주세요', }, { status: 422 });
 
 
-    const user = await loginEmail(email, password);
+    const userData = await loginEmail(email, password);
+    console.log(userData.user.providerData)
+
     const res = {
         state: 'SUCCES',
         message: '성공',
-        data: user,
+        data: userData.user,
     }
     return NextResponse.json(res, { status: 201 })
 }

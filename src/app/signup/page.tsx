@@ -1,18 +1,17 @@
 
+
 import React from 'react'
-import { signupEmail, loginEmail } from '@/src/data/firestore'
 import SignupForm from '@/src/components/users/SignupForm'
 import LoginForm from '@/src/components/users/LoginForm'
 
 const SignupPage = async () => {
 
 
+
     return (
         <>
             <h2>회원가입</h2>
             <div>
-
-
 
                 <SignupForm />
 

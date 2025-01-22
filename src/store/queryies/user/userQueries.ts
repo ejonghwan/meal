@@ -1,9 +1,27 @@
 import { useQuery } from '@tanstack/react-query'
-import { userKeys } from '@/store/queryies/user/userKeys'
-import { fetchUsers, fetchUserById } from '@/store/api/user/userApi'
+import { userKeys } from '@/src/store/queryies/user/userKeys'
+import { fetchUsers, fetchUserById, onUserLoadAPI } from '@/src/store/queryies/user/userQueryFn'
 
 
 
+export const useUserLoad = (token?: string) => {
+    // if (!token) return;
+    return useQuery({
+        queryKey: userKeys.load(token),
+        queryFn: () => onUserLoadAPI(token),
+        staleTime: 60 * 1000,
+        gcTime: 300 * 1000
+    })
+}
+
+
+
+
+
+
+
+
+// test 
 export const useUsers = () => {
     return useQuery({
         queryKey: userKeys.list(),

@@ -6,10 +6,12 @@ import { Button, ButtonGroup } from "@nextui-org/button";
 // import { cookies } from 'next/headers';
 import { useUserStore } from '@/src/store/front/user'
 
+import { useUserLoad, useUsers, useUser } from '@/src/store/queryies/user/userQueries'
+
 
 
 interface Props {
-    load: (token: string) => any;
+    // load: (token: string) => any;
 }
 
 interface User {
@@ -17,10 +19,12 @@ interface User {
     password: string;
 }
 
+// const accToken = localStorage.getItem('x-acc-token')
 
-const LoginForm = ({ load }: Props) => {
 
-    const { userInfo, setUserInfo } = useUserStore();
+const LoginForm = () => {
+
+    const { userInfo, setUserInfo, setUserLogout } = useUserStore();
 
 
 
@@ -53,6 +57,7 @@ const LoginForm = ({ load }: Props) => {
             const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/login/`, options)
             const data = await res.json();
             setUserInfo(data)
+            setUserLogin(data)
         } catch (e) {
             console.error(e)
         }
@@ -61,45 +66,71 @@ const LoginForm = ({ load }: Props) => {
 
 
 
-    const handleUserLoad = async (token: string) => {
 
-        console.log('???? 실행은 됨 ? ')
-        try {
+    // react query test 
 
-            // const res = signupEmail(user.email, user.password)
-            // console.log('res??', res)
+    const { data, error, isLoading } = useUserLoad(localStorage.getItem('x-acc-token'));
 
-            const options = {
-                method: "GET",
-                headers: {
-                    "Content-Type": "application/json",
-                    "x-acc-token": `${token}`,
-                },
-                // body: JSON.stringify({ token: token })
-                // cache: "no-store",
 
-            }
 
-            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/load/`, options)
+    useEffect(() => {
+        console.log(data, error, isLoading)
+    }, [data, error, isLoading])
 
-            console.log('확인하자아아아아', res)
-            const data = await res.json();
-        } catch (e) {
-            console.error(e)
-        }
+    // const { data, error, isLoading } = useUsers()
+    // const { data: data11, error: error11, isLoading: isLoading11 } = useUser("30")
+
+    // useEffect(() => {
+    //     console.log(data, error, isLoading)
+    //     console.log(data11, error11, isLoading11)
+    // }, [isLoading, isLoading11])
+
+
+
+
+    const handleUserLoad = (token: string) => {
+
+        // console.log('react query ??????', data, error, isLoading)
+
+        // console.log('???? 실행은 됨 ? ')
+        // try {
+        //     const options = {
+        //         method: "GET",
+        //         headers: {
+        //             "Content-Type": "application/json",
+        //             "x-acc-token": `${token}`,
+        //         },
+        //         // body: JSON.stringify({ token: token })
+        //         // cache: "no-store",
+
+        //     }
+
+        //     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/load/`, options)
+
+        //     console.log('확인하자아아아아', res)
+        //     const data = await res.json();
+        // } catch (e) {
+        //     console.error(e)
+        // }
     }
 
     useEffect(() => {
         console.log('쥬스탄드 상태 체크', userInfo)
 
+        // authStateChanged()
     }, [userInfo])
+
+
+    useEffect(() => {
+        // authStateChanged();
+    }, [])
 
 
     return (
         <div>
 
             <div>load user test</div>
-            <div>user : {userInfo.data && userInfo.data.user.email}</div>
+            <div>user : {userInfo.data && userInfo.data.email}</div>
             <div>
                 <p>user load test</p>
                 <button type='button' onClick={() => handleUserLoad(userInfo.data._tokenResponse.idToken)}>user load </button>
@@ -107,6 +138,10 @@ const LoginForm = ({ load }: Props) => {
             <div>
 
                 {/* <button type='button' onClick={() => load('')}>load user</button> */}
+            </div>
+
+            <div>
+                <button type='button' onClick={() => { setUserLogout() }}>logout</button>
             </div>
 
             <form onSubmit={handleLogin}>

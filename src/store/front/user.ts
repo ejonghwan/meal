@@ -7,7 +7,7 @@ interface UserStore {
    userInfo: any;
    setUserInfo: any;
    setUserLogin: any;
-   setUserLogout: any
+   setUserLogout: any;
 
 
    arr: { id: string, content: string }[],
@@ -25,9 +25,9 @@ export const useUserStore = create(devtools<UserStore>(set => ({
    }),
    setUserLogin: (user: any) => set((prev: UserStore) => {
       // login
-      console.log('login ????', user)
+      // console.log('login ????', user)
 
-      localStorage.setItem("x-acc-token", user.data.stsTokenManager.accessToken);
+      localStorage.setItem("x-acc-token", user.data.accToken);
       return { userInfo: user }
    }),
    setUserLogout: (user: any) => set((prev: UserStore) => {

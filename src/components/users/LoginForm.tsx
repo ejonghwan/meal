@@ -6,7 +6,7 @@ import { Button, ButtonGroup } from "@nextui-org/button";
 // import { cookies } from 'next/headers';
 import { useUserStore } from '@/src/store/front/user'
 
-import { useUserLoad, useUsers, useUser } from '@/src/store/queryies/user/userQueries'
+import { useUserLoad, useUsers, useUser, useUserLogin } from '@/src/store/queryies/user/userQueries'
 import { onUserLoadAPI } from '@/src/store/queryies/user/userQueryFn'
 
 
@@ -38,37 +38,48 @@ const LoginForm = () => {
         })
     }
 
+    // login test
+    const { mutate, data, error: loginError, loading: loginLoading, isSuccess } = useUserLogin({ email: user.email, password: user.password })
 
+    // console.log('useUserLogin??????', useUserLogin({ email: user.email, password: user.password }))
 
-    const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
-        try {
-            e.preventDefault();
-            // console.log(user)
-
-            // const res = signupEmail(user.email, user.password)
-            // console.log('res??', res)
-
-            const options = {
-                method: "POST",
-                headers: { "Content-Type": "application/json", },
-                body: JSON.stringify({ email: user.email, password: user.password })
-            }
-
-            const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/login/`, options)
-            const data = await res.json();
-            // setUserInfo(data)
-            setUserLogin(data)
-        } catch (e) {
-            console.error(e)
+    useEffect(() => {
+        console.log('login data???', isSuccess)
+        if (isSuccess) {
+            console.log('트루다트루다', data)
+            // setUserLogin(data)
         }
-    }
+    }, [isSuccess])
+
+
+    // const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
+    //     try {
+    //         e.preventDefault();
+    //         // console.log(user)
+
+    //         // const res = signupEmail(user.email, user.password)
+    //         // console.log('res??', res)
+
+    //         const options = {
+    //             method: "POST",
+    //             headers: { "Content-Type": "application/json", },
+    //             body: JSON.stringify({ email: user.email, password: user.password })
+    //         }
+
+    //         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/login/`, options)
+    //         const data = await res.json();
+    //         // setUserInfo(data)
+    //         setUserLogin(data)
+    //     } catch (e) {
+    //         console.error(e)
+    //     }
+    // }
 
 
 
 
 
     // react query test 
-
     // const { data, error, isLoading } = useUserLoad(localStorage.getItem('x-acc-token'));
 
     // useEffect(() => {
@@ -105,32 +116,6 @@ const LoginForm = () => {
 
 
 
-    const handleUserLoad = (token: string) => {
-
-        // console.log('react query ??????', data, error, isLoading)
-
-        // console.log('???? 실행은 됨 ? ')
-        // try {
-        //     const options = {
-        //         method: "GET",
-        //         headers: {
-        //             "Content-Type": "application/json",
-        //             "x-acc-token": `${token}`,
-        //         },
-        //         // body: JSON.stringify({ token: token })
-        //         // cache: "no-store",
-
-        //     }
-
-        //     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/load/`, options)
-
-        //     console.log('확인하자아아아아', res)
-        //     const data = await res.json();
-        // } catch (e) {
-        //     console.error(e)
-        // }
-    }
-
     useEffect(() => {
         console.log('쥬스탄드 상태 체크', userInfo)
 
@@ -147,11 +132,8 @@ const LoginForm = () => {
         <div>
 
             <div>load user test</div>
-            <div>user : {userInfo.data && userInfo.data.email}</div>
-            <div>
-                <p>user load test</p>
-                <button type='button' onClick={() => handleUserLoad(localStorage.getItem('x-acc-token'))}>user load </button>
-            </div>
+            {/* {userInfo.data && <div>user : {userInfo.data?.email}</div>} */}
+
             <div>
 
                 {/* <button type='button' onClick={() => load('')}>load user</button> */}
@@ -161,7 +143,8 @@ const LoginForm = () => {
                 <button type='button' onClick={() => { setUserLogout() }}>logout</button>
             </div>
 
-            <form onSubmit={handleLogin}>
+            {/* <form onSubmit={handleLogin}> */}
+            <form onSubmit={mutate}>
 
                 <div className='flex flex-col gap-2 zz mt-[20px]'>
                     <Input
@@ -196,8 +179,3 @@ const LoginForm = () => {
 }
 
 export default LoginForm
-
-
-
-
-

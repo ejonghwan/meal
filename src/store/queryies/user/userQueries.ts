@@ -1,11 +1,15 @@
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery } from '@tanstack/react-query'
 import { userKeys } from '@/src/store/queryies/user/userKeys'
-import { fetchUsers, fetchUserById, onUserLoadAPI } from '@/src/store/queryies/user/userQueryFn'
+import { fetchUsers, fetchUserById, onUserLoadAPI, onUserLoginAPI } from '@/src/store/queryies/user/userQueryFn'
 
 
+interface User {
+    email: string;
+    password: string;
+}
 
 
-// load 는 쿼리로 보낼까 말까 
+// load 는 쿼리로 보낼까 말까. 지금은 그냥 화면에서 바로 api 함수 실행. 아래꺼 안씀
 export const useUserLoad = (token: string) => {
     // if (!token) return;
     return useQuery({
@@ -15,6 +19,20 @@ export const useUserLoad = (token: string) => {
         gcTime: 300 * 1000
     })
 }
+
+export const useUserLogin = (user: User): any => {
+    // if (!token) return;
+    return useMutation({
+        mutationFn: (e: Event) => {
+            console.log('e? ', e, user)
+            e.preventDefault()
+            // return fetch('/api', new FormData(event.target))
+            return onUserLoginAPI(user)
+        },
+    })
+}
+
+
 
 
 

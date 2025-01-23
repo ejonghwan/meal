@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
+import { cookies } from "next/headers";
 import { signupEmail, loginEmail } from "@/src/data//users";
+
 
 /*
 @ path    GET /api/login
@@ -14,12 +16,24 @@ export const POST = async (req: NextRequest) => {
 
 
     const userData = await loginEmail(email, password);
-    console.log(userData.user.providerData)
+    // console.log('back - userDAta ????????', userData.user.refreshToken)
+
+
+
+    // console.log(cookies().get("access-token"));
+    // ref token httpOnly로 내려줌
+    cookies().set("x-ref-token", userData.user.refreshToken, { httpOnly: true });
+
+
 
     const res = {
         state: 'SUCCES',
         message: '성공',
-        data: userData.user,
+        // data: userData.user,
+        data: {
+            ...userData.user.providerData[0],
+            accToken: await userData.user.getIdToken()
+        }
     }
     return NextResponse.json(res, { status: 201 })
 }

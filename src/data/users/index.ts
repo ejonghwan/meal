@@ -9,6 +9,13 @@ import {
 import { auth, admin } from '@/src/data/firestore'
 
 
+interface TokenData {
+    status: string,
+    message: string,
+    code: number,
+    uid?: string
+    data?: any
+}
 
 
 //Email 로그인

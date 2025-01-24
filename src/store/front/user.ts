@@ -4,10 +4,12 @@ import { devtools } from 'zustand/middleware';
 
 
 interface UserStore {
+   authInfo: any;
    userInfo: any;
    setUserInfo: any;
    setUserLogin: any;
    setUserLogout: any;
+   setAutuInfo: any;
 
 
    arr: { id: string, content: string }[],
@@ -17,8 +19,15 @@ interface UserStore {
 
 
 
+
+
 export const useUserStore = create(devtools<UserStore>(set => ({
+   authInfo: {},
    userInfo: {},
+   setAutuInfo: (payload) => set(() => {
+      // localStorage.setItem("x-acc-token", user.data.stsTokenManager.accessToken);
+      return { authInfo: payload.data }
+   }),
    setUserInfo: (user: any) => set((prev: UserStore) => {
       // localStorage.setItem("x-acc-token", user.data.stsTokenManager.accessToken);
       return { userInfo: user }

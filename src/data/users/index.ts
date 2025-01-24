@@ -40,6 +40,8 @@ interface TokenData {
     3. signupEmail 함수에는 파이어베이스 회원가입 함수가 실행됨 
     4. 그럼 백엔드에선 우선 완료 요청이 프론트로 내려가고 
     5. "메일을 인증해주세요" 페이지 노출 
+    5-1. 인증 완료 버튼 클릭 시 auth api 요청
+
     
     6. 메일에서 인증을 하면  파이어베이스에 있는 상태값이 변경 됨
     7. 그 변경된걸 signupAuth 함수를 실행해서 감지 한다음 프론트로 res 해야되는데 !!! 하 .... (처리 블로그에선 setInterval 씀 -_-... )
@@ -49,7 +51,10 @@ interface TokenData {
 
 // email auth
 export const signupAuth = async (user) => {
-    console.log('singup auth fn', auth.onAuthStateChanged((user) => { }))
+    // console.log('singup auth fn', auth.onAuthStateChanged((user) => { console.log('auth user?', user) }))
+    console.log('auth user?????????', user)
+    // const verifyed = get
+    // return 
 }
 
 
@@ -60,7 +65,9 @@ export const signupEmail = async (email: string, password: string) => {
     // send mail 
     await sendEmailVerification(sign.user)
 
-
+    console.log('여긴 뭐냐아ㅏ아아아아아아아아아??', sign)
+    return sign
+    // return sign;
     // 
 
     // sign.user.emailVerified

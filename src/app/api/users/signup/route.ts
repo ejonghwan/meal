@@ -16,14 +16,17 @@ export const POST = async (req: NextRequest) => {
     const signup = await signupEmail(email, password);
 
 
-    console.log('뭐로 넘어오냐 하.......', signup)
+    console.log('뭐로 넘어오냐 하.......',)
 
 
 
     const res = {
         state: 'SUCCES',
         message: '성공',
-        data: signup,
+        data: {
+            email: signup.user.email,
+            uid: signup.user.uid
+        },
     }
     return NextResponse.json(res, { status: 201 })
 }

@@ -5,6 +5,7 @@ import React, { ChangeEvent, FormEvent, useState } from 'react'
 import { Input } from "@nextui-org/input";
 import { Button, ButtonGroup } from "@nextui-org/button";
 import SignupAuth from '@/src/components/users/SignupAuth';
+import { useUserStore } from '@/src/store/front/user'
 
 
 
@@ -20,6 +21,8 @@ interface User {
 
 const SignupForm = ({ }: Props) => {
 
+
+    const { setAutuInfo } = useUserStore();
     const [user, setUser] = useState<User>({ email: '', password: '' })
     const [auth, setAuth] = useState(false)
 
@@ -49,6 +52,8 @@ const SignupForm = ({ }: Props) => {
         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/signup/`, options)
         if (res.ok) setAuth(true)
         const data = await res.json();
+        setAutuInfo(data)
+        console.log('회원가입 프론트 data?', data)
     }
 
     return (

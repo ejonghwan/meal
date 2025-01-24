@@ -22,6 +22,9 @@ const SignupPage = async () => {
                 <br />
 
                 <LoginForm />
+
+
+
             </div>
         </>
     )

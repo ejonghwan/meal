@@ -2,12 +2,15 @@ import { useUserStore } from "@/src/store/front/user"
 
 
 // user auth
-export const onUserAuthAPI = async () => {
+export const onUserAuthAPI = async (user) => {
     try {
+
+
+        console.log('user 뭐로 오냐 어스 에이피아이??', user)
         const options = {
-            method: "GET",
+            method: "POST",
             headers: { "Content-Type": "application/json", },
-            // body: JSON.stringify({ email: user.email, password: user.password })
+            body: JSON.stringify({ email: user.email, uid: user.uid })
         }
 
         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/auth/`, options)

@@ -8,11 +8,11 @@ import { signupAuth } from "@/src/data//users";
 @ doc     회원가입 인증
 @ access  public
 */
-export const GET = async (req: NextRequest) => {
+export const POST = async (req: NextRequest) => {
 
-    // const { email, password } = await req.json();
-    // if (!email) return NextResponse.json({ state: 'FAILUE', message: 'email을 넣어주세요', }, { status: 422 });
-    // if (!password) return NextResponse.json({ state: 'FAILUE', message: 'password을 넣어주세요', }, { status: 422 });
+    const { email, uid } = await req.json();
+    if (!email) return NextResponse.json({ state: 'FAILUE', message: 'email이 없습니다', }, { status: 422 });
+    if (!uid) return NextResponse.json({ state: 'FAILUE', message: 'uid가 없습니다', }, { status: 422 });
 
 
     // const userData = await loginEmail(email, password);
@@ -25,7 +25,7 @@ export const GET = async (req: NextRequest) => {
 
 
     // auth 정보 아래서 넘겨줘야됨
-    const auth = signupAuth()
+    const auth = await signupAuth()
     console.log('bakc auth ? ', auth)
 
 

@@ -10,6 +10,7 @@ import { useUserLoad, useUsers, useUser, useUserLogin } from '@/src/store/queryi
 import { onUserLoadAPI } from '@/src/store/queryies/user/userQueryFn'
 
 
+
 interface Props {
     // load: (token: string) => any;
 }
@@ -47,8 +48,9 @@ const LoginForm = () => {
         console.log('login data???', isSuccess)
         if (isSuccess) {
             console.log('트루다트루다', data)
-            // setUserLogin(data)
+            setUserLogin(data)
         }
+
     }, [isSuccess])
 
 

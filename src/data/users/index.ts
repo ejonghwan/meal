@@ -5,6 +5,7 @@ import {
     GoogleAuthProvider, //google login 기능
     signInWithEmailAndPassword,// email 로그인
     createUserWithEmailAndPassword, //email 회원가입
+    sendEmailVerification,
 } from 'firebase/auth';
 import { auth, admin } from '@/src/data/firestore'
 
@@ -18,15 +19,105 @@ interface TokenData {
 }
 
 
-//Email 로그인
-export const signupEmail = (email: string, password: string) => {
-    return createUserWithEmailAndPassword(auth, email, password);
+
+/*
+    ### 회원가입 로직
+    1. 이메일 인증부터 함 (비밀번호는 가짜 비밀번호) -> (임시가입)
+    2. 인증메일이 가면 인증 유알엘을 클릭한 사람만 다음으로 넘김 (이걸 어떻게 감지할지 ? )
+    3. ok -> 인증된 사람만 비밀번호 및 정보 입력 후 수정. 
+    3. no -> 임시 가입된 메일 삭제 
+
+
+    ### 회원가입 로직 수정
+    1. 처음엔 이메일만 입력받음. 가가입 시키고 메일인증 체크하라고함 
+       ok -> 프론트에서 상세정보 더 받아서 디비에 업데이트
+       no -> 회원 탈퇴시킴
+
+
+    ### 세부 로직
+    1. 화면에서 이메일 치고 인증 누르면 signup backend 로 요청
+    2. data에 있는 signupEmail 함수실행 
+    3. signupEmail 함수에는 파이어베이스 회원가입 함수가 실행됨 
+    4. 그럼 백엔드에선 우선 완료 요청이 프론트로 내려가고 
+    5. "메일을 인증해주세요" 페이지 노출 
+    
+    6. 메일에서 인증을 하면  파이어베이스에 있는 상태값이 변경 됨
+    7. 그 변경된걸 signupAuth 함수를 실행해서 감지 한다음 프론트로 res 해야되는데 !!! 하 .... (처리 블로그에선 setInterval 씀 -_-... )
+*/
+
+
+
+// email auth
+export const signupAuth = async (user) => {
+    console.log('singup auth fn', auth.onAuthStateChanged((user) => { }))
+}
+
+
+// email 회원가입
+export const signupEmail = async (email: string, password: string) => {
+    const sign = await createUserWithEmailAndPassword(auth, email, password)
+
+    // send mail 
+    await sendEmailVerification(sign.user)
+
+
+    // 
+
+    // sign.user.emailVerified
+
+    // createUserWithEmailAndPassword(auth, email, password).then(async (user) => {
+    //     // console.log('create user?', user.user)
+
+    //     var actionCodeSettings = {
+    //         // url: 'https://www.example.com/?email=' + firebase.auth().currentUser.email,
+    //         url: 'https://www.daum.net/email=' + user.user.email,
+    //         // iOS: {
+    //         //   bundleId: 'com.example.ios'
+    //         // },
+    //         // android: {
+    //         //   packageName: 'com.example.android',
+    //         //   installApp: true,
+    //         //   minimumVersion: '12'
+    //         // },
+    //         handleCodeInApp: true,
+    //         // When multiple custom dynamic link domains are defined, specify which
+    //         // one to use.
+    //         dynamicLinkDomain: "https://www.naver.com"
+    //     };
+
+    //     await sendEmailVerification(user.user)
+
+
+    //     // console.log('email ??', email, user.user.emailVerified)
+
+    //     setTimeout(() => {
+    //         console.log('인증 전 ??', user.user.emailVerified)
+    //     }, 5000)
+
+    //     setTimeout(async () => {
+
+    //         await auth.currentUser?.reload()
+    //         console.log('인증 후 ??', user.user.emailVerified)
+
+    //         if (user.user.emailVerified) {
+    //             return '인증미완료'
+    //         }
+
+    //         if (user.user.emailVerified) {
+    //             return '인증완료'
+    //         }
+    //     }, 20000)
+    // });
 };
 
-//Email 회원가입
+
+
+// email 로그인
 export const loginEmail = (email: string, password: string) => {
     return signInWithEmailAndPassword(auth, email, password);
 };
+
+
 
 // acc 토큰 체크
 export const accTokenCheck = async (idToken: string) => {
@@ -77,3 +168,20 @@ export const refTokenCheck = async (idToken: string) => {
         console.error('ref e', e)
     }
 }
+
+
+
+// email 인증
+export const sendEmailVerifi = async (idToken: string) => {
+    try {
+        const auth = getAuth();
+        console.log('firebase cur auth ? ', auth.currentUser, idToken)
+        const email = await sendEmailVerification(auth.currentUser)
+        return email
+    } catch (e) {
+        console.error('sendEmailVerifi e????? ', e)
+    }
+
+
+}
+

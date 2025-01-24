@@ -4,6 +4,8 @@ import React, { ChangeEvent, FormEvent, useState } from 'react'
 // import { signupEmail, loginEmail } from '@/src/data/firestore'
 import { Input } from "@nextui-org/input";
 import { Button, ButtonGroup } from "@nextui-org/button";
+import SignupAuth from '@/src/components/users/SignupAuth';
+
 
 
 interface Props {
@@ -19,6 +21,7 @@ interface User {
 const SignupForm = ({ }: Props) => {
 
     const [user, setUser] = useState<User>({ email: '', password: '' })
+    const [auth, setAuth] = useState(false)
 
     const handleChangeUserInfo = (e: ChangeEvent) => {
         const target = e.target as HTMLInputElement;;
@@ -44,6 +47,7 @@ const SignupForm = ({ }: Props) => {
         }
 
         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/signup/`, options)
+        if (res.ok) setAuth(true)
         const data = await res.json();
     }
 
@@ -79,6 +83,9 @@ const SignupForm = ({ }: Props) => {
                 </div>
 
             </form>
+
+
+            {auth && <SignupAuth />}
         </div>
     )
 }

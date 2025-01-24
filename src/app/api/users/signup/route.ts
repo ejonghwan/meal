@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server"
-import { signupEmail, loginEmail } from "@/src/data/firestore";
+import { signupEmail, loginEmail } from "@/src/data/users/index";
 
 /*
 @ path    GET /api/signup
@@ -14,6 +14,12 @@ export const POST = async (req: NextRequest) => {
 
 
     const signup = await signupEmail(email, password);
+
+
+    console.log('뭐로 넘어오냐 하.......', signup)
+
+
+
     const res = {
         state: 'SUCCES',
         message: '성공',

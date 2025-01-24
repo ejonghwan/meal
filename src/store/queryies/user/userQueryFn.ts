@@ -1,6 +1,25 @@
 import { useUserStore } from "@/src/store/front/user"
 
 
+// user auth
+export const onUserAuthAPI = async () => {
+    try {
+        const options = {
+            method: "GET",
+            headers: { "Content-Type": "application/json", },
+            // body: JSON.stringify({ email: user.email, password: user.password })
+        }
+
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/auth/`, options)
+        const data = res.json();
+        if (!res.ok) { throw new Error('Network response was not ok'); }
+        return data;
+    } catch (e) {
+        console.error(e)
+    }
+}
+
+
 // user load 
 export const onUserLoadAPI = async (token: string) => {
     try {
@@ -29,13 +48,7 @@ export const onUserLoadAPI = async (token: string) => {
 
 // user login
 export const onUserLoginAPI = async (user) => {
-
     try {
-        // console.log(user)
-
-        // const res = signupEmail(user.email, user.password)
-        // console.log('res??', res)
-
         const options = {
             method: "POST",
             headers: { "Content-Type": "application/json", },
@@ -45,9 +58,6 @@ export const onUserLoginAPI = async (user) => {
         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/login/`, options)
         const data = res.json();
         if (!res.ok) { throw new Error('Network response was not ok'); }
-        // setUserInfo(data)
-        // setUserLogin(data)
-
         return data;
     } catch (e) {
         console.error(e)
@@ -84,6 +94,8 @@ export const onUserLoginAPI = async (user) => {
 export const onUserOutAPI = async () => {
 
 }
+
+
 
 
 

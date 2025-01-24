@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
 import { cookies } from "next/headers";
-import { accTokenCheck, refTokenCheck } from "@/src/data/users/index";
+import { accTokenCheck, refTokenCheck, sendEmailVerifi } from "@/src/data/users/index";
 import { auth } from "firebase-admin";
 
 
@@ -43,10 +43,10 @@ export const GET = async (req: NextRequest) => {
         // ref token check 
         const refToken = cookies().get("x-ref-token")
         // 인증토큰이 에러일 경우 ref로 체크 후 인증토큰 재발급 // 작업해야함
-        const refTokenChecked = await refTokenCheck(refToken)
+        // const refTokenChecked = await refTokenCheck(refToken)
 
         if (!accToken) { }
-        console.log('ref token ?????', refToken)
+        // console.log('ref token ?????', refToken)
 
 
 
@@ -54,6 +54,8 @@ export const GET = async (req: NextRequest) => {
         // 인증토큰 정상일 경우 
         const user = await auth().getUser(checked.uid)
 
+        // const hoho = sendEmailVerifi(accToken)
+        // console.log('vertifi email', hoho)
 
         const res = {
             state: 'SUCCES',

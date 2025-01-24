@@ -1,15 +1,7 @@
 
 import React from 'react'
-
-
 // test
 // import { useUserStore } from '@/src/store/front/user'
-
-
-
-
-
-
 
 
 const Home = () => {

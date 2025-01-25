@@ -10,7 +10,8 @@ export const onUserAuthAPI = async (user) => {
         const options = {
             method: "POST",
             headers: { "Content-Type": "application/json", },
-            body: JSON.stringify({ email: user.email, uid: user.uid })
+            // body: JSON.stringify({ email: user.email, uid: user.uid })
+            body: JSON.stringify(user)
         }
 
         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/auth/`, options)

@@ -30,8 +30,8 @@ const SignupAuth = () => {
 
     const handleAuthComplate = async () => {
 
-        const aa = await onUserAuthAPI({ ...authInfo })
-        console.log('aa?', aa)
+        const aa = await onUserAuthAPI(authInfo)
+        console.log('fo res data?', aa)
     }
 
 

@@ -23,10 +23,11 @@ export const POST = async (req: NextRequest) => {
     const res = {
         state: 'SUCCES',
         message: '성공',
-        data: {
-            email: signup.user.email,
-            uid: signup.user.uid
-        },
+        // data: {
+        //     email: signup.user.email,
+        //     uid: signup.user.uid
+        // },
+        data: signup
     }
     return NextResponse.json(res, { status: 201 })
 }

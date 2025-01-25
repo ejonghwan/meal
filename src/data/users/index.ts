@@ -50,9 +50,19 @@ interface TokenData {
 
 
 // email auth
-export const signupAuth = async (user) => {
+export const signupAuth = async (user: { email: string, uid: string }) => {
     // console.log('singup auth fn', auth.onAuthStateChanged((user) => { console.log('auth user?', user) }))
-    console.log('auth user?????????', user)
+
+    await auth.currentUser?.reload()
+
+
+    console.log('인자값 ', user)
+    getAuth().onAuthStateChanged((user) => {
+        console.log('onAuthStateChanged??', user?.emailVerified)
+    })
+
+
+
     // const verifyed = get
     // return 
 }
@@ -65,7 +75,7 @@ export const signupEmail = async (email: string, password: string) => {
     // send mail 
     await sendEmailVerification(sign.user)
 
-    console.log('여긴 뭐냐아ㅏ아아아아아아아아아??', sign)
+    // console.log('여긴 뭐냐아ㅏ아아아아아아아아아??', sign)
     return sign
     // return sign;
     // 

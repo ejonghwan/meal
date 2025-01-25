@@ -10,9 +10,9 @@ import { signupAuth } from "@/src/data//users";
 */
 export const POST = async (req: NextRequest) => {
 
-    const { email, uid } = await req.json();
-    if (!email) return NextResponse.json({ state: 'FAILUE', message: 'email이 없습니다', }, { status: 422 });
-    if (!uid) return NextResponse.json({ state: 'FAILUE', message: 'uid가 없습니다', }, { status: 422 });
+    const reqData = await req.json();
+    console.log('req??', reqData.user)
+    if (!reqData.user) return NextResponse.json({ state: 'FAILUE', message: '회원가입한 유저의 정보가 없습니다. 다시 확인해주세요', }, { status: 422 });
 
 
     // const userData = await loginEmail(email, password);
@@ -23,9 +23,10 @@ export const POST = async (req: NextRequest) => {
     // ref token httpOnly로 내려줌
     // cookies().set("x-ref-token", userData.user.refreshToken, { httpOnly: true });
 
-
+    // 여기까지 함 
     // auth 정보 아래서 넘겨줘야됨
-    const auth = await signupAuth()
+    const auth = await signupAuth(reqData)
+    // console.log('bakc email. uid ? ', email, uid)
     console.log('bakc auth ? ', auth)
 
 

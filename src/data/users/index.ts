@@ -57,6 +57,9 @@ export const signupAuth = async (user: { email: string, uid: string }) => {
 
 
     console.log('인자값 ', user)
+    auth.onAuthStateChanged((user) => {
+        console.log('auth user?', user?.emailVerified)
+    })
     getAuth().onAuthStateChanged((user) => {
         console.log('onAuthStateChanged??', user?.emailVerified)
     })

@@ -50,15 +50,17 @@ interface TokenData {
 
 
 // email auth
-export const signupAuth = async (user: { email: string, uid: string }) => {
+export const signupAuth = async (user) => {
     // console.log('singup auth fn', auth.onAuthStateChanged((user) => { console.log('auth user?', user) }))
 
     await auth.currentUser?.reload()
 
+    const aaa = await admin.auth().getUser(user.user.uid)
 
-    console.log('인자값 ', user)
+
+    console.log('인자값 ', aaa.emailVerified)
     auth.onAuthStateChanged((user) => {
-        console.log('auth user?', user?.emailVerified)
+        console.log('auth user?', user)
     })
     getAuth().onAuthStateChanged((user) => {
         console.log('onAuthStateChanged??', user?.emailVerified)

@@ -17,7 +17,7 @@ const SignupAuth = () => {
     //     } else {
     //       setIsLoggedIn(false)
     //     }
-    //   })
+    //   });
 
     const { authInfo } = useUserStore();
 

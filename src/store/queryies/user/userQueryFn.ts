@@ -4,9 +4,6 @@ import { useUserStore } from "@/src/store/front/user"
 // user auth
 export const onUserAuthAPI = async (user) => {
     try {
-
-
-        console.log('user 뭐로 오냐 어스 에이피아이??', user)
         const options = {
             method: "POST",
             headers: { "Content-Type": "application/json", },

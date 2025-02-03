@@ -51,26 +51,13 @@ interface TokenData {
 
 
 // email auth
-export const signupAuth = async (user) => {
-    // console.log('singup auth fn', auth.onAuthStateChanged((user) => { console.log('auth user?', user) }))
-
+export const signupAuth = async (user: any) => {
     await auth.currentUser?.reload()
+    const checkedUser = await admin.auth().getUser(user.user.uid)
 
-    const aaa = await admin.auth().getUser(user.user.uid)
+    console.log('인자값 ', checkedUser.emailVerified)
 
-
-    console.log('인자값 ', aaa.emailVerified)
-    auth.onAuthStateChanged((user) => {
-        console.log('auth user?', user)
-    })
-    getAuth().onAuthStateChanged((user) => {
-        console.log('onAuthStateChanged??', user?.emailVerified)
-    })
-
-
-
-    // const verifyed = get
-    // return 
+    return { emailVerified: checkedUser.emailVerified }
 }
 
 
@@ -83,7 +70,6 @@ export const signupEmail = async (email: string, password: string) => {
 
     // console.log('여긴 뭐냐아ㅏ아아아아아아아아아??', sign)
     return sign
-    // return sign;
     // 
 
     // sign.user.emailVerified

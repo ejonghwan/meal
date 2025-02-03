@@ -14,10 +14,8 @@ export const POST = async (req: NextRequest) => {
     console.log('req??', reqData.user)
     if (!reqData.user) return NextResponse.json({ state: 'FAILUE', message: '회원가입한 유저의 정보가 없습니다. 다시 확인해주세요', }, { status: 422 });
 
-
     // const userData = await loginEmail(email, password);
     // console.log('back - userDAta ????????', userData.user.refreshToken)
-
 
     // console.log(cookies().get("access-token"));
     // ref token httpOnly로 내려줌
@@ -25,19 +23,13 @@ export const POST = async (req: NextRequest) => {
 
     // 여기까지 함 
     // auth 정보 아래서 넘겨줘야됨
-    const auth = await signupAuth(reqData)
-    // console.log('bakc email. uid ? ', email, uid)
-    console.log('bakc auth ? ', auth)
-
+    const emailVerified = await signupAuth(reqData)
+    console.log('back emailVerified ? ', emailVerified)
 
     const res = {
         state: 'SUCCES',
         message: '성공',
-        // data: userData.user,
-        data: {
-            // ...userData.user.providerData[0],
-            // accToken: await userData.user.getIdToken()
-        }
+        data: emailVerified
     }
     return NextResponse.json(res, { status: 201 })
 }

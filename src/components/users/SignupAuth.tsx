@@ -28,6 +28,8 @@ const SignupAuth = () => {
         console.log('auth compo ??', authInfo)
     }, [authInfo])
 
+
+
     const handleAuthComplate = async () => {
 
         const aa = await onUserAuthAPI(authInfo)

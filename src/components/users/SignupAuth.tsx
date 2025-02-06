@@ -22,7 +22,6 @@ const SignupAuth = () => {
     const { authInfo } = useUserStore();
 
 
-
     useEffect(() => {
         // signupAuth()
         // const aa = onUserAuthAPI()

@@ -4,13 +4,13 @@ import React, { useEffect, useState } from 'react'
 import { onUserAuthAPI } from '@/src/store/queryies/user/userQueryFn'
 import { useUserStore } from '@/src/store/front/user';
 import {
-	useRouter,
-	usePathname,
-	useSearchParams,
-	useSelectedLayoutSegment,
-	useSelectedLayoutSegments,
-	redirect,
-	notFound
+    useRouter,
+    usePathname,
+    useSearchParams,
+    useSelectedLayoutSegment,
+    useSelectedLayoutSegments,
+    redirect,
+    notFound
 } from 'next/navigation'
 
 
@@ -27,10 +27,9 @@ const SignupAuth = () => {
     //     }
     //   });
 
-    const [ emailVerify, setEmailVerify ] = useState(false)
+    const [emailVerify, setEmailVerify] = useState(false)
     const { authInfo } = useUserStore();
     const router = useRouter()
-    
 
     useEffect(() => {
         // signupAuth()
@@ -47,11 +46,11 @@ const SignupAuth = () => {
     }
 
     useEffect(() => {
-        if(emailVerify) {
+        if (emailVerify) {
             alert('회원가입이 완료되었습니다.')
             router.push('/')
         }
-        
+
     }, [emailVerify])
 
 
@@ -70,7 +69,7 @@ const SignupAuth = () => {
                     <strong>인증메일에서 인증을 완료해주세요.</strong>
                     <p>인증메일에서 URL을 클릭하시면 인증이 완료됩니다</p>
                 </div>
-                
+
             )}
         </div>
     )

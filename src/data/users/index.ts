@@ -54,9 +54,7 @@ interface TokenData {
 export const signupAuth = async (user: any) => {
     await auth.currentUser?.reload()
     const checkedUser = await admin.auth().getUser(user.user.uid)
-
-    console.log('인자값 ', checkedUser.emailVerified)
-
+    // console.log('인자값 ', checkedUser.emailVerified)
     return { emailVerified: checkedUser.emailVerified }
 }
 
@@ -64,59 +62,9 @@ export const signupAuth = async (user: any) => {
 // email 회원가입
 export const signupEmail = async (email: string, password: string) => {
     const sign = await createUserWithEmailAndPassword(auth, email, password)
-
     // send mail 
     await sendEmailVerification(sign.user)
-
-    // console.log('여긴 뭐냐아ㅏ아아아아아아아아아??', sign)
     return sign
-    // 
-
-    // sign.user.emailVerified
-
-    // createUserWithEmailAndPassword(auth, email, password).then(async (user) => {
-    //     // console.log('create user?', user.user)
-
-    //     var actionCodeSettings = {
-    //         // url: 'https://www.example.com/?email=' + firebase.auth().currentUser.email,
-    //         url: 'https://www.daum.net/email=' + user.user.email,
-    //         // iOS: {
-    //         //   bundleId: 'com.example.ios'
-    //         // },
-    //         // android: {
-    //         //   packageName: 'com.example.android',
-    //         //   installApp: true,
-    //         //   minimumVersion: '12'
-    //         // },
-    //         handleCodeInApp: true,
-    //         // When multiple custom dynamic link domains are defined, specify which
-    //         // one to use.
-    //         dynamicLinkDomain: "https://www.naver.com"
-    //     };
-
-    //     await sendEmailVerification(user.user)
-
-
-    //     // console.log('email ??', email, user.user.emailVerified)
-
-    //     setTimeout(() => {
-    //         console.log('인증 전 ??', user.user.emailVerified)
-    //     }, 5000)
-
-    //     setTimeout(async () => {
-
-    //         await auth.currentUser?.reload()
-    //         console.log('인증 후 ??', user.user.emailVerified)
-
-    //         if (user.user.emailVerified) {
-    //             return '인증미완료'
-    //         }
-
-    //         if (user.user.emailVerified) {
-    //             return '인증완료'
-    //         }
-    //     }, 20000)
-    // });
 };
 
 
@@ -184,7 +132,7 @@ export const refTokenCheck = async (idToken: string) => {
 export const sendEmailVerifi = async (idToken: string) => {
     try {
         const auth = getAuth();
-        console.log('firebase cur auth ? ', auth.currentUser, idToken)
+        // console.log('firebase cur auth ? ', auth.currentUser, idToken)
         const email = await sendEmailVerification(auth.currentUser)
         return email
     } catch (e) {

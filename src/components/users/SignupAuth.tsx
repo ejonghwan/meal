@@ -2,15 +2,16 @@
 
 import React, { useEffect, useState } from 'react'
 import { onUserAuthAPI } from '@/src/store/queryies/user/userQueryFn'
+import { useUserSignupAuth } from '@/src/store/queryies/user/userQueries'
 import { useUserStore } from '@/src/store/front/user';
 import {
     useRouter,
-    usePathname,
-    useSearchParams,
-    useSelectedLayoutSegment,
-    useSelectedLayoutSegments,
-    redirect,
-    notFound
+    // usePathname,
+    // useSearchParams,
+    // useSelectedLayoutSegment,
+    // useSelectedLayoutSegments,
+    // redirect,
+    // notFound
 } from 'next/navigation'
 
 
@@ -30,25 +31,32 @@ const SignupAuth = () => {
     const [emailVerify, setEmailVerify] = useState(false)
     const { authInfo } = useUserStore();
     const router = useRouter()
+    const { mutate, data, error: loginError, loading: loginLoading, isSuccess } = useUserSignupAuth(authInfo)
+    
 
     useEffect(() => {
-        // signupAuth()
-        // const aa = onUserAuthAPI()
-        // console.log('aa?', aa)
         console.log('auth compo ??', authInfo)
     }, [authInfo])
+
 
     const handleEmailVerified = async () => {
 
         const aa = await onUserAuthAPI(authInfo)
-        console.log('fo res data 최종?', aa.data.emailVerified)
+        // console.log('fo res data 최종?', aa.data.emailVerified)
         setEmailVerify(aa.data.emailVerified)
     }
 
     useEffect(() => {
+        if(isSuccess) {
+            // console.log('??? data', data, data.data.emailVerified, data.message)
+            setEmailVerify(data.data.emailVerified)
+        }
+    }, [isSuccess])
+
+    useEffect(() => {
         if (emailVerify) {
             alert('회원가입이 완료되었습니다.')
-            router.push('/')
+            // router.push('/')
         }
 
     }, [emailVerify])
@@ -60,7 +68,8 @@ const SignupAuth = () => {
             <h2>메일로 인증메일이 전송되었습니다. 인증메일에서 인증을 완료하시고 인증완료 버튼을 눌러주세요</h2>
             {authInfo.email}<br />
             {authInfo.uid}
-            <button type='button' onClick={handleEmailVerified}>인증완료</button>
+            {/* <button type='button' onClick={handleEmailVerified}>인증완료</button> */}
+            <button type='button' onClick={mutate}>인증완료</button>
 
             {emailVerify ? (
                 <div>인증이 완료되었습니다</div>

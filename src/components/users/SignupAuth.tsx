@@ -6,12 +6,12 @@ import { useUserSignupAuth } from '@/src/store/queryies/user/userQueries'
 import { useUserStore } from '@/src/store/front/user';
 import {
     useRouter,
-    // usePathname,
-    // useSearchParams,
-    // useSelectedLayoutSegment,
-    // useSelectedLayoutSegments,
-    // redirect,
-    // notFound
+    usePathname,
+    useSearchParams,
+    useSelectedLayoutSegment,
+    useSelectedLayoutSegments,
+    redirect,
+    notFound
 } from 'next/navigation'
 
 
@@ -32,7 +32,7 @@ const SignupAuth = () => {
     const { authInfo } = useUserStore();
     const router = useRouter()
     const { mutate, data, error: loginError, loading: loginLoading, isSuccess } = useUserSignupAuth(authInfo)
-    
+
 
     useEffect(() => {
         console.log('auth compo ??', authInfo)
@@ -47,7 +47,7 @@ const SignupAuth = () => {
     }
 
     useEffect(() => {
-        if(isSuccess) {
+        if (isSuccess) {
             // console.log('??? data', data, data.data.emailVerified, data.message)
             setEmailVerify(data.data.emailVerified)
         }

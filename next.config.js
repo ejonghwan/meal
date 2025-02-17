@@ -5,7 +5,7 @@ const nextConfig = {
     // !! WARN !!
     // 에러있어도 배포
     // !! WARN !!
-    ignoreBuildErrors: true
+    // ignoreBuildErrors: true
   }
 }
 

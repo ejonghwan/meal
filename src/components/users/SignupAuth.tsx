@@ -19,46 +19,31 @@ import {
 
 const SignupAuth = () => {
 
-    // auth().onAuthStateChanged((user) => {
-    //     if (user && auth().currentUser.emailVerified) {
-    //       console.log('App 인증:' + auth().currentUser.emailVerified)
-    //       setIsLoggedIn(true)
-    //     } else {
-    //       setIsLoggedIn(false)
-    //     }
-    //   });
+
 
     const [emailVerify, setEmailVerify] = useState(false)
     const { authInfo } = useUserStore();
     const router = useRouter()
-    const { mutate, data, error: loginError, loading: loginLoading, isSuccess } = useUserSignupAuth(authInfo)
+    const { mutate, data, error, isSuccess } = useUserSignupAuth()
 
-
-    useEffect(() => {
-        console.log('auth compo ??', authInfo)
-    }, [authInfo])
-
-
-    const handleEmailVerified = async () => {
-
-        const aa = await onUserAuthAPI(authInfo)
-        // console.log('fo res data 최종?', aa.data.emailVerified)
-        setEmailVerify(aa.data.emailVerified)
+    const handleEmailAuthClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+        e.preventDefault();
+        mutate(authInfo)
     }
+
 
     useEffect(() => {
         if (isSuccess) {
-            // console.log('??? data', data, data.data.emailVerified, data.message)
             setEmailVerify(data.data.emailVerified)
         }
     }, [isSuccess])
+
 
     useEffect(() => {
         if (emailVerify) {
             alert('회원가입이 완료되었습니다.')
             // router.push('/')
         }
-
     }, [emailVerify])
 
 
@@ -66,10 +51,11 @@ const SignupAuth = () => {
     return (
         <div>
             <h2>메일로 인증메일이 전송되었습니다. 인증메일에서 인증을 완료하시고 인증완료 버튼을 눌러주세요</h2>
+
             {authInfo.email}<br />
             {authInfo.uid}
             {/* <button type='button' onClick={handleEmailVerified}>인증완료</button> */}
-            <button type='button' onClick={mutate}>인증완료</button>
+            <button type='button' onClick={handleEmailAuthClick}>인증완료</button>
 
             {emailVerify ? (
                 <div>인증이 완료되었습니다</div>

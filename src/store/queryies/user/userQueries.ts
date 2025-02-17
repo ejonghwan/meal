@@ -21,30 +21,25 @@ export const useUserLoad = (token: string) => {
 }
 
 
-export const useUserSignupAuth = (authInfo: any) => {
-    // return useQuery({
-    //     queryKey: userKeys.signUpAuth(),
-    //     queryFn: () => onUserAuthAPI(authInfo),
-    //     staleTime: 60 * 1000,
-    //     gcTime: 300 * 1000
-    // })
+export const useUserSignupAuth = () => {
     return useMutation({
-        mutationFn: (e: Event) => {
-            e.preventDefault()
+        mutationFn: (authInfo) => {
             return onUserAuthAPI(authInfo)
         },
     })
 }
 
-export const useUserLogin = (user: User): any => {
+export const useUserLogin = () => {
     // if (!token) return;
     return useMutation({
-        mutationFn: (e: Event) => {
-            e.preventDefault()
+        mutationFn: (user: User) => {
             return onUserLoginAPI(user)
         },
     })
 }
+
+
+
 
 
 

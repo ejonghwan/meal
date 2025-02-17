@@ -1,7 +1,6 @@
 export const userKeys = {
     all: ['users'] as const,
     load: () => [...userKeys.all, 'load'] as const,
-    signUpAuth: () => [...userKeys.all, 'signUpAuth'] as const,
 
     // test
     list: () => [...userKeys.all, 'list'] as const,

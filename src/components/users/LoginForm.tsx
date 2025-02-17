@@ -26,10 +26,10 @@ interface User {
 const LoginForm = () => {
 
     const { userInfo, setUserInfo, setUserLogin, setUserLogout } = useUserStore();
-
-
-
     const [user, setUser] = useState<User>({ email: '', password: '' })
+
+    // login test
+    const { mutate, data, error: loginError, isSuccess } = useUserLogin()
 
     const handleChangeUserInfo = (e: ChangeEvent) => {
         const target = e.target as HTMLInputElement;;
@@ -39,10 +39,11 @@ const LoginForm = () => {
         })
     }
 
-    // login test
-    const { mutate, data, error: loginError, loading: loginLoading, isSuccess } = useUserLogin({ email: user.email, password: user.password })
 
-    // console.log('useUserLogin??????', useUserLogin({ email: user.email, password: user.password }))
+    const handleLoginClick = (e: React.FormEvent<HTMLFormElement>) => {
+        mutate({ email: user.email, password: user.password })
+    }
+
 
     useEffect(() => {
         console.log('login data???', isSuccess)
@@ -55,56 +56,9 @@ const LoginForm = () => {
     }, [isSuccess])
 
 
-    // const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
-    //     try {
-    //         e.preventDefault();
-    //         // console.log(user)
-
-    //         // const res = signupEmail(user.email, user.password)
-    //         // console.log('res??', res)
-
-    //         const options = {
-    //             method: "POST",
-    //             headers: { "Content-Type": "application/json", },
-    //             body: JSON.stringify({ email: user.email, password: user.password })
-    //         }
-
-    //         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/login/`, options)
-    //         const data = await res.json();
-    //         // setUserInfo(data)
-    //         setUserLogin(data)
-    //     } catch (e) {
-    //         console.error(e)
-    //     }
-    // }
 
 
-
-
-
-
-
-    // react query test asd
-    // const { data, error, isLoading } = useUserLoad(localStorage.getItem('x-acc-token'));
-
-    // useEffect(() => {
-    //     // console.log('load????????????????', data.data.email, error, isLoading)
-    //     // setUserInfo(data)
-    //     // setUserLogin(data)
-    //     console.log('load data?', data.state)
-    // }, [data])
-
-
-
-    // const { data, error, isLoading } = useUsers()
-    // const { data: data11, error: error11, isLoading: isLoading11 } = useUser("30")
-
-    // useEffect(() => {
-    //     console.log(data, error, isLoading)
-    //     console.log(data11, error11, isLoading11)
-    // }, [isLoading, isLoading11])
-
-
+    // tokenTest
     const test = async () => {
         const accToken = localStorage.getItem('x-acc-token')
         if (accToken) {
@@ -128,10 +82,6 @@ const LoginForm = () => {
     }, [userInfo])
 
 
-    useEffect(() => {
-        // authStateChanged();
-    }, [])
-
 
 
     return (
@@ -149,7 +99,7 @@ const LoginForm = () => {
             </div>
 
             {/* <form onSubmit={handleLogin}> */}
-            <form onSubmit={mutate}>
+            <form onSubmit={handleLoginClick}>
 
                 <div className='flex flex-col gap-2 zz mt-[20px]'>
                     <Input

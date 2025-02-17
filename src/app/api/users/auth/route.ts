@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server"
 // import { cookies } from "next/headers";
-import { signupAuth } from "@/src/data//users";
+import { signupAuth, userDeleteEmail } from "@/src/data//users";
 
 
 /*
-@ path    GET /api/auth
-@ doc     회원가입 인증
-@ access  public
+    @ path    POST /api/auth
+    @ doc     회원가입 인증
+    @ access  public
 */
 export const POST = async (req: NextRequest) => {
 
@@ -36,4 +36,22 @@ export const POST = async (req: NextRequest) => {
 
 
 
+export const Delete = async (req: NextRequest) => {
+    const reqData = await req.json();
+    if (!reqData.user) return NextResponse.json({ state: 'FAILUE', message: '유저 없음', }, { status: 422 });
 
+
+
+    const user = userDeleteEmail(reqData.user)
+
+    console.log('back user?', user)
+
+    const res = {
+        state: 'SUCCES',
+        message: '성공',
+        data: {}
+    }
+    return NextResponse.json(res, { status: 201 })
+
+
+} 

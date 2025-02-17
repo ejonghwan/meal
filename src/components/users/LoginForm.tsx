@@ -41,18 +41,13 @@ const LoginForm = () => {
 
 
     const handleLoginClick = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
         mutate({ email: user.email, password: user.password })
     }
 
 
     useEffect(() => {
-        console.log('login data???', isSuccess)
-        if (isSuccess) {
-            console.log('트루다트루다', data)
-            setUserLogin(data)
-        }
-
-
+        if (isSuccess) setUserLogin(data)
     }, [isSuccess])
 
 
@@ -63,7 +58,6 @@ const LoginForm = () => {
         const accToken = localStorage.getItem('x-acc-token')
         if (accToken) {
             const aa = await onUserLoadAPI(accToken)
-            console.log('aa?????????', aa)
             setUserInfo(aa)
         }
     }

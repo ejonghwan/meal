@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server"
-import { signupEmail, loginEmail } from "@/src/data/users/index";
+import { signupEmail, loginEmail, userDeleteEmail } from "@/src/data/users/index";
 
 /*
-@ path    GET /api/signup
-@ doc     회원가입
-@ access  public
+    @ path    POST /api/signup
+    @ doc     회원가입
+    @ access  public
 */
 export const POST = async (req: NextRequest) => {
 
@@ -33,5 +33,33 @@ export const POST = async (req: NextRequest) => {
 }
 
 
+
+
+
+
+/*
+    @ path    DELETE /api/signup
+    @ doc     회원탈퇴
+    @ access  public
+*/
+export const DELETE = async (req: NextRequest) => {
+    const reqData = await req.json();
+    // if (!reqData.user) return NextResponse.json({ state: 'FAILUE', message: '유저 없음', }, { status: 422 });
+
+    // console.log('back user?', reqData)
+
+    const user = await userDeleteEmail(reqData.user)
+
+    // console.log('back user?', user)
+
+    const res = {
+        state: 'SUCCES',
+        message: '성공',
+        data: user
+    }
+    return NextResponse.json(res, { status: 201 })
+
+
+}
 
 

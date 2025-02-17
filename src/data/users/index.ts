@@ -1,6 +1,8 @@
 
 import {
     getAuth,// authentication 설정
+    signOut, // 로그아웃
+    deleteUser, //회원탈퇴
     signInWithPopup, //google 로그인을 팝업창에 띄우기 위해
     GoogleAuthProvider, //google login 기능
     signInWithEmailAndPassword,// email 로그인
@@ -67,12 +69,32 @@ export const signupEmail = async (email: string, password: string) => {
     return sign
 };
 
+// email 회원탈퇴
+export const userDeleteEmail = async (user: any) => {
+
+    // user or uid??? 어떤걸로 할지 결정
+    const u = await admin.auth().deleteUser(user.uid)
+    console.log('cc user?', u)
+
+};
+
+
+
 
 
 // email 로그인
 export const loginEmail = (email: string, password: string) => {
     return signInWithEmailAndPassword(auth, email, password);
 };
+
+// email 로그아웃 - 아직 구현안함
+export const signOutEmail = async (email: string, password: string) => {
+    // const sign = await signOut()
+    // return sign
+};
+
+
+
 
 
 
@@ -138,7 +160,5 @@ export const sendEmailVerifi = async (idToken: string) => {
     } catch (e) {
         console.error('sendEmailVerifi e????? ', e)
     }
-
-
 }
 

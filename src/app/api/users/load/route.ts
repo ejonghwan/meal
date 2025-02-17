@@ -40,6 +40,10 @@ export const GET = async (req: NextRequest) => {
         if (checked.status === 'fail') return NextResponse.json(checked, { status: 501 })
 
 
+
+        // 250217 로그인 ref 토큰 처리도 아직 안함... 파베 ref가 긴토큰이 아님.. 일회용토큰임. 
+        // ref토큰 없이 짧은 토큰으로만 사용할지 결정해야함 
+
         // ref token check 
         const refToken = cookies().get("x-ref-token")
         // 인증토큰이 에러일 경우 ref로 체크 후 인증토큰 재발급 // 작업해야함

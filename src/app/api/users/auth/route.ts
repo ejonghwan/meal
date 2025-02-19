@@ -34,24 +34,3 @@ export const POST = async (req: NextRequest) => {
     return NextResponse.json(res, { status: 201 })
 }
 
-
-
-export const Delete = async (req: NextRequest) => {
-    const reqData = await req.json();
-    if (!reqData.user) return NextResponse.json({ state: 'FAILUE', message: '유저 없음', }, { status: 422 });
-
-
-
-    const user = userDeleteEmail(reqData.user)
-
-    console.log('back user?', user)
-
-    const res = {
-        state: 'SUCCES',
-        message: '성공',
-        data: {}
-    }
-    return NextResponse.json(res, { status: 201 })
-
-
-} 

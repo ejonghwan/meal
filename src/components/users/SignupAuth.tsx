@@ -26,6 +26,7 @@ const SignupAuth = () => {
     const { authInfo } = useUserStore();
     const router = useRouter()
     const { mutate, data, error, isSuccess } = useUserSignupAuth()
+    const { seconds, handleTimerFormChange } = useTimer({ initail: 300 })
 
     // 인증버튼 클릭 이벤트
     const handleEmailAuthClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -68,7 +69,7 @@ const SignupAuth = () => {
 
     return (
         <div>
-            <h2>메일로 인증메일이 전송되었습니다. 인증메일에서 인증을 완료하시고 인증완료 버튼을 눌러주세요</h2>
+            <h2 className='text-red-300'>메일로 인증메일이 전송되었습니다. 인증메일에서 인증을 완료하시고 인증완료 버튼을 눌러주세요</h2>
 
             {authInfo.email}<br />
             {authInfo.uid}
@@ -78,7 +79,8 @@ const SignupAuth = () => {
 
             {/* 시간지나면 타이머로 회원탈퇴 */}
             <button type='button' onClick={handleEmailUserDelete}>회원탈퇴</button>
-          
+            <span className={`${seconds < 60 ? 'text-red-500 ' : 'text-green-500'}`}>{handleTimerFormChange()}</span>
+
 
             {emailVerify ? (
                 <div>인증이 완료되었습니다</div>

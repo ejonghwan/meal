@@ -89,7 +89,6 @@ const SignupForm = ({ }: Props) => {
 
             </form>
 
-
             {auth && <SignupAuth />}
         </div>
     )

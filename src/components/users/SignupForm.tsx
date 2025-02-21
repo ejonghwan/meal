@@ -9,6 +9,10 @@ import { useUserStore } from '@/src/store/front/user'
 
 
 
+// json 됨
+import zzz from '../../../public/test.json'
+
+
 interface Props {
     // signupEmail: (email: string, password: string) => void;
 }
@@ -56,8 +60,21 @@ const SignupForm = ({ }: Props) => {
         console.log('회원가입 프론트 data?', data)
     }
 
+
+    const outer_html = `
+        <span>
+            <strong>asdasasd</strong>
+        </span>
+    `
+
+
     return (
         <div>
+
+            {/* test */}
+            <div dangerouslySetInnerHTML={{ __html: outer_html }} />
+            <div dangerouslySetInnerHTML={{ __html: zzz.hoho }} />
+
             <form onSubmit={handleSignup}>
                 <div className='flex flex-col gap-2 zz mt-[20px]'>
                     <Input

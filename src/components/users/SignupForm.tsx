@@ -1,6 +1,6 @@
 "use client"
 
-import React, { ChangeEvent, FormEvent, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 // import { signupEmail, loginEmail } from '@/src/data/firestore'
 import { Input } from "@nextui-org/input";
 import { Button, ButtonGroup } from "@nextui-org/button";
@@ -9,8 +9,9 @@ import { useUserStore } from '@/src/store/front/user'
 
 
 
+
 // json 됨
-import zzz from '../../../public/test.json'
+// import zzz from '../../../public/test.json'
 
 
 interface Props {
@@ -24,7 +25,6 @@ interface User {
 
 
 const SignupForm = ({ }: Props) => {
-
 
     const { setAutuInfo } = useUserStore();
     const [user, setUser] = useState<User>({ email: '', password: '' })
@@ -60,21 +60,20 @@ const SignupForm = ({ }: Props) => {
         console.log('회원가입 프론트 data?', data)
     }
 
-
-    const outer_html = `
-        <span>
-            <strong>asdasasd</strong>
-        </span>
-    `
+    // const outer_html = `
+    //     <span>
+    //         <strong>asdasasd</strong>
+    //     </span>
+    // `
 
 
     return (
         <div>
 
             {/* test */}
-            <div dangerouslySetInnerHTML={{ __html: outer_html }} />
-            <div dangerouslySetInnerHTML={{ __html: zzz.hoho }} />
-
+            {/* <div dangerouslySetInnerHTML={{ __html: outer_html }} />
+            <div dangerouslySetInnerHTML={{ __html: zzz.hoho }} /> */}
+        
             <form onSubmit={handleSignup}>
                 <div className='flex flex-col gap-2 zz mt-[20px]'>
                     <Input

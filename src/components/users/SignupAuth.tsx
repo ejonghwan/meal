@@ -50,6 +50,11 @@ const SignupAuth = () => {
 
 
 
+    // 라우터이동이 되거나 인증시간이 지나면 회원탈퇴 시켜야함
+
+
+
+
 
     useEffect(() => {
         if (isSuccess) {

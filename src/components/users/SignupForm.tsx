@@ -1,6 +1,6 @@
 "use client"
 
-import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
+import React, { ChangeEvent, FormEvent, useEffect, useState, useCallback } from 'react'
 // import { signupEmail, loginEmail } from '@/src/data/firestore'
 import { Input } from "@nextui-org/input";
 import { Button, ButtonGroup } from "@nextui-org/button";
@@ -67,13 +67,51 @@ const SignupForm = ({ }: Props) => {
     // `
 
 
+    // useEffect(() => {
+    //     return () => {
+    //         // userDeleteMutate(authInfo)
+    //         alert('인증 과정이 초기화 되었습니다. 처음부터 다시 진행해주세요.')
+    //     }
+    // }, [])
+
+
+    // test
+    // const isSaved = false
+    // const handleBeforeUnload = useCallback((e: BeforeUnloadEvent) => {
+
+    //     console.log('???')
+    //     if (!isSaved) {
+    //         alert('bb')
+    //         e.preventDefault();
+    //         e.returnValue = true;  // legacy 브라우저를 위해 추가한다.
+    //     }
+    // },
+    //     [isSaved],
+    // );
+    const isSaved = false
+    const handleBeforeUnload = useCallback((e: BeforeUnloadEvent) => {
+        e.preventDefault();
+        // return confirm('진짜 ?')
+        setTimeout(() => { alert('?????????') }, 2000)
+        return '이 페이지를 벗어나면 현재 작성중인 내용이 지워집니다.';
+    }, [])
+
+    // 이벤트
+    useEffect(() => {
+        window.addEventListener("beforeunload", handleBeforeUnload);
+        return (() => {
+            window.removeEventListener("beforeunload", handleBeforeUnload);
+        });
+    }, [handleBeforeUnload]);
+
+
     return (
         <div>
 
             {/* test */}
             {/* <div dangerouslySetInnerHTML={{ __html: outer_html }} />
             <div dangerouslySetInnerHTML={{ __html: zzz.hoho }} /> */}
-        
+
             <form onSubmit={handleSignup}>
                 <div className='flex flex-col gap-2 zz mt-[20px]'>
                     <Input

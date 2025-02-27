@@ -66,7 +66,7 @@ export const onUserLoginAPI = async (user) => {
 }
 
 
-export const onUserSignoutAPI = async (authInfo: any) => {
+export const onUserDeleteAPI = async (authInfo: any) => {
     try {
         // 
         const options = {

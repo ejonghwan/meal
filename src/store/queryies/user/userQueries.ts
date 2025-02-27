@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { userKeys } from '@/src/store/queryies/user/userKeys'
-import { fetchUsers, fetchUserById, onUserLoadAPI, onUserLoginAPI, onUserAuthAPI } from '@/src/store/queryies/user/userQueryFn'
+import { fetchUsers, fetchUserById, onUserLoadAPI, onUserLoginAPI, onUserAuthAPI, onUserSignoutAPI } from '@/src/store/queryies/user/userQueryFn'
 
 
 interface User {
@@ -34,6 +34,15 @@ export const useUserLogin = () => {
     return useMutation({
         mutationFn: (user: User) => {
             return onUserLoginAPI(user)
+        },
+    })
+}
+
+export const useUserSignout = () => {
+    // if (!token) return;
+    return useMutation({
+        mutationFn: (authInfo: any) => {
+            return onUserSignoutAPI(authInfo)
         },
     })
 }

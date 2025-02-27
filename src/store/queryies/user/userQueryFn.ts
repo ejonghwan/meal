@@ -66,6 +66,25 @@ export const onUserLoginAPI = async (user) => {
 }
 
 
+export const onUserSignoutAPI = async (authInfo: any) => {
+    try {
+        // 
+        const options = {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json", },
+            body: JSON.stringify(authInfo)
+        }
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/signup/`, options)
+        const data = await res.json();
+
+        return data;
+    } catch (e) {
+        console.error(e)
+    }
+}
+
+
+
 
 // const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
 //     try {

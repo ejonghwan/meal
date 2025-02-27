@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react'
 import { onUserAuthAPI } from '@/src/store/queryies/user/userQueryFn'
-import { useUserSignupAuth } from '@/src/store/queryies/user/userQueries'
+import { useUserSignout, useUserSignupAuth } from '@/src/store/queryies/user/userQueries'
 import useTimer from '@/src/hooks/useTimer'
 import { useUserStore } from '@/src/store/front/user';
 import {
@@ -22,10 +22,11 @@ const SignupAuth = () => {
 
 
 
+    const router = useRouter()
     const [emailVerify, setEmailVerify] = useState(false)
     const { authInfo } = useUserStore();
-    const router = useRouter()
-    const { mutate, data, error, isSuccess } = useUserSignupAuth()
+    const { mutate, data: isEmailAuth, error, isSuccess: isEmailAuthSuccess } = useUserSignupAuth() // auth
+    const { mutate: signoutMutate, error: signoutError, isSuccess: signoutIsSuccess } = useUserSignout(); // signout 
     const { seconds, handleTimerFormChange } = useTimer({ initail: 300 })
 
     // 인증버튼 클릭 이벤트
@@ -35,32 +36,18 @@ const SignupAuth = () => {
     }
 
 
-    // 회원탈퇴 테스트
-    const handleEmailUserDelete = async () => {
-        // 
-        const options = {
-            method: "DELETE",
-            headers: { "Content-Type": "application/json", },
-            body: JSON.stringify(authInfo)
-        }
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/signup/`, options)
-        // const data = await res.json();
+
+    // 라우터이동이 되거나 인증시간이 지나면 회원탈퇴 시켜야함
+    const handleEmailUserDelete = () => {
+        const hoho = signoutMutate(authInfo)
+        console.log('hoho?',hoho)
     }
 
 
-
-
-    // 라우터이동이 되거나 인증시간이 지나면 회원탈퇴 시켜야함
-
-
-
-
-
     useEffect(() => {
-        if (isSuccess) {
-            setEmailVerify(data.data.emailVerified)
-        }
-    }, [isSuccess])
+        if (isEmailAuthSuccess) setEmailVerify(isEmailAuth.data.emailVerified)
+  
+    }, [isEmailAuthSuccess])
 
 
     useEffect(() => {
@@ -78,7 +65,7 @@ const SignupAuth = () => {
 
             {authInfo.email}<br />
             {authInfo.uid}
-            {/* <button type='button' onClick={handleEmailVerified}>인증완료</button> */}
+
             <button type='button' onClick={handleEmailAuthClick}>인증완료</button>
 
 

@@ -66,6 +66,8 @@ const SignupForm = ({ }: Props) => {
     //     </span>
     // `
 
+    // 페이지 라우터 이동하거나 새로고침, 웹브라우저를 끄면 인증초기화 + 회원탈퇴 시켜야함 
+
 
     // useEffect(() => {
     //     return () => {

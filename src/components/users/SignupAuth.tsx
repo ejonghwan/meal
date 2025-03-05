@@ -27,8 +27,8 @@ const SignupAuth = () => {
     const { authInfo } = useUserStore();
     const { mutate: userEmailAuth, data: isEmailAuth, error, isSuccess: isEmailAuthSuccess } = useUserSignupAuth() // auth
     const { mutate: userDeleteMutate, error: signoutError, isSuccess: signoutIsSuccess } = useUserDelete(); // signout 
-    // const { seconds, handleTimerFormChange } = useTimer({ initail: 300 })
-    const { seconds, handleTimerFormChange } = useTimer({ initail: 10 })
+    const { seconds, handleTimerFormChange } = useTimer({ initail: 300 })
+    // const { seconds, handleTimerFormChange } = useTimer({ initail: 10 })
 
     // 인증버튼 클릭 이벤트
     const handleEmailAuthClick = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -54,14 +54,27 @@ const SignupAuth = () => {
 
     useEffect(() => {
         if (seconds <= 0) {
-            userDeleteMutate(authInfo)
-            alert('인증시간이 지났습니다. 처음부터 다시 가입해주세요.')
-            router.push('/')
+            // userDeleteMutate(authInfo)
+            // alert('인증시간이 지났습니다. 처음부터 다시 가입해주세요.')
+            // router.push('/')
         }
     }, [seconds])
 
 
 
+    const handleUnload = (e: BeforeUnloadEvent) => {
+        e.preventDefault();
+        if (authInfo) userDeleteMutate(authInfo)
+
+    }
+
+
+
+    // 페이지이동, 새로고침, 뒤로가기 시 인증 절차 초기화. 임시가입 삭제
+    useEffect(() => {
+        window.addEventListener("beforeunload", handleUnload);
+        return () => window.removeEventListener("beforeunload", handleUnload);
+    }, [authInfo])
 
 
 

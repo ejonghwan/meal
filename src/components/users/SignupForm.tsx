@@ -1,7 +1,7 @@
 "use client"
 
 import React, { ChangeEvent, FormEvent, useEffect, useState, useCallback, useRef } from 'react'
-import {useRouter} from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
 // import { signupEmail, loginEmail } from '@/src/data/firestore'
 import { Input } from "@nextui-org/input";
@@ -62,33 +62,33 @@ const SignupForm = ({ }: Props) => {
     }
 
 
-        // 뒤로가기 
-        const isClickedFirst = useRef(false);
-        const handlePopState = useCallback(() => {
+    // 뒤로가기 
+    const isClickedFirst = useRef(false);
+    const handlePopState = useCallback(() => {
         // 1. 뒤로 가기를 클릭한 순간 16라인이 바로 제거된다.
-            alert('뒤로가기 클릭')
-            history.pushState(null, "", "");  // 현재 경로를 다시 추가
-        }, []);
-            
-            // 최초 한 번 실행
-        useEffect(() => {
+        alert('뒤로가기 클릭')
+        history.pushState(null, "", "");  // 현재 경로를 다시 추가
+    }, []);
 
-            console.log('ren ?', isClickedFirst.current, history)
-            if (!isClickedFirst) {
-                console.log('in red ? ', isClickedFirst.current)
-                history.pushState(null, "", ""); // 처음 렌더링될 때 추가되고 뒤로 가기 클릭 시 제거된다.
-                isClickedFirst.current = true;
-            }
-        }, []);
+    // 최초 한 번 실행
+    useEffect(() => {
+
+        console.log('ren ?', isClickedFirst.current, history)
+        if (!isClickedFirst) {
+            console.log('in red ? ', isClickedFirst.current)
+            history.pushState(null, "", ""); // 처음 렌더링될 때 추가되고 뒤로 가기 클릭 시 제거된다.
+            isClickedFirst.current = true;
+        }
+    }, []);
 
 
-        useEffect(() => {
-            window.addEventListener("popstate", handlePopState);
-            return (() => {
-              window.removeEventListener("popstate", handlePopState);
-            });
-          }, [handlePopState]);
- 
+    useEffect(() => {
+        window.addEventListener("popstate", handlePopState);
+        return (() => {
+            window.removeEventListener("popstate", handlePopState);
+        });
+    }, [handlePopState]);
+
 
     // const outer_html = `
     //     <span>
@@ -132,12 +132,13 @@ const SignupForm = ({ }: Props) => {
     useEffect(() => {
         window.addEventListener("beforeunload", handleBeforeUnload);
         return (() => {
-           
+
             window.removeEventListener("beforeunload", handleBeforeUnload);
         });
     }, [handleBeforeUnload]);
 
     useEffect(() => {
+        alert('init')
         return () => {
             // 라우터이동
             alert('asdasd')

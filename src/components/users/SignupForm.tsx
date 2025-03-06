@@ -1,13 +1,15 @@
 "use client"
 
 import React, { ChangeEvent, FormEvent, useEffect, useState, useCallback, useRef } from 'react'
-import {useRouter} from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
 // import { signupEmail, loginEmail } from '@/src/data/firestore'
 import { Input } from "@nextui-org/input";
 import { Button, ButtonGroup } from "@nextui-org/button";
 import SignupAuth from '@/src/components/users/SignupAuth';
 import { useUserStore } from '@/src/store/front/user'
+
+
 
 
 
@@ -32,6 +34,7 @@ const SignupForm = ({ }: Props) => {
     const { setAutuInfo } = useUserStore();
     const [user, setUser] = useState<User>({ email: '', password: '' })
     const [auth, setAuth] = useState(false)
+
 
     const handleChangeUserInfo = (e: ChangeEvent) => {
         const target = e.target as HTMLInputElement;;
@@ -61,6 +64,7 @@ const SignupForm = ({ }: Props) => {
         console.log('회원가입 프론트 data?', data)
     }
 
+<<<<<<< HEAD
 
         // 뒤로가기 
         const isClickedFirst = useRef(false);
@@ -90,59 +94,13 @@ const SignupForm = ({ }: Props) => {
           }, [handlePopState]);
  
 
+=======
+>>>>>>> fe2062754655ac7f9c95108714cf783eb3e807af
     // const outer_html = `
     //     <span>
     //         <strong>asdasasd</strong>
     //     </span>
     // `
-
-    // 페이지 라우터 이동하거나 새로고침, 웹브라우저를 끄면 인증초기화 + 회원탈퇴 시켜야함 
-    // http://localhost:3005/signup
-
-    // useEffect(() => {
-    //     return () => {
-    //         // userDeleteMutate(authInfo)
-    //         alert('인증 과정이 초기화 되었습니다. 처음부터 다시 진행해주세요.')
-    //     }
-    // }, [])
-
-
-    // test
-    // const isSaved = false
-    // const handleBeforeUnload = useCallback((e: BeforeUnloadEvent) => {
-
-    //     console.log('???')
-    //     if (!isSaved) {
-    //         alert('bb')
-    //         e.preventDefault();
-    //         e.returnValue = true;  // legacy 브라우저를 위해 추가한다.
-    //     }
-    // },
-    //     [isSaved],
-    // );
-    const isSaved = false
-    const handleBeforeUnload = useCallback((e: BeforeUnloadEvent) => {
-        e.preventDefault();
-        // setTimeout(() => { alert('?????????') }, 2000)
-        alert('asdasdasd')
-        return '이 페이지를 벗어나면 현재 작성중인 내용이 지워집니다.';
-    }, [])
-
-    // 이벤트
-    useEffect(() => {
-        window.addEventListener("beforeunload", handleBeforeUnload);
-        return (() => {
-           
-            window.removeEventListener("beforeunload", handleBeforeUnload);
-        });
-    }, [handleBeforeUnload]);
-
-    useEffect(() => {
-        return () => {
-            // 라우터이동
-            alert('asdasd')
-        }
-    }, [])
 
 
     return (

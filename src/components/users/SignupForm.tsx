@@ -67,7 +67,7 @@ const SignupForm = ({ }: Props) => {
         const handlePopState = useCallback(() => {
         // 1. 뒤로 가기를 클릭한 순간 16라인이 바로 제거된다.
             alert('뒤로가기 클릭')
-            history.pushState(null, "", "");  // 현재 경로를 다시 추가
+            history.pushState({ test2: 't2' }, "", "");  // 현재 경로를 다시 추가
         }, []);
             
             // 최초 한 번 실행
@@ -76,7 +76,7 @@ const SignupForm = ({ }: Props) => {
             console.log('ren ?', isClickedFirst.current, history)
             if (!isClickedFirst) {
                 console.log('in red ? ', isClickedFirst.current)
-                history.pushState(null, "", ""); // 처음 렌더링될 때 추가되고 뒤로 가기 클릭 시 제거된다.
+                history.pushState({ test1: 't1' }, "", ""); // 처음 렌더링될 때 추가되고 뒤로 가기 클릭 시 제거된다.
                 isClickedFirst.current = true;
             }
         }, []);

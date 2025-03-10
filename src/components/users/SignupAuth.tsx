@@ -37,7 +37,7 @@ const SignupAuth = () => {
 
         if (isEmailAuth?.data.emailVerified) {
             alert('회원가입이 완료되었습니다.')
-            // router.push('/')
+            router.push('/')
         } else {
             setEmailVerify(false)
         }
@@ -47,18 +47,17 @@ const SignupAuth = () => {
 
 
     // 라우터이동이 되거나 인증시간이 지나면 회원탈퇴 시켜야함
-    const handleEmailUserDelete = () => {
-        const hoho = userDeleteMutate(authInfo)
-        console.log('hoho?', hoho)
-    }
 
     useEffect(() => {
         if (seconds <= 0) {
-            // userDeleteMutate(authInfo)
-            // alert('인증시간이 지났습니다. 처음부터 다시 가입해주세요.')
-            // router.push('/')
+            userDeleteMutate(authInfo)
+            alert('인증시간이 지났습니다. 처음부터 다시 가입해주세요.')
+            router.push('/')
         }
     }, [seconds])
+
+
+
 
 
 
@@ -67,9 +66,6 @@ const SignupAuth = () => {
         if (authInfo) userDeleteMutate(authInfo)
 
     }
-
-
-
     // 페이지이동, 새로고침, 뒤로가기 시 인증 절차 초기화. 임시가입 삭제
     useEffect(() => {
         window.addEventListener("beforeunload", handleUnload);
@@ -88,9 +84,6 @@ const SignupAuth = () => {
 
             <button type='button' onClick={handleEmailAuthClick}>인증완료</button>
 
-
-            {/* 시간지나면 타이머로 회원탈퇴 */}
-            <button type='button' onClick={handleEmailUserDelete}>회원탈퇴</button>
             <span className={`${seconds < 60 ? 'text-red-500 ' : 'text-green-500'}`}>{handleTimerFormChange()}</span>
 
             {!emailVerify && (

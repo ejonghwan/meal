@@ -11,7 +11,8 @@ import { Input } from "@nextui-org/input";
 import { Button, ButtonGroup } from "@nextui-org/button";
 import SignupAuth from '@/src/components/users/SignupAuth';
 import { useUserStore } from '@/src/store/front/user'
-import { passwordChecked } from '@/src/utillity/utils';
+import { passwordChecked, englishChecked } from '@/src/utillity/utils';
+import { useUserSignup } from '@/src/store/queryies/user/userQueries';
 
 
 
@@ -39,11 +40,13 @@ const SignupForm = ({ }: Props) => {
     const { setAutuInfo } = useUserStore();
     const [user, setUser] = useState<User>({ email: '', password: '' })
     const [passwordCheck, setPasswordCheck] = useState('')
+    const [englishCheckedState, setEnglishCheckedState] = useState<Boolean>(null)
     const [passwordProtected, setPasswordProtected] = useState<Boolean>(null)
     const [auth, setAuth] = useState(false)
 
-    // passwordChecked()
+    const { data, mutate: userSignupMutate, error: userSignupError, isSuccess: userSignupIsSuccess } = useUserSignup(); // signout 
 
+    // passwordChecked()
     const handleChangeUserInfo = (e: ChangeEvent) => {
         const target = e.target as HTMLInputElement;;
         setUser({
@@ -53,32 +56,46 @@ const SignupForm = ({ }: Props) => {
     }
 
     const handleSignup = async (e: FormEvent<HTMLFormElement>) => {
+
         e.preventDefault();
-        console.log(user)
+        userSignupMutate(user)
+        // console.log(user)
 
-        // const res = signupEmail(user.email, user.password)
-        // console.log('res??', res)
+        // // const res = signupEmail(user.email, user.password)
+        // // console.log('res??', res)
 
-        const options = {
-            method: "POST",
-            headers: { "Content-Type": "application/json", },
-            body: JSON.stringify({ email: user.email, password: user.password })
-        }
+        // const options = {
+        //     method: "POST",
+        //     headers: { "Content-Type": "application/json", },
+        //     body: JSON.stringify({ email: user.email, password: user.password })
+        // }
 
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/signup/`, options)
-        if (res.ok) setAuth(true)
-        const data = await res.json();
-        setAutuInfo(data)
-        console.log('회원가입 프론트 data?', data)
+        // const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/signup/`, options)
+        // if (res.ok) setAuth(true)
+        // const data = await res.json();
+
+
+        // setAuth(true)
+        // setAutuInfo(data)
+
+
+        // console.log('회원가입 프론트 data?', data)
     }
+
+    
+    useEffect(() => {
+        setAuth(true)
+        setAutuInfo(data)
+    }, [userSignupIsSuccess])
+
 
     useEffect(() => { //비번 강화 체크 
         user.password && passwordChecked(user.password) ? setPasswordProtected(true) : setPasswordProtected(false);
     }, [user.password]);
 
-    // useEffect(() => { //de 
-    //     userId && englishChecked(userId) ? setEnglishCheckedState(false) : setEnglishCheckedState(true);
-    // }, [userId]);
+    useEffect(() => { //de 
+        user.email && englishChecked(user.email) ? setEnglishCheckedState(false) : setEnglishCheckedState(true);
+    }, [user.email]);
 
     // const outer_html = `
     //     <span>
@@ -94,6 +111,7 @@ const SignupForm = ({ }: Props) => {
             {/* <div dangerouslySetInnerHTML={{ __html: outer_html }} />
             <div dangerouslySetInnerHTML={{ __html: zzz.hoho }} /> */}
 
+            {/* <form onSubmit={handleSignup}> */}
             <form onSubmit={handleSignup}>
                 <div className='flex flex-col gap-2 zz mt-[20px]'>
                     <Input
@@ -106,8 +124,8 @@ const SignupForm = ({ }: Props) => {
                         // placeholder="email"
                         value={user.email}
                         onChange={handleChangeUserInfo}
-
                     />
+                    {englishCheckedState ? <div>englishCheckedState</div> : <div>!englishCheckedState</div>}
 
                     <Input
                         label="비밀번호"

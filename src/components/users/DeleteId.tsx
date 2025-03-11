@@ -1,3 +1,5 @@
+"use client"
+
 import React from 'react'
 import { useUserStore } from '@/src/store/front/user';
 import { useUserDelete } from '@/src/store/queryies/user/userQueries'
@@ -12,7 +14,7 @@ const DeleteId = () => {
    const handleEmailUserDelete = () => {
       if (!authInfo) return;
       const hoho = userDeleteMutate(authInfo)
-      console.log('hoho?', hoho)
+      // console.log('hoho?', hoho)
    }
 
 

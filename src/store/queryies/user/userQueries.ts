@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { userKeys } from '@/src/store/queryies/user/userKeys'
-import { fetchUsers, fetchUserById, onUserLoadAPI, onUserLoginAPI, onUserAuthAPI, onUserDeleteAPI } from '@/src/store/queryies/user/userQueryFn'
+import { fetchUsers, fetchUserById, onUserLoadAPI, onUserLoginAPI, onUserAuthAPI, onUserDeleteAPI, onUserSignupAPI } from '@/src/store/queryies/user/userQueryFn'
 
 
 interface User {
@@ -20,6 +20,14 @@ export const useUserLoad = (token: string) => {
     })
 }
 
+
+export const useUserSignup = () => {
+    return useMutation({
+        mutationFn: (user: { email: string; password: string }) => {
+            return onUserSignupAPI(user)
+        },
+    })
+}
 
 export const useUserSignupAuth = () => {
     return useMutation({

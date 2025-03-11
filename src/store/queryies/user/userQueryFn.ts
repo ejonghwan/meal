@@ -1,6 +1,29 @@
 import { useUserStore } from "@/src/store/front/user"
 
 
+
+export const onUserSignupAPI = async (user: { email: string; password: string }) => {
+
+    console.log(user)
+
+    // const res = signupEmail(user.email, user.password)
+    // console.log('res??', res)
+
+    const options = {
+        method: "POST",
+        headers: { "Content-Type": "application/json", },
+        body: JSON.stringify({ email: user.email, password: user.password })
+    }
+
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/signup/`, options)
+    // if (res.ok) setAuth(true)
+    const data = await res.json();
+    // setAutuInfo(data)
+    return data;
+    // console.log('회원가입 프론트 data?', data)
+}
+
+
 // user auth
 export const onUserAuthAPI = async (user) => {
     try {

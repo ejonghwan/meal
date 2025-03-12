@@ -3,6 +3,7 @@
 import React from 'react'
 import SignupForm from '@/src/components/users/SignupForm'
 import LoginForm from '@/src/components/users/LoginForm'
+import DeleteId from '@/src/components/users/DeleteId'
 
 // import fs from 'fs'
 // import path from 'path';
@@ -29,6 +30,7 @@ const SignupPage = async () => {
                 <br />
 
                 <LoginForm />
+                <DeleteId />
 
 
 

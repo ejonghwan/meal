@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { userKeys } from '@/src/store/queryies/user/userKeys'
-import { fetchUsers, fetchUserById, onUserLoadAPI, onUserLoginAPI, onUserAuthAPI, onUserDeleteAPI } from '@/src/store/queryies/user/userQueryFn'
+import { fetchUsers, fetchUserById, onUserLoadAPI, onUserLoginAPI, onUserAuthAPI, onUserDeleteAPI, onUserSignupAPI } from '@/src/store/queryies/user/userQueryFn'
 
 
 interface User {
@@ -12,7 +12,7 @@ interface User {
 // load 는 쿼리로 보낼까 말까. 지금은 그냥 화면에서 바로 api 함수 실행. 아래꺼 안씀
 export const useUserLoad = (token: string) => {
     // if (!token) return;
-    return useQuery({
+    return useQuery<[], object, [], any>({
         queryKey: userKeys.load(),
         queryFn: () => onUserLoadAPI(token),
         staleTime: 60 * 1000,
@@ -20,6 +20,14 @@ export const useUserLoad = (token: string) => {
     })
 }
 
+
+export const useUserSignup = () => {
+    return useMutation({
+        mutationFn: (user: { email: string; password: string }) => {
+            return onUserSignupAPI(user)
+        },
+    })
+}
 
 export const useUserSignupAuth = () => {
     return useMutation({

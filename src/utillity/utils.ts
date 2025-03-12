@@ -192,7 +192,7 @@ export const englishChecked = (str: string) => {
    if(typeof str !== 'string') return console.error('문자열 아님')
 //    const regexp = /[^a-zA-Z]/;   
   const regexp = /^[a-zA-Z0-9]*$/;   
-  return str.match(regexp) ? true : false;
+  return str.match(regexp) ? false : true;
 }
 
 /**

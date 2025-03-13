@@ -43,23 +43,31 @@ export const onUserAuthAPI = async (user) => {
     }
 }
 
+import { QueryFunction } from "@tanstack/query-core";
 
-interface Test {
-    data: any,
-    message: string;
-    state: string
+
+interface CustomRequestInit extends RequestInit {
+    next?: {
+        tags: string[];
+    };
+    cache?: RequestCache;
 }
 
+
 // user load 
-export const onUserLoadAPI: Test = async (token: string) => {
+export const onUserLoadAPI = async (token: string) => {
     try {
-        const options = {
+        const options: CustomRequestInit = {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
                 "x-acc-token": `${token}`,
             },
             // credentials: 'include', // 쿠키를 포함하려면 'include'로 설정
+
+            next: { tags: ['test'] },
+            cache: "no-store",
+
         }
 
         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/load/`, options)

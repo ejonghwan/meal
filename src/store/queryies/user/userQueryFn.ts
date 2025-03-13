@@ -44,8 +44,14 @@ export const onUserAuthAPI = async (user) => {
 }
 
 
+interface Test {
+    data: any,
+    message: string;
+    state: string
+}
+
 // user load 
-export const onUserLoadAPI = async (token: string) => {
+export const onUserLoadAPI: Test = async (token: string) => {
     try {
         const options = {
             method: "GET",

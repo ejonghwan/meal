@@ -57,6 +57,8 @@ const SignupForm = ({ }: Props) => {
 
     const handleSignup = async (e: FormEvent<HTMLFormElement>) => {
 
+
+        console.log('???????? 뭐지 이 함수 ')
         e.preventDefault();
         userSignupMutate(user)
         // console.log(user)
@@ -82,8 +84,11 @@ const SignupForm = ({ }: Props) => {
         // console.log('회원가입 프론트 data?', data)
     }
 
-    
+
     useEffect(() => {
+        if (!userSignupIsSuccess) return;
+
+        console.log('?????????????', userSignupIsSuccess)
         setAuth(true)
         setAutuInfo(data)
     }, [userSignupIsSuccess])
@@ -96,12 +101,6 @@ const SignupForm = ({ }: Props) => {
     useEffect(() => { //de 
         user.email && englishChecked(user.email) ? setEnglishCheckedState(false) : setEnglishCheckedState(true);
     }, [user.email]);
-
-    // const outer_html = `
-    //     <span>
-    //         <strong>asdasasd</strong>
-    //     </span>
-    // `
 
 
     return (

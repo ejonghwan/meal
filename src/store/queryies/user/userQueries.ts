@@ -9,10 +9,12 @@ interface User {
 }
 
 
+
+
 // load 는 쿼리로 보낼까 말까. 지금은 그냥 화면에서 바로 api 함수 실행. 아래꺼 안씀
 export const useUserLoad = (token: string) => {
     // if (!token) return;
-    return useQuery<[], object, [], any>({
+    return useQuery<[], object, string, any>({
         queryKey: userKeys.load(),
         queryFn: () => onUserLoadAPI(token),
         staleTime: 60 * 1000,

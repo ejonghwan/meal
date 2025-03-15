@@ -22,8 +22,7 @@ export function Providers({ children, themeProps }: ProvidersProps) {
 				staleTime: 60 * 1000,
 			},
 		},
-	})
-	);
+	}));
 
 	return (
 		<QueryClientProvider client={queryClient}>

@@ -1,4 +1,7 @@
-import { useUserStore } from "@/src/store/front/user"
+import { QueryFunction } from "@tanstack/query-core";
+import { ExtendsRequestInit } from '@/src/types/request/index';
+import { useUserStore } from "@/src/store/front/user";
+
 
 
 
@@ -20,7 +23,6 @@ export const onUserSignupAPI = async (user: { email: string; password: string })
     const data = await res.json();
     // setAutuInfo(data)
     return data;
-    // console.log('회원가입 프론트 data?', data)
 }
 
 
@@ -43,35 +45,24 @@ export const onUserAuthAPI = async (user) => {
     }
 }
 
-import { QueryFunction } from "@tanstack/query-core";
 
-
-interface CustomRequestInit extends RequestInit {
-    next?: {
-        tags: string[];
-    };
-    cache?: RequestCache;
-}
 
 
 // user load 
 export const onUserLoadAPI = async (token: string) => {
     try {
-        const options: CustomRequestInit = {
+        const options: ExtendsRequestInit = {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
                 "x-acc-token": `${token}`,
             },
-            // credentials: 'include', // 쿠키를 포함하려면 'include'로 설정
-
-            next: { tags: ['test'] },
+            credentials: 'include', // 쿠키를 포함하려면 'include'로 설정
+            next: { tags: ['user', 'load'] },
             cache: "no-store",
-
         }
 
         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/load/`, options)
-        // console.log('쿼리 펑션 안쪽 api fn 확인하자아아아아', res)
 
         if (!res.ok) { throw new Error('Network response was not ok'); }
         return res.json();
@@ -87,10 +78,12 @@ export const onUserLoadAPI = async (token: string) => {
 // user login
 export const onUserLoginAPI = async (user) => {
     try {
-        const options = {
+        const options: ExtendsRequestInit = {
             method: "POST",
             headers: { "Content-Type": "application/json", },
-            body: JSON.stringify({ email: user.email, password: user.password })
+            body: JSON.stringify({ email: user.email, password: user.password }),
+            next: { tags: ['user', 'login'] },
+            cache: "no-store",
         }
 
         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/login/`, options)
@@ -106,10 +99,12 @@ export const onUserLoginAPI = async (user) => {
 export const onUserDeleteAPI = async (authInfo: any) => {
     try {
         // 
-        const options = {
+        const options: ExtendsRequestInit = {
             method: "DELETE",
             headers: { "Content-Type": "application/json", },
-            body: JSON.stringify(authInfo)
+            body: JSON.stringify(authInfo),
+            next: { tags: ['user', 'login'] },
+            cache: "no-store",
         }
         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/signup/`, options)
         const data = await res.json();

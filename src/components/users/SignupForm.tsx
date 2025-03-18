@@ -15,15 +15,6 @@ import { passwordChecked, englishChecked } from '@/src/utillity/utils';
 import { useUserSignup } from '@/src/store/queryies/user/userQueries';
 
 
-
-
-
-
-
-// json 됨
-// import zzz from '../../../public/test.json'
-
-
 interface Props {
     // signupEmail: (email: string, password: string) => void;
 }
@@ -56,32 +47,8 @@ const SignupForm = ({ }: Props) => {
     }
 
     const handleSignup = async (e: FormEvent<HTMLFormElement>) => {
-
-
-        console.log('???????? 뭐지 이 함수 ')
         e.preventDefault();
         userSignupMutate(user)
-        // console.log(user)
-
-        // // const res = signupEmail(user.email, user.password)
-        // // console.log('res??', res)
-
-        // const options = {
-        //     method: "POST",
-        //     headers: { "Content-Type": "application/json", },
-        //     body: JSON.stringify({ email: user.email, password: user.password })
-        // }
-
-        // const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/signup/`, options)
-        // if (res.ok) setAuth(true)
-        // const data = await res.json();
-
-
-        // setAuth(true)
-        // setAutuInfo(data)
-
-
-        // console.log('회원가입 프론트 data?', data)
     }
 
 
@@ -105,12 +72,6 @@ const SignupForm = ({ }: Props) => {
 
     return (
         <div>
-
-            {/* test */}
-            {/* <div dangerouslySetInnerHTML={{ __html: outer_html }} />
-            <div dangerouslySetInnerHTML={{ __html: zzz.hoho }} /> */}
-
-            {/* <form onSubmit={handleSignup}> */}
             <form onSubmit={handleSignup}>
                 <div className='flex flex-col gap-2 zz mt-[20px]'>
                     <Input

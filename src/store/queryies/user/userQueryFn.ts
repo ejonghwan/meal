@@ -12,10 +12,12 @@ export const onUserSignupAPI = async (user: { email: string; password: string })
     // const res = signupEmail(user.email, user.password)
     // console.log('res??', res)
 
-    const options = {
+    const options: ExtendsRequestInit = {
         method: "POST",
         headers: { "Content-Type": "application/json", },
-        body: JSON.stringify({ email: user.email, password: user.password })
+        body: JSON.stringify({ email: user.email, password: user.password }),
+        // next: { tags: ['user', 'signup'] },
+        cache: "no-cache",
     }
 
     const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/signup/`, options)
@@ -29,11 +31,12 @@ export const onUserSignupAPI = async (user: { email: string; password: string })
 // user auth
 export const onUserAuthAPI = async (user) => {
     try {
-        const options = {
+        const options: ExtendsRequestInit = {
             method: "POST",
             headers: { "Content-Type": "application/json", },
             // body: JSON.stringify({ email: user.email, uid: user.uid })
-            body: JSON.stringify(user)
+            body: JSON.stringify(user),
+            cache: "no-store",
         }
 
         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/auth/`, options)
@@ -103,7 +106,6 @@ export const onUserDeleteAPI = async (authInfo: any) => {
             method: "DELETE",
             headers: { "Content-Type": "application/json", },
             body: JSON.stringify(authInfo),
-            next: { tags: ['user', 'login'] },
             cache: "no-store",
         }
         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/signup/`, options)

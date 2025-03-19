@@ -53,7 +53,7 @@ export const GET = async (req: NextRequest) => {
         // console.log('ref token ?????', refToken)
 
 
-
+        
 
         // 인증토큰 정상일 경우 
         const user = await auth().getUser(checked.uid)

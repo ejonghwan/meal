@@ -21,7 +21,8 @@ export const POST = async (req: NextRequest) => {
 
     // console.log(cookies().get("access-token"));
     // ref token httpOnly로 내려줌
-    cookies().set("x-ref-token", userData.user.refreshToken, { httpOnly: true });
+    cookies().set("x-ref-token", userData.user.refreshToken, { httpOnly: true, secure: true, sameSite: true });
+    // secure: true
 
 
 

@@ -70,6 +70,27 @@ const SignupForm = ({ }: Props) => {
     }, [user.email]);
 
 
+    useEffect(() => {
+
+
+        const arr2 = [3, 4]
+        const arr = [1, 2, 3, 4, 5]
+        const result = []
+
+        const hoho = arr.map((item) => {
+            const a = []
+            arr2.forEach(item2 => {
+                if (item === item2) {
+                    return item
+                }
+            })
+        })
+
+        console.log(hoho)
+    }, [])
+
+
+
     return (
         <div>
             <form onSubmit={handleSignup}>

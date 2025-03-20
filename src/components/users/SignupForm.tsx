@@ -78,16 +78,24 @@ const SignupForm = ({ }: Props) => {
         const result = []
 
         const hoho = arr.map((item) => {
-            const a = []
-            arr2.forEach(item2 => {
-                if (item === item2) {
+            for (let i = 0; i < arr2.length; i++) {
+                if (arr2[i] === item) {
                     return item
+
                 }
-            })
+            }
         })
 
         console.log(hoho)
+
+
+        let arrA = [1, 4, 3, 2, 'b'];
+        let arrB = [5, 2, 6, 7, 1, 'c', 'b'];
+        const aabb = arrA.filter(item => arrB.includes(item));
+        console.log(aabb)
     }, [])
+
+
 
 
 

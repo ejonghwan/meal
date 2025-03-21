@@ -54,8 +54,6 @@ const SignupForm = ({ }: Props) => {
 
     useEffect(() => {
         if (!userSignupIsSuccess) return;
-
-        console.log('?????????????', userSignupIsSuccess)
         setAuth(true)
         setAutuInfo(data)
     }, [userSignupIsSuccess])
@@ -69,31 +67,6 @@ const SignupForm = ({ }: Props) => {
         user.email && englishChecked(user.email) ? setEnglishCheckedState(false) : setEnglishCheckedState(true);
     }, [user.email]);
 
-
-    useEffect(() => {
-
-
-        const arr2 = [3, 4]
-        const arr = [1, 2, 3, 4, 5]
-        const result = []
-
-        const hoho = arr.map((item) => {
-            for (let i = 0; i < arr2.length; i++) {
-                if (arr2[i] === item) {
-                    return item
-
-                }
-            }
-        })
-
-        console.log(hoho)
-
-
-        let arrA = [1, 4, 3, 2, 'b'];
-        let arrB = [5, 2, 6, 7, 1, 'c', 'b'];
-        const aabb = arrA.filter(item => arrB.includes(item));
-        console.log(aabb)
-    }, [])
 
 
 

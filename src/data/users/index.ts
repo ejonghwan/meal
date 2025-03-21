@@ -95,7 +95,11 @@ export const signOutEmail = async (email: string, password: string) => {
 
 
 
-
+// get token  test
+export const getToken = async () => {
+    const token = await auth.currentUser?.getIdToken()
+    return token
+};
 
 
 // acc 토큰 체크

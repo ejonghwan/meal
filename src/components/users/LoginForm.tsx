@@ -3,12 +3,10 @@
 import React, { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import { Input } from "@nextui-org/input";
 import { Button, ButtonGroup } from "@nextui-org/button";
-// import { cookies } from 'next/headers';
 import { useUserStore } from '@/src/store/front/user'
-
+// import { cookies } from 'next/headers';
 import { useUserLoad, useUsers, useUser, useUserLogin } from '@/src/store/queryies/user/userQueries'
 import { onUserLoadAPI } from '@/src/store/queryies/user/userQueryFn'
-
 
 
 interface Props {
@@ -27,6 +25,9 @@ const LoginForm = () => {
 
     const { userInfo, setUserInfo, setUserLogin, setUserLogout } = useUserStore();
     const [user, setUser] = useState<User>({ email: '', password: '' })
+
+    // user load 
+    const { data: userLoadData, isError: userLoadError, isSuccess: userLoadSuccess } = useUserLoad()
 
     // login test
     const { mutate, data, error: loginError, isSuccess } = useUserLogin()
@@ -54,16 +55,24 @@ const LoginForm = () => {
 
 
     // tokenTest
-    const test = async () => {
-        const accToken = localStorage.getItem('x-acc-token')
-        if (accToken) {
-            const aa = await onUserLoadAPI(accToken)
-            setUserInfo(aa)
-        }
-    }
+    // const test = async () => {
+    //     try {
+
+    //         const accToken = localStorage.getItem('x-acc-token')
+    //         if (accToken) {
+    //             const aa = await onUserLoadAPI(accToken)
+    //             setUserInfo(aa)
+    //         }
+    //     } 
+    //     catch (e) {console.error(e)}
+    //     }
+
+
     useEffect(() => {
-        test()
-    }, [])
+        // test()
+        console.log('load query?', userLoadData)
+        userLoadData && setUserInfo(userLoadData) 
+    }, [userLoadSuccess])
 
 
 

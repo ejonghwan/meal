@@ -43,14 +43,18 @@ export const GET = async (req: NextRequest) => {
 
         // 250217 로그인 ref 토큰 처리도 아직 안함... 파베 ref가 긴토큰이 아님.. 일회용토큰임. 
         // ref토큰 없이 짧은 토큰으로만 사용할지 결정해야함 
+        // ref 토큰은 사용안함. 토큰 만료시 getToken으로 새로 발급
 
         // ref token check 
         const refToken = cookies().get("x-ref-token")
         // 인증토큰이 에러일 경우 ref로 체크 후 인증토큰 재발급 // 작업해야함
         // const refTokenChecked = await refTokenCheck(refToken)
 
-        if (!accToken) { }
+        if (!accToken) { 
+
+         }
         // console.log('ref token ?????', refToken)
+        // console.log('acc token ???', accToken)
 
 
         

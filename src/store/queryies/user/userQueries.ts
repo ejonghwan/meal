@@ -9,16 +9,22 @@ interface User {
 }
 
 
+if(window !== undefined) {
+    console.log('win ?', window)
+    const token = localStorage.getItem('x-acc-token')
+}
 
+// load  user
+export const useUserLoad = () => {
+  
+    if(!token) return;
 
-// load 는 쿼리로 보낼까 말까. 지금은 그냥 화면에서 바로 api 함수 실행. 아래꺼 안씀
-export const useUserLoad = (token: string) => {
-    // if (!token) return;
     return useQuery({
         queryKey: userKeys.load(),
         queryFn: () => onUserLoadAPI(token),
-        staleTime: 60 * 1000,
-        gcTime: 300 * 1000
+        // staleTime: 60 * 1000,
+        staleTime: 3600,
+        gcTime: 4000,
     })
 }
 

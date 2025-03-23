@@ -3,21 +3,27 @@ import { userKeys } from '@/src/store/queryies/user/userKeys'
 import { fetchUsers, fetchUserById, onUserLoadAPI, onUserLoginAPI, onUserAuthAPI, onUserDeleteAPI, onUserSignupAPI } from '@/src/store/queryies/user/userQueryFn'
 
 
+
 interface User {
     email: string;
     password: string;
 }
 
 
-if(window !== undefined) {
-    console.log('win ?', window)
-    const token = localStorage.getItem('x-acc-token')
-}
+console.log('?????????????????')
+
 
 // load  user
-export const useUserLoad = () => {
-  
-    if(!token) return;
+export const useUserLoad = (token: string) => {
+
+    // let token = null;
+    // console.log('ws?', window)
+
+    // if (window !== undefined) {
+    //     console.log('win ?', window)
+    //     token = localStorage.getItem('x-acc-token')
+    // }
+    // if(!token) return;
 
     return useQuery({
         queryKey: userKeys.load(),
@@ -25,6 +31,7 @@ export const useUserLoad = () => {
         // staleTime: 60 * 1000,
         staleTime: 3600,
         gcTime: 4000,
+        enabled: !!token,
     })
 }
 

@@ -87,6 +87,7 @@ export const onUserLoginAPI = async (user) => {
             body: JSON.stringify({ email: user.email, password: user.password }),
             next: { tags: ['user', 'login'] },
             cache: "no-store",
+            credentials: 'include'
         }
 
         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/login/`, options)

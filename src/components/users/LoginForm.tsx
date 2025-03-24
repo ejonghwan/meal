@@ -25,6 +25,46 @@ interface User {
 
 const LoginForm = () => {
 
+    // {
+    //     "state": "SUCCES",
+    //     "message": "성공",
+    //     "data": {
+    //         "providerId": "password",
+    //         "uid": "sun87-1@daum.net",
+    //         "displayName": null,
+    //         "email": "sun87-1@daum.net",
+    //         "phoneNumber": null,
+    //         "photoURL": null,
+    //         "accToken": "eyJhbGciOiJSUzI1NiIsImtpZCI6IjMwYjIyMWFiNjU2MTdiY2Y4N2VlMGY4NDYyZjc0ZTM2NTIyY2EyZTQiLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vbWVhbC02MmNjYiIsImF1ZCI6Im1lYWwtNjJjY2IiLCJhdXRoX3RpbWUiOjE3NDI3ODc1MzAsInVzZXJfaWQiOiJnREI3Nm5CNkY3ZWhTUWlEczY3WVNodDQ2WlIyIiwic3ViIjoiZ0RCNzZuQjZGN2VoU1FpRHM2N1lTaHQ0NlpSMiIsImlhdCI6MTc0Mjc4NzUzMCwiZXhwIjoxNzQyNzkxMTMwLCJlbWFpbCI6InN1bjg3LTFAZGF1bS5uZXQiLCJlbWFpbF92ZXJpZmllZCI6ZmFsc2UsImZpcmViYXNlIjp7ImlkZW50aXRpZXMiOnsiZW1haWwiOlsic3VuODctMUBkYXVtLm5ldCJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.pbZgo16lTixyy31VknsZRAqTHTd7Rxn1ZEOGzO00Qu66iZE8EMh0auGWeO30qmhlcoz712ptt1itf7pp8MSGK85rVXJ9mZgijCAzLzTk-tglM5zabqrDsb2JGipiVV-_FBvWSPkirYWkPgF-I-SAa0RyA7DWVEehyJg9PO9ozfGsjAktl9khf7O-9GDi02Tpu-P5KjhMRWTM_P7TNTFkTfU-KeNPceu5GxPG57f8_dsG4ugOiDp1sEz-aeSCd3t22gsgIli3yCRMkNmdYvUNnaw0YesPhfU2Yrn6MXjqq2naXw-8dsbgVXdj1bs0wkwZXxPLa5wyfUWVhkrdy3WW0w"
+    //     }
+    // }
+
+
+    // {
+    //     "state": "SUCCES",
+    //     "message": "성공",
+    //     "data": {
+    //         "uid": "gDB76nB6F7ehSQiDs67YSht46ZR2",
+    //         "email": "sun87-1@daum.net",
+    //         "emailVerified": false,
+    //         "disabled": false,
+    //         "metadata": {
+    //             "lastSignInTime": "Mon, 24 Mar 2025 03:38:26 GMT",
+    //             "creationTime": "Thu, 16 Jan 2025 14:39:05 GMT",
+    //             "lastRefreshTime": "Mon, 24 Mar 2025 03:38:26 GMT"
+    //         },
+    //         "tokensValidAfterTime": "Thu, 16 Jan 2025 14:39:05 GMT",
+    //         "providerData": [
+    //             {
+    //                 "uid": "sun87-1@daum.net",
+    //                 "email": "sun87-1@daum.net",
+    //                 "providerId": "password"
+    //             }
+    //         ]
+    //     }
+    // }
+
+
     const { userInfo, setUserInfo, setUserLogin, setUserLogout } = useUserStore();
     const [user, setUser] = useState<User>({ email: '', password: '' })
 
@@ -138,7 +178,7 @@ const LoginForm = () => {
     // 유형 '() => number'는 유형 'Re'에 할당할 수 없습니다.
     // 유형 'number'는 유형 'string'에 할당할 수 없습니다.
     type Re = () => string
-    const hoho: Re = (): number => {
+    const hoho: Re = (): string => {
         return 'aa'
     }
 

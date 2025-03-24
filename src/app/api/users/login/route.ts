@@ -16,7 +16,7 @@ export const POST = async (req: NextRequest) => {
 
 
     const userData = await loginEmail(email, password);
-    // console.log('back - userDAta ????????', userData.user.refreshToken)
+    console.log('back - userDAta ????????', userData)
 
 
     // console.log(cookies().get("access-token"));
@@ -26,12 +26,20 @@ export const POST = async (req: NextRequest) => {
 
 
 
+    
     const res = {
         state: 'SUCCES',
         message: '성공',
         // data: userData.user,
         data: {
-            ...userData.user.providerData[0],
+            // ...userData,
+            email: userData.user.email,
+            emailVerified: userData.user.emailVerified,
+            disabled: userData.user.disabled,
+            metadata: userData.user.metadata,
+            tokensValidAfterTime: userData.user.tokensValidAfterTime,
+            uid: userData.user.uid,
+            providerData: userData.user.providerData,
             accToken: await userData.user.getIdToken()
         }
     }

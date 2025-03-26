@@ -5,7 +5,7 @@ import { signupEmail, loginEmail } from "@/src/data//users";
 
 /*
 @ path    GET /api/login
-@ doc     회원가입
+@ doc     로그인
 @ access  public
 */
 export const POST = async (req: NextRequest) => {

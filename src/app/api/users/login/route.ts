@@ -35,9 +35,9 @@ export const POST = async (req: NextRequest) => {
             // ...userData,
             email: userData.user.email,
             emailVerified: userData.user.emailVerified,
-            disabled: userData.user.disabled,
+            // disabled: userData.user.disabled,
             metadata: userData.user.metadata,
-            tokensValidAfterTime: userData.user.tokensValidAfterTime,
+            // tokensValidAfterTime: userData.user.tokensValidAfterTime,
             uid: userData.user.uid,
             providerData: userData.user.providerData,
             accToken: await userData.user.getIdToken()

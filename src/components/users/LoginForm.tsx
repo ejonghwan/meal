@@ -102,7 +102,9 @@ const LoginForm = () => {
 
 
 
-    // react query - type test
+    // ################# react query - type test
+    // ################# react query - type test
+    // ################# react query - type test
     type ResData = {
         completed: boolean;
         id: number;
@@ -155,19 +157,19 @@ const LoginForm = () => {
         asd: boolean
     }
 
-    // type PP = () => Promise<ResData22[]>
-    // const [uData, setUdata] = useState([])
-    // const loadAPI2: PP = async (): Promise<DD> => {
-    //     const res = await fetch('https://jsonplaceholder.typicode.com/todos')
-    //     const data = await res.json()
-    //     setUdata(data)
-    //     return data
-    // }
+    type PP = () => Promise<ResData22[]>
+    const [uData, setUdata] = useState([])
+    const loadAPI2: PP = async (): Promise<DD> => {
+        const res = await fetch('https://jsonplaceholder.typicode.com/todos')
+        const data = await res.json()
+        setUdata(data)
+        return data
+    }
 
-    // useEffect(() => {
-    //     const dd = loadAPI2()
-    //     console.log('dd?', dd)
-    // }, [])
+    useEffect(() => {
+        const dd = loadAPI2()
+        console.log('dd?', dd)
+    }, [])
 
 
 
@@ -183,6 +185,12 @@ const LoginForm = () => {
     }
 
     hoho();
+
+    // ################# react query - type test
+    // ################# react query - type test
+    // ################# react query - type test
+
+
 
 
 

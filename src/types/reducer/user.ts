@@ -13,13 +13,39 @@ export interface UserInitialState {
    user: User;
 };
 
-export interface User {
-   id: string;
-   email: string;
-   name: string;
-   gender: string;
-   birthday: string
+
+
+
+export interface providerData {
+   uid: string,
+   email: string,
+   providerId: string
+   photoURL?: string
+   displayName?: string 
+   phoneNumber?: string
 }
+export interface Metadata {
+   lastSignInTime: string,
+   creationTime: string,
+   lastRefreshTime: string
+}
+export interface User {
+   uid: string,
+   email: string,
+   emailVerified: boolean,
+   disabled?: boolean,
+   metadata: Metadata
+   tokensValidAfterTime?: string
+   providerData: providerData[]
+}
+
+
+
+
+
+
+
+
 
 
 export interface SignupUser {
@@ -30,12 +56,6 @@ export interface SignupUser {
    question: object;
    gender: string;
    birthday: string
-}
-
-
-export interface LoginUser {
-   id: string,
-   password: string
 }
 
 

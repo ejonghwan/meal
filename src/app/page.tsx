@@ -1,17 +1,12 @@
+import { headers } from 'next/headers';
+import { redirect } from 'next/navigation';
 
-import React from 'react'
-// test
-// import { useUserStore } from '@/src/store/front/user'
+const Page = () => {
 
-
-const Home = () => {
-
-	// zus test
-	// const { arr, removeArr, addArr } = useUserStore();
-	// console.log(arr, removeArr, addArr)
-	return (
-		<div>하지만 다 했죠?</div>
-	)
+   // path 없이 오는 경우 /home으로 리디렉션
+   const headersList = headers();
+   const headerPathname = headersList.get('x-pathname') || "";
+   if (!headerPathname) redirect('/home')
 }
 
-export default Home
+export default Page

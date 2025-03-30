@@ -7,7 +7,7 @@ export default function SignUpLayout({ children, }: { children: React.ReactNode;
    return (
       <>
          <Header />
-         여긴 사인업 레이아웃
+         여긴 홈 레이아웃
          <Main>
             {children}
          </Main>

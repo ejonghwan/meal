@@ -137,6 +137,8 @@ export const accTokenCheck = async (idToken: string) => {
             console.error('토큰이 유효하지 않습니다 2', e)
             return { status: 'fail', message: '토큰이 유효하지 않습니다. 2', code: 1004 }
         }
+    } finally {
+        
     }
 
 }

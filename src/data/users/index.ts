@@ -138,7 +138,9 @@ export const accTokenCheck = async (idToken: string) => {
             return { status: 'fail', message: '토큰이 유효하지 않습니다. 2', code: 1004 }
         }
     } finally {
-        
+        console.log('finally get user ', admin.auth().getUser(uid))
+        console.log('finally getIdToken ', auth.currentUser?.getIdToken())
+      
     }
 
 }

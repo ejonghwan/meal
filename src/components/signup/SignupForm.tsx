@@ -9,7 +9,7 @@ import { useRouter } from 'next/navigation'
 import { Input } from "@nextui-org/input";
 
 import { Button, ButtonGroup } from "@nextui-org/button";
-import SignupAuth from '@/src/components/users/SignupAuth';
+import SignupAuth from '@/src/components/signup/SignupAuth';
 import { useUserStore } from '@/src/store/front/user'
 import { passwordChecked, englishChecked } from '@/src/utillity/utils';
 import { useUserSignup } from '@/src/store/queryies/user/userQueries';

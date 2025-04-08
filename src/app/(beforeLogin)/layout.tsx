@@ -1,12 +1,17 @@
+import Footer from '@/src/components/common/footer'
+import Header from '@/src/components/common/header'
 import React from 'react'
 
 const layout = ({ children }) => {
    return (
-      <div>
-         <div>hoho1</div>
-         <div>{children}</div>
-         <div>hoho2</div>
-      </div>
+      <>
+         <Header />
+         <div>
+            <div>{children}</div>
+         </div>
+         <Footer />
+      </>
+
    )
 }
 

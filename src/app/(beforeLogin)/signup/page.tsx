@@ -1,9 +1,8 @@
 
 
 import React from 'react'
-import SignupForm from '@/src/components/users/SignupForm'
-import LoginForm from '@/src/components/users/LoginForm'
-import DeleteId from '@/src/components/users/DeleteId'
+import SignupForm from '@/src/components/signup/SignupForm'
+import DeleteId from '@/src/components/signup/DeleteId'
 
 // import fs from 'fs'
 // import path from 'path';
@@ -40,12 +39,6 @@ const SignupPage = async () => {
                 <SignupForm />
 
                 <br />
-                <br />
-                <br />
-                <br />
-                <br />
-
-                <LoginForm />
                 <DeleteId />
 
 

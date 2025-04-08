@@ -1,8 +1,17 @@
+import Footer from '@/src/components/common/footer'
+import Header from '@/src/components/common/header'
 import React from 'react'
 
-const layout = () => {
+const layout = ({ children }) => {
    return (
-      <div>layout</div>
+      <>
+         <Header />
+         <div>
+            {children}
+         </div>
+         <Footer />
+      </>
+
    )
 }
 

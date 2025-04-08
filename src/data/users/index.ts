@@ -106,15 +106,13 @@ export const getToken = async () => {
 export const accTokenCheck = async (idToken: string) => {
     try {
         const tokenData = await admin.auth().verifyIdToken(idToken)
-        // console.log('token info??', tokenData)
-        console.log('hh?', getAuth().currentUser.getIdToken(true))
         return tokenData;
     } catch (e) {
         // console.log('캐치에 걸림 ???', e.code)
         // 따라서 firebase의 uid가 필요한 경우, decodedIdToken.user_id로 조회할 수 있다.
-        // 토큰이 유효하지 않으면 error로 이어지고, error.code로 조회하면 결과를 볼 수 있다.
+        // 토큰이 유효하지않은게 아니라 로드 자체가 에러났을 때임
+        // error로 이어지고, error.code로 조회하면 결과를 볼 수 있다.
         
-        return { hh: getAuth().currentUser.getIdToken(true) }
 
         if (e.code == 'auth/id-token-revoked') {
             // Token has been revoked. Inform the user to reauthenticate or signOut() the user.
@@ -140,10 +138,6 @@ export const accTokenCheck = async (idToken: string) => {
             console.error('토큰이 유효하지 않습니다 2', e)
             return { status: 'fail', message: '토큰이 유효하지 않습니다. 2', code: 1004 }
         }
-    } finally {
-        // console.log('finally get user ', admin.auth().getUser(uid))
-        // console.log('finally getIdToken ', auth.currentUser?.getIdToken())
-       
     }
 
 }

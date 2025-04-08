@@ -229,6 +229,13 @@ const LoginForm = () => {
 
     return (
         <div>
+            {/* <div className='border-2 border-red-500'>
+                <div>user test</div>
+                <div>{userInfo?.data.email}</div>
+                <div>{userInfo?.data.uid}</div>
+            </div> */}
+
+
             <div>type test</div>
             <div>
                 {uData && uData?.slice(0, 3).map((item: DD, key) => {

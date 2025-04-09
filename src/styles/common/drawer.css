@@ -1,0 +1,14 @@
+.drawer_type1 {
+   transition: .5s ease-in-out;
+   transform: translateX(300px);
+   background-color: aquamarine;
+   height: 100vh;
+   width: 300px;
+   position: fixed;
+   right: 0;
+   top: 0;
+}
+
+.drawer_type1.active {
+   transform: translateX(0px);
+}

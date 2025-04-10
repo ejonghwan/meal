@@ -35,14 +35,20 @@ const SignupAuth = () => {
         e.preventDefault();
         userEmailAuth(authInfo)
 
+        console.log('wpqkf', isEmailAuth?.data.emailVerified)
+
+    }
+
+
+    useEffect(() => {
         if (isEmailAuth?.data.emailVerified) {
+
             alert('회원가입이 완료되었습니다.')
-            router.push('/')
+            router.push('/login')
         } else {
             setEmailVerify(false)
         }
-    }
-
+    }, [isEmailAuthSuccess])
 
 
 

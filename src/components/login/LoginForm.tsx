@@ -97,6 +97,7 @@ const LoginForm = () => {
 
 
     useEffect(() => {
+        console.log('???????????dd', data)
         if (isSuccess) setUserLogin(data)
     }, [isSuccess])
 
@@ -194,19 +195,6 @@ const LoginForm = () => {
 
 
 
-    // tokenTest
-    // const test = async () => {
-    //     try {
-
-    //         const accToken = localStorage.getItem('x-acc-token')
-    //         if (accToken) {
-    //             const aa = await onUserLoadAPI(accToken)
-    //             setUserInfo(aa)
-    //         }
-    //     } 
-    //     catch (e) {console.error(e)}
-    //     }
-
 
     useEffect(() => {
         // test()
@@ -219,7 +207,7 @@ const LoginForm = () => {
 
 
     useEffect(() => {
-        console.log('쥬스탄드 상태 체크', userInfo)
+        console.log('쥬스탄드 상태 체크 userInfo? ', userInfo)
 
         // authStateChanged()
     }, [userInfo])

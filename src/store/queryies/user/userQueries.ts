@@ -36,7 +36,7 @@ export const useUserLoad = (token: string) => {
 
 export const useUserSignup = () => {
     return useMutation({
-        mutationFn: (user: { email: string; password: string }) => {
+        mutationFn: (user: { email: string; password: string, displayName: string }) => {
             return onUserSignupAPI(user)
         },
     })

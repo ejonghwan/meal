@@ -28,16 +28,16 @@ export const useUserStore = create(devtools<UserStore>(set => ({
       // localStorage.setItem("x-acc-token", user.data.stsTokenManager.accessToken);
       return { authInfo: payload.data }
    }),
-   setUserInfo: (user: any) => set((prev: UserStore) => {
+   setUserInfo: (payload: any) => set((prev: UserStore) => {
       // localStorage.setItem("x-acc-token", user.data.stsTokenManager.accessToken);
-      return { userInfo: user }
+      return { userInfo: payload.data }
    }),
-   setUserLogin: (user: any) => set((prev: UserStore) => {
+   setUserLogin: (payload: any) => set((prev: UserStore) => {
       // login
       // console.log('login ????', user)
 
-      localStorage.setItem("x-acc-token", user.data.accToken);
-      return { userInfo: user }
+      localStorage.setItem("x-acc-token", payload.data.accToken);
+      return { userInfo: payload.data }
    }),
    setUserLogout: (user: any) => set((prev: UserStore) => {
       localStorage.removeItem("x-acc-token");

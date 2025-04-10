@@ -8,6 +8,7 @@ import {
     signInWithEmailAndPassword,// email 로그인
     createUserWithEmailAndPassword, //email 회원가입
     sendEmailVerification,
+    updateProfile
 } from 'firebase/auth';
 import { auth, admin } from '@/src/data/firestore'
 
@@ -62,9 +63,10 @@ export const signupAuth = async (user: any) => {
 
 
 // email 회원가입
-export const signupEmail = async (email: string, password: string) => {
+export const signupEmail = async (email: string, password: string, displayName: string) => {
     const sign = await createUserWithEmailAndPassword(auth, email, password)
     // send mail 
+    await updateProfile(sign.user, { displayName }) //프로필 업데이트
     await sendEmailVerification(sign.user)
     return sign
 };
@@ -112,7 +114,7 @@ export const accTokenCheck = async (idToken: string) => {
         // 따라서 firebase의 uid가 필요한 경우, decodedIdToken.user_id로 조회할 수 있다.
         // 토큰이 유효하지않은게 아니라 로드 자체가 에러났을 때임
         // error로 이어지고, error.code로 조회하면 결과를 볼 수 있다.
-        
+
 
         if (e.code == 'auth/id-token-revoked') {
             // Token has been revoked. Inform the user to reauthenticate or signOut() the user.

@@ -110,10 +110,11 @@ export const accTokenCheck = async (idToken: string) => {
         const tokenData = await admin.auth().verifyIdToken(idToken)
         return tokenData;
     } catch (e) {
-        // console.log('캐치에 걸림 ???', e.code)
+        console.log('캐치에 걸림 ???', e.code)
         // 따라서 firebase의 uid가 필요한 경우, decodedIdToken.user_id로 조회할 수 있다.
         // 토큰이 유효하지않은게 아니라 로드 자체가 에러났을 때임
         // error로 이어지고, error.code로 조회하면 결과를 볼 수 있다.
+
 
 
         if (e.code == 'auth/id-token-revoked') {
@@ -121,7 +122,11 @@ export const accTokenCheck = async (idToken: string) => {
             console.error('토큰이 취소됐습니다. 로그아웃이나 다시 로그인 해주세요.', e)
             return { status: 'fail', message: '토큰의 유효기간이 지났습니다. 다시 로그인 해주세요.', code: 1001 }
 
-        } else if (e.code == 'id-token-expired') {
+        // } else if (e.code == 'id-token-expired') {
+        } else if (e.code == 'auth/id-token-expired') {
+            // console.log('auth ? ', await admin.auth().getUser(idToken))
+            console.log('admin ? ', await auth.currentUser?.getIdToken(true))
+
             // auth / id - token - expired: 유효시간이 지난 토큰
             console.error('토큰의 유효기간이 지났습니다. 다시 로그인 해주세요', e)
             return { status: 'fail', message: '토큰의 유효기간이 지났습니다. 다시 로그인 해주세요.', code: 1002 }

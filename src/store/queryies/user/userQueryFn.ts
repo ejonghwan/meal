@@ -80,23 +80,31 @@ export const onUserLoadAPI = async (token: string) => {
 
 // user login
 export const onUserLoginAPI = async (user) => {
-    try {
-        const options: ExtendsRequestInit = {
-            method: "POST",
-            headers: { "Content-Type": "application/json", },
-            body: JSON.stringify({ email: user.email, password: user.password }),
-            next: { tags: ['user', 'login'] },
-            cache: "no-store",
-            credentials: 'include'
-        }
 
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/login/`, options)
-        const data = res.json();
-        if (!res.ok) { throw new Error('Network response was not ok'); }
-        return data;
-    } catch (e) {
-        console.error(e)
+    const options: ExtendsRequestInit = {
+        method: "POST",
+        headers: { "Content-Type": "application/json", },
+        body: JSON.stringify({ email: user.email, password: user.password }),
+        next: { tags: ['user', 'login'] },
+        cache: "no-store",
+        credentials: 'include'
     }
+
+    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/login/`, options)
+    const data = await res.json();
+    console.log('res????????????????', res, data)
+    if (!res.ok) {
+        throw new Error('Network response was not ok');
+
+
+        /*
+            와 ... 대박
+            try catch 로 감싸서 throw를 해도 mutation isError에 잡히지않음... 계속 success가 뜸 
+            이유가 try catch에서 감싸서 catch 에러로 내보냈기 떄문. 
+            !res.ok로 에러던져줘야 mutation이 에러 잡을 수 있음...
+        */
+    }
+    return data;
 }
 
 

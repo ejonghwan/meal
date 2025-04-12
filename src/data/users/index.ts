@@ -86,7 +86,8 @@ export const userDeleteEmail = async (user: any) => {
 
 // email 로그인
 export const loginEmail = (email: string, password: string) => {
-    return signInWithEmailAndPassword(auth, email, password);
+    const user = signInWithEmailAndPassword(auth, email, password);
+    return user
 };
 
 // email 로그아웃 - 아직 구현안함

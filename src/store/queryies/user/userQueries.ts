@@ -47,6 +47,9 @@ export const useUserSignupAuth = () => {
         mutationFn: (authInfo) => {
             return onUserAuthAPI(authInfo)
         },
+        onError: (error) => {
+            console.error('로그인 실패:', error);
+        },
     })
 }
 

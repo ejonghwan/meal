@@ -11,6 +11,10 @@
    border: 1px solid red;
 } */
 
+/* body {
+   border: 1px solid red;
+   width: 100%;
+} */
 
 
 .input {
@@ -30,7 +34,7 @@
 
    /* 스크롤바 생성시 웹페이지 위치 이동 방지 100vw - 스크롤바넓이 */
    body {
-      @apply pc:w-[calc(100vw-13px)]
+      /* @apply pc:w-[calc(100vw-13px)] */
    }
 
    /* tailwind reset css가 완벽하지 않아서 추가해야함 */

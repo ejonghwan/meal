@@ -23,7 +23,7 @@ const Header = () => {
 
    return (
       <ContentWrap>
-         <Section>
+         <Section variant='header' size='large'>
             <header className='header flex justify-between '>
 
                {userInfo ? (

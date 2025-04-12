@@ -5,14 +5,20 @@ import LoginForm from '@/src/components/login/LoginForm'
 
 const LoginPage = () => {
    return (
-      <div>
-         <ContentWrap>
-            <Section>
+      <ContentWrap>
+         <Section>
+            section 1
+            <LoginForm />
+         </Section>
+         <Section>
+            section 2
+         </Section>
 
-               <LoginForm />
-            </Section>
-         </ContentWrap>
-      </div>
+         <Section>
+            section 3
+         </Section>
+      </ContentWrap>
+
    )
 }
 

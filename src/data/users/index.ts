@@ -122,7 +122,7 @@ export const accTokenCheck = async (idToken: string) => {
             console.error('토큰이 취소됐습니다. 로그아웃이나 다시 로그인 해주세요.', e)
             return { status: 'fail', message: '토큰의 유효기간이 지났습니다. 다시 로그인 해주세요.', code: 1001 }
 
-        // } else if (e.code == 'id-token-expired') {
+            // } else if (e.code == 'id-token-expired') {
         } else if (e.code == 'auth/id-token-expired') {
             // console.log('auth ? ', await admin.auth().getUser(idToken))
             console.log('admin ? ', await auth.currentUser?.getIdToken(true))

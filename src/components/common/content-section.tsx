@@ -1,10 +1,12 @@
-import React, { ComponentProps } from 'react'
+
+import { ComponentProps } from 'react'
+import { VariantProps, cva } from 'class-variance-authority'
+import { cn } from '@/src/utillity/cn'
 
 
 
 
-
-interface Props extends ComponentProps<'div'> {
+interface SectionProps extends ComponentProps<'div'>, VariantProps<typeof SectionVariants> {
    variant?: 'content' | 'header' | 'none';
    size?: 'large' | 'medium' | 'small' | 'none';
    className?: string;
@@ -12,7 +14,7 @@ interface Props extends ComponentProps<'div'> {
 }
 
 
-const types = {
+const SectionVariants = cva('sec__inner', {
    variants: {
       variant: {
          content: 'py-[40px]',
@@ -33,17 +35,12 @@ const types = {
       size: 'large',
    },
 }
+)
 
 
-
-const Section = ({ children, variant, size, className = '' }: Props) => {
+const Section = ({ children, className = '', variant, size, ...props }: SectionProps) => {
    return (
-      <section className={`sec__inner 
-         ${variant ? types.variants.variant[variant] : types.variants.variant[types.defaultVariants.variant]}
-         ${size ? types.variants.size[size] : types.variants.size[types.defaultVariants.size]}
-         ${className}
-      `
-      }>
+      <section className={cn(SectionVariants({ variant, size })) } {...props}>
          {children}
       </section>
    )

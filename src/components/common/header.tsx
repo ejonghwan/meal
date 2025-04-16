@@ -3,6 +3,8 @@
 import React, { useEffect } from 'react'
 import { PiTextAlignRightDuotone } from "react-icons/pi";
 import Drawer from '@/src/components/common/drawer/drawer'
+import DrawerHeader from '@/src/components/common/drawer/drawer-header'
+import DrawerContent from '@/src/components/common/drawer/drawer-content'
 
 import { useUIStore } from '@/src/store/front/ui'
 import ContentWrap from '@/src/components/common/content-wrap'
@@ -42,7 +44,14 @@ const Header = () => {
                   asd
                </button>
 
-               <Drawer variant="bgcolor" size="none" />
+               <Drawer variant="bgcolor" size="none">
+                  <DrawerHeader>
+                     hoho 
+                  </DrawerHeader>
+                  <DrawerContent>
+                     body
+                  </DrawerContent>
+               </Drawer>
             </header>
          </Section>
       </ContentWrap>

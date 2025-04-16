@@ -1,4 +1,6 @@
-import React, { ComponentProps } from 'react'
+import { ComponentProps } from 'react'
+import { VariantProps, cva } from 'class-variance-authority'
+import { cn } from '@/src/utillity/cn'
 
 // interface Props {
 //    children: React.ReactNode
@@ -7,15 +9,15 @@ import React, { ComponentProps } from 'react'
 
 
 
-interface Props extends ComponentProps<'div'> {
+interface ContentWrapProps extends ComponentProps<'div'>, VariantProps<typeof ContentWrapVariants> {
    variant?: 'main';
-   size?: 'xlarge' | 'large' | 'medium' | 'small' | 'none';
+   size?: 'none' | 'default';
    className?: string;
    children: React.ReactNode;
 }
 
 
-const types = {
+const ContentWrapVariants = cva('content_wrap', {
    variants: {
       variant: {
          main: '',
@@ -24,32 +26,24 @@ const types = {
          // ...형태가 추가되면 아래로 추가
       },
       size: {
+         none: '',
          default: ''
       },
-      className: {
-         default: 'content-wrap',
-      }
    },
    defaultVariants: {
       variant: 'default',
       size: 'default',
-      className: 'default'
    },
-}
+})
 
 
 
 
 
-const ContentWrap = ({ children, variant, size, className }: Props) => {
+const ContentWrap = ({ children, className = '', variant, size, ...props }: ContentWrapProps) => {
 
    return (
-      <div className={`
-         ${variant ? types.variants.variant[variant] : types.variants.variant[types.defaultVariants.variant]} &
-         ${size ? types.variants.size[size].trim() : types.variants.size[types.defaultVariants.size]} &
-         ${className ? types.variants.className[className].trim() : types.variants.className[types.defaultVariants.className]} 
-      `.split(' ').join('').replaceAll('\n', '').replaceAll('&', ' ')
-      }>
+      <div className={cn(ContentWrapVariants({ variant, size, className }))} {...props}>
          {children}
       </div>
    )

@@ -11,6 +11,7 @@ import { useQuery } from '@tanstack/react-query';
 import { QueryFunction } from "@tanstack/query-core";
 
 import { auth } from '@/src/data/firebaseClient'
+import { onAuthStateChanged } from "firebase/auth";
 
 interface Props {
     // load: (token: string) => any;
@@ -28,6 +29,21 @@ interface User {
 const LoginForm = () => {
     const { userInfo, setUserInfo, setUserLogin, setUserLogout } = useUserStore();
     const [user, setUser] = useState<User>({ email: '', password: '' })
+
+    // console.log("브라우저?", typeof window !== "undefined"); // true여야 함
+    useEffect(() => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+            if (user) {
+                console.log("🔥 유저 세션 복원됨:", user);
+                // setUser(user); // 이거로 상태 저장
+            } else {
+                console.log("🙅 로그인 안 되어 있음");
+                // setUser(null);
+            }
+        });
+
+        return () => unsubscribe();
+    }, []);
 
 
     // load 부분은 나중에 옮기자 
@@ -76,15 +92,6 @@ const LoginForm = () => {
     }, [loginIsError])
 
 
-
-    const hoho = async () => {
-
-        console.log('???', auth)
-
-    }
-    useEffect(() => {
-        hoho()
-    }, [])
 
 
 

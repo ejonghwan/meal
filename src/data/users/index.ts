@@ -79,7 +79,7 @@ export const userDeleteEmail = async (user: any) => {
 
     // user or uid??? 어떤걸로 할지 결정
     const u = await admin.auth().deleteUser(user.uid)
-    console.log('cc user?', u)
+    // console.log('cc user?', u)
 
 };
 
@@ -153,7 +153,7 @@ export const accTokenCheck = async (idToken: string) => {
 export const refTokenCheck = async (idToken: string) => {
     try {
         const tokenRes = await admin.auth().verifyIdToken(idToken)
-        console.log('token info??', tokenRes)
+        // console.log('token info??', tokenRes)
     } catch (e) {
         console.error('ref e', e)
     }

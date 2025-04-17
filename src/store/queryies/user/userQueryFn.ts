@@ -58,7 +58,8 @@ export const onUserLoadAPI = async (token: string) => {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
-                "x-acc-token": `${token}`,
+                // "x-acc-token": `${token}`,
+                "Authorization": `${token}`,
             },
             credentials: 'include', // 쿠키를 포함하려면 'include'로 설정
             next: { tags: ['user', 'load'] },
@@ -125,6 +126,29 @@ export const onUserDeleteAPI = async (authInfo: any) => {
         console.error(e)
     }
 }
+
+
+
+
+// export const onUserDeleteAPI = async (authInfo: any) => {
+//     try {
+//         // 
+//         const options: ExtendsRequestInit = {
+//             method: "DELETE",
+//             headers: { "Content-Type": "application/json", },
+//             body: JSON.stringify(authInfo),
+//             cache: "no-store",
+//         }
+//         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/signup/`, options)
+//         const data = await res.json();
+
+//         return data;
+//     } catch (e) {
+//         console.error(e)
+//     }
+// }
+
+
 
 
 

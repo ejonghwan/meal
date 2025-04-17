@@ -33,7 +33,8 @@ export const GET = async (req: NextRequest) => {
 
 
         // acc token check
-        const accToken = req.headers.get('x-acc-token')
+        // const accToken = req.headers.get('x-acc-token')
+        const accToken = req.headers.get('Authorization')
         if (!accToken) throw new Error('is not token')
         const checked = await accTokenCheck(accToken) as DecodedIdToken
         // 인증토큰 에러일 경우

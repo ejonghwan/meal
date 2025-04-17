@@ -9,8 +9,10 @@ import {
     createUserWithEmailAndPassword, //email 회원가입
     sendEmailVerification,
     updateProfile
+
 } from 'firebase/auth';
-import { auth, admin } from '@/src/data/firestore'
+import { auth } from '@/src/data/firebaseClient'
+import { admin } from '@/src/data/firebaseAdmin'
 
 
 interface TokenData {
@@ -55,7 +57,8 @@ interface TokenData {
 
 // email auth
 export const signupAuth = async (user: any) => {
-    await auth.currentUser?.reload()
+    // await auth.currentUser?.reload() // 리로드 왜한거 ? 
+    // console.log('signup?', auth.currentUser)
     const checkedUser = await admin.auth().getUser(user.user.uid)
     // console.log('인자값 ', checkedUser.emailVerified)
     return { emailVerified: checkedUser.emailVerified }
@@ -98,12 +101,8 @@ export const signOutEmail = async (email: string, password: string) => {
 
 
 
-// get token  test
-export const getToken = async () => {
-    const token = await auth.currentUser?.getIdToken()
-    return token
-};
 
+// getToken();
 
 // acc 토큰 체크
 export const accTokenCheck = async (idToken: string) => {
@@ -112,11 +111,10 @@ export const accTokenCheck = async (idToken: string) => {
         return tokenData;
     } catch (e) {
         console.log('캐치에 걸림 ???', e.code)
+
         // 따라서 firebase의 uid가 필요한 경우, decodedIdToken.user_id로 조회할 수 있다.
         // 토큰이 유효하지않은게 아니라 로드 자체가 에러났을 때임
         // error로 이어지고, error.code로 조회하면 결과를 볼 수 있다.
-
-
 
         if (e.code == 'auth/id-token-revoked') {
             // Token has been revoked. Inform the user to reauthenticate or signOut() the user.
@@ -164,14 +162,14 @@ export const refTokenCheck = async (idToken: string) => {
 
 
 // email 인증
-export const sendEmailVerifi = async (idToken: string) => {
-    try {
-        const auth = getAuth();
-        // console.log('firebase cur auth ? ', auth.currentUser, idToken)
-        const email = await sendEmailVerification(auth.currentUser)
-        return email
-    } catch (e) {
-        console.error('sendEmailVerifi e????? ', e)
-    }
-}
+// export const sendEmailVerifi = async (idToken: string) => {
+//     try {
+//         const auth = getAuth();
+//         console.log('firebase cur auth ? ', auth.currentUser, idToken)
+//         const email = await sendEmailVerification(auth.currentUser)
+//         return email
+//     } catch (e) {
+//         console.error('sendEmailVerifi e????? ', e)
+//     }
+// }
 

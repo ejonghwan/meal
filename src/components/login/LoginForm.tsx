@@ -10,6 +10,7 @@ import { onUserLoadAPI } from '@/src/store/queryies/user/userQueryFn'
 import { useQuery } from '@tanstack/react-query';
 import { QueryFunction } from "@tanstack/query-core";
 
+import { auth } from '@/src/data/firebaseClient'
 
 interface Props {
     // load: (token: string) => any;
@@ -19,6 +20,7 @@ interface User {
     email: string;
     password: string;
 }
+
 
 
 
@@ -75,8 +77,14 @@ const LoginForm = () => {
 
 
 
+    const hoho = async () => {
 
+        console.log('???', auth)
 
+    }
+    useEffect(() => {
+        hoho()
+    }, [])
 
 
 

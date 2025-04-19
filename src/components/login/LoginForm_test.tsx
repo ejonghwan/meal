@@ -11,7 +11,7 @@ import { useQuery } from '@tanstack/react-query';
 import { QueryFunction } from "@tanstack/query-core";
 
 import { auth } from '@/src/data/firebaseClient'
-import { onAuthStateChanged,signInWithEmailAndPassword  } from "firebase/auth";
+import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { loginEmail } from '@/src/data/users';
 
 interface Props {
@@ -24,6 +24,13 @@ interface User {
 }
 
 
+
+/*
+    admin > server 
+    auth > client
+    지금 : firebase > backend > tanstack query > zustand > view 
+    수정 : tanstack query >  > zustand 
+*/
 
 
 
@@ -48,20 +55,18 @@ const LoginForm = () => {
 
 
     // load 부분은 나중에 옮기자 
-    let token = null;
-    if (typeof window !== 'undefined') {
-        // console.log(localStorage)
-        token = localStorage.getItem('x-acc-token')
-    }
-    const { data: userLoadData, isError: userLoadError, isSuccess: userLoadSuccess } = useUserLoad(token)
+    // let token = null;
+    // if (typeof window !== 'undefined') {
+    //     // console.log(localStorage)
+    //     token = localStorage.getItem('x-acc-token')
+    // }
+    // const { data: userLoadData, isError: userLoadError, isSuccess: userLoadSuccess } = useUserLoad(token)
 
-
-
-    useEffect(() => {
-        // test()
-        console.log('load query?', userLoadData)
-        userLoadData && setUserInfo(userLoadData)
-    }, [userLoadSuccess])
+    // useEffect(() => {
+    //     // test()
+    //     console.log('load query?', userLoadData)
+    //     userLoadData && setUserInfo(userLoadData)
+    // }, [userLoadSuccess])
 
 
 
@@ -84,15 +89,6 @@ const LoginForm = () => {
         console.log(hh)
         setTestUser(hh)
     }
-
-
-    /*
-        admin > server 
-        auth > client
-        지금 : firebase > backend > tanstack query > zustand > view 
-        수정 : tanstack query >  > zustand 
-    */
-
 
 
     useEffect(() => {

@@ -11,7 +11,8 @@ import { useQuery } from '@tanstack/react-query';
 import { QueryFunction } from "@tanstack/query-core";
 
 import { auth } from '@/src/data/firebaseClient'
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
+import { loginEmail } from '@/src/data/users';
 
 interface Props {
     // load: (token: string) => any;
@@ -23,6 +24,18 @@ interface User {
 }
 
 
+
+/*
+    admin > server 
+    auth > client
+    지금 : firebase > backend > tanstack query > zustand > view 
+    수정 : tanstack query > backend > admin 검증 > ok시 firebase 요청 > zustand update 
+
+    로그인이랑 로드는 구조는 같지만 
+    - 로그인에서는 성공 시 acctoken 저장. 
+    - 로드는 acc 보냄
+    (auth에 토큰 갱신은 수시로)
+*/
 
 
 
@@ -47,25 +60,21 @@ const LoginForm = () => {
 
 
     // load 부분은 나중에 옮기자 
-    let token = null;
-    if (typeof window !== 'undefined') {
-        // console.log(localStorage)
-        token = localStorage.getItem('x-acc-token')
-    }
-    const { data: userLoadData, isError: userLoadError, isSuccess: userLoadSuccess } = useUserLoad(token)
+    // let token = null;
+    // if (typeof window !== 'undefined') {
+    //     // console.log(localStorage)
+    //     token = localStorage.getItem('x-acc-token')
+    // }
+    // const { data: userLoadData, isError: userLoadError, isSuccess: userLoadSuccess } = useUserLoad(token)
+
+    // useEffect(() => {
+    //     // test()
+    //     console.log('load query?', userLoadData)
+    //     userLoadData && setUserInfo(userLoadData)
+    // }, [userLoadSuccess])
 
 
 
-    useEffect(() => {
-        // test()
-        console.log('load query?', userLoadData)
-        userLoadData && setUserInfo(userLoadData)
-    }, [userLoadSuccess])
-
-
-
-    // login test
-    const { mutate: loginMutation, data: loginData, isError: loginIsError, isSuccess: loginIsSuccess } = useUserLogin()
 
     const handleChangeUserInfo = (e: ChangeEvent) => {
         const target = e.target as HTMLInputElement;;
@@ -75,23 +84,16 @@ const LoginForm = () => {
         })
     }
 
+    const [testUser, setTestUser] = useState(null)
+    const hoho = async (e) => {
+        // data 자체가 서버파일
+        // const userData = await loginEmail(user.email, user.password);
 
-    const handleLoginClick = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        loginMutation({ email: user.email, password: user.password })
+        e.preventDefault()
+        const hh = signInWithEmailAndPassword(auth, user.email, user.password);
+        console.log(hh)
+        setTestUser(hh)
     }
-    useEffect(() => {
-        if (loginIsSuccess && loginData) setUserLogin(loginData)
-    }, [loginIsSuccess])
-
-
-    useEffect(() => {
-        console.log('is e?', loginIsError)
-    }, [loginIsError])
-
-
-
-
 
 
     useEffect(() => {
@@ -112,7 +114,7 @@ const LoginForm = () => {
             </div> */}
 
 
-            <div className='bg-red-500'> {loginIsError ? 'error true' : 'error false'}</div>
+            {/* <div className='bg-red-500'> {loginIsError ? 'error true' : 'error false'}</div> */}
 
 
             <div>load user test</div>
@@ -128,7 +130,7 @@ const LoginForm = () => {
             </div>
 
             {/* <form onSubmit={handleLogin}> */}
-            <form onSubmit={handleLoginClick}>
+            <form onSubmit={hoho}>
 
                 <div className='flex flex-col gap-2 zz mt-[20px]'>
                     <Input

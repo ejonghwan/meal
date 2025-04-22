@@ -1,12 +1,30 @@
 import { NextRequest, NextResponse } from "next/server"
 import { cookies } from "next/headers";
-import { signupEmail, loginEmail } from "@/src/data//users";
+import { signupEmail, loginEmail } from "@/src/data/users";
+
+
+import {
+    getAuth,// authentication 설정
+    signOut, // 로그아웃
+    deleteUser, //회원탈퇴
+    signInWithPopup, //google 로그인을 팝업창에 띄우기 위해
+    GoogleAuthProvider, //google login 기능
+    signInWithEmailAndPassword,// email 로그인
+    createUserWithEmailAndPassword, //email 회원가입
+    sendEmailVerification,
+    updateProfile
+
+} from 'firebase/auth';
+
+import { admin } from '@/src/data/firebaseAdmin'
+import { auth } from '@/src/data/firebaseClient'
+
 
 
 /*
-@ path    GET /api/login
-@ doc     로그인
-@ access  public
+    @ path    GET /api/login
+    @ doc     로그인
+    @ access  public
 */
 export const POST = async (req: NextRequest) => {
     try {
@@ -14,17 +32,19 @@ export const POST = async (req: NextRequest) => {
         if (!email) return NextResponse.json({ state: 'FAILUE', message: 'email을 넣어주세요', }, { status: 422 });
         if (!password) return NextResponse.json({ state: 'FAILUE', message: 'password을 넣어주세요', }, { status: 422 });
 
-        const userData = await loginEmail(email, password);
+        // const userData = await loginEmail(email, password);
         // console.log('back - userDAta ????????', userData)
+
 
 
         // console.log(cookies().get("access-token"));
         // ref token httpOnly로 내려줌
-        cookies().set("x-ref-token", userData.user.refreshToken, { httpOnly: true, secure: true, sameSite: true });
+        // cookies().set("x-ref-token", userData.user.refreshToken, { httpOnly: true, secure: true, sameSite: true });
         // secure: true
 
 
-
+        const userData = await signInWithEmailAndPassword(auth, email, password);
+        console.log('server ??? ', userData)
 
         const res = {
             state: 'SUCCES',

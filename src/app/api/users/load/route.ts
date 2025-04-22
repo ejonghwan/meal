@@ -44,6 +44,7 @@ export const GET = async (req: NextRequest) => {
         // 인증토큰 정상일 경우 
         const user = await auth().getUser(checked.uid)
 
+
         // console.log('vertifi email', hoho)
 
         const res = {
@@ -60,7 +61,17 @@ export const GET = async (req: NextRequest) => {
 
 
 
+// import type { NextApiRequest, NextApiResponse } from "next";
+// import { withAuth } from "@/lib/withAuth"; // 방금 만든 미들웨어
 
+// const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+//   const user = (req as any).user;
+//   return res.status(200).json({
+//     message: "인증된 사용자입니다!",
+//     uid: user.uid,
+//     email: user.email,
+//   });
+// };
 
+// export default withAuth(handler); // ✅ 미들웨어로 감싸기
 
-// eyJhbGciOiJSUzI1NiIsImtpZCI6IjBhYmQzYTQzMTc4YzE0MjlkNWE0NDBiYWUzNzM1NDRjMDlmNGUzODciLCJ0eXAiOiJKV1QifQ.eyJpc3MiOiJodHRwczovL3NlY3VyZXRva2VuLmdvb2dsZS5jb20vbWVhbC02MmNjYiIsImF1ZCI6Im1lYWwtNjJjY2IiLCJhdXRoX3RpbWUiOjE3Mzc1OTg2NzMsInVzZXJfaWQiOiJQNm9tWHE5aHl3UWkyekYwandJTlI4TlpFeUYzIiwic3ViIjoiUDZvbVhxOWh5d1FpMnpGMGp3SU5SOE5aRXlGMyIsImlhdCI6MTczNzU5ODY3MywiZXhwIjoxNzM3NjAyMjczLCJlbWFpbCI6Impqb25ncnJyQGdtYWlsLmNvbSIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJmaXJlYmFzZSI6eyJpZGVudGl0aWVzIjp7ImVtYWlsIjpbImpqb25ncnJyQGdtYWlsLmNvbSJdfSwic2lnbl9pbl9wcm92aWRlciI6InBhc3N3b3JkIn19.Yav3LPn3E0NAWlq3HQYUXzwK7l8zk1HpzC-tOdU7OKvalhmETzFWAPSVyB-IlQMkn_8pr-nbJsv6YbZM7bK1prAXzozInR-M4Be4Yij8XbWYKaB1-vM8c8eZoysUG5mYNvoxRaPIUpX1E17ri-Q7-Mt0fT20xU14-hTR3bF3exDsN5noidco_EryXFBVM1avOPw_YtTQmtHnDjRlRE3Z3S9hB5nYezAIO35ubyNJRU3dk8cToivt5rBjPF2nQGuEDdx3lydCuMKTkJdD7LbGFvphxOzMmx9VQuvnyydfgbNjspHMQgBduxM2gym8BcL3JNctfXKd6oDd4S2N07YKpg

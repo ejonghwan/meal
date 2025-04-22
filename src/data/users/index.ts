@@ -1,4 +1,14 @@
 
+
+// 이 파일 쓸 필요가없었음...
+
+// 플로우	프론트에서 가능?	백엔드 필요?	설명
+// 이메일/비번 회원가입	✅ 가능	❌ 아님	기본 로그인/가입은 Firebase가 안전하게 처리
+// 유저 DB에 추가 정보 저장	❌	✅ 필요	인증 외의 데이터는 서버 통해야 함
+// 관리자 승인 기반 가입	❌	✅ 필요	권한 로직은 서버에서만
+// Firebase Custom Claims 설정	❌
+
+
 import {
     getAuth,// authentication 설정
     signOut, // 로그아웃
@@ -22,6 +32,7 @@ interface TokenData {
     uid?: string
     data?: any
 }
+
 
 
 

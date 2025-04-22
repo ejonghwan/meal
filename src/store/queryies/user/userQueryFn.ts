@@ -58,8 +58,8 @@ export const onUserLoadAPI = async (token: string) => {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
-                // "x-acc-token": `${token}`,
-                "Authorization": `${token}`,
+                "x-acc-token": `Bearer ${token}`,
+                // "Authorization": `Bearer ${token}`,
             },
             credentials: 'include', // 쿠키를 포함하려면 'include'로 설정
             next: { tags: ['user', 'load'] },

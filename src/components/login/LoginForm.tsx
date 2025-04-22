@@ -13,6 +13,7 @@ import { QueryFunction } from "@tanstack/query-core";
 import { auth } from '@/src/data/firebaseClient'
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
 import { loginEmail } from '@/src/data/users';
+import { admin } from '@/src/data/firebaseAdmin';
 
 interface Props {
     // load: (token: string) => any;
@@ -35,6 +36,12 @@ interface User {
     - 로그인에서는 성공 시 acctoken 저장. 
     - 로드는 acc 보냄
     (auth에 토큰 갱신은 수시로)
+
+    상황	Firebase Admin SDK 필요 여부
+    로그인 UI 구현 / 상태 관리	❌ 클라이언트 SDK로 충분
+    API 서버에서 유저 인증이 필요한 작업 (ex. DB 접근)	✅ 필요!
+    public API, 인증 필요 없는 작업	❌ 필요 없음
+    보안이 중요한 처리 (ex. 결제, 데이터 수정 등)	✅ 무조건 검증 필요
 */
 
 
@@ -43,23 +50,58 @@ const LoginForm = () => {
     const { userInfo, setUserInfo, setUserLogin, setUserLogout } = useUserStore();
     const [user, setUser] = useState<User>({ email: '', password: '' })
 
+    // admin 
+    const { mutate: loginMutation, data: loginData, isError: loginIsError, isSuccess: loginIsSuccess } = useUserLogin()
+
     // console.log("브라우저?", typeof window !== "undefined"); // true여야 함
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
-                console.log("🔥 유저 세션 복원됨:", user);
-                // setUser(user); // 이거로 상태 저장
+                console.log("🔥 로그인 되어 있음");
+                if (loginIsSuccess && loginData) setUserLogin(loginData)
             } else {
                 console.log("🙅 로그인 안 되어 있음");
-                // setUser(null);
+                setUserLogin(null)
             }
         });
 
         return () => unsubscribe();
-    }, []);
+    }, [loginIsSuccess]);
 
 
-    // load 부분은 나중에 옮기자 
+
+
+    useEffect(() => {
+        console.log('쥬스탄드 상태 체크 userInfo? ', userInfo)
+
+        // authStateChanged()
+    }, [userInfo])
+
+
+    
+    const handleChangeUserInfo = (e: ChangeEvent) => {
+        const target = e.target as HTMLInputElement;;
+        setUser({
+            ...user,
+            [target.name]: target.value
+        })
+    }
+
+
+    const handleLoginClick = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        loginMutation({ email: user.email, password: user.password })
+    }
+
+    useEffect(() => {
+        console.log('is e?', loginIsError)
+    }, [loginIsError])
+
+
+
+
+    
+    // // load 부분은 나중에 옮기자 
     // let token = null;
     // if (typeof window !== 'undefined') {
     //     // console.log(localStorage)
@@ -73,35 +115,7 @@ const LoginForm = () => {
     //     userLoadData && setUserInfo(userLoadData)
     // }, [userLoadSuccess])
 
-
-
-
-    const handleChangeUserInfo = (e: ChangeEvent) => {
-        const target = e.target as HTMLInputElement;;
-        setUser({
-            ...user,
-            [target.name]: target.value
-        })
-    }
-
-    const [testUser, setTestUser] = useState(null)
-    const hoho = async (e) => {
-        // data 자체가 서버파일
-        // const userData = await loginEmail(user.email, user.password);
-
-        e.preventDefault()
-        const hh = signInWithEmailAndPassword(auth, user.email, user.password);
-        console.log(hh)
-        setTestUser(hh)
-    }
-
-
-    useEffect(() => {
-        console.log('쥬스탄드 상태 체크 userInfo? ', userInfo)
-
-        // authStateChanged()
-    }, [userInfo])
-
+    
 
 
 
@@ -130,7 +144,7 @@ const LoginForm = () => {
             </div>
 
             {/* <form onSubmit={handleLogin}> */}
-            <form onSubmit={hoho}>
+            <form onSubmit={handleLoginClick}>
 
                 <div className='flex flex-col gap-2 zz mt-[20px]'>
                     <Input

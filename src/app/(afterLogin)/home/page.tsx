@@ -1,8 +1,20 @@
+
+
+import Main from '@/src/components/common/main'
 import React from 'react'
 
 const HomePage = () => {
+
+
+
    return (
-      <div>HomePage</div>
+      <div>HomePage
+
+         <Main>
+            ahoho
+         </Main>
+
+      </div>
    )
 }
 

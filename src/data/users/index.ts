@@ -65,15 +65,12 @@ interface TokenData {
 */
 
 
-
+// backend로 옮김
 // email auth
-export const signupAuth = async (user: any) => {
-    // await auth.currentUser?.reload() // 리로드 왜한거 ? 
-    // console.log('signup?', auth.currentUser)
-    const checkedUser = await admin.auth().getUser(user.user.uid)
-    // console.log('인자값 ', checkedUser.emailVerified)
-    return { emailVerified: checkedUser.emailVerified }
-}
+// export const signupAuth = async (user: any) => {
+//     const checkedUser = await admin.auth().getUser(user.user.uid)
+//     return { emailVerified: checkedUser.emailVerified }
+// }
 
 
 // backend로 옮김
@@ -86,24 +83,27 @@ export const signupAuth = async (user: any) => {
 //     return sign
 // };
 
+
+// backend로 옮김
 // email 회원탈퇴
-export const userDeleteEmail = async (user: any) => {
+// export const userDeleteEmail = async (user: any) => {
 
-    // user or uid??? 어떤걸로 할지 결정
-    const u = await admin.auth().deleteUser(user.uid)
-    // console.log('cc user?', u)
+//     // user or uid??? 어떤걸로 할지 결정
+//     const u = await admin.auth().deleteUser(user.uid)
+//     // console.log('cc user?', u)
 
-};
-
-
+// };
 
 
 
+
+//  backend로 옮김
 // email 로그인
-export const loginEmail = (email: string, password: string) => {
-    const user = signInWithEmailAndPassword(auth, email, password);
-    return user
-};
+// export const loginEmail = (email: string, password: string) => {
+//     const user = signInWithEmailAndPassword(auth, email, password);
+//     return user
+// };
+
 
 // email 로그아웃 - 아직 구현안함
 export const signOutEmail = async (email: string, password: string) => {

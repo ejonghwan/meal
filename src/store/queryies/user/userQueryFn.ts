@@ -39,7 +39,7 @@ export const onUserAuthAPI = async (user) => {
             cache: "no-store",
         }
 
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/auth/`, options)
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/emailAuth/`, options)
         const data = res.json();
         if (!res.ok) { throw new Error('Network response was not ok'); }
         return data;

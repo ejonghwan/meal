@@ -29,16 +29,16 @@ interface DecodedIdToken {
     @ access  public
 */
 
-const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-  const user = (req as any).user;
-  return res.status(200).json({
-    message: "인증된 사용자입니다!",
-    uid: user.uid,
-    email: user.email,
-  });
-};
+// const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+//     const user = (req as any).user;
+//     return res.status(200).json({
+//         message: "인증된 사용자입니다!",
+//         uid: user.uid,
+//         email: user.email,
+//     });
+// };
 
-export default withAuth(handler); 
+export default withAuth(handler);
 
 export const GET = async (req: NextRequest) => {
 
@@ -58,11 +58,6 @@ export const GET = async (req: NextRequest) => {
 
         // 인증토큰 정상일 경우 
         const user = await auth().getUser(checked.uid)
-
-
-        // console.log('vertifi email', hoho)
-
-    
 
 
         const res = {

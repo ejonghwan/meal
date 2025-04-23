@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server"
-import { cookies } from "next/headers";
-import { signupEmail, loginEmail } from "@/src/data/users";
+// import { cookies } from "next/headers";
+// import { signupEmail, loginEmail } from "@/src/data/users";
 
 
 import {
@@ -32,19 +32,18 @@ export const POST = async (req: NextRequest) => {
         if (!email) return NextResponse.json({ state: 'FAILUE', message: 'email을 넣어주세요', }, { status: 422 });
         if (!password) return NextResponse.json({ state: 'FAILUE', message: 'password을 넣어주세요', }, { status: 422 });
 
-        // const userData = await loginEmail(email, password);
-        // console.log('back - userDAta ????????', userData)
-
-
+        // const userData = await loginEmail(email, password); // 기존소스 
 
         // console.log(cookies().get("access-token"));
         // ref token httpOnly로 내려줌
+        // ref 토큰은 사용하지 않음
         // cookies().set("x-ref-token", userData.user.refreshToken, { httpOnly: true, secure: true, sameSite: true });
         // secure: true
 
 
         const userData = await signInWithEmailAndPassword(auth, email, password);
-        console.log('server ??? ', userData)
+
+        console.log('back login user ??? ', userData)
 
         const res = {
             state: 'SUCCES',
@@ -63,8 +62,10 @@ export const POST = async (req: NextRequest) => {
             }
         }
         return NextResponse.json(res, { status: 201 })
+
+
     } catch (e) {
-        console.log('열로오냐 ? ', e)
+        console.log('back login error ? ', e)
         return NextResponse.json({ message: e }, { status: 500 })
         // return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 })
 

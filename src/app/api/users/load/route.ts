@@ -3,6 +3,9 @@ import { cookies } from "next/headers";
 import { accTokenCheck, refTokenCheck } from "@/src/data/users/index";
 import { auth } from "firebase-admin";
 
+// import type { NextApiRequest, NextApiResponse } from "next";
+import { withAuth } from "@/src/app/api/middleware/withAuth"; // 방금 만든 미들웨어
+
 
 /*
     로그인 로직 
@@ -21,10 +24,22 @@ interface DecodedIdToken {
 
 
 /*
-@ path    GET /api/users/load
-@ doc     유저 로드
-@ access  public
+    @ path    GET /api/users/load
+    @ doc     유저 로드
+    @ access  public
 */
+
+const handler = async (req: NextApiRequest, res: NextApiResponse) => {
+  const user = (req as any).user;
+  return res.status(200).json({
+    message: "인증된 사용자입니다!",
+    uid: user.uid,
+    email: user.email,
+  });
+};
+
+export default withAuth(handler); 
+
 export const GET = async (req: NextRequest) => {
 
     try {
@@ -33,8 +48,8 @@ export const GET = async (req: NextRequest) => {
 
 
         // acc token check
-        // const accToken = req.headers.get('x-acc-token')
-        const accToken = req.headers.get('Authorization')
+        const accToken = req.headers.get('x-acc-token')
+        // const accToken = req.headers.get('Authorization')
         if (!accToken) throw new Error('is not token')
         const checked = await accTokenCheck(accToken) as DecodedIdToken
         // 인증토큰 에러일 경우
@@ -46,6 +61,9 @@ export const GET = async (req: NextRequest) => {
 
 
         // console.log('vertifi email', hoho)
+
+    
+
 
         const res = {
             state: 'SUCCES',
@@ -59,19 +77,4 @@ export const GET = async (req: NextRequest) => {
 }
 
 
-
-
-// import type { NextApiRequest, NextApiResponse } from "next";
-// import { withAuth } from "@/lib/withAuth"; // 방금 만든 미들웨어
-
-// const handler = async (req: NextApiRequest, res: NextApiResponse) => {
-//   const user = (req as any).user;
-//   return res.status(200).json({
-//     message: "인증된 사용자입니다!",
-//     uid: user.uid,
-//     email: user.email,
-//   });
-// };
-
-// export default withAuth(handler); // ✅ 미들웨어로 감싸기
 

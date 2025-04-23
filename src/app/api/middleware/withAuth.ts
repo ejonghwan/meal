@@ -1,19 +1,19 @@
-import { NextApiHandler } from "next";
+
+import { NextRequest, NextResponse } from "next/server";
 import { admin } from '@/src/data/firebaseAdmin'
 
 
-export const withAuth = (handler: NextApiHandler): NextApiHandler => {
-   return async (req, res) => {
-      const authHeader = req.headers.authorization || "";
-      const token = authHeader.replace("Bearer ", "");
-
+export const withAuth = (handler: (req: NextRequest, user: any) => Promise<NextResponse>) =>
+   async (req: NextRequest): Promise<NextResponse> => {
       try {
-         const decoded = await admin.auth().verifyIdToken(token);
-         (req as any).user = decoded; // 인증된 유저 정보 주입
-         return handler(req, res);    // 원래 핸들러 실행
+         const authHeader = req.headers.get("x-acc-token") || "";
+         const token = authHeader.replace("Bearer ", "");
 
-      } catch (err) {
-         return res.status(401).json({ message: "Unauthorized" });
+         const decoded = await admin.auth().verifyIdToken(token);
+         return handler(req, decoded); // 인증된 유저와 함께 핸들러 호출
+
+      } catch (error) {
+         return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
       }
-   };
-};
+   }
+

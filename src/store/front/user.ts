@@ -37,7 +37,6 @@ export const useUserStore = create(devtools<UserStore>(set => ({
       console.log('login ????', payload)
 
       localStorage.setItem("x-acc-token", payload.data?.accToken);
-      console.log('pay?', payload)
       return { userInfo: payload.data }
    }),
    setUserLogout: (user: any) => set((prev: UserStore) => {

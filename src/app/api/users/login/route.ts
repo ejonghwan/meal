@@ -32,15 +32,15 @@ export const POST = async (req: NextRequest) => {
         if (!email) return NextResponse.json({ state: 'FAILUE', message: 'email을 넣어주세요', }, { status: 422 });
         if (!password) return NextResponse.json({ state: 'FAILUE', message: 'password을 넣어주세요', }, { status: 422 });
 
-        // const userData = await loginEmail(email, password); // 기존소스 
 
-        // console.log(cookies().get("access-token"));
+
         // ref token httpOnly로 내려줌
         // ref 토큰은 사용하지 않음
         // cookies().set("x-ref-token", userData.user.refreshToken, { httpOnly: true, secure: true, sameSite: true });
         // secure: true
 
 
+        // const userData = await loginEmail(email, password); // 기존소스 
         const userData = await signInWithEmailAndPassword(auth, email, password);
 
         console.log('back login user ??? ', userData)

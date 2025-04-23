@@ -30,6 +30,8 @@ const LoginForm = () => {
     const { userInfo, setUserInfo, setUserLogin, setUserLogout } = useUserStore();
     const [user, setUser] = useState<User>({ email: '', password: '' })
 
+
+
     // console.log("브라우저?", typeof window !== "undefined"); // true여야 함
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -67,6 +69,9 @@ const LoginForm = () => {
     // login test
     const { mutate: loginMutation, data: loginData, isError: loginIsError, isSuccess: loginIsSuccess } = useUserLogin()
 
+
+
+
     const handleChangeUserInfo = (e: ChangeEvent) => {
         const target = e.target as HTMLInputElement;;
         setUser({
@@ -80,7 +85,10 @@ const LoginForm = () => {
         e.preventDefault();
         loginMutation({ email: user.email, password: user.password })
     }
+
+
     useEffect(() => {
+        console.log('login data????????????????????????????? hoho', loginData)
         if (loginIsSuccess && loginData) setUserLogin(loginData)
     }, [loginIsSuccess])
 

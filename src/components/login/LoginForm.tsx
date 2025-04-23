@@ -12,7 +12,7 @@ import { QueryFunction } from "@tanstack/query-core";
 
 import { auth } from '@/src/data/firebaseClient'
 import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
-import { loginEmail } from '@/src/data/users';
+// import { loginEmail } from '@/src/data/users';
 import { admin } from '@/src/data/firebaseAdmin';
 
 interface Props {
@@ -54,31 +54,42 @@ const LoginForm = () => {
     const { mutate: loginMutation, data: loginData, isError: loginIsError, isSuccess: loginIsSuccess } = useUserLogin()
 
     // console.log("브라우저?", typeof window !== "undefined"); // true여야 함
+
+
+    useEffect(() => {
+        if (loginIsSuccess) {
+            console.log("로그인 성공 🎉", loginData);
+            setUserLogin(loginData)
+        }
+
+        if (loginIsError) {
+            console.error("로그인 실패 😢");
+        }
+
+    }, [loginIsSuccess, loginIsError]);
+
+
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
             if (user) {
                 console.log("🔥 로그인 되어 있음");
-                if (loginIsSuccess && loginData) setUserLogin(loginData)
             } else {
                 console.log("🙅 로그인 안 되어 있음");
-                setUserLogin(null)
             }
         });
 
         return () => unsubscribe();
-    }, [loginIsSuccess]);
+    }, [])
 
 
 
-
+    // 상태체크
     useEffect(() => {
         console.log('쥬스탄드 상태 체크 userInfo? ', userInfo)
-
-        // authStateChanged()
     }, [userInfo])
 
 
-    
+
     const handleChangeUserInfo = (e: ChangeEvent) => {
         const target = e.target as HTMLInputElement;;
         setUser({
@@ -93,14 +104,10 @@ const LoginForm = () => {
         loginMutation({ email: user.email, password: user.password })
     }
 
-    useEffect(() => {
-        console.log('is e?', loginIsError)
-    }, [loginIsError])
 
 
 
 
-    
     // // load 부분은 나중에 옮기자 
     // let token = null;
     // if (typeof window !== 'undefined') {
@@ -115,7 +122,7 @@ const LoginForm = () => {
     //     userLoadData && setUserInfo(userLoadData)
     // }, [userLoadSuccess])
 
-    
+
 
 
 

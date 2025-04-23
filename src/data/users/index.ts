@@ -76,14 +76,15 @@ export const signupAuth = async (user: any) => {
 }
 
 
+// backend로 옮김
 // email 회원가입
-export const signupEmail = async (email: string, password: string, displayName: string) => {
-    const sign = await createUserWithEmailAndPassword(auth, email, password)
-    // send mail 
-    await updateProfile(sign.user, { displayName }) //프로필 업데이트
-    await sendEmailVerification(sign.user)
-    return sign
-};
+// export const signupEmail = async (email: string, password: string, displayName: string) => {
+//     const sign = await createUserWithEmailAndPassword(auth, email, password)
+//     // send mail 
+//     await updateProfile(sign.user, { displayName }) //프로필 업데이트
+//     await sendEmailVerification(sign.user)
+//     return sign
+// };
 
 // email 회원탈퇴
 export const userDeleteEmail = async (user: any) => {

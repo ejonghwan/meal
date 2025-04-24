@@ -38,7 +38,7 @@ interface DecodedIdToken {
 //     });
 // };
 
-export default withAuth(handler);
+// export default withAuth(handler);
 
 export const GET = async (req: NextRequest) => {
 

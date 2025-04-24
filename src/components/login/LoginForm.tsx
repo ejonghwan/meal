@@ -11,7 +11,7 @@ import { useQuery } from '@tanstack/react-query';
 import { QueryFunction } from "@tanstack/query-core";
 
 import { auth } from '@/src/data/firebaseClient'
-import { onAuthStateChanged, signInWithEmailAndPassword } from "firebase/auth";
+import { onAuthStateChanged, signInWithEmailAndPassword, signInWithCustomToken } from "firebase/auth";
 // import { loginEmail } from '@/src/data/users';
 import { admin } from '@/src/data/firebaseAdmin';
 
@@ -48,6 +48,7 @@ interface User {
 
 const LoginForm = () => {
     const { userInfo, setUserInfo, setUserLogin, setUserLogout } = useUserStore();
+    // const user = useUserStore((state) => state.user)
     const [user, setUser] = useState<User>({ email: '', password: '' })
 
     // admin 
@@ -60,6 +61,7 @@ const LoginForm = () => {
         if (loginIsSuccess) {
             console.log("로그인 성공 🎉", loginData);
             setUserLogin(loginData)
+            signInWithCustomToken(auth, userInfo?.customAccToken)
         }
 
         if (loginIsError) {
@@ -69,17 +71,19 @@ const LoginForm = () => {
     }, [loginIsSuccess, loginIsError]);
 
 
-    useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, (user) => {
-            if (user) {
-                console.log("🔥 로그인 되어 있음");
-            } else {
-                console.log("🙅 로그인 안 되어 있음");
-            }
-        });
 
-        return () => unsubscribe();
-    }, [])
+    // 프론트에서 간단하게 인증할떄 
+    // useEffect(() => {
+    //     const unsubscribe = onAuthStateChanged(auth, (user) => {
+    //         if (user) {
+    //             console.log("🔥 로그인 되어 있음", auth.currentUser);
+    //         } else {
+    //             console.log("🙅 로그인 안 되어 있음");
+    //         }
+    //     });
+
+    //     return () => unsubscribe();
+    // }, [])
 
 
 

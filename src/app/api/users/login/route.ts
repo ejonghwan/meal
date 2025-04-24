@@ -40,10 +40,16 @@ export const POST = async (req: NextRequest) => {
         // secure: true
 
 
+        /*
+            admin에서 가져온 accToken은 보안 때문에 서버에서만 사용.
+            대신 커스텀 토큰을 만들어 프론트로 보내고 그걸 auth 세션에 사용 
+        */
+
         // const userData = await loginEmail(email, password); // 기존소스 
         const userData = await signInWithEmailAndPassword(auth, email, password);
-
-        console.log('back login user ??? ', userData)
+        const customAccToken = await admin.auth().createCustomToken(userData.user.uid) // 커스텀 토큰은 1시간
+        // console.log('back login user ??? ', userData)
+        console.log('back token ??? ', customAccToken)
 
         const res = {
             state: 'SUCCES',
@@ -58,7 +64,7 @@ export const POST = async (req: NextRequest) => {
                 // tokensValidAfterTime: userData.user.tokensValidAfterTime,
                 uid: userData.user.uid,
                 providerData: userData.user.providerData,
-                accToken: await userData.user.getIdToken()
+                customAccToken: customAccToken // 커스텀토큰 프론트로 보내기
             }
         }
         return NextResponse.json(res, { status: 201 })

@@ -49,20 +49,20 @@ const LoginForm = () => {
 
 
     // load 부분은 나중에 옮기자 
-    let token = null;
-    if (typeof window !== 'undefined') {
-        // console.log(localStorage)
-        token = localStorage.getItem('x-acc-token')
-    }
-    const { data: userLoadData, isError: userLoadError, isSuccess: userLoadSuccess } = useUserLoad(token)
+    // let token = null;
+    // if (typeof window !== 'undefined') {
+    //     // console.log(localStorage)
+    //     token = localStorage.getItem('x-acc-token')
+    // }
+    // const { data: userLoadData, isError: userLoadError, isSuccess: userLoadSuccess } = useUserLoad(token)
 
 
 
-    useEffect(() => {
-        // test()
-        console.log('load query?', userLoadData)
-        userLoadData && setUserInfo(userLoadData)
-    }, [userLoadSuccess])
+    // useEffect(() => {
+    //     // test()
+    //     console.log('load query?', userLoadData)
+    //     userLoadData && setUserInfo(userLoadData)
+    // }, [userLoadSuccess])
 
 
 
@@ -88,7 +88,7 @@ const LoginForm = () => {
 
 
     useEffect(() => {
-        console.log('login data????????????????????????????? hoho', loginData)
+        // console.log('login data????????????????????????????? hoho', loginData)
         if (loginIsSuccess && loginData) setUserLogin(loginData)
     }, [loginIsSuccess])
 

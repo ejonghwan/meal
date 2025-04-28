@@ -23,8 +23,8 @@ export const auth = getAuth(app);
 //     }
 // });
 
-console.log(firebaseConfig); // ✅ 값 다 들어가 있는지
-console.log(app.name); // ✅ 'default' 나오는지
+// console.log(firebaseConfig); // ✅ 값 다 들어가 있는지
+// console.log(app.name); // ✅ 'default' 나오는지
 
 
 

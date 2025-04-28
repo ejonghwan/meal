@@ -5,13 +5,6 @@ import { cookies } from "next/headers";
 import { withAuth } from "@/src/app/api/middleware/withAuth"; // 방금 만든 미들웨어
 
 
-/*
-    로그인 로직 
-    1. 1시간 acc 토큰이랑 1년 ref토큰(httponly)을 내려줌 
-    2. acc 토큰이 정상이면 로그인 유지를 하고 만료가 되면 ref토큰으로 인증 후 acc토큰 재발급함
-    3. acc 토큰은 내려준 후 로컬 저장소에 저장하며 ref 토큰은 쿠키안에서만 주고 받을 수 있게 httponly 옵션을 줌. 
-       - 이때 프론트에서도 httponly로 받으면 접근이 불가하며 재 요청 보낼 때 옵션 설정해서 보내면 됨
-*/
 
 interface DecodedIdToken {
     uid: string;

@@ -92,10 +92,11 @@ export const onUserLoginAPI = async (user) => {
         }
 
         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/login/`, options)
-        const data = await res.json();
+        const parse = await res.json();
+        if (parse.data) localStorage.setItem('x-acc-token', parse.data.customAccToken)
 
         if (!res.ok) {
-            throw new Error(data.message || 'Network response was not ok');
+            throw new Error(parse.message || 'Network response was not ok');
             /*
                 와 ... 대박
                 try catch 로 감싸서 throw를 해도 mutation isError에 잡히지않음... 계속 success가 뜸 
@@ -105,7 +106,7 @@ export const onUserLoginAPI = async (user) => {
                 > 근데 챗선생님이 감싸는게 좋다네 
             */
         }
-        return data;
+        return parse;
     } catch (error) {
         console.error("Login Error:", error);
         throw error; // ✅ 에러도 명확히 throw 해야 mutation.isError에 잡힘

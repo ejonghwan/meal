@@ -7,20 +7,26 @@ import { useUserLoad } from '@/src/store/queryies/user/userQueries'
 import { useUserStore } from "@/src/store/front/user";
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-   const [token, setToken] = useState<string | null>(null)
 
+   const [token, setToken] = useState<string | null>(null)
    const { setUserLogin, setUserInfo } = useUserStore();
 
    useEffect(() => {
       const unsubscribe = onAuthStateChanged(auth, async (user) => {
          if (user) {
-            const idToken = await getIdToken(user)
-            setToken(idToken)
-            localStorage.setItem('x-acc-token', idToken) // 옵션: 저장
+
+            console.log('auth provider ?', user)
+
+            // getIdToken은 강제로 얻게하는거
+            // onAuthStateChanged함수만 실행해도 토큰이 만료되기 전에 갱신됨 
+
+            // const idToken = await getIdToken(user)
+            // setToken(idToken)
+            // localStorage.setItem('x-acc-token', idToken) // 옵션: 저장
          } else {
-            setToken(null)
-            localStorage.removeItem('x-acc-token')
-            setUserInfo(null)
+            // setToken(null)
+            // localStorage.removeItem('x-acc-token')
+            // setUserInfo(null)
          }
       })
 

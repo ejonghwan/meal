@@ -14,6 +14,15 @@ import { auth } from '@/src/data/firebaseClient'
 import { onAuthStateChanged, signInWithEmailAndPassword, signInWithCustomToken } from "firebase/auth";
 // import { loginEmail } from '@/src/data/users';
 import { admin } from '@/src/data/firebaseAdmin';
+import {
+    useRouter,
+    usePathname,
+    useSearchParams,
+    useSelectedLayoutSegment,
+    useSelectedLayoutSegments,
+    redirect,
+    notFound
+} from 'next/navigation'
 
 interface Props {
     // load: (token: string) => any;
@@ -50,6 +59,7 @@ const LoginForm = () => {
     const { userInfo, setUserInfo, setUserLogin, setUserLogout } = useUserStore();
     // const user = useUserStore((state) => state.user)
     const [user, setUser] = useState<User>({ email: '', password: '' })
+    const router = useRouter()
 
     // admin 
     const { mutate: loginMutation, data: loginData, isError: loginIsError, isSuccess: loginIsSuccess } = useUserLogin()
@@ -61,7 +71,9 @@ const LoginForm = () => {
         if (loginIsSuccess) {
             console.log("로그인 성공 🎉", loginData);
             setUserLogin(loginData)
-            signInWithCustomToken(auth, userInfo?.customAccToken)
+
+            alert('로그인 성공!');
+            router.push('/home');
         }
 
         if (loginIsError) {
@@ -70,6 +82,12 @@ const LoginForm = () => {
 
     }, [loginIsSuccess, loginIsError]);
 
+
+    useEffect(() => {
+        console.log('쥬스탄드 상태 체크 userInfo? ', userInfo)
+        if (userInfo.email) signInWithCustomToken(auth, userInfo?.customAccToken)
+
+    }, [userInfo])
 
 
     // 프론트에서 간단하게 인증할떄 
@@ -87,13 +105,6 @@ const LoginForm = () => {
 
 
 
-    // 상태체크
-    useEffect(() => {
-        console.log('쥬스탄드 상태 체크 userInfo? ', userInfo)
-    }, [userInfo])
-
-
-
     const handleChangeUserInfo = (e: ChangeEvent) => {
         const target = e.target as HTMLInputElement;;
         setUser({
@@ -102,7 +113,6 @@ const LoginForm = () => {
         })
     }
 
-
     const handleLoginClick = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         loginMutation({ email: user.email, password: user.password })
@@ -110,45 +120,11 @@ const LoginForm = () => {
 
 
 
-
-
-    // // load 부분은 나중에 옮기자 
-    // let token = null;
-    // if (typeof window !== 'undefined') {
-    //     // console.log(localStorage)
-    //     token = localStorage.getItem('x-acc-token')
-    // }
-    // const { data: userLoadData, isError: userLoadError, isSuccess: userLoadSuccess } = useUserLoad(token)
-
-    // useEffect(() => {
-    //     // test()
-    //     console.log('load query?', userLoadData)
-    //     userLoadData && setUserInfo(userLoadData)
-    // }, [userLoadSuccess])
-
-
-
-
-
     return (
         <div>
-            {/* <div className='border-2 border-red-500'>
-                <div>user test</div>
-                <div>{userInfo?.data.email}</div>
-                <div>{userInfo?.data.uid}</div>
-            </div> */}
-
-
-            {/* <div className='bg-red-500'> {loginIsError ? 'error true' : 'error false'}</div> */}
 
 
             <div>load user test</div>
-            {/* {userInfo.data && <div>user : {userInfo.data?.email}</div>} */}
-
-            <div>
-
-                {/* <button type='button' onClick={() => load('')}>load user</button> */}
-            </div>
 
             <div>
                 <button type='button' onClick={() => { setUserLogout() }}>logout</button>

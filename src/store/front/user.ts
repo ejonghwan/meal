@@ -35,9 +35,7 @@ export const useUserStore = create(devtools<UserStore>(set => ({
    // setUserLogin: (user) => set({ user }),
    setUserLogin: (payload: any) => set((prev: UserStore) => {
       // login
-      console.log('login ????', payload)
-
-      localStorage.setItem("x-acc-token", payload.data?.accToken);
+      console.log('zus setUserLogin????', payload)
       return { userInfo: payload.data }
    }),
    setUserLogout: (user: any) => set((prev: UserStore) => {

@@ -1,17 +1,17 @@
 import React from 'react'
 import Footer from '@/src/components/common/footer'
 import Header from '@/src/components/common/header'
-import { AuthProvider } from '@/src/components/auth/auth-provider'
+import { AuthProviderAdmin } from '@/src/components/auth/auth-provider-admin'
 
 const layout = ({ children }) => {
    return (
-      <AuthProvider>
+      <AuthProviderAdmin>
          <Header />
          <div>
             {children}
          </div>
          <Footer />
-      </AuthProvider>
+      </AuthProviderAdmin>
 
    )
 }

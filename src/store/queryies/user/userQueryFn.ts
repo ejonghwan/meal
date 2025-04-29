@@ -93,7 +93,7 @@ export const onUserLoginAPI = async (user) => {
 
         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/login/`, options)
         const parse = await res.json();
-        if (parse.data) localStorage.setItem('x-acc-token', parse.data.customAccToken)
+        if (parse.data) localStorage.setItem('x-acc-token', parse.data.accToken)
 
         if (!res.ok) {
             throw new Error(parse.message || 'Network response was not ok');

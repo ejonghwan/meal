@@ -22,25 +22,25 @@ interface UserStore {
 
 
 export const useUserStore = create(devtools<UserStore>(set => ({
-   authInfo: {},
-   userInfo: {},
-   setAutuInfo: (payload) => set(() => {
+   authInfo: null,
+   userInfo: null,
+   setAutuInfo: (payload) => set((prev: UserStore) => {
       // localStorage.setItem("x-acc-token", user.data.stsTokenManager.accessToken);
-      return { authInfo: payload.data }
+      return { ...prev, authInfo: payload.data }
    }),
    setUserInfo: (payload: any) => set((prev: UserStore) => {
-      // localStorage.setItem("x-acc-token", user.data.stsTokenManager.accessToken);
-      return { userInfo: payload.data }
+      console.log(payload)
+      return { ...prev, userInfo: payload }
    }),
    // setUserLogin: (user) => set({ user }),
    setUserLogin: (payload: any) => set((prev: UserStore) => {
       // login
       console.log('zus setUserLogin????', payload)
-      return { userInfo: payload.data }
+      return { ...prev, userInfo: payload.data }
    }),
    setUserLogout: (user: any) => set((prev: UserStore) => {
       localStorage.removeItem("x-acc-token");
-      return { userInfo: {} }
+      return { ...prev, userInfo: {} }
       //logout
    }),
 

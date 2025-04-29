@@ -5,25 +5,38 @@ import { onAuthStateChanged, getIdToken } from "firebase/auth"
 import { auth } from "@/src/data/firebaseClient"
 import { useUserLoad } from '@/src/store/queryies/user/userQueries'
 import { useUserStore } from "@/src/store/front/user";
+import { useRouter } from "next/navigation";
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
+   const router = useRouter();
    const [token, setToken] = useState<string | null>(null)
-   const { setUserLogin, setUserInfo } = useUserStore();
+   const { userInfo, setUserLogin, setUserInfo } = useUserStore();
 
    useEffect(() => {
+
       const unsubscribe = onAuthStateChanged(auth, async (user) => {
          if (user) {
 
-            console.log('auth provider ?', user)
+            console.log('로그인 된 유저')
 
-            // getIdToken은 강제로 얻게하는거
+            setUserInfo({
+               uid: user.uid,
+               email: user.email,
+               metadata: user.metadata,
+               providerData: user.providerData
+            })
+
+            console.log('auth provider ?', user, userInfo)
+
+            // getIdToken true는 강제로 얻게하는거
             // onAuthStateChanged함수만 실행해도 토큰이 만료되기 전에 갱신됨 
 
             // const idToken = await getIdToken(user)
             // setToken(idToken)
             // localStorage.setItem('x-acc-token', idToken) // 옵션: 저장
          } else {
+            console.log('로그인 안 된 유저')
             // setToken(null)
             // localStorage.removeItem('x-acc-token')
             // setUserInfo(null)
@@ -33,13 +46,13 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       return () => unsubscribe()
    }, [])
 
-   const { data, isSuccess } = useUserLoad(token || "")
+   // const { data, isSuccess } = useUserLoad(token || "")
 
-   useEffect(() => {
-      if (isSuccess && data) {
-         setUserInfo(data) // Zustand에 백엔드 유저 저장
-      }
-   }, [isSuccess, data])
+   // useEffect(() => {
+   //    if (isSuccess && data) {
+   //       setUserInfo(data) // Zustand에 백엔드 유저 저장
+   //    }
+   // }, [isSuccess, data])
 
    return <>{children}</>
 }

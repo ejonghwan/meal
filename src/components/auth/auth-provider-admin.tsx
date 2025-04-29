@@ -7,56 +7,57 @@ import { onAuthStateChanged, getIdToken } from "firebase/auth";
 import { useUserLoad } from '@/src/store/queryies/user/userQueries'
 import { useUserStore } from '@/src/store/front/user'
 
-console.log(123123)
-export const AuthProviderAdmin = ({ children }: { children: React.ReactNode }) => {
-   const router = useRouter();
-   // const [loading, setLoading] = useState(true);
 
-   let token = useRef(null);
+
+export const AuthProviderAdmin = ({ children }: { children: React.ReactNode }) => {
+
+   const router = useRouter();
+   const token = useRef(null);
    if (typeof window !== 'undefined') {
-       // console.log(localStorage)
-       token.current = localStorage.getItem('x-acc-token')
+      // console.log(localStorage)
+      token.current = localStorage.getItem('x-acc-token')
    }
 
    const { data: userLoadData, isError: userLoadError, isSuccess: userLoadSuccess, isLoading: userLoadLoading } = useUserLoad(token.current)
-   const { userInfo, setUserInfo, setUserLogin } = useUserStore();
-   useEffect(() => {
-      console.log('auth HOC ??', userInfo)
+   const { userInfo, setUserInfo } = useUserStore();
 
+
+   useEffect(() => {
+
+      if (userLoadLoading) return; // 로딩 중이면 판단 보류
+
+      // 상태에 유저가 없는 경우
+      if (!userInfo || userLoadError) {
+         alert('로그인이 필요한 페이지입니다.')
+         router.replace('/login');
+      }
+   }, [userInfo])
+
+
+   useEffect(() => {
+
+      // 상태에 유저가 있고 acc token 으로 재 인증. 
       const unsubscribe = onAuthStateChanged(auth, async (user) => {
-         if (!user) {
+         if (!user || userLoadError) {
+            console.error('❌ 서버 검증 실패');
             router.replace('/login');
             return;
          }
 
-         userLoadData && setUserInfo(userLoadData); 
+         if (userLoadSuccess && userLoadData.data.uid) {
+            console.log('✅ 서버 검증 통과');
+            setUserInfo(userLoadData.data);
+         }
 
-         console.log('auth admin? ', userInfo)
-
-         // const idToken = await user.getIdToken();
-
-         // const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/auth/verify-token`, {
-         //    method: 'POST',
-         //    headers: { 'Content-Type': 'application/json' },
-         //    body: JSON.stringify({ token: idToken }),
-         //    credentials: 'include',
-         // });
-
-         // if (res.ok) {
-         //    console.log('✅ 서버 검증 통과');
-         //    setLoading(false);
-         // } else {
-         //    console.error('❌ 서버 검증 실패');
-         //    router.replace('/login');
-         // }
       });
 
       return () => unsubscribe();
-   }, [userLoadSuccess, userLoadLoading]);
+   }, [userLoadSuccess]);
 
-   if (userLoadLoading) {
-      return <div>Loading...</div>; // 서버 검증 중 대기
-   }
+
+   // if (userLoadLoading) {
+   //    return <div>Loading...</div>; // 서버 검증 중 대기
+   // }
 
    return <>{children}</>;
 }

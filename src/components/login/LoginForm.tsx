@@ -66,8 +66,15 @@ const LoginForm = () => {
 
     // console.log("브라우저?", typeof window !== "undefined"); // true여야 함
 
+    // 로그인된 유저는 아예 못접근하게 막아야됨
+    useEffect(() => {
+        if (userInfo) router.push('/home')
+    }, [userInfo])
+
 
     useEffect(() => {
+
+        if (loginIsError) console.error("로그인 실패 😢");
         if (loginIsSuccess) {
             console.log("로그인 성공 🎉", loginData);
             setUserLogin(loginData)
@@ -76,32 +83,20 @@ const LoginForm = () => {
             router.push('/home');
         }
 
-        if (loginIsError) {
-            console.error("로그인 실패 😢");
-        }
+
+
 
     }, [loginIsSuccess, loginIsError]);
 
 
     useEffect(() => {
         console.log('쥬스탄드 상태 체크 userInfo? ', userInfo)
-        if (userInfo.email) signInWithCustomToken(auth, userInfo?.customAccToken)
+
+        // FirebaseError: Firebase: Error (auth/internal-error). 이거해결해야됨. 새로고침할때 커스텀토큰 없다고 ... 로그인페이지에만 (근데 여긴 로그인한 사람이 접근못하게 하면 될듯)
+        // signInWithCustomToken 이거 왜 한거지 ? 로그인할때 커스텀토큰 안하면 인증못함
+        if (userInfo) signInWithCustomToken(auth, userInfo?.customAccToken)
 
     }, [userInfo])
-
-
-    // 프론트에서 간단하게 인증할떄 
-    // useEffect(() => {
-    //     const unsubscribe = onAuthStateChanged(auth, (user) => {
-    //         if (user) {
-    //             console.log("🔥 로그인 되어 있음", auth.currentUser);
-    //         } else {
-    //             console.log("🙅 로그인 안 되어 있음");
-    //         }
-    //     });
-
-    //     return () => unsubscribe();
-    // }, [])
 
 
 

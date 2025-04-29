@@ -17,16 +17,6 @@ type LoginResponse = {
 
 // 유저 로드
 export const useUserLoad = (token: string) => {
-
-    // let token = null;
-    // console.log('ws?', window)
-
-    // if (window !== undefined) {
-    //     console.log('win ?', window)
-    //     token = localStorage.getItem('x-acc-token')
-    // }
-    // if(!token) return;
-
     return useQuery({
         queryKey: userKeys.load(),
         queryFn: () => onUserLoadAPI(token),

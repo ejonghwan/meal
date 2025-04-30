@@ -1,7 +1,6 @@
 import { create } from 'zustand'
 import { devtools } from 'zustand/middleware';
-
-
+import { auth } from '@/src/data/firebaseClient'
 
 interface UserStore {
    authInfo: any;
@@ -24,22 +23,25 @@ interface UserStore {
 export const useUserStore = create(devtools<UserStore>(set => ({
    authInfo: null,
    userInfo: null,
+
    setAutuInfo: (payload) => set((prev: UserStore) => {
       // localStorage.setItem("x-acc-token", user.data.stsTokenManager.accessToken);
       return { ...prev, authInfo: payload.data }
    }),
+
    setUserInfo: (payload: any) => set((prev: UserStore) => {
       console.log(payload)
       return { ...prev, userInfo: payload }
    }),
+
    // setUserLogin: (user) => set({ user }),
    setUserLogin: (payload: any) => set((prev: UserStore) => {
-      // login
-      console.log('zus setUserLogin????', payload)
       return { ...prev, userInfo: payload.data }
    }),
+
    setUserLogout: (user: any) => set((prev: UserStore) => {
       localStorage.removeItem("x-acc-token");
+      auth.signOut();
       return { ...prev, userInfo: {} }
       //logout
    }),

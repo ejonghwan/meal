@@ -11,29 +11,29 @@ import Link, { LinkProps } from 'next/link'
 
 
 const DrawerVariants = cva('drawer_type1', {
-      variants: {
-         variant: {
-            bgcolor:
-               'text-white bg-primary disabled:bg-gray7 disabled:text-gray5 rounded-[99px]',
-          
-            more: "",
-            none: 'h-auto my-auto'
-         },
-         size: {
-            none: ''
-         }
+   variants: {
+      variant: {
+         bgcolor:
+            'text-white bg-primary disabled:bg-gray7 disabled:text-gray5 rounded-[99px]',
+
+         more: "",
+         none: 'h-auto my-auto'
       },
-      defaultVariants: {
-         variant: 'none',
-         size: 'none'
+      size: {
+         none: ''
       }
+   },
+   defaultVariants: {
+      variant: 'none',
+      size: 'none'
    }
+}
 )
 
 
-interface DrawerProps extends ComponentProps<'div'>,  VariantProps<typeof DrawerVariants> {
+interface DrawerProps extends ComponentProps<'div'>, VariantProps<typeof DrawerVariants> {
    variant?: 'bgcolor' | 'more' | 'none'
-   size?:'none'
+   size?: 'none'
    children: React.ReactNode
    className?: string
 }
@@ -48,9 +48,9 @@ const Drawer = ({ children, className, variant, size, ...props }: DrawerProps) =
          <div
             className={cn(DrawerVariants({ variant, size }),)}
             {...props}
-            >
-               {children}
-            </div>
+         >
+            {children}
+         </div>
       </article>
    )
 }

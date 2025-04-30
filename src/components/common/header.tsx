@@ -5,11 +5,15 @@ import { PiTextAlignRightDuotone } from "react-icons/pi";
 import Drawer from '@/src/components/common/drawer/drawer'
 import DrawerHeader from '@/src/components/common/drawer/drawer-header'
 import DrawerContent from '@/src/components/common/drawer/drawer-content'
+import { Button } from '@/src/components/common/Button'
+import Logo from '@/src/components/common/logo'
+
 
 import { useUIStore } from '@/src/store/front/ui'
 import ContentWrap from '@/src/components/common/content-wrap'
 import Section from '@/src/components/common/content-section'
 import { useUserStore } from '@/src/store/front/user'
+
 
 
 const Header = () => {
@@ -23,11 +27,16 @@ const Header = () => {
       setDrawerIsOpen()
    }
 
+   // Rubik Gemstones
+   // Bungee Hairline
+   // Bagel Fat One
+   // Matemasie
+   // Modak
    return (
       <ContentWrap>
          <Section variant='header' size='large'>
             <header className='header flex justify-between '>
-
+               <Logo>MEAL ?</Logo>
                {userInfo ? (
                   <>
                      {userInfo.email}
@@ -40,13 +49,13 @@ const Header = () => {
                <div className='pc:hidden'>pc logo</div>
                <div className='mo:hidden'>mo logo</div>
 
-               <button type='button' onClick={handleClick}>
-                  asd
-               </button>
+               <Button type='button' size='none' onClick={handleClick} className="rounded-[50%] bg-gray-700 text-white size-[40px] p-[5px]">
+                  {userInfo?.email.slice(0, 1).toLocaleUpperCase()}
+               </Button>
 
                <Drawer variant="bgcolor" size="none">
                   <DrawerHeader>
-                     hoho 
+                     hoho
                   </DrawerHeader>
                   <DrawerContent>
                      body

@@ -136,7 +136,8 @@ module.exports = {
         // '200': '200px'
       },
       fontFamily: {
-        default: ['var(--font-default)']
+        default: ['var(--font-default)'],
+        logo: ['var(--font-logo)']
       },
       fontWeight: {
         default: '400',

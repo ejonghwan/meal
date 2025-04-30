@@ -4,31 +4,31 @@ import { cn } from '@/src/utillity/cn'
 
 
 const DrawerContentVariants = cva('drawer__content--type1', {
-      variants: {
-         variant: {
-            bgcolor:
-               'text-white bg-primary disabled:bg-gray7 disabled:text-gray5 rounded-[99px]',
-          
-            more: "",
-            none: 'h-auto my-auto'
-         },
-         size: {
-            none: ''
-         }
+   variants: {
+      variant: {
+         bgcolor:
+            'text-white bg-primary disabled:bg-gray7 disabled:text-gray5 rounded-[99px]',
+
+         more: "",
+         none: 'h-auto my-auto'
       },
-      defaultVariants: {
-         variant: 'none',
-         size: 'none'
+      size: {
+         none: ''
       }
+   },
+   defaultVariants: {
+      variant: 'none',
+      size: 'none'
    }
+}
 )
 
 
-interface DrawerContentProps extends ComponentProps<'div'>,  VariantProps<typeof DrawerContentVariants> {
+interface DrawerContentProps extends ComponentProps<'div'>, VariantProps<typeof DrawerContentVariants> {
    variant?: 'bgcolor' | 'more' | 'none'
-   size?:'none'
-    children: React.ReactNode
-      className?: string
+   size?: 'none'
+   children: React.ReactNode
+   className?: string
 }
 
 

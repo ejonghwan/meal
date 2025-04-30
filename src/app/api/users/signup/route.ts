@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server"
 // import { signupEmail, loginEmail, userDeleteEmail } from "@/src/data/users/index";
 import { auth } from '@/src/data/firebaseClient'
-import { admin } from '@/src/data/firebaseAdmin'
+import { admin, adminDB } from '@/src/data/firebaseAdmin'
 import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from 'firebase/auth';
 
 
@@ -13,7 +13,7 @@ import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } 
 */
 export const POST = async (req: NextRequest) => {
 
-    const { email, password, displayName } = await req.json();
+    const { email, password, displayName, darkmode } = await req.json();
     if (!email) return NextResponse.json({ state: 'FAILUE', message: 'email을 넣어주세요', }, { status: 422 });
     if (!password) return NextResponse.json({ state: 'FAILUE', message: 'password을 넣어주세요', }, { status: 422 });
 
@@ -22,6 +22,14 @@ export const POST = async (req: NextRequest) => {
     await sendEmailVerification(result.user)
 
     // const signup = await signupEmail(email, password, displayName); //기존소스
+
+    await adminDB.collection('users').doc(result.user.uid).set({
+        uid: result.user.uid,
+        email,
+        displayName,
+        darkmode: !!darkmode,
+        createdAt: new Date(),
+    });
 
     const res = {
         state: 'SUCCES',
@@ -45,6 +53,7 @@ export const DELETE = async (req: NextRequest) => {
 
     // const user = await userDeleteEmail(reqData.user) //기존소스
     const user = await admin.auth().deleteUser(reqData.user.uid)
+    await adminDB.collection('users').doc(reqData.user.uid).delete();
 
     const res = {
         state: 'SUCCES',

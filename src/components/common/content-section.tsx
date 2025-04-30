@@ -40,7 +40,7 @@ const SectionVariants = cva('sec__inner', {
 
 const Section = ({ children, className = '', variant, size, ...props }: SectionProps) => {
    return (
-      <section className={cn(SectionVariants({ variant, size })) } {...props}>
+      <section className={cn(SectionVariants({ variant, size }))} {...props}>
          {children}
       </section>
    )

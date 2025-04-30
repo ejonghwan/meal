@@ -15,7 +15,7 @@ export const onUserSignupAPI = async (user: { email: string; password: string, d
     const options: ExtendsRequestInit = {
         method: "POST",
         headers: { "Content-Type": "application/json", },
-        body: JSON.stringify({ email: user.email, password: user.password, displayName: user.displayName }),
+        body: JSON.stringify({ email: user.email, password: user.password, displayName: user.displayName, darkmode: true }),
         // next: { tags: ['user', 'signup'] },
         cache: "no-cache",
     }

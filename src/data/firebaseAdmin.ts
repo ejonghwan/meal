@@ -7,4 +7,6 @@ if (!admin.apps.length) {
    });
 }
 
-export { admin };
+const adminDB = admin.firestore();
+
+export { admin, adminDB };

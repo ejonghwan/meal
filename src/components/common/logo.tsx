@@ -1,9 +1,15 @@
+import React, { useEffect } from 'react'
+import { fontLogo } from '@/src/lib/ui/font'
+
+
 import { ComponentProps, ReactNode } from 'react'
 import { VariantProps, cva } from 'class-variance-authority'
 import { cn } from '@/src/utillity/cn'
 
 
-const DrawerHeaderVariants = cva('drawer__header--type1', {
+
+
+const LogoVariants = cva(`logo ${fontLogo.variable}`, {
    variants: {
       variant: {
          bgcolor:
@@ -24,7 +30,7 @@ const DrawerHeaderVariants = cva('drawer__header--type1', {
 )
 
 
-interface DrawerHeaderProps extends ComponentProps<'div'>, VariantProps<typeof DrawerHeaderVariants> {
+interface LogoProps extends ComponentProps<'div'>, VariantProps<typeof LogoVariants> {
    variant?: 'bgcolor' | 'more' | 'none'
    size?: 'none'
    children: React.ReactNode
@@ -32,12 +38,20 @@ interface DrawerHeaderProps extends ComponentProps<'div'>, VariantProps<typeof D
 }
 
 
-const DrawerHeader = ({ children, variant, size, ...props }: DrawerHeaderProps) => {
+const Logo = ({ children, className, variant, size, ...props }: LogoProps) => {
+
+
+
    return (
-      <section className={cn(DrawerHeaderVariants({ variant, size }))} {...props}>
-         {children}
-      </section>
+      <article className={`logo__wrap`}>
+         <div
+            className={cn(LogoVariants({ variant, size }),)}
+            {...props}
+         >
+            {children}
+         </div>
+      </article>
    )
 }
 
-export default DrawerHeader
+export default Logo

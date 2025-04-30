@@ -21,3 +21,15 @@ export const fontDefault = localFont({
   display: 'swap',
   variable: '--font-default'
 })
+
+export const fontLogo = localFont({
+  src: [
+    {
+      path: './fonts/Modak-Regular.ttf',
+      weight: '400',
+      style: 'normal'
+    }
+  ],
+  display: 'swap',
+  variable: '--font-logo'
+})

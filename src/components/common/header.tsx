@@ -66,7 +66,8 @@ const Header = () => {
 
                   <Drawer variant="bgcolor" size="none">
                      <DrawerHeader>
-                        hoho
+                        <div className="text-light">라이트 텍스트 1</div>
+                        <div className="text-light-1 dark:text-dark-1">다크 모드 텍스트</div>
                      </DrawerHeader>
                      <DrawerContent>
                         <section>
@@ -75,7 +76,7 @@ const Header = () => {
                         <section>
                            {userInfo &&
                               <>
-                                 <p>{userInfo.email}</p>
+                                 <p className=''>{userInfo.email}</p>
                                  <p>{userInfo.displayName}</p>
                                  <p><button type='button' onClick={() => setUserLogout()}>로그아웃</button></p>
                               </>

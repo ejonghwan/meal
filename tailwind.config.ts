@@ -62,21 +62,17 @@ module.exports = {
         gray10: '#fbfbfb', // gray-50
         error: '#DF2101',
 
-        light: {
-          text: {
-            DEFAULT: 'red',
-            1: '#CED4DA',
-            2: '#868E96',
-            3: '#495057',
-          },
+        'light': { // light는 접두어 없이 써야됨 : 주의
+          DEFAULT: 'red', // light-text 
+          1: 'orange', // light-text-1
+          2: 'red',
+          3: '#495057',
         },
-        dark: {
-          text: {
-            DEFAULT: 'blue',
-            1: '#D9D9D9',
-            2: '#ACACAC',
-            3: '#595959',
-          },
+        'dark': { // dark는 접두어 씀 : 주의
+          DEFAULT: 'blue', // dark:text-dark
+          1: 'green', // dark:text-dark-1
+          2: '#ACACAC',
+          3: '#595959',
         },
       },
       opacity: {

@@ -1,5 +1,7 @@
+"use client"
+
 import React, { useEffect } from 'react'
-import { fontLogo } from '@/src/lib/ui/font'
+import { fontLogo } from '@/src/lib/ui/fonts'
 
 
 import { ComponentProps, ReactNode } from 'react'
@@ -26,8 +28,8 @@ const LogoVariants = cva(`logo ${fontLogo.variable}`, {
       variant: 'none',
       size: 'none'
    }
-}
-)
+})
+
 
 
 interface LogoProps extends ComponentProps<'div'>, VariantProps<typeof LogoVariants> {
@@ -45,7 +47,7 @@ const Logo = ({ children, className, variant, size, ...props }: LogoProps) => {
    return (
       <article className={`logo__wrap`}>
          <div
-            className={cn(LogoVariants({ variant, size }),)}
+            className={cn(LogoVariants({ variant, size, className }),)}
             {...props}
          >
             {children}

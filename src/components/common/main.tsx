@@ -7,26 +7,6 @@ import { onAuthStateChanged, signInWithEmailAndPassword, signInWithCustomToken }
 
 const Main = ({ children }) => {
 
-   // const { userInfo } = useLoad();
-
-   // useEffect(() => {
-
-   //    userInfo() && console.log('userInfo', userInfo)
-
-   // }, [])
-
-   useEffect(() => {
-      const unsubscribe = onAuthStateChanged(auth, (user) => {
-         if (user) {
-            console.log("🔥 로그인 되어 있음", auth.currentUser);
-         } else {
-            console.log("🙅 로그인 안 되어 있음");
-         }
-      });
-
-      return () => unsubscribe();
-   }, [])
-
    return (
       <main>
          {children}

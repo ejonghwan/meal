@@ -14,21 +14,28 @@ export interface UserInitialState {
 };
 
 
-
-
 export interface providerData {
    uid: string,
    email: string,
    providerId: string
    photoURL?: string
-   displayName?: string 
+   displayName?: string
    phoneNumber?: string
 }
+
+
 export interface Metadata {
    lastSignInTime: string,
    creationTime: string,
    lastRefreshTime: string
 }
+
+export interface UserPayload {
+   message: string;
+   status: number;
+   data: User
+}
+
 export interface User {
    uid: string,
    email: string,
@@ -38,13 +45,6 @@ export interface User {
    tokensValidAfterTime?: string
    providerData: providerData[]
 }
-
-
-
-
-
-
-
 
 
 

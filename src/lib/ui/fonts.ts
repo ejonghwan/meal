@@ -22,6 +22,8 @@ export const fontDefault = localFont({
   variable: '--font-default'
 })
 
+
+
 export const fontLogo = localFont({
   src: [
     {

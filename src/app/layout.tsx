@@ -1,7 +1,7 @@
 
 import { Metadata, Viewport } from "next";
 import { Providers } from "./providers";
-import { fontDefault } from '@/src/lib/ui/font'
+import { fontDefault } from '@/src/lib/ui/fonts'
 import "@/src/styles/globals.css";
 import DeviceTypeLayout from "@/src/components/common/device-type-layout";
 
@@ -31,7 +31,7 @@ export default function RootLayout({ children, }: { children: React.ReactNode; }
 		<html lang="ko" suppressHydrationWarning className={`${fontDefault.variable}`}>
 			<head />
 			{/* min-h-screen bg-background font-sans antialiased */}
-			<body className={`min-h-screen bg-background antialiased`}
+			<body className={`min-h-screen antialiased`}
 			>
 				<DeviceTypeLayout>
 					<Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>

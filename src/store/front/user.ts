@@ -1,14 +1,17 @@
 import { create } from 'zustand'
 import { devtools } from 'zustand/middleware';
 import { auth } from '@/src/data/firebaseClient'
+import { UserPayload } from '@/src/types/reducer/user'
 
 interface UserStore {
    authInfo: any;
    userInfo: any;
-   setUserInfo: any;
-   setUserLogin: any;
-   setUserLogout: any;
-   setAutuInfo: any;
+   loading: boolean,
+   setLoading: (loading: boolean) => void;
+   setUserInfo: (user: any) => void
+   setUserLogin: (user: any) => void
+   setUserLogout: () => void
+   setAutuInfo: (info: any) => void
 
 
    arr: { id: string, content: string }[],
@@ -21,30 +24,33 @@ interface UserStore {
 
 
 export const useUserStore = create(devtools<UserStore>(set => ({
+
    authInfo: null,
    userInfo: null,
+   loading: true,
 
+   setLoading: (loading) => set({ loading }),
    setAutuInfo: (payload) => set((prev: UserStore) => {
-      // localStorage.setItem("x-acc-token", user.data.stsTokenManager.accessToken);
-      return { ...prev, authInfo: payload.data }
+      return { authInfo: payload.data }
    }),
 
-   setUserInfo: (payload: any) => set((prev: UserStore) => {
-      console.log(payload)
-      return { ...prev, userInfo: payload }
+   setUserInfo: (payload: UserPayload) => set((prev: UserStore) => {
+      return { userInfo: payload, loading: false }
    }),
 
    // setUserLogin: (user) => set({ user }),
-   setUserLogin: (payload: any) => set((prev: UserStore) => {
-      return { ...prev, userInfo: payload.data }
+   setUserLogin: (payload: UserPayload) => set((prev: UserStore) => {
+      return { userInfo: payload.data }
    }),
 
-   setUserLogout: (user: any) => set((prev: UserStore) => {
+   setUserLogout: () => set((prev: UserStore) => {
+      if (!prev.userInfo) return;
       localStorage.removeItem("x-acc-token");
       auth.signOut();
-      return { ...prev, userInfo: {} }
+      return { userInfo: null }
       //logout
    }),
+
 
 
 
@@ -54,9 +60,11 @@ export const useUserStore = create(devtools<UserStore>(set => ({
       { id: '1', content: 'zz', }
    ],
    addArr: (val: string) => set((prev: UserStore) => {
-      console.log('user add ?', val, prev)
+      // console.log('user add ?', val, prev)
       return { arr: [...prev.arr, { content: val, id: new Date().getMilliseconds() + val }] }
    }),
+   // 위 처럼 arr: [] 이라면 이런 데이터는 불변을 지켜야하지만 
+   // 쥬스탄드 첫번째 뎁스는 내부적으로 얕게 병합해주기 떄문에 전체 상태를 날리지 않음. userInfo만 업데이트해줌 
    removeArr: (id: string) => set((prev: UserStore) => ({ arr: prev.arr.filter(e => e.id !== id) }))
 })))
 

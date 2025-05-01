@@ -1,21 +1,23 @@
 
 "use client"
 
-import React from 'react'
+import React, { useEffect } from 'react'
 import Main from '@/src/components/common/main'
 import { useUserStore } from '@/src/store/front/user'
 
 const HomePage = () => {
 
 
-   const { setUserLogout } = useUserStore()
+   const { userInfo, setUserLogout } = useUserStore()
+
+   useEffect(() => {
+   }, [userInfo])
 
    return (
       <div>HomePage
 
          <Main>
-            ahoho
-            <button type='button' onClick={() => setUserLogout()}>로그아웃</button>
+            메인
          </Main>
 
       </div>

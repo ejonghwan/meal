@@ -8,6 +8,7 @@ module.exports = {
     './src/components/**/*.{js,ts,jsx,tsx,mdx}',
     './src/app/**/*.{js,ts,jsx,tsx,mdx}',
     './node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}',
+    './node_modules/@nextui-org/react/**/*.{js,ts,jsx,tsx}'
   ],
   theme: {
     extend: {
@@ -63,7 +64,7 @@ module.exports = {
 
         light: {
           text: {
-            DEFAULT: '#212529',
+            DEFAULT: 'red',
             1: '#CED4DA',
             2: '#868E96',
             3: '#495057',
@@ -71,7 +72,7 @@ module.exports = {
         },
         dark: {
           text: {
-            DEFAULT: '#ECECEC',
+            DEFAULT: 'blue',
             1: '#D9D9D9',
             2: '#ACACAC',
             3: '#595959',

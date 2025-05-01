@@ -10,12 +10,10 @@ import Link, { LinkProps } from 'next/link'
 
 
 
-const DrawerVariants = cva('drawer_type1', {
+const DrawerVariants = cva('drawer__inner', {
    variants: {
       variant: {
-         bgcolor:
-            'text-white bg-primary disabled:bg-gray7 disabled:text-gray5 rounded-[99px]',
-
+         bgcolor: '',
          more: "",
          none: 'h-auto my-auto'
       },
@@ -44,7 +42,7 @@ const Drawer = ({ children, className, variant, size, ...props }: DrawerProps) =
    const { drawerIsOpen } = useUIStore();
 
    return (
-      <article className={`drawer_type1 ${drawerIsOpen ? 'active' : ''}`}>
+      <article className={`drawer type1 ${drawerIsOpen ? 'active' : ''}`}>
          <div
             className={cn(DrawerVariants({ variant, size }),)}
             {...props}

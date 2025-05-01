@@ -23,6 +23,7 @@
 
 
 
+
 @layer base {
    html {
       @apply text-black;
@@ -30,6 +31,10 @@
 
    html[lang='ko'] {
       @apply font-default;
+   }
+
+   .logo {
+      @apply font-logo
    }
 
    /* 스크롤바 생성시 웹페이지 위치 이동 방지 100vw - 스크롤바넓이 */

@@ -1,4 +1,4 @@
-.drawer_type1 {
+.drawer {
    transition: .2s ease-in-out;
    transform: translateX(300px);
    background-color: rgb(37, 37, 37);
@@ -9,6 +9,6 @@
    top: 0;
 }
 
-.drawer_type1.active {
+.drawer.active {
    transform: translateX(0px);
 }

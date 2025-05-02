@@ -50,29 +50,36 @@ module.exports = {
         secondary1: '#6DBC00', // secondary light color
         secondary2: '#D4F8A3', // secondary heavy color
         semantic: '#FF4343', // accent
-        gray1: '#242424', // gray-900
-        gray2: '#333333', // gray-800
-        gray3: '#666666', // gray-700
-        gray4: '#8B8B8B', // gray-600
-        gray5: '#A5A5A5', // gray-500
-        gray6: '#DFDFDF', // gray-400
-        gray7: '#ECECEC', // gray-300
-        gray8: '#f5f4f3', // gray-200
-        gray9: '#f7f7f7', // gray-100
-        gray10: '#fbfbfb', // gray-50
+
         error: '#DF2101',
 
         'light': { // light는 접두어 없이 써야됨 : 주의
           DEFAULT: 'red', // light-text 
           1: 'orange', // light-text-1
-          2: 'red',
-          3: '#495057',
+          gray1: '#242424', // gray-900
+          gray2: '#333333', // gray-800
+          gray3: '#666666', // gray-700
+          gray4: '#8B8B8B', // gray-600
+          gray5: '#A5A5A5', // gray-500
+          gray6: '#DFDFDF', // gray-400
+          gray7: '#ECECEC', // gray-300
+          gray8: '#f5f4f3', // gray-200
+          gray9: '#f7f7f7', // gray-100
+          gray10: '#fbfbfb', // gray-50
         },
         'dark': { // dark는 접두어 씀 : 주의
           DEFAULT: 'blue', // dark:text-dark
           1: 'green', // dark:text-dark-1
-          2: '#ACACAC',
-          3: '#595959',
+          gray1: '#242424', // gray-900
+          gray2: '#333333', // gray-800
+          gray3: '#666666', // gray-700
+          gray4: '#8B8B8B', // gray-600
+          gray5: '#A5A5A5', // gray-500
+          gray6: '#DFDFDF', // gray-400
+          gray7: '#ECECEC', // gray-300
+          gray8: '#f5f4f3', // gray-200
+          gray9: '#f7f7f7', // gray-100
+          gray10: '#fbfbfb', // gray-50
         },
       },
       opacity: {

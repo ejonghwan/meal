@@ -44,8 +44,7 @@
 
    /* tailwind reset css가 완벽하지 않아서 추가해야함 */
    input {
-      @apply appearance-none outline-none focus:outline-none
-      /* placeholder:text-gray4; */
+      @apply appearance-none outline-none focus:outline-none placeholder:text-light-gray4;
       -webkit-appearance: none;
       -webkit-border-radius: 0;
    }

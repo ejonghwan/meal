@@ -50,7 +50,7 @@ module.exports = {
         secondary1: '#6DBC00', // secondary light color
         secondary2: '#D4F8A3', // secondary heavy color
         semantic: '#FF4343', // accent
-
+        gray4: '#8B8B8B',
         error: '#DF2101',
 
         'light': { // light는 접두어 없이 써야됨 : 주의

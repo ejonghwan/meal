@@ -50,7 +50,16 @@ module.exports = {
         secondary1: '#6DBC00', // secondary light color
         secondary2: '#D4F8A3', // secondary heavy color
         semantic: '#FF4343', // accent
-        gray4: '#8B8B8B',
+        gray1: 'var(--color-gray1)', // gray-900
+        gray2: 'var(--color-gray2)', // gray-900
+        gray3: 'var(--color-gray3)', // gray-900
+        gray4: 'var(--color-gray4)', // gray-900
+        gray5: 'var(--color-gray5)', // gray-900
+        gray6: 'var(--color-gray6)', // gray-900
+        gray7: 'var(--color-gray7)', // gray-900
+        gray8: 'var(--color-gray8)', // gray-900
+        gray9: 'var(--color-gray9)', // gray-900
+        gray10: 'var(--color-gray10)', // gray-900
         error: '#DF2101',
 
         'light': { // light는 접두어 없이 써야됨 : 주의

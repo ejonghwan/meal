@@ -17,7 +17,7 @@ export async function GET(req: NextRequest, { params }: { params: { slug: string
     // const query = searchParams.get('query')
     // const todo = await getTodo(params.slug)
 
-    const todoDocRef = doc(db, "todos", params.slug)
+    const todoDocRef = doc(db, "restaurant", params.slug)
     const todoDocSnap = await getDoc(todoDocRef);
 
     let todo = null;
@@ -55,11 +55,11 @@ export async function PUT(req: NextRequest, { params }: { params: { slug: string
     // const todo = await updateTodo({ id: params.slug, title, is_done })
 
     // 글 체크
-    const todoDocRef = doc(db, "todos", params.slug)
+    const todoDocRef = doc(db, "restaurant", params.slug)
     const isTodo = await getDoc(todoDocRef);
     if (!isTodo) return null;
 
-    const todo = await updateDoc(doc(db, "todos", params.slug), { title, is_done });
+    const todo = await updateDoc(doc(db, "restaurant", params.slug), { title, is_done });
     console.log('단일 업데이트 ?', todo)
 
     // if(!todo) return NextResponse.json({ state:'FAILUE', message: '없는 글입니다.' }, { status: 400 })
@@ -83,12 +83,12 @@ export async function DELETE(req: NextRequest, { params }: { params: { slug: str
 
     // const todo = await deleteTodo(params.slug)
     // 글 체크
-    const todoDocRef = doc(db, "todos", params.slug)
+    const todoDocRef = doc(db, "restaurant", params.slug)
     const isTodo = await getDoc(todoDocRef);
     // if (!isTodo) return null;
     if (!isTodo) return NextResponse.json({ state: 'FAILUE', message: '없는 글입니다.' }, { status: 400 })
 
-    await deleteDoc(doc(db, "todos", params.slug))
+    await deleteDoc(doc(db, "restaurant", params.slug))
 
     const res = { state: 'SUCCES', message: '성공', data: isTodo }
     return NextResponse.json(res, { status: 200 })

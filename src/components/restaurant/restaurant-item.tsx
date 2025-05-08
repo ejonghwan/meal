@@ -1,7 +1,11 @@
 "use client"
 import React, { useState } from 'react'
 
-const TodoItem = ({ todo, setStateodos }) => {
+
+
+
+
+const RestaurantItem = ({ todo, setStateodos }) => {
 
     const [title, setTitle] = useState(todo.title)
     const [isdone, setIsdone] = useState(todo.is_done)
@@ -98,4 +102,4 @@ const TodoItem = ({ todo, setStateodos }) => {
     )
 }
 
-export default TodoItem
+export default RestaurantItem

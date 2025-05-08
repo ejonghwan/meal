@@ -1,47 +1,42 @@
 "use client"
 
 import React, { useEffect, useState } from "react";
-// import {div, divHeader, div, div, div, div} from "@nextui-org/react";
-// import { Todo } from '@/src/types/index';
-// import Input from '@/src/components/common/Input';
-// import Button from '@/src/components/common/Button';
-import TodoItem from "./TodoItem";
+import TodoItem from "./restaurant-item";
 
 import { Accordion, AccordionItem } from "@nextui-org/accordion";
 
 
-const Todosdiv = ({ todos }: { todos: Todo[] }) => {
 
 
+
+const RestaurantTable = ({ todos }) => {
 
   const [stateTodos, setStateodos] = useState(todos)
 
+  // const [text, setText] = useState('');
 
-
-  const [text, setText] = useState('');
-
-  const handleInputChange = (e: Event) => {
-    const target = e.target as HTMLInputElement;
-    setText(target.value)
-  }
+  // const handleInputChange = (e: Event) => {
+  //   const target = e.target as HTMLInputElement;
+  //   setText(target.value)
+  // }
 
 
 
 
-  const handleTodoSubmit = async () => {
-    const options = {
-      method: "POST",
-      headers: { "Content-Type": "application/json", },
-      body: JSON.stringify({ title: text, is_done: false })
-    }
+  // const handleTodoSubmit = async () => {
+  //   const options = {
+  //     method: "POST",
+  //     headers: { "Content-Type": "application/json", },
+  //     body: JSON.stringify({ title: text, is_done: false })
+  //   }
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/todos/`, options)
-    const data = await res.json();
-    // console.log('data???', data)
+  //   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/todos/`, options)
+  //   const data = await res.json();
+  //   // console.log('data???', data)
 
-    setStateodos(prev => [data.data, ...prev])
-    // console.log(res.json());
-  }
+  //   setStateodos(prev => [data.data, ...prev])
+  //   // console.log(res.json());
+  // }
 
 
 
@@ -92,7 +87,7 @@ const Todosdiv = ({ todos }: { todos: Todo[] }) => {
         </div>
 
         <div>
-          {stateTodos && stateTodos.map((todo: Todo) => (
+          {stateTodos && stateTodos.map((todo) => (
             <TodoItem todo={todo} key={todo.id} setStateodos={setStateodos} />
           ))}
         </div>
@@ -104,4 +99,4 @@ const Todosdiv = ({ todos }: { todos: Todo[] }) => {
 }
 
 
-export default Todosdiv;
+export default RestaurantTable;

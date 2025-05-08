@@ -6,6 +6,18 @@ import Section from '@/src/components/common/content-section'
 import RestaurantTable from '@/src/components/restaurant/restaurant-table';
 
 const RestaurantPage = () => {
+
+	/*
+		가게명
+		평 간단 
+		카테고리 
+		별점 
+		주소 
+		지도? 
+		이미지?
+
+	*/
+
 	return (
 		<ContentWrap>
 			<Section>

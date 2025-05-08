@@ -22,15 +22,12 @@ const RestaurantItem = ({ todo, setStateodos }) => {
 
     // update
     const handleTodoUpdate = async (id: string) => {
-
-
         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/todos/${id}`, {
             method: 'PUT',
             headers: { "Content-Type": "application/json", },
             body: JSON.stringify({ title: title, is_done: isdone })
 
         })
-
         res.json().then((data) => {
             if (data.state === "SUCCES") {
                 setIsEditing(!isEditing)
@@ -41,10 +38,8 @@ const RestaurantItem = ({ todo, setStateodos }) => {
                     }
                     return item
                 }))
-
             }
         })
-
     }
 
     // delete zz

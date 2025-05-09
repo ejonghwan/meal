@@ -115,6 +115,8 @@ export const onEditRestaurantAPI = async (data: restaurantData) => {
     }
 }
 
+
+
 // delete
 export const onDeleteRestaurantAPI = async (restaurantId: string) => {
     try {

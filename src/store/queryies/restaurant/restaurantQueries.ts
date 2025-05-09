@@ -1,31 +1,39 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { userKeys } from '@/src/store/queryies/user/userKeys'
-import { fetchUsers, fetchUserById, onUserLoadAPI, onUserLoginAPI, onUserAuthAPI, onUserDeleteAPI, onUserSignupAPI } from '@/src/store/queryies/user/userQueryFn'
+import { onRestaurantListAllAPI, onRestaurantListAPI } from '@/src/store/queryies/restaurant/restaurantQueryFn'
 
 
-type User = {
-   email: string;
-   password: string;
-};
-
-type LoginResponse = {
-   uid: string;
-   token: string;
-};
-
-
-
-// 유저 로드
-export const useUserLoad = (token: string) => {
+// 모든 글 로드
+export const useRestaurantListAll = () => {
    return useQuery({
       queryKey: userKeys.load(),
-      queryFn: () => onUserLoadAPI(token),
+      queryFn: () => onRestaurantListAllAPI(),
       // staleTime: 60 * 1000,
       staleTime: 3600,
       gcTime: 4000,
-      enabled: !!token,
    })
 }
+
+
+// 상세 로드
+export const useRestaurantList = (restauranId) => {
+   return useQuery({
+      queryKey: userKeys.load(),
+      queryFn: () => onRestaurantListAPI(restauranId),
+      // staleTime: 60 * 1000,
+      staleTime: 3600,
+      gcTime: 4000,
+   })
+}
+
+
+
+
+
+
+
+
+
 
 
 // 회원가입

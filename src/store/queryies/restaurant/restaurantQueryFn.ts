@@ -38,13 +38,13 @@ export const onRestaurantListAPI = async (restaurantId: string) => {
     try {
         const options: ExtendsRequestInit = {
             method: "GET",
-            headers: {'Content-Type': 'application/json',},
+            headers: { 'Content-Type': 'application/json', },
             credentials: 'include', // 쿠키를 포함하려면 'include'로 설정
             next: { tags: ['restaurant', 'detail'] },
             cache: "no-store",
         }
 
-        if(!restaurantId) throw new Error('Network response was not ok');
+        if (!restaurantId) throw new Error('Network response was not ok');
         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/restaurant/${restaurantId}`, options)
 
         if (!res.ok) { throw new Error('Network response was not ok'); }
@@ -75,7 +75,7 @@ export const onCreateRestaurantAPI = async (data: restaurantData) => {
 
         if (!res.ok) {
             throw new Error(parse.message || 'Network response was not ok');
-          
+
         }
         return parse;
     } catch (error) {
@@ -106,7 +106,7 @@ export const onEditRestaurantAPI = async (data: restaurantData) => {
 
         if (!res.ok) {
             throw new Error(parse.message || 'Network response was not ok');
-          
+
         }
         return parse;
     } catch (error) {

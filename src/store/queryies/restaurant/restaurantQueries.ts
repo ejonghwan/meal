@@ -36,47 +36,47 @@ export const useRestaurantList = (restauranId) => {
 
 
 
-// // 회원가입
-// export const useUserSignup = () => {
-//    return useMutation({
-//       mutationFn: (user: { email: string; password: string, displayName: string }) => {
-//          return onUserSignupAPI(user)
-//       },
-//    })
-// }
+// 회원가입
+export const useUserSignup = () => {
+   return useMutation({
+      mutationFn: (user: { email: string; password: string, displayName: string }) => {
+         return onUserSignupAPI(user)
+      },
+   })
+}
 
-// // 회원가입 인증
-// export const useUserSignupAuth = () => {
-//    return useMutation({
-//       mutationFn: (authInfo) => {
-//          return onUserAuthAPI(authInfo)
-//       },
-//       onError: (error) => {
-//          console.error('로그인 실패:', error);
-//       },
-//    })
-// }
-
-
-// // 로그인
-// export const useUserLogin = () => {
-//    return useMutation<LoginResponse, Error, User>({
-//       mutationFn: (user: User) => {
-//          return onUserLoginAPI(user)
-//       },
-//    })
-// }
+// 회원가입 인증
+export const useUserSignupAuth = () => {
+   return useMutation({
+      mutationFn: (authInfo) => {
+         return onUserAuthAPI(authInfo)
+      },
+      onError: (error) => {
+         console.error('로그인 실패:', error);
+      },
+   })
+}
 
 
-// // 유저 삭제
-// export const useUserDelete = () => {
-//    // if (!token) return;
-//    return useMutation({
-//       mutationFn: (authInfo: any) => {
-//          return onUserDeleteAPI(authInfo)
-//       },
-//    })
-// }
+// 로그인
+export const useUserLogin = () => {
+   return useMutation<LoginResponse, Error, User>({
+      mutationFn: (user: User) => {
+         return onUserLoginAPI(user)
+      },
+   })
+}
+
+
+// 유저 삭제
+export const useUserDelete = () => {
+   // if (!token) return;
+   return useMutation({
+      mutationFn: (authInfo: any) => {
+         return onUserDeleteAPI(authInfo)
+      },
+   })
+}
 
 
 

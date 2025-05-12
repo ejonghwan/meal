@@ -1,13 +1,16 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
-import { userKeys } from '@/src/store/queryies/user/userKeys'
-import { onRestaurantListAllAPI, onRestaurantListAPI } from '@/src/store/queryies/restaurant/restaurantQueryFn'
+import { restaurantKeys } from '@/src/store/queryies/restaurant/restaurantKeys'
+import { onRestaurantListLoadAPI, onRestaurantDetailLoadAPI, onCreateRestaurantAPI, onEditRestaurantAPI, onDeleteRestaurantAPI } from '@/src/store/queryies/restaurant/restaurantQueryFn'
+import { restaurantData } from '@/src/types/reducer/restaurant'
+
+
 
 
 // 모든 글 로드
-export const useRestaurantListAll = () => {
+export const useRestaurantListAll = (page: number) => {
    return useQuery({
-      queryKey: userKeys.load(),
-      queryFn: () => onRestaurantListAllAPI(),
+      queryKey: restaurantKeys.listAll(page),
+      queryFn: () => onRestaurantListLoadAPI(page),
       // staleTime: 60 * 1000,
       staleTime: 3600,
       gcTime: 4000,
@@ -16,10 +19,10 @@ export const useRestaurantListAll = () => {
 
 
 // 상세 로드
-export const useRestaurantList = (restauranId) => {
+export const useRestaurantList = (restauranId: string) => {
    return useQuery({
-      queryKey: userKeys.load(),
-      queryFn: () => onRestaurantListAPI(restauranId),
+      queryKey: restaurantKeys.detail(restauranId),
+      queryFn: () => onRestaurantDetailLoadAPI(restauranId),
       // staleTime: 60 * 1000,
       staleTime: 3600,
       gcTime: 4000,
@@ -28,57 +31,39 @@ export const useRestaurantList = (restauranId) => {
 
 
 
-
-
-
-
-
-
-
-
-// 회원가입
-export const useUserSignup = () => {
-   return useMutation({
-      mutationFn: (user: { email: string; password: string, displayName: string }) => {
-         return onUserSignupAPI(user)
-      },
-   })
-}
-
-// 회원가입 인증
-export const useUserSignupAuth = () => {
-   return useMutation({
-      mutationFn: (authInfo) => {
-         return onUserAuthAPI(authInfo)
-      },
-      onError: (error) => {
-         console.error('로그인 실패:', error);
-      },
-   })
-}
-
-
-// 로그인
-export const useUserLogin = () => {
-   return useMutation<LoginResponse, Error, User>({
-      mutationFn: (user: User) => {
-         return onUserLoginAPI(user)
-      },
-   })
-}
-
-
-// 유저 삭제
-export const useUserDelete = () => {
+// 글쓰기
+export const useCreateRestaurant = () => {
    // if (!token) return;
    return useMutation({
-      mutationFn: (authInfo: any) => {
-         return onUserDeleteAPI(authInfo)
+      mutationFn: (payload: restaurantData) => {
+         return onCreateRestaurantAPI(payload)
       },
    })
 }
 
 
+
+// 글 수정
+export const useEditRestaurant = () => {
+   // if (!token) return;
+   return useMutation({
+      mutationFn: (payload: restaurantData) => {
+         return onEditRestaurantAPI(payload)
+      },
+   })
+}
+
+
+
+// 글 삭제
+export const useDeleteRestaurant = () => {
+   // if (!token) return;
+   return useMutation({
+      mutationFn: (restauranId: string) => {
+         return onDeleteRestaurantAPI(restauranId)
+      },
+   })
+}
 
 
 

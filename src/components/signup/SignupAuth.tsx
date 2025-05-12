@@ -21,6 +21,12 @@ import {
 const SignupAuth = () => {
 
 
+    // const { mutate: userEmailAuth } = useUserSignupAuth({
+    //     onSuccess: (data) => {
+    //       console.log('이메일 인증 결과:', data.emailVerified); // 여기서 안전하게 접근 가능!
+    //     },
+    //   });
+
 
     const router = useRouter()
     const [emailVerify, setEmailVerify] = useState(true)
@@ -34,7 +40,7 @@ const SignupAuth = () => {
     const handleEmailAuthClick = (e: React.MouseEvent<HTMLButtonElement>) => {
         e.preventDefault();
         userEmailAuth(authInfo)
-
+        // 여기선 호출 직후라 데이터 없을 수 있음 : onSuccess 사용
         console.log('wpqkf', isEmailAuth?.data.emailVerified)
 
     }

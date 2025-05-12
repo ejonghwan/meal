@@ -8,8 +8,8 @@ import { restaurantData } from '@/src/types/reducer/restaurant'
 
 
 // restaurant
-// list all load
-export const onRestaurantListAllAPI = async () => {
+// list load
+export const onRestaurantListLoadAPI = async (page) => {
     try {
         const options: ExtendsRequestInit = {
             method: "GET",
@@ -23,7 +23,7 @@ export const onRestaurantListAllAPI = async () => {
             cache: "no-store",
         }
 
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/restaurant`, options)
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/restaurant/${page}`, options)
 
         if (!res.ok) { throw new Error('Network response was not ok'); }
         return res.json();
@@ -34,7 +34,7 @@ export const onRestaurantListAllAPI = async () => {
 }
 
 // detail load
-export const onRestaurantListAPI = async (restaurantId: string) => {
+export const onRestaurantDetailLoadAPI = async (restaurantId: string) => {
     try {
         const options: ExtendsRequestInit = {
             method: "GET",
@@ -56,7 +56,7 @@ export const onRestaurantListAPI = async (restaurantId: string) => {
 }
 
 
-// edit
+// 글 생성
 export const onCreateRestaurantAPI = async (data: restaurantData) => {
     try {
         const { title, content, rating, address, category, isEdit } = data
@@ -65,7 +65,7 @@ export const onCreateRestaurantAPI = async (data: restaurantData) => {
             method: "PUT",
             headers: { "Content-Type": "application/json", },
             body: JSON.stringify({ title, content, rating, address, category, isEdit }),
-            next: { tags: ['restaurant', 'edit'] },
+            next: { tags: ['restaurant', 'create'] },
             cache: "no-store",
             credentials: 'include'
         }
@@ -96,7 +96,7 @@ export const onEditRestaurantAPI = async (data: restaurantData) => {
             method: "POST",
             headers: { "Content-Type": "application/json", },
             body: JSON.stringify({ title, content, rating, address, category, isEdit, }),
-            next: { tags: ['restaurant', 'create'] },
+            next: { tags: ['restaurant', 'edit'] },
             cache: "no-store",
             credentials: 'include'
         }

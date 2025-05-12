@@ -3,7 +3,8 @@
 import React from 'react'
 import ContentWrap from '@/src/components/common/content-wrap'
 import Section from '@/src/components/common/content-section'
-import RestaurantTable from '@/src/components/restaurant/restaurant-table';
+import RestaurantCreateForm from '@/src/components/restaurant/restaurant-create-form';
+
 
 const RestaurantPage = () => {
 
@@ -21,7 +22,7 @@ const RestaurantPage = () => {
 	return (
 		<ContentWrap>
 			<Section>
-				<RestaurantTable todos={[{ id: "a", is_done: false, title: "a title", created_at: "24" }]} />
+				<RestaurantCreateForm />
 			</Section>
 
 

@@ -22,6 +22,8 @@ export const AuthProviderAdmin = ({ children }: { children: React.ReactNode }) =
    const { userInfo, setUserInfo } = useUserStore();
 
 
+   // 이슈 : Unauthorized 떴을 때 인증되지 않아 유저 로드는 못했는데 페이지를 팅겨내지 않음
+
    useEffect(() => {
 
       if (userLoadLoading) return; // 로딩 중이면 판단 보류

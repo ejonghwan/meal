@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useState, useEffect } from 'react'
-import { Input } from '@nextui-org/input'
+import { Input, Textarea } from '@nextui-org/input'
 import { Button } from '@nextui-org/button';
 import { restaurantData } from '@/src/types/reducer/restaurant'
 
@@ -61,7 +61,7 @@ const RestaurantCreateForm = () => {
                   value={restaurant.title}
                   onChange={handleChangeRestaurantInfo}
                />
-               <Input
+               <Textarea
                   label="content"
                   isRequired
                   className="w-full input"

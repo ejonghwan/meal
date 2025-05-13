@@ -21,6 +21,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       const unsubscribe = onAuthStateChanged(auth, async (user) => {
          if (user && !userInfo?.uid) {
 
+
+            user.getIdToken().then(token => {
+               console.log('token??', token, auth)
+            })
+
             console.log('로그인 된 유저', loading)
             setUserInfo({
                uid: user.uid,
@@ -43,6 +48,27 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
    }, [])
 
 
+   // onAuthStateChanged(user => {
+   //    if (user) {
+   //      // 2. ID 토큰 가져옴
+   //      user.getIdToken().then(token => {
+   //        // 3. 백엔드에 토큰 검증 요청
+   //        verifyToken(token)
+   //          .then(validUser => {
+   //            // 4. 성공 → 스토어에 로그인 처리
+   //            setUser(validUser)
+   //          })
+   //          .catch(() => {
+   //            // 5. 실패 → 로그아웃 처리
+   //            logoutUser()
+   //          })
+   //      })
+   //    } else {
+   //      logoutUser()
+   //    }
+   //  })
+
+
 
 
    // const { data, isSuccess } = useUserLoad(token || "")
@@ -58,34 +84,3 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
 
 
-
-// // components/AuthProvider.tsx
-// 'use client'
-
-// import { useEffect } from "react";
-// import { onAuthStateChanged, getIdToken } from "firebase/auth";
-// import { auth } from "@/src/data/firebaseClient";
-// import { useUserStore } from "@/src/store/front/user";
-// import { useUserLoad, useUsers, useUser, useUserLogin } from '@/src/store/queryies/user/userQueries'
-
-// export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
-
-//    const { setUserLogin } = useUserStore();
-//    const { data: userLoadData, isError: userLoadError, isSuccess: userLoadSuccess } = useUserLoad(token)
-
-//    useEffect(() => {
-//       const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
-//          if (firebaseUser) {
-//             const token = await getIdToken(firebaseUser);
-//             const userData = await onUserLoadAPI(token);
-//             setUserLogin(userData); // Zustand에 저장
-//          } else {
-//             setUserLogin(null);
-//          }
-//       });
-
-//       return () => unsubscribe();
-//    }, []);
-
-//    return <>{children}</>;
-// };

@@ -44,49 +44,11 @@ export const GET = withAuth(async (req: NextRequest, user) => {
         // with auth에서 error 뿜어줌
         console.error('e', e)
     }
-
-
-
-
 });
 
 
 
 
-
-
-
-
-// 기존소스
-// export const GET = async (req: NextRequest) => {
-
-//     try {
-//         // const { token } = await req.json();
-//         // if (!token) return NextResponse.json({ state: 'FAILUE', message: 'token을 넣어주세요', }, { status: 422 });
-
-
-//         // acc token check
-//         const accToken = req.headers.get('x-acc-token')
-//         // const accToken = req.headers.get('Authorization')
-//         if (!accToken) throw new Error('is not token')
-//         const checked = await accTokenCheck(accToken) as DecodedIdToken
-
-
-//         // 인증토큰 에러일 경우
-//         if (checked.status === 'fail') return NextResponse.json(checked, { status: 501 })
-
-//         // 인증토큰 정상일 경우
-//         const user = await auth().getUser(checked.uid)
-//         const res = {
-//             state: 'SUCCES',
-//             message: '성공',
-//             data: user,
-//         }
-//         return NextResponse.json(res, { status: 201 })
-//     } catch (e) {
-//         console.error('back user load error : ', e)
-//     }
-// }
 
 
 

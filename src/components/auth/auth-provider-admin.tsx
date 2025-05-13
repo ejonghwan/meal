@@ -22,7 +22,6 @@ export const AuthProviderAdmin = ({ children }: { children: React.ReactNode }) =
    const { userInfo, setUserInfo } = useUserStore();
 
 
-   // 이슈 : Unauthorized 떴을 때 인증되지 않아 유저 로드는 못했는데 페이지를 팅겨내지 않음
 
    useEffect(() => {
 
@@ -30,10 +29,11 @@ export const AuthProviderAdmin = ({ children }: { children: React.ReactNode }) =
 
       // 상태에 유저가 없는 경우
       if (!userInfo || userLoadError) {
-         alert('로그인이 필요한 페이지입니다.')
+         alert('로그인해주세요')
+         // setUserInfo(null)
          router.replace('/login');
       }
-   }, [userInfo])
+   }, [userInfo, userLoadError])
 
 
    useEffect(() => {
@@ -42,6 +42,7 @@ export const AuthProviderAdmin = ({ children }: { children: React.ReactNode }) =
       const unsubscribe = onAuthStateChanged(auth, async (user) => {
          if (!user || userLoadError) {
             console.error('❌ 서버 검증 실패');
+            // setUserInfo(null)
             router.replace('/login');
             return;
          }

@@ -16,11 +16,11 @@ interface DecodedIdToken {
 
 
 /*
-    @ path    GET /api/users/load
+    @ path    POST /api/users/load
     @ doc     유저 로드
     @ access  public
 */
-export const GET = withAuth(async (req: NextRequest, user) => {
+export const POST = withAuth(async (req: NextRequest, user) => {
     try {
 
         console.log('???user', user)

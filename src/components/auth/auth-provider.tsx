@@ -5,6 +5,7 @@ import { onAuthStateChanged, getIdToken } from "firebase/auth"
 import { auth } from "@/src/data/firebaseClient"
 import { useUserLoad } from '@/src/store/queryies/user/userQueries'
 import { useUserStore } from "@/src/store/front/user";
+import { verifyToken } from "@/src/components/auth/auth-verifyToken"
 // import { useRouter } from "next/navigation";
 
 
@@ -18,55 +19,92 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
 
    useEffect(() => {
+      // const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      //    if (user && !userInfo?.uid) {
+
+
+      //       user.getIdToken().then(token => {
+      //          console.log('token??', token, auth)
+      //       })
+
+      //       console.log('로그인 된 유저', loading)
+      //       setUserInfo({
+      //          uid: user.uid,
+      //          email: user.email,
+      //          metadata: user.metadata,
+      //          providerData: user.providerData
+      //       })
+      //       console.log('auth provider ?', user, userInfo)
+
+      //       // getIdToken true는 강제로 얻게하는거
+      //       // onAuthStateChanged함수만 실행해도 토큰이 만료되기 전에 갱신됨 
+      //    } else {
+      //       console.log('로그인 안 된 유저')
+      //       setUserInfo(null); // 없으면 null로 설정
+      //       setLoading(false); // 로딩 false로 바꾸기
+      //    }
+      // })
+
       const unsubscribe = onAuthStateChanged(auth, async (user) => {
-         if (user && !userInfo?.uid) {
+         if (user) {
 
+            // const token = await user.getIdToken();
+            try {
 
-            user.getIdToken().then(token => {
-               console.log('token??', token, auth)
-            })
+               const savedToken = localStorage.getItem('x-acc-token');
+               console.log('???', savedToken)
+               if (savedToken) {
+                  const verifiedUser = await verifyToken(savedToken);
+                  setUserInfo({
+                     uid: verifiedUser.data.uid,
+                     email: verifiedUser.data.email,
+                     metadata: verifiedUser.data.metadata,
+                     providerData: verifiedUser.data.providerData
+                  })
+               }
 
-            console.log('로그인 된 유저', loading)
-            setUserInfo({
-               uid: user.uid,
-               email: user.email,
-               metadata: user.metadata,
-               providerData: user.providerData
-            })
-            console.log('auth provider ?', user, userInfo)
-
-            // getIdToken true는 강제로 얻게하는거
-            // onAuthStateChanged함수만 실행해도 토큰이 만료되기 전에 갱신됨 
+               // const verifiedUser = await verifyToken(token);
+               // // setUserInfo(verifiedUser); // 스토어에 백엔드 검증된 정보 저장
+               // console.log('user?', verifiedUser)
+               // setUserInfo({
+               //    uid: verifiedUser.data.uid,
+               //    email: verifiedUser.data.email,
+               //    metadata: verifiedUser.data.metadata,
+               //    providerData: verifiedUser.data.providerData
+               // })
+            } catch (err) {
+               console.log('유효하지 않은 토큰. 로구ㅡ아웃 시킴');
+               // signOut(auth);
+            }
          } else {
-            console.log('로그인 안 된 유저')
-            setUserInfo(null); // 없으면 null로 설정
-            setLoading(false); // 로딩 false로 바꾸기
+            setUserInfo(null);
          }
-      })
+      });
+
+
+      // 며칠 후에도 로컬저장소에 있으면 로그인 성공 시킬건지 (이건 onAuthStateChanged가 indexDB 값으로 계속 로그인 시켜서 token 갱신하는듯) 
+      // 아니면 로컬저장소 토큰으로 검사를 할건지 
 
       return () => unsubscribe()
    }, [])
 
 
-   // onAuthStateChanged(user => {
+   // onAuthStateChanged(auth, async (user) => {
    //    if (user) {
-   //      // 2. ID 토큰 가져옴
-   //      user.getIdToken().then(token => {
-   //        // 3. 백엔드에 토큰 검증 요청
-   //        verifyToken(token)
-   //          .then(validUser => {
-   //            // 4. 성공 → 스토어에 로그인 처리
-   //            setUser(validUser)
-   //          })
-   //          .catch(() => {
-   //            // 5. 실패 → 로그아웃 처리
-   //            logoutUser()
-   //          })
-   //      })
+   //      const token = await user.getIdToken();
+   //      try {
+   //        const verifiedUser = await verifyToken(token);
+   //        setUserInfo(verifiedUser); // 스토어에 백엔드 검증된 정보 저장
+   //      } catch (err) {
+   //        console.log('유효하지 않은 토큰');
+   //        signOut(auth);
+   //      }
    //    } else {
-   //      logoutUser()
+   //      setUserInfo(null);
    //    }
-   //  })
+   //  });
+
+
 
 
 
@@ -81,6 +119,4 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
    return <>{children}</>
 }
-
-
 

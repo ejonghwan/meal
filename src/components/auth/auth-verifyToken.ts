@@ -1,12 +1,21 @@
-export const verifyToken = async (token: string) => {
-   const res = await fetch('/api/users/load', {
-      method: 'POST',
-      headers: {
-         Authorization: `Bearer ${token}`
-      }
-   });
+import { ExtendsRequestInit } from "@/src/types/request";
 
-   if (!res.ok) throw new Error('verifyToken.ts : Token invalid');
+export const verifyToken = async (token: string) => {
+   const options: ExtendsRequestInit = {
+      method: "POST",
+      headers: {
+         'Content-Type': 'application/json',
+         "x-acc-token": `Bearer ${token}`,
+         // "Authorization": `Bearer ${token}`,
+      },
+      credentials: 'include', // 쿠키를 포함하려면 'include'로 설정
+      next: { tags: ['user', 'load'] },
+      cache: "no-store",
+   }
+
+   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/users/load/`, options)
+
+   if (!res.ok) { throw new Error('Network response was not ok'); }
    return res.json();
 };
 

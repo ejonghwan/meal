@@ -55,7 +55,7 @@ export const onUserAuthAPI = async (user) => {
 export const onUserLoadAPI = async (token: string) => {
     try {
         const options: ExtendsRequestInit = {
-            method: "GET",
+            method: "POST",
             headers: {
                 'Content-Type': 'application/json',
                 "x-acc-token": `Bearer ${token}`,

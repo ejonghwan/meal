@@ -6,15 +6,16 @@ import { auth } from "@/src/data/firebaseClient"
 import { useUserLoad } from '@/src/store/queryies/user/userQueries'
 import { useUserStore } from "@/src/store/front/user";
 import { verifyToken } from "@/src/components/auth/auth-verifyToken"
-// import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
+
 
 
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
-   // const router = useRouter();
+   const router = useRouter();
    // const [token, setToken] = useState<string | null>(null)
-   const { userInfo, setUserInfo, setLoading, loading } = useUserStore();
+   const { userInfo, setUserInfo, setLoading, loading, setUserLogout } = useUserStore();
 
 
 
@@ -74,6 +75,9 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                // })
             } catch (err) {
                console.log('유효하지 않은 토큰. 로구ㅡ아웃 시킴');
+               alert('장시간 사용하지 않아 로그아웃 되었습니다.');
+               setUserLogout();
+               router.replace('/home');
                // signOut(auth);
             }
          } else {

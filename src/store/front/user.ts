@@ -1,3 +1,5 @@
+'use client';
+
 import { create } from 'zustand'
 import { devtools } from 'zustand/middleware';
 import { auth } from '@/src/data/firebaseClient'
@@ -43,13 +45,24 @@ export const useUserStore = create(devtools<UserStore>(set => ({
       return { userInfo: payload.data }
    }),
 
-   setUserLogout: () => set((prev: UserStore) => {
-      if (!prev.userInfo) return;
+
+   setUserLogout: () => {
+      // if (!prev.userInfo) return;
       localStorage.removeItem("x-acc-token");
-      auth.signOut();
-      return { userInfo: null }
+      auth.signOut().then(() => { set({ userInfo: null }) });
+      // set({ userInfo: null });
       //logout
-   }),
+   },
+
+
+
+   // setUserLogout: () => set((prev: UserStore) => {
+   //    if (!prev.userInfo) return;
+   //    localStorage.removeItem("x-acc-token");
+   //    auth.signOut().then(() =>  set({ userInfo: null }));
+   //    return { userInfo: null }
+   //    //logout
+   // }),
 
 
 

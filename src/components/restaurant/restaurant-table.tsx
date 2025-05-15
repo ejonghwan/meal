@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import TodoItem from "./restaurant-item";
 
-import { Accordion, AccordionItem } from "@nextui-org/accordion";
+import { Accordion, AccordionItem } from "@heroui/accordion";
 
 
 

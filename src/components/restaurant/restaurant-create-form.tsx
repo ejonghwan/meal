@@ -1,9 +1,9 @@
 "use client"
 
 import React, { useState, useEffect } from 'react'
-import { Input, Textarea } from '@nextui-org/input'
-import { Button } from '@nextui-org/button';
-import { restaurantData } from '@/src/types/reducer/restaurant'
+import { Input, Textarea } from "@heroui/input"
+import { Button } from "@heroui/button";
+import { restaurantData } from '@/src/types/data/restaurant'
 
 
 // title: string;
@@ -53,7 +53,7 @@ const RestaurantCreateForm = () => {
                <Input
                   label="title"
                   isRequired
-                  className="w-full input"
+                  className="w-full input_text"
                   defaultValue=""
                   type="text"
                   name='title'
@@ -61,10 +61,11 @@ const RestaurantCreateForm = () => {
                   value={restaurant.title}
                   onChange={handleChangeRestaurantInfo}
                />
+
                <Textarea
                   label="content"
                   isRequired
-                  className="w-full input"
+                  className="w-full input_textarea"
                   defaultValue=""
                   type="text"
                   name='content'
@@ -73,10 +74,10 @@ const RestaurantCreateForm = () => {
                   onChange={handleChangeRestaurantInfo}
                   autoComplete='on'
                />
+
                <Input
                   label="address"
-                  isRequired
-                  className="w-full input"
+                  className="w-full input_text"
                   defaultValue=""
                   type="text"
                   name='address'

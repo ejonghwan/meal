@@ -6,9 +6,9 @@ import { useRouter } from 'next/navigation'
 
 
 // import { signupEmail, loginEmail } from '@/src/data/firestore'
-import { Input } from "@nextui-org/input";
+import { Input } from "@heroui/input";
 
-import { Button, ButtonGroup } from "@nextui-org/button";
+import { Button, ButtonGroup } from "@heroui/button";
 import SignupAuth from '@/src/components/signup/SignupAuth';
 import { useUserStore } from '@/src/store/front/user'
 import { passwordChecked, englishChecked } from '@/src/utillity/utils';

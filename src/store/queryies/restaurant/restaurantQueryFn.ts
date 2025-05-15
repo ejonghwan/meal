@@ -1,7 +1,7 @@
 import { QueryFunction } from "@tanstack/query-core";
 import { ExtendsRequestInit } from '@/src/types/request/index';
 import { useUserStore } from "@/src/store/front/user";
-import { restaurantData } from '@/src/types/reducer/restaurant'
+import { restaurantData } from '@/src/types/data/restaurant'
 
 
 

@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { restaurantKeys } from '@/src/store/queryies/restaurant/restaurantKeys'
 import { onRestaurantListLoadAPI, onRestaurantDetailLoadAPI, onCreateRestaurantAPI, onEditRestaurantAPI, onDeleteRestaurantAPI } from '@/src/store/queryies/restaurant/restaurantQueryFn'
-import { restaurantData } from '@/src/types/reducer/restaurant'
+import { restaurantData } from '@/src/types/data/restaurant'
 
 
 
@@ -16,6 +16,7 @@ export const useRestaurantListAll = (page: number) => {
       gcTime: 4000,
    })
 }
+
 
 
 // 상세 로드

@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { devtools } from 'zustand/middleware';
 import { auth } from '@/src/data/firebaseClient'
-import { UserPayload } from '@/src/types/reducer/user'
+import { UserPayload } from '@/src/types/data/user'
 
 interface UserStore {
    authInfo: any;

@@ -7,15 +7,17 @@ import DrawerHeader from '@/src/components/common/drawer/drawer-header'
 import DrawerContent from '@/src/components/common/drawer/drawer-content'
 import { Button } from '@/src/components/common/Button'
 import Logo from '@/src/components/common/logo'
-import dynamic from 'next/dynamic'
-// import Darkmode from '@/src/components/common/darkmode'
-const Darkmode = dynamic(() => import('@/src/components/common/darkmode'), { ssr: false });
-
+import { Skeleton } from "@heroui/skeleton";
 import { useUIStore } from '@/src/store/front/ui'
 import ContentWrap from '@/src/components/common/content-wrap'
 import Section from '@/src/components/common/content-section'
 import { useUserStore } from '@/src/store/front/user'
 import Link from 'next/link'
+
+import dynamic from 'next/dynamic'
+// import Darkmode from '@/src/components/common/darkmode'
+const Darkmode = dynamic(() => import('@/src/components/common/darkmode'), { ssr: false });
+
 
 
 
@@ -52,7 +54,7 @@ const Header = () => {
 
                {/* mobile */}
                <section className='pc:hidden'>
-                  {loading && <p>로딩 중...</p>}
+                  {loading && <Skeleton className='flex rounded-full size-[40px]' />}
                   {userInfo ? (
                      <Button type='button' size='none' onClick={handleClick} className="rounded-[50%] bg-gray-700 text-white size-[40px] p-[5px]">
                         {userInfo?.providerData[0]?.displayName.slice(0, 1).toLocaleUpperCase()}

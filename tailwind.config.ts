@@ -49,6 +49,7 @@ module.exports = {
         secondary: '#8FE519', // secondary normal color
         secondary1: '#6DBC00', // secondary light color
         secondary2: '#D4F8A3', // secondary heavy color
+        rating: 'yellow', // secondary heavy color
         semantic: '#FF4343', // accent
         gray1: 'var(--color-gray1)', // gray-900
         gray2: 'var(--color-gray2)', // gray-900

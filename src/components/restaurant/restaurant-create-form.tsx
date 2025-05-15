@@ -4,7 +4,7 @@ import React, { useState, useEffect } from 'react'
 import { Input, Textarea } from "@heroui/input"
 import { Button } from "@heroui/button";
 import { restaurantData } from '@/src/types/data/restaurant'
-
+import { Slider } from "@heroui/slider";
 
 // title: string;
 //     content: string;
@@ -44,6 +44,7 @@ const RestaurantCreateForm = () => {
    useEffect(() => {
       console.log('restaurant?', restaurant)
    }, [restaurant])
+
 
    return (
       <>
@@ -87,6 +88,19 @@ const RestaurantCreateForm = () => {
                   autoComplete='on'
                />
 
+
+               <Slider
+                  className="max-w-md"
+                  color="warning"
+                  defaultValue={2.5}
+                  label="Temperature"
+                  maxValue={5}
+                  minValue={0}
+                  showSteps={true}
+                  size="lg"
+                  step={1}
+                  classNames={'label'}
+               />
                <Button className='w-full' type='submit' color="primary">글 생성</Button>
             </div>
 

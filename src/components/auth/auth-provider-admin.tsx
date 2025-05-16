@@ -19,7 +19,7 @@ export const AuthProviderAdmin = ({ children }: { children: React.ReactNode }) =
    }
 
    const { data: userLoadData, isError: userLoadError, isSuccess: userLoadSuccess, isLoading: userLoadLoading } = useUserLoad(token.current)
-   const { userInfo, setUserInfo } = useUserStore();
+   const { userInfo, setUserInfo, setUserLogout } = useUserStore();
 
 
 
@@ -31,6 +31,7 @@ export const AuthProviderAdmin = ({ children }: { children: React.ReactNode }) =
       if (!userInfo || userLoadError) {
          alert('로그인해주세요')
          // setUserInfo(null)
+         setUserLogout()
          router.replace('/login');
       }
    }, [userInfo, userLoadError])

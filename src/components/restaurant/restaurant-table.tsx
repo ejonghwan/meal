@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import TodoItem from "./restaurant-item";
 
 import { Accordion, AccordionItem } from "@heroui/accordion";
-
+import { useRestaurantListAll } from '@/src/store/queryies/restaurant/restaurantQueries'
 
 
 
@@ -12,7 +12,19 @@ import { Accordion, AccordionItem } from "@heroui/accordion";
 const RestaurantTable = ({ todos }) => {
 
   const [stateTodos, setStateodos] = useState(todos)
+  const { data: restaurantData, isError: restaurantError, isSuccess: restaurantSuccess, isLoading: restaurantLoading } = useRestaurantListAll(10)
 
+
+
+  useEffect(() => {
+    if(restaurantSuccess && restaurantData.data) {
+
+    }
+
+    if(restaurantError) {
+
+    }
+  }, [restaurantData, restaurantLoading])
   // const [text, setText] = useState('');
 
   // const handleInputChange = (e: Event) => {
@@ -100,3 +112,7 @@ const RestaurantTable = ({ todos }) => {
 
 
 export default RestaurantTable;
+
+function onRestaurantListLoadAPI(): { mutate: any; data: any; isError: any; isSuccess: any; } {
+  throw new Error("Function not implemented.");
+}

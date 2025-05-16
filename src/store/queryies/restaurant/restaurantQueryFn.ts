@@ -13,11 +13,7 @@ export const onRestaurantListLoadAPI = async (page) => {
     try {
         const options: ExtendsRequestInit = {
             method: "GET",
-            headers: {
-                'Content-Type': 'application/json',
-                // "x-acc-token": `Bearer ${token}`,
-                // "Authorization": `Bearer ${token}`,
-            },
+            headers: {'Content-Type': 'application/json',},
             credentials: 'include', // 쿠키를 포함하려면 'include'로 설정
             next: { tags: ['restaurant', 'listAll'] },
             cache: "no-store",

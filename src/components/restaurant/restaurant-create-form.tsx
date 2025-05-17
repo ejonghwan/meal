@@ -99,7 +99,7 @@ const RestaurantCreateForm = () => {
                   showSteps={true}
                   size="lg"
                   step={1}
-                  classNames={'label'}
+               // classNames={'label'}
                />
                <Button className='w-full' type='submit' color="primary">글 생성</Button>
             </div>

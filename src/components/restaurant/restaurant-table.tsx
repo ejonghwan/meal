@@ -17,11 +17,11 @@ const RestaurantTable = ({ todos }) => {
 
 
   useEffect(() => {
-    if(restaurantSuccess && restaurantData.data) {
+    if (restaurantSuccess && restaurantData.data) {
 
     }
 
-    if(restaurantError) {
+    if (restaurantError) {
 
     }
   }, [restaurantData, restaurantLoading])

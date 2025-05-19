@@ -1,0 +1,17 @@
+.data-\[fill-start\=true\]\:border-s-primary[data-fill-start=true] {
+   border-inline-start-color: yellow;
+}
+
+/* .ring-background {
+   --tw-ring-color: none;
+   background: white url('../../../public/globe.svg') no-repeat center/100%;
+} */
+
+.before\:rounded-full::before {
+   --tw-ring-color: none;
+   background: white url('../../../public/globe.svg') no-repeat center/100%;
+}
+
+.after\:bg-background::after {
+   background-color: transparent;
+}

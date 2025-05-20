@@ -17,6 +17,7 @@ import dynamic from 'next/dynamic'
 // import Darkmode from '@/src/components/common/darkmode'
 const Darkmode = dynamic(() => import('@/src/components/common/darkmode'), { ssr: false });
 import { PiSignOutBold, PiAlienDuotone, PiKeyDuotone, PiFinnTheHumanDuotone, PiHeartDuotone, PiAtBold, PiBabyBold, PiChatCircleDotsDuotone, PiLinuxLogoDuotone, PiReceiptDuotone, PiFolderOpenDuotone, PiSunDuotone, PiMoonStarsDuotone } from "react-icons/pi";
+import { useTheme } from 'next-themes'
 
 
 
@@ -24,7 +25,7 @@ const Header = () => {
 
    const { drawerIsOpen, setDrawerIsOpen } = useUIStore();
    const { loading, userInfo, setUserLogout } = useUserStore()
-
+   const { theme, setTheme } = useTheme()
 
    const handleClick = () => {
       console.log(drawerIsOpen)
@@ -147,11 +148,23 @@ const Header = () => {
                            {userInfo &&
                               <ul className='drawer__content--list'>
                                  <li className='drawer__content--item'>
-                                    <button type='button' onClick={() => setUserLogout()}>
+                                    <button type='button' onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}>
+
+                                       {theme === 'dark' ? (
+                                          <>
+                                             <PiMoonStarsDuotone className='size-[20px]' />
+                                             <span>어두운 화면</span>
+                                          </>
+                                       ) : (
+                                          <>
+                                             <PiSunDuotone className='size-[20px]' />
+                                             <span>밝은화면</span>
+                                          </>
+                                       )}
                                        {/* <PiSunDuotone className='size-[20px]' /> */}
                                        {/* <PiMoonStarsDuotone className='size-[20px]' /> */}
-                                       <Darkmode />
-                                       <span>어두운 화면</span>
+                                       {/* <Darkmode /> */}
+
                                     </button>
                                  </li>
                                  <li className='drawer__content--item'>

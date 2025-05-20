@@ -8,8 +8,6 @@ import { PiSunDuotone, PiMoonStarsDuotone } from 'react-icons/pi';
 
 
 const Darkmode = () => {
-
-
    const { theme, setTheme } = useTheme()
    // const [mounted, setMounted] = useState(false)
 

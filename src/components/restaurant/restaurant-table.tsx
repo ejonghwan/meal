@@ -12,19 +12,19 @@ import { useRestaurantListAll } from '@/src/store/queryies/restaurant/restaurant
 const RestaurantTable = ({ todos }) => {
 
   const [stateTodos, setStateodos] = useState(todos)
-  const { data: restaurantData, isError: restaurantError, isSuccess: restaurantSuccess, isLoading: restaurantLoading } = useRestaurantListAll(10)
+  // const { data: restaurantData, isError: restaurantError, isSuccess: restaurantSuccess, isLoading: restaurantLoading } = useRestaurantListAll(10)
 
 
 
-  useEffect(() => {
-    if (restaurantSuccess && restaurantData.data) {
+  // useEffect(() => {
+  //   if (restaurantSuccess && restaurantData.data) {
 
-    }
+  //   }
 
-    if (restaurantError) {
+  //   if (restaurantError) {
 
-    }
-  }, [restaurantData, restaurantLoading])
+  //   }
+  // }, [restaurantData, restaurantLoading])
   // const [text, setText] = useState('');
 
   // const handleInputChange = (e: Event) => {
@@ -113,6 +113,6 @@ const RestaurantTable = ({ todos }) => {
 
 export default RestaurantTable;
 
-function onRestaurantListLoadAPI(): { mutate: any; data: any; isError: any; isSuccess: any; } {
-  throw new Error("Function not implemented.");
-}
+// function onRestaurantListLoadAPI(): { mutate: any; data: any; isError: any; isSuccess: any; } {
+//   throw new Error("Function not implemented.");
+// }

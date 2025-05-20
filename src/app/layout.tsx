@@ -5,6 +5,7 @@ import { fontDefault } from '@/src/lib/ui/fonts'
 import "@/src/styles/globals.css";
 import DeviceTypeLayout from "@/src/components/common/device-type-layout";
 
+
 // import clsx from "clsx";
 
 export const metadata: Metadata = {

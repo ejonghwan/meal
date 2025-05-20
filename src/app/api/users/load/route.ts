@@ -23,7 +23,7 @@ interface DecodedIdToken {
 export const POST = withAuth(async (req: NextRequest, user) => {
     try {
 
-        console.log('???user', user)
+        // console.log('???user', user)
         // const customAccToken = await admin.auth().createCustomToken(user.uid) // 커스텀 토큰은 1시간
 
         return NextResponse.json({

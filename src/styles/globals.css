@@ -19,13 +19,15 @@
    --color-gray8: #8B8B8B;
    --color-gray9: #8B8B8B;
    --color-gray10: #8B8B8B;
+   --scroll-color: rgb(108, 108, 108);
+   --scroll-bg-color: rgb(71, 71, 71);
 }
 
 .dark {
    /* 다크 모드에서 변경 */
    --color-gray1: #8B8B8B;
    --color-gray2: #8B8B8B;
-   --color-gray3: #8B8B8B;
+   --color-gray3: #3d4047;
    --color-gray4: #8B8B8B;
    --color-gray5: #8B8B8B;
    --color-gray6: #8B8B8B;
@@ -33,6 +35,8 @@
    --color-gray8: #8B8B8B;
    --color-gray9: #8B8B8B;
    --color-gray10: #8B8B8B;
+   --scroll-color: rgb(108, 108, 108);
+   --scroll-bg-color: rgb(71, 71, 71);
 }
 
 
@@ -241,11 +245,6 @@
 
 
 
-
-
-
-
-
 .blind {
    position: absolute;
    left: -99999px;
@@ -258,7 +257,6 @@
    background: transparent !important;
    color: transparent !important;
 }
-
 
 
 

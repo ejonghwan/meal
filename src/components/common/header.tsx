@@ -1,7 +1,6 @@
 "use client"
 
 import React, { useEffect, useRef, useState } from 'react'
-import { PiTextAlignRightDuotone } from "react-icons/pi";
 import Drawer from '@/src/components/common/drawer/drawer'
 import DrawerHeader from '@/src/components/common/drawer/drawer-header'
 import DrawerContent from '@/src/components/common/drawer/drawer-content'
@@ -17,7 +16,7 @@ import Link from 'next/link'
 import dynamic from 'next/dynamic'
 // import Darkmode from '@/src/components/common/darkmode'
 const Darkmode = dynamic(() => import('@/src/components/common/darkmode'), { ssr: false });
-
+import { PiSignOutBold, PiAlienDuotone, PiKeyDuotone, PiFinnTheHumanDuotone, PiHeartDuotone, PiAtBold, PiBabyBold, PiChatCircleDotsDuotone, PiLinuxLogoDuotone, PiReceiptDuotone, PiFolderOpenDuotone, PiSunDuotone, PiMoonStarsDuotone } from "react-icons/pi";
 
 
 
@@ -29,7 +28,7 @@ const Header = () => {
 
    const handleClick = () => {
       console.log(drawerIsOpen)
-      setDrawerIsOpen()
+      setDrawerIsOpen(true)
    }
 
 
@@ -41,8 +40,9 @@ const Header = () => {
             <header className='header flex justify-between items-center'>
 
 
-
-               <Logo className={'text-[25px]'}>MEAL ?</Logo>
+               <Link href="/home">
+                  <Logo className={'text-[25px]'}>MEAL ?</Logo>
+               </Link>
 
                {/* pc */}
                <section className='mo:hidden'>
@@ -67,21 +67,100 @@ const Header = () => {
                   )}
 
                   <Drawer variant="bgcolor" size="none">
-                     <DrawerHeader>
-                        <div className="text-light">라이트 텍스트 1</div>
-                        <div className="text-light-1 dark:text-dark-1">다크 모드 텍스트</div>
+                     <DrawerHeader className='drawer__header--wrap'>
+                        {/* <div className="text-light">라이트 텍스트 1</div> */}
+                        {/* <div className="text-light-1 dark:text-dark-1">다크 모드 텍스트</div> */}
+
+                        <div className='drawer__userInfo--wrap'>
+                           <div className="flex items-center justify-center rounded-[50%] bg-gray-700 text-white size-[40px] p-[5px]">
+                              {userInfo?.providerData[0]?.displayName.slice(0, 1).toLocaleUpperCase()}
+                           </div>
+                           <div>
+                              <p className='drawer__userInfo--email'>{userInfo?.email}</p>
+                              <p className='drawer__userInfo--name'>{userInfo?.providerData[0]?.displayName}</p>
+                           </div>
+                        </div>
+
+
+
+
                      </DrawerHeader>
-                     <DrawerContent>
-                        <section>
-                           <Darkmode />
-                        </section>
-                        <section>
+                     <DrawerContent className='drawer__content--wrap'>
+
+                        <section className='drawer__content--sec'>
                            {userInfo &&
-                              <>
-                                 <p className=''>{userInfo.email}</p>
-                                 <p>{userInfo.displayName}</p>
-                                 <p><button type='button' onClick={() => setUserLogout()}>로그아웃</button></p>
-                              </>
+                              <ul className='drawer__content--list'>
+                                 <li className='drawer__content--item'>
+                                    <button type='button' onClick={() => setUserLogout()}>
+                                       {/* <PiAlienDuotone className='size-[20px]' /> */}
+                                       <PiLinuxLogoDuotone className='size-[22px]' />
+                                       <span>내 정보</span>
+                                    </button>
+                                 </li>
+                                 <li className='drawer__content--item'>
+                                    <button type='button' onClick={() => setUserLogout()}>
+                                       <PiReceiptDuotone className='size-[20px]' />
+                                       <span>내 글</span>
+                                    </button>
+                                 </li>
+                                 <li className='drawer__content--item'>
+                                    <button type='button' onClick={() => setUserLogout()}>
+                                       <PiChatCircleDotsDuotone className='size-[20px]' />
+                                       <span>내 댓글</span>
+                                    </button>
+                                 </li>
+                                 <li className='drawer__content--item'>
+                                    <button type='button' onClick={() => setUserLogout()}>
+                                       <PiAtBold className='size-[20px]' />
+                                       <span>이메일 변경</span>
+                                    </button>
+                                 </li>
+                                 <li className='drawer__content--item'>
+                                    <button type='button' onClick={() => setUserLogout()}>
+                                       <PiKeyDuotone className='size-[20px]' />
+                                       <span>비밀번호 변경</span>
+                                    </button>
+                                 </li>
+
+                              </ul>
+                           }
+                        </section>
+                        <section className='drawer__content--sec'>
+                           {userInfo &&
+                              <ul className='drawer__content--list'>
+                                 <li className='drawer__content--item'>
+                                    <button type='button' onClick={() => setUserLogout()}>
+                                       <PiFolderOpenDuotone className='size-[20px]' />
+                                       <span>내 그룹</span>
+                                    </button>
+                                 </li>
+                                 <li className='drawer__content--item'>
+                                    <button type='button' onClick={() => setUserLogout()}>
+                                       <PiHeartDuotone className='size-[20px]' />
+                                       <span>좋아요</span>
+                                    </button>
+                                 </li>
+                              </ul>
+                           }
+                        </section>
+                        <section className='drawer__content--sec'>
+                           {userInfo &&
+                              <ul className='drawer__content--list'>
+                                 <li className='drawer__content--item'>
+                                    <button type='button' onClick={() => setUserLogout()}>
+                                       {/* <PiSunDuotone className='size-[20px]' /> */}
+                                       {/* <PiMoonStarsDuotone className='size-[20px]' /> */}
+                                       <Darkmode />
+                                       <span>어두운 화면</span>
+                                    </button>
+                                 </li>
+                                 <li className='drawer__content--item'>
+                                    <button type='button' onClick={() => setUserLogout()}>
+                                       <PiSignOutBold className='size-[20px]' />
+                                       <span>로그아웃</span>
+                                    </button>
+                                 </li>
+                              </ul>
                            }
                         </section>
                      </DrawerContent>

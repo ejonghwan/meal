@@ -9,7 +9,8 @@
 
 .before\:rounded-full::before {
    --tw-ring-color: none;
-   background: white url('../../../public/globe.svg') no-repeat center/100%;
+   background: yellow url('../../../public/ico_star.png') no-repeat -15px -26px/154%;
+   border: 3px solid black;
 }
 
 .after\:bg-background::after {

@@ -38,7 +38,8 @@
 .drawer__userInfo--wrap {
    display: flex;
    align-items: center;
-   gap: 20px;
+   /* justify-content: space-between; */
+   gap: 15px;
 }
 
 .drawer__userInfo--email {

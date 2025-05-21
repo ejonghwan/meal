@@ -16,7 +16,7 @@ import Link from 'next/link'
 import dynamic from 'next/dynamic'
 // import Darkmode from '@/src/components/common/darkmode'
 const Darkmode = dynamic(() => import('@/src/components/common/darkmode'), { ssr: false });
-import { PiSignOutBold, PiAlienDuotone, PiKeyDuotone, PiFinnTheHumanDuotone, PiHeartDuotone, PiAtBold, PiBabyBold, PiChatCircleDotsDuotone, PiLinuxLogoDuotone, PiReceiptDuotone, PiFolderOpenDuotone, PiSunDuotone, PiMoonStarsDuotone } from "react-icons/pi";
+import { PiSignOutBold, PiAlienDuotone, PiKeyDuotone, PiFinnTheHumanDuotone, PiHeartDuotone, PiAtBold, PiBabyBold, PiChatCircleDotsDuotone, PiLinuxLogoDuotone, PiReceiptDuotone, PiFolderOpenDuotone, PiSunDuotone, PiMoonStarsDuotone, PiArrowRightBold } from "react-icons/pi";
 import { useTheme } from 'next-themes'
 
 
@@ -32,6 +32,10 @@ const Header = () => {
       setDrawerIsOpen(true)
    }
 
+   const handleLogout = () => {
+      setDrawerIsOpen(false)
+      setUserLogout()
+   }
 
 
 
@@ -61,10 +65,10 @@ const Header = () => {
                         {userInfo?.providerData[0]?.displayName.slice(0, 1).toLocaleUpperCase()}
                      </Button>
                   ) : (
-                     <>
-                        {!loading && <Link href={'/login'}>로그인</Link>}
-                        {!loading && <Link href={'/signup'}>회원가입</Link>}
-                     </>
+                     <div className='flex gap-[12px]'>
+                        {!loading && <Link href={'/login'} className='text-[14px]'>로그인</Link>}
+                        {!loading && <Link href={'/signup'} className='text-[14px]'>회원가입</Link>}
+                     </div>
                   )}
 
                   <Drawer variant="bgcolor" size="none">
@@ -80,14 +84,14 @@ const Header = () => {
                               <p className='drawer__userInfo--email'>{userInfo?.email}</p>
                               <p className='drawer__userInfo--name'>{userInfo?.providerData[0]?.displayName}</p>
                            </div>
+                           <div className='ml-auto flex items-center'>
+                              <button type='button' className='size-[20px]' onClick={() => setDrawerIsOpen(false)}>
+                                 <PiArrowRightBold className='size-full' />
+                              </button>
+                           </div>
                         </div>
-
-
-
-
                      </DrawerHeader>
                      <DrawerContent className='drawer__content--wrap'>
-
                         <section className='drawer__content--sec'>
                            {userInfo &&
                               <ul className='drawer__content--list'>
@@ -161,14 +165,12 @@ const Header = () => {
                                              <span>밝은화면</span>
                                           </>
                                        )}
-                                       {/* <PiSunDuotone className='size-[20px]' /> */}
-                                       {/* <PiMoonStarsDuotone className='size-[20px]' /> */}
                                        {/* <Darkmode /> */}
 
                                     </button>
                                  </li>
                                  <li className='drawer__content--item'>
-                                    <button type='button' onClick={() => setUserLogout()}>
+                                    <button type='button' onClick={handleLogout}>
                                        <PiSignOutBold className='size-[20px]' />
                                        <span>로그아웃</span>
                                     </button>

@@ -23,6 +23,10 @@ import {
     redirect,
     notFound
 } from 'next/navigation'
+import { PiEyeClosedDuotone, PiEyeDuotone } from "react-icons/pi";
+
+
+
 
 interface Props {
     // load: (token: string) => any;
@@ -59,7 +63,10 @@ const LoginForm = () => {
     const { userInfo, setUserInfo, setUserLogin, setUserLogout } = useUserStore();
     // const user = useUserStore((state) => state.user)
     const [user, setUser] = useState<User>({ email: '', password: '' })
+    const [isVisible, setIsVisible] = useState(false);
+    const toggleVisibility = () => setIsVisible(!isVisible);
     const router = useRouter()
+
 
     // admin 
     const { mutate: loginMutation, data: loginData, isError: loginIsError, isSuccess: loginIsSuccess } = useUserLogin()
@@ -145,12 +152,26 @@ const LoginForm = () => {
                         isRequired
                         className="w-full input"
                         defaultValue=""
-                        type="password"
+                        type={isVisible ? "text" : "password"}
                         name='password'
                         // placeholder="password"
                         value={user.password}
                         onChange={handleChangeUserInfo}
                         autoComplete='on'
+                        endContent={
+                            <button
+                                aria-label="toggle password visibility"
+                                className="focus:outline-none"
+                                type="button"
+                                onClick={toggleVisibility}
+                            >
+                                {isVisible ? (
+                                    <PiEyeDuotone className="text-2xl text-default-400 pointer-events-none" />
+                                ) : (
+                                    <PiEyeClosedDuotone className="text-2xl text-default-400 pointer-events-none" />
+                                )}
+                            </button>
+                        }
                     />
                     <Button className='w-full' type='submit' color="primary">로그인</Button>
                 </div>

@@ -8,12 +8,12 @@ import { Slider } from "@heroui/slider";
 import '@/src/styles/common/range.css'
 
 // title: string;
-//     content: string;
-//     rating: number;
-//     address: string;
-//     category: string;
-//     isEdit?: boolean;
-//     restaurantId?: string;
+// content: string;
+// rating: number;
+// address: string;
+// category: string;
+// isEdit?: boolean;
+// restaurantId?: string;
 
 
 const RestaurantCreateForm = () => {
@@ -55,101 +55,112 @@ const RestaurantCreateForm = () => {
       <>
          <form onSubmit={handleCreateRestaurant}>
 
-            <div className='flex flex-col gap-2 zz mt-[20px]'>
-               <Input
-                  label="title"
-                  isRequired
-                  className="w-full input_text"
-                  defaultValue=""
-                  type="text"
-                  name='title'
-                  // placeholder="email"
-                  value={restaurant.title}
-                  onChange={handleChangeRestaurantInfo}
-               />
+            <div className='flex flex-col gap-2 mt-[20px]'>
+               <article>
+                  <strong>asd</strong>
+                  <Input
+                     label="가게명"
+                     isRequired
+                     className="w-full input_text"
+                     defaultValue=""
+                     type="text"
+                     name='title'
+                     // placeholder="email"
+                     value={restaurant.title}
+                     onChange={handleChangeRestaurantInfo}
+                  />
+               </article>
 
-               <Textarea
-                  label="content"
-                  isRequired
-                  className="w-full input_textarea"
-                  defaultValue=""
-                  type="text"
-                  name='content'
-                  // placeholder="password"
-                  value={restaurant.content}
-                  onChange={handleChangeRestaurantInfo}
-                  autoComplete='on'
-               />
+               <article>
+                  <strong>asd</strong>
+                  <Textarea
+                     label="리뷰"
+                     isRequired
+                     className="w-full input_textarea"
+                     defaultValue=""
+                     type="text"
+                     name='content'
+                     placeholder="200자 이내로 입력해주세요"
+                     value={restaurant.content}
+                     onChange={handleChangeRestaurantInfo}
+                     autoComplete='on'
+                     maxLength={10}
+                  />
+               </article>
 
-               <Input
-                  label="address"
-                  className="w-full input_text"
-                  defaultValue=""
-                  type="text"
-                  name='address'
-                  // placeholder="password"
-                  value={restaurant.address}
-                  onChange={handleChangeRestaurantInfo}
-                  autoComplete='on'
-               />
+               <article>
+                  <strong>asd</strong>
+                  <Input
+                     label="주소"
+                     className="w-full input_text"
+                     defaultValue=""
+                     type="text"
+                     name='address'
+                     // placeholder="password"
+                     value={restaurant.address}
+                     onChange={handleChangeRestaurantInfo}
+                     autoComplete='on'
+                  />
+               </article>
 
+               <article>
+                  <strong>asd</strong>
+                  <Slider
+                     onChange={handleChangeRating}
+                     // className="max-w-md"
+                     // color="warning"
+                     defaultValue={3}
+                     // label="별점"
+                     aria-label='별점'
+                     maxValue={5}
+                     minValue={0}
+                     showSteps={true}
+                     size="md"
+                     step={1}
+                     // classNames={'label'}
+                     classNames={{
+                        base: "max-w-md",
+                        // filler: "bg-gradient-to-r from-primary-500 to-secondary-400",
 
-               <Slider
-                  onChange={handleChangeRating}
-                  // className="max-w-md"
-                  // color="warning"
-                  defaultValue={3}
-                  label="asdasd"
-                  maxValue={5}
-                  minValue={0}
-                  showSteps={true}
-                  size="lg"
-                  step={1}
-                  // classNames={'label'}
-                  classNames={{
-                     base: "max-w-md",
-                     // filler: "bg-gradient-to-r from-primary-500 to-secondary-400",
-
-                     labelWrapper: "mb-2",
-                     label: "font-medium text-default-700 text-medium",
-                     // value: "font-medium text-default-500 text-small",
-                     thumb: [
-                        "transition-size",
-                        "bg-gradient-to-r from-secondary-400 to-primary-500",
-                        "data-[dragging=true]:shadow-lg data-[dragging=true]:shadow-black/20",
-                        "data-[dragging=true]:w-7 data-[dragging=true]:h-7 data-[dragging=true]:after:h-6 data-[dragging=true]:after:w-6",
-                     ],
-                     // step: "data-[in-range=true]:bg-black/30 dark:data-[in-range=true]:bg-white/50",
-                     // thumb: "bg-white p-[0px] rounded-[0] border-0",
-                     step: "bg-[yellow]",
-                     track: "bg-gray-800 ",
-                     mark: 'bg-red-500 ',
-                     filler: "bg-[yellow]",
-
-                  }}
-
-                  // formatOptions={{ style: "currency", currency: "USD" }}
-                  // showOutline={true}
-                  // showTooltip={true}
-                  tooltipProps={{
-                     offset: 10,
-                     placement: "bottom",
-                     classNames: {
-                        base: [
-                           // arrow color
-                           "before:bg-[yellow]",
+                        labelWrapper: "mb-2",
+                        label: "font-medium text-default-700 text-medium",
+                        // value: "font-medium text-default-500 text-small",
+                        thumb: [
+                           "transition-size",
+                           "bg-gradient-to-r from-secondary-400 to-primary-500",
+                           "data-[dragging=true]:shadow-lg data-[dragging=true]:shadow-black/20",
+                           "data-[dragging=true]:w-7 data-[dragging=true]:h-7 data-[dragging=true]:after:h-6 data-[dragging=true]:after:w-6",
                         ],
-                        content: [
-                           "py-2 shadow-xl",
-                           "bg-[yellow]",
-                           "text-red-500"
-                        ],
-                     },
-                  }}
-                  tooltipValueFormatOptions={{ style: "decimal", maximumFractionDigits: 0 }}
+                        // step: "data-[in-range=true]:bg-black/30 dark:data-[in-range=true]:bg-white/50",
+                        // thumb: "bg-white p-[0px] rounded-[0] border-0",
+                        step: "bg-[yellow]",
+                        track: "bg-gray-800 ",
+                        mark: 'bg-red-500 ',
+                        filler: "bg-[yellow]",
 
+                     }}
 
-               />
+                     // formatOptions={{ style: "currency", currency: "USD" }}
+                     // showOutline={true}
+                     // showTooltip={true}
+                     tooltipProps={{
+                        offset: 10,
+                        placement: "bottom",
+                        classNames: {
+                           base: [
+                              // arrow color
+                              "before:bg-[yellow]",
+                           ],
+                           content: [
+                              "py-2 shadow-xl",
+                              "bg-[yellow]",
+                              "text-red-500"
+                           ],
+                        },
+                     }}
+                     tooltipValueFormatOptions={{ style: "decimal", maximumFractionDigits: 0 }}
+                  />
+               </article>
 
 
 

@@ -5,6 +5,7 @@ import { Input, Textarea } from "@heroui/input"
 import { Button } from "@heroui/button";
 import { restaurantData } from '@/src/types/data/restaurant'
 import { Slider } from "@heroui/slider";
+import { PiStarFill } from "react-icons/pi";
 import '@/src/styles/common/range.css'
 
 // title: string;
@@ -44,6 +45,10 @@ const RestaurantCreateForm = () => {
 
    const handleChangeRating = (v) => {
       console.log('??? rating', v)
+      setRestaurant({
+         ...restaurant,
+         rating: v
+      })
    }
 
    useEffect(() => {
@@ -65,7 +70,7 @@ const RestaurantCreateForm = () => {
                      defaultValue=""
                      type="text"
                      name='title'
-                     // placeholder="email"
+                     placeholder="가게명은 정확하게 입력해주세요"
                      value={restaurant.title}
                      onChange={handleChangeRestaurantInfo}
                   />
@@ -80,7 +85,7 @@ const RestaurantCreateForm = () => {
                      defaultValue=""
                      type="text"
                      name='content'
-                     placeholder="200자 이내로 입력해주세요"
+                     placeholder="소감을 200자 이내로 입력해주세요"
                      value={restaurant.content}
                      onChange={handleChangeRestaurantInfo}
                      autoComplete='on'
@@ -104,7 +109,11 @@ const RestaurantCreateForm = () => {
                </article>
 
                <article>
-                  <strong>asd</strong>
+                  <div className='flex items-center'>
+                     <strong>별점</strong>
+                     <div><PiStarFill className='text-yellow-200' /></div>
+                     <div>{restaurant.rating}</div>
+                  </div>
                   <Slider
                      onChange={handleChangeRating}
                      // className="max-w-md"
@@ -160,6 +169,30 @@ const RestaurantCreateForm = () => {
                      }}
                      tooltipValueFormatOptions={{ style: "decimal", maximumFractionDigits: 0 }}
                   />
+               </article>
+
+
+               <article>
+
+                  카테고리는 한종류로 해야되고, 먹은 메뉴는 또 다른 카테고리로 해야겠네 ;;
+                  <strong>asd</strong>
+                  {/* <div className="flex flex-col gap-1 w-full">
+                     <CheckboxGroup
+                        className="gap-1"
+                        label="Select amenities"
+                        orientation="horizontal"
+                        value={groupSelected}
+                        onChange={setGroupSelected}
+                     >
+                        <CustomCheckbox value="wifi">Wifi</CustomCheckbox>
+                        <CustomCheckbox value="tv">TV</CustomCheckbox>
+                        <CustomCheckbox value="kitchen">Kitchen</CustomCheckbox>
+                        <CustomCheckbox value="parking">Parking</CustomCheckbox>
+                        <CustomCheckbox value="pool">Pool</CustomCheckbox>
+                        <CustomCheckbox value="gym">Gym</CustomCheckbox>
+                     </CheckboxGroup>
+                     <p className="mt-4 ml-1 text-default-500">Selected: {groupSelected.join(", ")}</p>
+                  </div> */}
                </article>
 
 

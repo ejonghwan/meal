@@ -7,6 +7,7 @@ import { restaurantData } from '@/src/types/data/restaurant'
 import { Slider } from "@heroui/slider";
 import { PiStarFill } from "react-icons/pi";
 import '@/src/styles/common/range.css'
+import CategoryWrap from '../common/category/category-wrap';
 
 // title: string;
 // content: string;
@@ -174,25 +175,11 @@ const RestaurantCreateForm = () => {
 
                <article>
 
-                  카테고리는 한종류로 해야되고, 먹은 메뉴는 또 다른 카테고리로 해야겠네 ;;
+                  {/* 카테고리는 한종류로 해야되고, 먹은 메뉴는 또 다른 카테고리로 해야겠네 ;; */}
                   <strong>asd</strong>
-                  {/* <div className="flex flex-col gap-1 w-full">
-                     <CheckboxGroup
-                        className="gap-1"
-                        label="Select amenities"
-                        orientation="horizontal"
-                        value={groupSelected}
-                        onChange={setGroupSelected}
-                     >
-                        <CustomCheckbox value="wifi">Wifi</CustomCheckbox>
-                        <CustomCheckbox value="tv">TV</CustomCheckbox>
-                        <CustomCheckbox value="kitchen">Kitchen</CustomCheckbox>
-                        <CustomCheckbox value="parking">Parking</CustomCheckbox>
-                        <CustomCheckbox value="pool">Pool</CustomCheckbox>
-                        <CustomCheckbox value="gym">Gym</CustomCheckbox>
-                     </CheckboxGroup>
-                     <p className="mt-4 ml-1 text-default-500">Selected: {groupSelected.join(", ")}</p>
-                  </div> */}
+                  <div className="flex flex-col gap-1 w-full">
+                     <CategoryWrap />
+                  </div>
                </article>
 
 

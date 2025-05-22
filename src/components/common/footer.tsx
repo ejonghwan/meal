@@ -1,8 +1,20 @@
 import React from 'react'
+import ContentWrap from '@/src/components/common/content-wrap'
+import Section from '@/src/components/common/content-section'
+import Link from 'next/link'
+import Logo from '@/src/components/common/logo'
 
-const Footer = () => {
+const Footer = ({ className }) => {
    return (
-      <div>Footer</div>
+      <footer className={`${className ? className : ''} bg-[#18181b]`}>
+         <ContentWrap>
+            <Section variant='footer' size='large' className='py-[40px]'>
+               <Link href="/home">
+                  <Logo className={'text-[25px] text-gray3'}>MEAL ?</Logo>
+               </Link>
+            </Section>
+         </ContentWrap>
+      </footer>
    )
 }
 

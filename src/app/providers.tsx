@@ -26,7 +26,7 @@ export function Providers({ children, themeProps }: ProvidersProps) {
 
 	return (
 		<QueryClientProvider client={queryClient}>
-			<HeroUIProvider navigate={router.push}>
+			<HeroUIProvider className="h-full flex flex-col" navigate={router.push}>
 				<NextThemesProvider {...themeProps}>{children}</NextThemesProvider>
 			</HeroUIProvider>
 			<ReactQueryDevtools initialIsOpen={false} />

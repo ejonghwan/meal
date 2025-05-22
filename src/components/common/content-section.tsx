@@ -7,7 +7,7 @@ import { cn } from '@/src/utillity/cn'
 
 
 interface SectionProps extends ComponentProps<'div'>, VariantProps<typeof SectionVariants> {
-   variant?: 'content' | 'header' | 'none';
+   variant?: 'content' | 'header' | 'footer' | 'none';
    size?: 'large' | 'medium' | 'small' | 'none';
    className?: string;
    children: React.ReactNode;
@@ -19,6 +19,7 @@ const SectionVariants = cva('sec__inner', {
       variant: {
          content: 'py-[40px]',
          header: 'py-[20px]',
+         footer: '',
          none: 'h-auto my-auto'
          // ...형태가 추가되면 아래로 추가
       },
@@ -40,7 +41,7 @@ const SectionVariants = cva('sec__inner', {
 
 const Section = ({ children, className = '', variant, size, ...props }: SectionProps) => {
    return (
-      <section className={cn(SectionVariants({ variant, size }))} {...props}>
+      <section className={cn(SectionVariants({ variant, size, className }))} {...props}>
          {children}
       </section>
    )

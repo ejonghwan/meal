@@ -41,7 +41,7 @@ const Header = () => {
 
    return (
       <ContentWrap>
-         <Section variant='header' size='large' className='border-1 border-b-gray-300'>
+         <Section variant='header' size='large' className=''>
             <header className='header flex justify-between items-center'>
 
 

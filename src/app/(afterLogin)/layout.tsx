@@ -10,7 +10,7 @@ const layout = ({ children }) => {
          <div>
             {children}
          </div>
-         <Footer />
+         <Footer className="mt-auto" />
       </AuthProviderAdmin>
 
    )

@@ -178,7 +178,7 @@ const RestaurantCreateForm = () => {
                   {/* 카테고리는 한종류로 해야되고, 먹은 메뉴는 또 다른 카테고리로 해야겠네 ;; */}
                   <strong>asd</strong>
                   <div className="flex flex-col gap-1 w-full">
-                     <CategoryWrap />
+                     <CategoryWrap category={[{ description: 'test', value: 'test11' }]} setRestaurant={setRestaurant}/>
                   </div>
                </article>
 

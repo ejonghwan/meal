@@ -1,40 +1,46 @@
 "use client"
-import React, { memo } from 'react'
+import React, { memo, useEffect } from 'react'
 import { RadioGroup, Radio } from "@heroui/radio";
 import CategoryItem from '@/src/components/common/category/category-item'
+import { restaurantData } from '@/src/types/data/restaurant'
 
-const CategoryWrap = () => {
+interface CategoryItemType {
+   description: string;
+   value: string;
+}
+interface CategoryWrapProps {
+   category: CategoryItemType[];
+   setRestaurant: () => React.Dispatch<React.SetStateAction<restaurantData>>;
+}
+
+
+const CategoryWrap = ({ category, setRestaurant }: CategoryWrapProps) => {
+
+   
+   useEffect(() => {
+      // setRestaurant()
+   }, [])
+   const handleChangeCategory = (e: React.ChangeEvent<HTMLInputElement>) => {
+      console.log('카테고리?', e.target.value)
+      // type error
+      // setRestaurant(prev => ({
+      //    ...prev, 
+      //    category: e.target.value
+      // }))
+   }
    return (
       <>
          <RadioGroup description="카테고리를 골라주세요" label="카테고리">
             <div className='flex gap-[5px] flex-wrap'>
-               <CategoryItem description="aa" value="전체">
-                  전체
-               </CategoryItem>
-               <CategoryItem description="bb" value="치킨">
-                  치킨
-               </CategoryItem>
-               <CategoryItem description="cc" value="한식">
-                  한식
-               </CategoryItem>
-               <CategoryItem description="cc" value="카페/디저트">
-                  카페/디저트
-               </CategoryItem>
-               <CategoryItem description="cc" value="중식">
-                  중식
-               </CategoryItem>
-               <CategoryItem description="cc" value="분식">
-                  분식
-               </CategoryItem>
-               <CategoryItem description="cc" value="샐러드">
-                  샐러드
-               </CategoryItem>
-               <CategoryItem description="cc" value="일식">
-                  일식
-               </CategoryItem>
-               <CategoryItem description="cc" value="햄버거">
-                  햄버거
-               </CategoryItem>
+
+               {category.map((item, idx) => {
+                  return (
+                     <CategoryItem key={idx} description={item.description} value={item.value} onChange={() => handleChangeCategory(e)}>
+                        {item.value}
+                     </CategoryItem>
+                  )
+               })}
+               
             </div>
          </RadioGroup>
       </>

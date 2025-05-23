@@ -8,7 +8,7 @@ interface RestaurantStore {
    loading: boolean,
    restaurant: restaurantData[] | null;
 
-   setRestaurantData: (payload: UserPayload) => void;
+   // setRestaurantData: (payload: UserPayload) => void;
    setLoading: (loading: boolean) => void;
 
 
@@ -22,8 +22,8 @@ export const useRestaurantStore = create(devtools<RestaurantStore>(set => ({
    restaurant: null,
 
    setLoading: (loading) => set({ loading }),
-   setRestaurantData: (payload) => set((prev: restaurantData) => {})
-
+   // setRestaurantData: (payload) => set((prev: restaurantData) => {})
+   // title, content, rating, address, category, isEdit 
 
 
    }),

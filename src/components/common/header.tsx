@@ -24,7 +24,7 @@ import { useTheme } from 'next-themes'
 const Header = () => {
 
    const { drawerIsOpen, setDrawerIsOpen } = useUIStore();
-   const { loading, userInfo, setUserLogout } = useUserStore()
+   const { loading, userInfo, isAccToken, setUserLogout } = useUserStore()
    const { theme, setTheme } = useTheme()
 
    const handleClick = () => {
@@ -36,6 +36,10 @@ const Header = () => {
       setDrawerIsOpen(false)
       setUserLogout()
    }
+
+   useEffect(() => {
+      console.log(loading)
+   }, [loading])
 
 
 
@@ -59,15 +63,20 @@ const Header = () => {
 
                {/* mobile */}
                <section className='pc:hidden'>
-                  {loading && <Skeleton className='flex rounded-full size-[40px]' />}
-                  {userInfo ? (
+                  {/* {loading && <Skeleton className='flex rounded-full size-[40px]' />} */}
+                  {!userInfo && <Skeleton className='flex rounded-full size-[40px]' />}
+                  {/* {isAccToken === null && <Skeleton className='flex rounded-full size-[40px]' />} */}
+
+                  {userInfo && (
                      <Button type='button' size='none' onClick={handleClick} className="rounded-[50%] bg-gray-700 text-white size-[40px] p-[5px]">
                         {userInfo?.providerData[0]?.displayName.slice(0, 1).toLocaleUpperCase()}
                      </Button>
-                  ) : (
+                  )}
+
+                  {isAccToken === false && (
                      <div className='flex gap-[12px]'>
-                        {!loading && <Link href={'/login'} className='text-[14px]'>로그인</Link>}
-                        {!loading && <Link href={'/signup'} className='text-[14px]'>회원가입</Link>}
+                        {!userInfo && <Link href={'/login'} className='text-[14px]'>로그인</Link>}
+                        {!userInfo && <Link href={'/signup'} className='text-[14px]'>회원가입</Link>}
                      </div>
                   )}
 

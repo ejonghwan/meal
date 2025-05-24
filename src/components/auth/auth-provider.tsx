@@ -5,7 +5,7 @@ import { onAuthStateChanged, getIdToken } from "firebase/auth"
 import { auth } from "@/src/data/firebaseClient"
 import { useUserLoad } from '@/src/store/queryies/user/userQueries'
 import { useUserStore } from "@/src/store/front/user";
-import { verifyToken } from "@/src/components/auth/auth-verifyToken"
+import { verifyToken } from "@/src/components/auth/auth-verifyToken-api"
 import { useRouter } from "next/navigation";
 
 
@@ -15,7 +15,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
    const router = useRouter();
    // const [token, setToken] = useState<string | null>(null)
-   const { userInfo, setUserInfo, setLoading, loading, setUserLogout } = useUserStore();
+   const { userInfo, setUserInfo, setLoading, setUserLogout, setIsAccToken } = useUserStore();
 
    useEffect(() => {
       const unsubscribe = onAuthStateChanged(auth, async (user) => {
@@ -27,6 +27,8 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                const savedToken = localStorage.getItem('x-acc-token');
                console.log('???', savedToken)
                if (savedToken) {
+                  setLoading(true)
+                  setIsAccToken(true)
                   const verifiedUser = await verifyToken(savedToken);
                   setUserInfo({
                      uid: verifiedUser.data.uid,
@@ -34,17 +36,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                      metadata: verifiedUser.data.metadata,
                      providerData: verifiedUser.data.providerData
                   })
+                  setLoading(false)
+               } else {
+                  setIsAccToken(false)
                }
 
-               // const verifiedUser = await verifyToken(token);
-               // // setUserInfo(verifiedUser); // 스토어에 백엔드 검증된 정보 저장
-               // console.log('user?', verifiedUser)
-               // setUserInfo({
-               //    uid: verifiedUser.data.uid,
-               //    email: verifiedUser.data.email,
-               //    metadata: verifiedUser.data.metadata,
-               //    providerData: verifiedUser.data.providerData
-               // })
+
             } catch (err) {
                console.log('유효하지 않은 토큰. 로구ㅡ아웃 시킴');
                alert('장시간 사용하지 않아 로그아웃 되었습니다.');

@@ -8,17 +8,19 @@ import { UserPayload } from '@/src/types/data/user'
 interface UserStore {
    authInfo: any;
    userInfo: any;
-   loading: boolean,
+   loading: boolean;
+   isAccToken: boolean | null;
    setLoading: (loading: boolean) => void;
-   setUserInfo: (user: any) => void
-   setUserLogin: (user: any) => void
-   setUserLogout: () => void
-   setAutuInfo: (info: any) => void
+   setIsAccToken: (loading: boolean) => void;
+   setUserInfo: (user: any) => void;
+   setUserLogin: (user: any) => void;
+   setUserLogout: () => void;
+   setAutuInfo: (info: any) => void;
 
 
-   arr: { id: string, content: string }[],
-   addArr: (val: string) => void,
-   removeArr: (id: string) => void
+   arr: { id: string, content: string }[];
+   addArr: (val: string) => void;
+   removeArr: (id: string) => void;
 }
 
 
@@ -29,15 +31,17 @@ export const useUserStore = create(devtools<UserStore>(set => ({
 
    authInfo: null,
    userInfo: null,
-   loading: true,
+   loading: false,
+   isAccToken: null,
 
    setLoading: (loading) => set({ loading }),
+   setIsAccToken: (isAccToken) => set({ isAccToken }),
    setAutuInfo: (payload) => set((prev: UserStore) => {
       return { authInfo: payload.data }
    }),
 
    setUserInfo: (payload: UserPayload) => set((prev: UserStore) => {
-      return { userInfo: payload, loading: false }
+      return { userInfo: payload }
    }),
 
    // setUserLogin: (user) => set({ user }),

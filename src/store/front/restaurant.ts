@@ -2,7 +2,7 @@ import { create } from 'zustand'
 import { devtools } from 'zustand/middleware';
 import { auth } from '@/src/data/firebaseClient'
 import { UserPayload } from '@/src/types/data/user'
-import {restaurantData} from '@/src/types/data/restaurant'
+import { restaurantData } from '@/src/types/data/restaurant'
 
 interface RestaurantStore {
    loading: boolean,
@@ -26,7 +26,7 @@ export const useRestaurantStore = create(devtools<RestaurantStore>(set => ({
    // title, content, rating, address, category, isEdit 
 
 
-   }),
+}),
 ))
 
 

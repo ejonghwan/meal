@@ -1,4 +1,7 @@
-export interface restaurantData {
+
+
+export interface RestaurantData {
+    userId: string
     title: string;
     content: string;
     rating: number;

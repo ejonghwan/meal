@@ -46,7 +46,7 @@ const Header = () => {
    return (
       <ContentWrap>
          <Section variant='header' size='large' className=''>
-            <header className='header flex justify-between items-center'>
+            <header className='header flex justify-between items-center min-h-[40px]'>
 
 
                <Link href="/home">
@@ -64,10 +64,10 @@ const Header = () => {
                {/* mobile */}
                <section className='pc:hidden'>
                   {/* {loading && <Skeleton className='flex rounded-full size-[40px]' />} */}
-                  {!userInfo && <Skeleton className='flex rounded-full size-[40px]' />}
+                  {!userInfo && isAccToken === null && <Skeleton className='flex rounded-full size-[40px]' />}
                   {/* {isAccToken === null && <Skeleton className='flex rounded-full size-[40px]' />} */}
 
-                  {userInfo && (
+                  {isAccToken === true && (
                      <Button type='button' size='none' onClick={handleClick} className="rounded-[50%] bg-gray-700 text-white size-[40px] p-[5px]">
                         {userInfo?.providerData[0]?.displayName.slice(0, 1).toLocaleUpperCase()}
                      </Button>

@@ -19,7 +19,7 @@ export const AuthProviderAdmin = ({ children }: { children: React.ReactNode }) =
    }
 
    const { data: userLoadData, isError: userLoadError, isSuccess: userLoadSuccess, isLoading: userLoadLoading } = useUserLoad(token.current)
-   const { userInfo, setUserInfo, setUserLogout } = useUserStore();
+   const { userInfo, setUserInfo, setUserLogout, setIsAccToken } = useUserStore();
 
 
 
@@ -32,6 +32,7 @@ export const AuthProviderAdmin = ({ children }: { children: React.ReactNode }) =
          alert('로그인해주세요')
          // setUserInfo(null)
          setUserLogout()
+         setIsAccToken(false)
          router.replace('/login');
       }
    }, [userInfo, userLoadError])
@@ -44,6 +45,7 @@ export const AuthProviderAdmin = ({ children }: { children: React.ReactNode }) =
          if (!user || userLoadError) {
             console.error('❌ 서버 검증 실패');
             // setUserInfo(null)
+            setIsAccToken(false)
             router.replace('/login');
             return;
          }
@@ -51,6 +53,7 @@ export const AuthProviderAdmin = ({ children }: { children: React.ReactNode }) =
          if (userLoadSuccess && userLoadData.data.uid) {
             console.log('✅ 서버 검증 통과');
             setUserInfo(userLoadData.data);
+            setIsAccToken(true)
          }
 
       });

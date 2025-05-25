@@ -38,6 +38,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                   })
                   setLoading(false)
                } else {
+                  console.log('savedToken 없음')
                   setIsAccToken(false)
                }
 
@@ -50,6 +51,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             }
          } else {
             setUserInfo(null);
+            setIsAccToken(false)
          }
       });
 

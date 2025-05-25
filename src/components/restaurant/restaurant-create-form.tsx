@@ -3,12 +3,13 @@
 import React, { useState, useEffect } from 'react'
 import { Input, Textarea } from "@heroui/input"
 import { Button } from "@heroui/button";
-import { restaurantData } from '@/src/types/data/restaurant'
+import { RestaurantData } from '@/src/types/data/restaurant'
 import { Slider } from "@heroui/slider";
 import { PiStarFill } from "react-icons/pi";
 import '@/src/styles/common/range.css'
 import CategoryWrap from '../common/category/category-wrap';
 
+// userId
 // title: string;
 // content: string;
 // rating: number;
@@ -21,14 +22,15 @@ import CategoryWrap from '../common/category/category-wrap';
 const RestaurantCreateForm = () => {
 
 
-   const [restaurant, setRestaurant] = useState<restaurantData>({
+   const [restaurant, setRestaurant] = useState<RestaurantData>({
+      userId: "",
       title: "",
       content: "",
       rating: 0,
       address: "",
       category: "",
       isEdit: false,
-      restaurantId: "",
+      // restaurantId: "",
 
    });
 
@@ -178,7 +180,7 @@ const RestaurantCreateForm = () => {
                   {/* 카테고리는 한종류로 해야되고, 먹은 메뉴는 또 다른 카테고리로 해야겠네 ;; */}
                   <strong>asd</strong>
                   <div className="flex flex-col gap-1 w-full">
-                     <CategoryWrap category={[{ description: 'test', value: 'test11' }]} setRestaurant={setRestaurant}/>
+                     <CategoryWrap category={[{ description: 'test', value: 'test11' }, { description: 'test', value: 'test222' }, { description: 'test', value: 'test33' }]} setRestaurant={setRestaurant} />
                   </div>
                </article>
 

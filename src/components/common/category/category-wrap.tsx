@@ -10,24 +10,32 @@ interface CategoryItemType {
 }
 interface CategoryWrapProps {
    category: CategoryItemType[];
-   setRestaurant: () => React.Dispatch<React.SetStateAction<restaurantData>>;
+   setRestaurant: React.Dispatch<React.SetStateAction<restaurantData>>;
 }
 
 
 const CategoryWrap = ({ category, setRestaurant }: CategoryWrapProps) => {
 
-   
+
    useEffect(() => {
       // setRestaurant()
    }, [])
+
+
+
    const handleChangeCategory = (e: React.ChangeEvent<HTMLInputElement>) => {
       console.log('카테고리?', e.target.value)
+
+      setRestaurant(prev => ({ ...prev, category: e.target.value }))
       // type error
       // setRestaurant(prev => ({
       //    ...prev, 
       //    category: e.target.value
       // }))
    }
+
+
+
    return (
       <>
          <RadioGroup description="카테고리를 골라주세요" label="카테고리">
@@ -35,12 +43,12 @@ const CategoryWrap = ({ category, setRestaurant }: CategoryWrapProps) => {
 
                {category.map((item, idx) => {
                   return (
-                     <CategoryItem key={idx} description={item.description} value={item.value} onChange={() => handleChangeCategory(e)}>
+                     <CategoryItem key={idx} description={item.description} value={item.value} onChange={(e) => handleChangeCategory(e)}>
                         {item.value}
                      </CategoryItem>
                   )
                })}
-               
+
             </div>
          </RadioGroup>
       </>

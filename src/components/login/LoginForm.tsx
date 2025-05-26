@@ -5,7 +5,7 @@ import { Input } from "@heroui/input";
 import { Button, ButtonGroup } from "@heroui/button";
 import { useUserStore } from '@/src/store/front/user'
 // import { cookies } from 'next/headers';
-import { useUserLoad, useUserLogin } from '@/src/store/queryies/user/userQueries'
+import { useUserLogin } from '@/src/store/queryies/user/userQueries'
 import { onUserLoadAPI } from '@/src/store/queryies/user/userQueryFn'
 import { useQuery } from '@tanstack/react-query';
 import { QueryFunction } from "@tanstack/query-core";
@@ -60,7 +60,7 @@ interface User {
 
 
 const LoginForm = () => {
-    const { userInfo, setUserInfo, setUserLogin, setUserLogout } = useUserStore();
+    const { userInfo, loading, setUserInfo, setUserLogin, setUserLogout } = useUserStore();
     // const user = useUserStore((state) => state.user)
     const [user, setUser] = useState<User>({ email: '', password: '' })
     const [isVisible, setIsVisible] = useState(false);
@@ -71,40 +71,8 @@ const LoginForm = () => {
     // admin 
     const { mutate: loginMutation, data: loginData, isError: loginIsError, isSuccess: loginIsSuccess } = useUserLogin()
 
+
     // console.log("브라우저?", typeof window !== "undefined"); // true여야 함
-
-    // 로그인된 유저는 아예 못접근하게 막아야됨
-    useEffect(() => {
-        if (userInfo) router.push('/home')
-    }, [userInfo])
-
-
-    useEffect(() => {
-
-        if (loginIsError) console.error("로그인 실패 😢");
-        if (loginIsSuccess) {
-            console.log("로그인 성공 🎉", loginData);
-            setUserLogin(loginData)
-
-            alert('로그인 성공!');
-            router.push('/home');
-        }
-
-
-
-
-    }, [loginIsSuccess, loginIsError]);
-
-
-    useEffect(() => {
-        console.log('쥬스탄드 상태 체크 userInfo? ', userInfo)
-
-        // FirebaseError: Firebase: Error (auth/internal-error). 이거해결해야됨. 새로고침할때 커스텀토큰 없다고 ... 로그인페이지에만 (근데 여긴 로그인한 사람이 접근못하게 하면 될듯)
-        // signInWithCustomToken 이거 왜 한거지 ? 로그인할때 커스텀토큰 안하면 인증못함
-        if (userInfo) signInWithCustomToken(auth, userInfo?.customAccToken)
-
-    }, [userInfo])
-
 
 
     const handleChangeUserInfo = (e: ChangeEvent) => {
@@ -115,6 +83,7 @@ const LoginForm = () => {
         })
     }
 
+
     const handleLoginClick = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         loginMutation({ email: user.email, password: user.password })
@@ -122,16 +91,42 @@ const LoginForm = () => {
 
 
 
+
+    useEffect(() => {
+        if (loginIsError) console.error("로그인 실패 😢");
+        if (loginIsSuccess) {
+            console.log("로그인 성공 🎉", loginData);
+            setUserLogin(loginData)
+            alert('로그인 성공!');
+            // router.push('/home');
+        }
+    }, [loginIsSuccess, loginIsError]);
+
+
+
+
+    useEffect(() => {
+        console.log('쥬스탄드 상태 체크 userInfo? ', userInfo)
+        // FirebaseError: Firebase: Error (auth/internal-error). 이거해결해야됨. 새로고침할때 커스텀토큰 없다고 ... 로그인페이지에만 (근데 여긴 로그인한 사람이 접근못하게 하면 될듯)
+        // signInWithCustomToken 이거 왜 한거지 ? 로그인할때 커스텀토큰 안하면 인증못함
+        if (userInfo) signInWithCustomToken(auth, userInfo?.customAccToken)
+
+    }, [userInfo?.customAccToken])
+
+
+
+
+    // 로그인된 유저는 아예 못접근하게 막아야됨. 로그인 창이 보이는거 로딩으로 변경시키기
+    useEffect(() => {
+        if (userInfo) router.push('/home')
+
+    }, [userInfo])
+    if (userInfo) return null;
+
+
+
     return (
         <div>
-
-
-            <div>load user test</div>
-
-            <div>
-                <button type='button' onClick={() => { setUserLogout() }}>logout</button>
-            </div>
-
             {/* <form onSubmit={handleLogin}> */}
             <form onSubmit={handleLoginClick}>
 
@@ -177,6 +172,7 @@ const LoginForm = () => {
                 </div>
 
             </form>
+
         </div>
     )
 }

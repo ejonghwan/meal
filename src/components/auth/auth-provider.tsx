@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react"
 import { onAuthStateChanged, onIdTokenChanged, getIdToken } from "firebase/auth"
 import { auth } from "@/src/data/firebaseClient"
-import { useUserLoad } from '@/src/store/queryies/user/userQueries'
+// import { useUserLoad } from '@/src/store/queryies/user/userQueries'
 import { useUserStore } from "@/src/store/front/user";
 import { verifyToken } from "@/src/components/auth/auth-verifyToken-api"
 import { useRouter } from "next/navigation";
@@ -26,6 +26,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                setIsAccToken(true);
                setLoading(true);
 
+               // 비로그인 페이지에서도 유저가 있으면 load api로 검증 후 유저를 가져옴. 이건 나중에 손보기
                const verifiedUser = await verifyToken(token);
                setUserInfo({
                   uid: verifiedUser.data.uid,

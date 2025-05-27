@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { auth } from "@/src/data/firebaseClient";
-import { onAuthStateChanged, getIdToken } from "firebase/auth";
+import { onAuthStateChanged, getIdToken, onIdTokenChanged } from "firebase/auth";
 import { useUserLoad } from '@/src/store/queryies/user/userQueries'
 import { useUserStore } from '@/src/store/front/user'
 
@@ -41,7 +41,7 @@ export const AuthProviderAdmin = ({ children }: { children: React.ReactNode }) =
    useEffect(() => {
 
       // 상태에 유저가 있고 acc token 으로 재 인증. 
-      const unsubscribe = onAuthStateChanged(auth, async (user) => {
+      const unsubscribe = onIdTokenChanged(auth, async (user) => {
          if (!user || userLoadError) {
             console.error('❌ 서버 검증 실패');
             // setUserInfo(null)

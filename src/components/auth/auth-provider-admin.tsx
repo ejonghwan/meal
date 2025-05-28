@@ -40,28 +40,27 @@ export const AuthProviderAdmin = ({ children }: { children: React.ReactNode }) =
 
    useEffect(() => {
 
-      // 상태에 유저가 있고 acc token 으로 재 인증. 
-      const unsubscribe = onIdTokenChanged(auth, async (user) => {
-         if (!user || userLoadError) {
-            console.error('❌ 서버 검증 실패');
-            // setUserInfo(null)
-            setIsAccToken(false)
-            router.replace('/login');
-            return;
-         }
+      // 상태에 유저가 있고 acc token 으로 재 인증. onAuthStateChanged
+      if (userLoadError) {
+         console.error('❌ 서버 검증 실패');
+         // setUserInfo(null)
+         setIsAccToken(false)
+         router.replace('/login');
+         return;
+      }
 
-         if (userLoadSuccess && userLoadData.data.uid) {
-            console.log('✅ 서버 검증 통과');
-            const token = await user.getIdToken(); // ← 갱신 시 자동으로 최신 토큰 제공됨
-            localStorage.setItem('x-acc-token', token);
+      if (userLoadSuccess && userLoadData.data.uid) {
+         console.log('✅ 서버 검증 통과');
 
-            setUserInfo(userLoadData.data);
-            setIsAccToken(true)
-         }
 
-      });
+         // const token = await user.getIdToken(); // ← 갱신 시 자동으로 최신 토큰 제공됨
+         // console.log(token)
+         // localStorage.setItem('x-acc-token', token);
 
-      return () => unsubscribe();
+         setUserInfo(userLoadData.data);
+         setIsAccToken(true)
+      }
+
    }, [userLoadSuccess]);
 
 
@@ -71,3 +70,5 @@ export const AuthProviderAdmin = ({ children }: { children: React.ReactNode }) =
 
    return <>{children}</>;
 }
+
+

@@ -8,6 +8,7 @@ import { Slider } from "@heroui/slider";
 import { PiStarFill } from "react-icons/pi";
 import '@/src/styles/common/range.css'
 import CategoryWrap from '../common/category/category-wrap';
+import { categorys } from '@/src/components/restaurant/restaurant-data'
 
 // userId
 // title: string;
@@ -64,52 +65,6 @@ const RestaurantCreateForm = () => {
          <form onSubmit={handleCreateRestaurant}>
 
             <div className='flex flex-col gap-2 mt-[20px]'>
-               <article>
-                  <strong>asd</strong>
-                  <Input
-                     label="가게명"
-                     isRequired
-                     className="w-full input_text"
-                     defaultValue=""
-                     type="text"
-                     name='title'
-                     placeholder="가게명은 정확하게 입력해주세요"
-                     value={restaurant.title}
-                     onChange={handleChangeRestaurantInfo}
-                  />
-               </article>
-
-               <article>
-                  <strong>asd</strong>
-                  <Textarea
-                     label="리뷰"
-                     isRequired
-                     className="w-full input_textarea"
-                     defaultValue=""
-                     type="text"
-                     name='content'
-                     placeholder="소감을 200자 이내로 입력해주세요"
-                     value={restaurant.content}
-                     onChange={handleChangeRestaurantInfo}
-                     autoComplete='on'
-                     maxLength={10}
-                  />
-               </article>
-
-               <article>
-                  <strong>asd</strong>
-                  <Input
-                     label="주소"
-                     className="w-full input_text"
-                     defaultValue=""
-                     type="text"
-                     name='address'
-                     // placeholder="password"
-                     value={restaurant.address}
-                     onChange={handleChangeRestaurantInfo}
-                     autoComplete='on'
-                  />
-               </article>
 
                <article>
                   <div className='flex items-center'>
@@ -176,11 +131,61 @@ const RestaurantCreateForm = () => {
 
 
                <article>
+                  <strong>asd</strong>
+                  <Input
+                     label="가게명"
+                     isRequired
+                     className="w-full input_text"
+                     defaultValue=""
+                     type="text"
+                     name='title'
+                     placeholder="가게명은 정확하게 입력해주세요"
+                     value={restaurant.title}
+                     onChange={handleChangeRestaurantInfo}
+                  />
+               </article>
+
+               <article>
+                  <strong>asd</strong>
+                  <Textarea
+                     label="리뷰"
+                     isRequired
+                     className="w-full input_textarea"
+                     defaultValue=""
+                     type="text"
+                     name='content'
+                     placeholder="소감을 200자 이내로 입력해주세요"
+                     value={restaurant.content}
+                     onChange={handleChangeRestaurantInfo}
+                     autoComplete='on'
+                     maxLength={10}
+                  />
+               </article>
+
+               <article>
+                  <strong>asd</strong>
+                  <Input
+                     label="주소"
+                     className="w-full input_text"
+                     defaultValue=""
+                     type="text"
+                     name='address'
+                     // placeholder="password"
+                     value={restaurant.address}
+                     onChange={handleChangeRestaurantInfo}
+                     autoComplete='on'
+                  />
+               </article>
+
+
+
+
+               <article>
 
                   {/* 카테고리는 한종류로 해야되고, 먹은 메뉴는 또 다른 카테고리로 해야겠네 ;; */}
                   <strong>asd</strong>
                   <div className="flex flex-col gap-1 w-full">
-                     <CategoryWrap category={[{ description: 'test', value: 'test11' }, { description: 'test', value: 'test222' }, { description: 'test', value: 'test33' }]} setRestaurant={setRestaurant} />
+                     <CategoryWrap category={categorys} setRestaurant={setRestaurant} />
                   </div>
                </article>
 

@@ -2,7 +2,7 @@
 import React, { memo, useEffect } from 'react'
 import { RadioGroup, Radio } from "@heroui/radio";
 import CategoryItem from '@/src/components/common/category/category-item'
-import { restaurantData } from '@/src/types/data/restaurant'
+import { RestaurantData } from '@/src/types/data/restaurant'
 
 interface CategoryItemType {
    description: string;
@@ -10,7 +10,7 @@ interface CategoryItemType {
 }
 interface CategoryWrapProps {
    category: CategoryItemType[];
-   setRestaurant: React.Dispatch<React.SetStateAction<restaurantData>>;
+   setRestaurant: React.Dispatch<React.SetStateAction<RestaurantData>>;
 }
 
 

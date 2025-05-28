@@ -18,9 +18,12 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
    const { userInfo, setUserInfo, setLoading, setUserLogout, setIsAccToken } = useUserStore();
 
    useEffect(() => {
+      // onAuthStateChanged
       const unsubscribe = onIdTokenChanged(auth, async (user) => {
          if (user) {
             try {
+               console.log('auth 유저 있음 토큰은?')
+
                const token = await user.getIdToken(); // ← 갱신 시 자동으로 최신 토큰 제공됨
                localStorage.setItem('x-acc-token', token);
                setIsAccToken(true);
@@ -35,11 +38,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                   providerData: verifiedUser.data.providerData
                });
             } catch (err) {
+
                console.log('유효하지 않은 토큰. 로그아웃');
                setUserLogout();
                router.replace('/home');
+
             } finally {
+
                setLoading(false);
+
             }
          } else {
             setUserInfo(null);

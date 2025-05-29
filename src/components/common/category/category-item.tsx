@@ -1,6 +1,6 @@
 "use client"
 import React from 'react'
-import { RadioGroup, Radio } from "@heroui/radio";
+import { Radio } from "@heroui/radio";
 
 const CategoryItem = ({ children, value, ...props }) => {
    return (

@@ -1,7 +1,7 @@
 import { QueryFunction } from "@tanstack/query-core";
 import { ExtendsRequestInit } from '@/src/types/request/index';
 import { useUserStore } from "@/src/store/front/user";
-import { restaurantData } from '@/src/types/data/restaurant'
+import { RestaurantData } from '@/src/types/data/restaurant'
 
 
 
@@ -13,7 +13,7 @@ export const onRestaurantListLoadAPI = async (page) => {
     try {
         const options: ExtendsRequestInit = {
             method: "GET",
-            headers: {'Content-Type': 'application/json',},
+            headers: { 'Content-Type': 'application/json', },
             credentials: 'include', // 쿠키를 포함하려면 'include'로 설정
             next: { tags: ['restaurant', 'listAll'] },
             cache: "no-store",
@@ -53,7 +53,7 @@ export const onRestaurantDetailLoadAPI = async (restaurantId: string) => {
 
 
 // 글 생성
-export const onCreateRestaurantAPI = async (data: restaurantData) => {
+export const onCreateRestaurantAPI = async (data: RestaurantData) => {
     try {
         const { title, content, rating, address, category, isEdit } = data
 
@@ -84,7 +84,7 @@ export const onCreateRestaurantAPI = async (data: restaurantData) => {
 
 
 
-export const onEditRestaurantAPI = async (data: restaurantData) => {
+export const onEditRestaurantAPI = async (data: RestaurantData) => {
     try {
         const { title, content, rating, address, category, isEdit, restaurantId } = data
 

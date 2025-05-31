@@ -27,7 +27,7 @@ const RestaurantCreateForm = () => {
       userId: "",
       title: "",
       content: "",
-      rating: 0,
+      rating: 3,
       address: "",
       category: "",
       isEdit: false,
@@ -76,11 +76,11 @@ const RestaurantCreateForm = () => {
                      onChange={handleChangeRating}
                      // className="max-w-md"
                      // color="warning"
-                     defaultValue={3}
+                     defaultValue={restaurant.rating}
                      // label="별점"
                      aria-label='별점'
                      maxValue={5}
-                     minValue={0}
+                     minValue={1}
                      showSteps={true}
                      size="md"
                      step={1}

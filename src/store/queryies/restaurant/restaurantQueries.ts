@@ -1,7 +1,7 @@
 import { useMutation, useQuery } from '@tanstack/react-query'
 import { restaurantKeys } from '@/src/store/queryies/restaurant/restaurantKeys'
 import { onRestaurantListLoadAPI, onRestaurantDetailLoadAPI, onCreateRestaurantAPI, onEditRestaurantAPI, onDeleteRestaurantAPI } from '@/src/store/queryies/restaurant/restaurantQueryFn'
-import { restaurantData } from '@/src/types/data/restaurant'
+import { RestaurantData } from '@/src/types/data/restaurant'
 
 
 
@@ -36,7 +36,7 @@ export const useRestaurantList = (restauranId: string) => {
 export const useCreateRestaurant = () => {
    // if (!token) return;
    return useMutation({
-      mutationFn: (payload: restaurantData) => {
+      mutationFn: (payload: RestaurantData) => {
          return onCreateRestaurantAPI(payload)
       },
    })
@@ -48,7 +48,7 @@ export const useCreateRestaurant = () => {
 export const useEditRestaurant = () => {
    // if (!token) return;
    return useMutation({
-      mutationFn: (payload: restaurantData) => {
+      mutationFn: (payload: RestaurantData) => {
          return onEditRestaurantAPI(payload)
       },
    })

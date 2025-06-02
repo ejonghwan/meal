@@ -35,8 +35,10 @@ export const useRestaurantList = (restauranId: string) => {
 // 글쓰기
 export const useCreateRestaurant = () => {
    // if (!token) return;
+   
    return useMutation({
       mutationFn: (payload: RestaurantData) => {
+         console.log('query fn ? ', payload)
          return onCreateRestaurantAPI(payload)
       },
    })

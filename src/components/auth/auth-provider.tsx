@@ -6,7 +6,7 @@ import { auth } from "@/src/data/firebaseClient"
 // import { useUserLoad } from '@/src/store/queryies/user/userQueries'
 import { useUserStore } from "@/src/store/front/user";
 import { verifyToken } from "@/src/components/auth/auth-verifyToken-api"
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 
 
 
@@ -14,10 +14,19 @@ import { useRouter } from "next/navigation";
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
    const router = useRouter();
+   const pathName = usePathname();
    // const [token, setToken] = useState<string | null>(null)
    const { userInfo, setUserInfo, setLoading, setUserLogout, setIsAccToken } = useUserStore();
 
+   const test = ['/home', '/login']
+
    useEffect(() => {
+
+      // console.log('router? ', pathName)
+      // const isPathName = test.filter(item => item === pathName) 
+      // console.log('?', isPathName)
+      // if(isPathName) return;
+
       // onAuthStateChanged
       const unsubscribe = onIdTokenChanged(auth, async (user) => {
          if (user) {

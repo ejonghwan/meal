@@ -9,6 +9,8 @@ import { PiStarFill } from "react-icons/pi";
 import '@/src/styles/common/range.css'
 import CategoryWrap from '../common/category/category-wrap';
 import { categorys } from '@/src/components/restaurant/restaurant-data'
+import { useCreateRestaurant } from '@/src/store/queryies/restaurant/restaurantQueries';
+import { useUserStore } from '@/src/store/front/user';
 
 // userId
 // title: string;
@@ -22,7 +24,8 @@ import { categorys } from '@/src/components/restaurant/restaurant-data'
 
 const RestaurantCreateForm = () => {
 
-
+   const { mutate: createRestaurantMutation, isError: createRestaurantError, isSuccess: createRestaurantSuccess } = useCreateRestaurant()
+   const { userInfo } = useUserStore()
    const [restaurant, setRestaurant] = useState<RestaurantData>({
       userId: "",
       title: "",

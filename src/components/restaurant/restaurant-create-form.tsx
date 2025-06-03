@@ -9,7 +9,6 @@ import { PiStarFill } from "react-icons/pi";
 import '@/src/styles/common/range.css'
 import CategoryWrap from '../common/category/category-wrap';
 import { categorys } from '@/src/components/restaurant/restaurant-data'
-import { useCreateRestaurant } from '@/src/store/queryies/restaurant/restaurantQueries';
 
 // userId
 // title: string;
@@ -23,7 +22,6 @@ import { useCreateRestaurant } from '@/src/store/queryies/restaurant/restaurantQ
 
 const RestaurantCreateForm = () => {
 
-   const { mutate, isError, isSuccess } = useCreateRestaurant()
 
    const [restaurant, setRestaurant] = useState<RestaurantData>({
       userId: "",
@@ -37,14 +35,17 @@ const RestaurantCreateForm = () => {
 
    });
 
-   const handleCreateRestaurant = (e) => {
+   const handleCreateRestaurant = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
+      createRestaurantMutation(restaurant)
+      console.log('view?', restaurant)
    }
 
    const handleChangeRestaurantInfo = (e) => {
       e.preventDefault()
       setRestaurant({
          ...restaurant,
+         userId: userInfo?.uid,
          [e.target.name]: e.target.value
       })
    }
@@ -58,7 +59,8 @@ const RestaurantCreateForm = () => {
    }
 
    useEffect(() => {
-      console.log('restaurant?', restaurant)
+      console.log('restaurant?', restaurant, userInfo?.uid)
+
    }, [restaurant])
 
 

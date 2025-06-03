@@ -38,7 +38,7 @@ export const useCreateRestaurant = () => {
 
    return useMutation({
       mutationFn: (payload: RestaurantData) => {
-         console.log('payload mutation ?', payload)
+         console.log('query fn ? ', payload)
          return onCreateRestaurantAPI(payload)
       },
    })

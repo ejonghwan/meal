@@ -51,17 +51,24 @@ export const GET = async (req: NextRequest) => {
 */
 export const POST = async (req: NextRequest) => {
     // 프론트에서 오는게 req
-    const { title } = await req.json();
-    if (!title) return NextResponse.json({ state: 'FAILUE', message: 'title을 넣어주세요', }, { status: 422 });
+    const { userId, title, content, rating, address, category, isEdit } = await req.json();
+    // if (!title) return NextResponse.json({ state: 'FAILUE', message: 'title을 넣어주세요', }, { status: 422 });
 
 
     // const addedTodo = await addTodo({ title })
     const newTodoRef = doc(collection(db, "restaurant"))
     const createAtTimestemp = Timestamp.fromDate(new Date());
     const newTodoData = {
-        id: newTodoRef.id,
-        title,
-        is_done: false,
+        // id: newTodoRef.id,
+        // title,
+        // is_done: false,
+        userId, 
+        title, 
+        content, 
+        rating, 
+        address, 
+        category, 
+        isEdit,
         created_at: createAtTimestemp,
     }
 

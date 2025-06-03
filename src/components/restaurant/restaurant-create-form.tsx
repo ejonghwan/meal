@@ -9,6 +9,7 @@ import { PiStarFill } from "react-icons/pi";
 import '@/src/styles/common/range.css'
 import CategoryWrap from '../common/category/category-wrap';
 import { categorys } from '@/src/components/restaurant/restaurant-data'
+import { useCreateRestaurant } from '@/src/store/queryies/restaurant/restaurantQueries';
 
 // userId
 // title: string;
@@ -22,6 +23,7 @@ import { categorys } from '@/src/components/restaurant/restaurant-data'
 
 const RestaurantCreateForm = () => {
 
+   const { mutate, isError, isSuccess } = useCreateRestaurant()
 
    const [restaurant, setRestaurant] = useState<RestaurantData>({
       userId: "",
@@ -178,10 +180,7 @@ const RestaurantCreateForm = () => {
                </article>
 
 
-
-
                <article>
-
                   {/* 카테고리는 한종류로 해야되고, 먹은 메뉴는 또 다른 카테고리로 해야겠네 ;; */}
                   <strong>asd</strong>
                   <div className="flex flex-col gap-1 w-full">

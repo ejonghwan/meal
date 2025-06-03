@@ -97,7 +97,7 @@ const LoginForm = () => {
         if (loginIsSuccess) {
             console.log("로그인 성공 🎉", loginData);
             setUserLogin(loginData)
-            alert('로그인 성공!');
+            // alert('로그인 성공!');
             // router.push('/home');
         }
     }, [loginIsSuccess, loginIsError]);

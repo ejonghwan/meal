@@ -90,7 +90,7 @@ const RestaurantTable = ({ todos }) => {
       </div>
 
 
-      <div className="w-[800px]">
+      <div className="">
         <div className="flex justify-start gap-[20px]">
           <div>아이디</div>
           <div>할일내용</div>

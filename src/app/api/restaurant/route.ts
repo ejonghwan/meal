@@ -55,6 +55,7 @@ export const POST = async (req: NextRequest) => {
     // if (!title) return NextResponse.json({ state: 'FAILUE', message: 'title을 넣어주세요', }, { status: 422 });
 
 
+    console.log('req?', req)
     // const addedTodo = await addTodo({ title })
     const newTodoRef = doc(collection(db, "restaurant"))
     const createAtTimestemp = Timestamp.fromDate(new Date());
@@ -62,12 +63,12 @@ export const POST = async (req: NextRequest) => {
         // id: newTodoRef.id,
         // title,
         // is_done: false,
-        userId, 
-        title, 
-        content, 
-        rating, 
-        address, 
-        category, 
+        userId,
+        title,
+        content,
+        rating,
+        address,
+        category,
         isEdit,
         created_at: createAtTimestemp,
     }

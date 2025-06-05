@@ -55,11 +55,13 @@ export const POST = async (req: NextRequest) => {
     // if (!title) return NextResponse.json({ state: 'FAILUE', message: 'title을 넣어주세요', }, { status: 422 });
 
 
-    console.log('req?', req)
+    console.log('req?', userId, title, content, rating, address, category, isEdit)
     // const addedTodo = await addTodo({ title })
-    const newTodoRef = doc(collection(db, "restaurant"))
+    const restaurantRef = doc(collection(db, "restaurant"))
+
+    console.log('restaurantRef ??', restaurantRef)
     const createAtTimestemp = Timestamp.fromDate(new Date());
-    const newTodoData = {
+    const restaurantData = {
         // id: newTodoRef.id,
         // title,
         // is_done: false,
@@ -73,7 +75,7 @@ export const POST = async (req: NextRequest) => {
         created_at: createAtTimestemp,
     }
 
-    await setDoc(newTodoRef, newTodoData)
+    await setDoc(restaurantRef, restaurantData)
     // return { ...newTodoData, created_at: createAtTimestemp.toDate() };
 
 
@@ -81,7 +83,7 @@ export const POST = async (req: NextRequest) => {
     const res = {
         state: 'SUCCES',
         message: '추가',
-        data: { ...newTodoData, created_at: createAtTimestemp.toDate() },
+        data: { ...restaurantRef, created_at: createAtTimestemp.toDate() },
     }
 
     return NextResponse.json(res, { status: 201 })

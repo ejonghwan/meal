@@ -55,11 +55,12 @@ export const POST = async (req: NextRequest) => {
     // if (!title) return NextResponse.json({ state: 'FAILUE', message: 'title을 넣어주세요', }, { status: 422 });
 
 
-    console.log('req?', userId, title, content, rating, address, category, isEdit)
+    // console.log('req?', userId, title, content, rating, address, category, isEdit)
     // const addedTodo = await addTodo({ title })
     const restaurantRef = doc(collection(db, "restaurant"))
 
-    console.log('restaurantRef ??', restaurantRef)
+    // db 추가 확인 완료
+    // console.log('restaurantRef ??', restaurantRef)
     const createAtTimestemp = Timestamp.fromDate(new Date());
     const restaurantData = {
         // id: newTodoRef.id,

@@ -1,71 +1,12 @@
-import { NextRequest, NextResponse } from "next/server"
-import { auth, db } from "@/src/data/firebaseClient";
-import { getFirestore, collection, query, getDocs, Timestamp, setDoc, doc, getDoc, deleteDoc, updateDoc } from "firebase/firestore";
+import { NextRequest, NextResponse } from "next/server";
+import { adminDB, admin } from "@/src/data/firebaseAdmin"; // ✅ admin SDK 사용
 
-
-
-/*
-@ path    GET /api/restaurant
-@ doc     모든 글 가져오기
-@ access  public
-*/
-export const GET = async (req: NextRequest) => {
-
-    // const fetchedTodos = await getAllTodo();
-    // 모든 문서 가져오기
-    const q = query(collection(db, "restaurant"));
-    const querySnapshot = await getDocs(q);
-    const fetchedTodos = []
-
-    if (querySnapshot.empty) return [];
-
-    querySnapshot.forEach((doc) => {
-        // doc.data() is never undefined for query doc snapshots
-        // console.log(doc.id, " => ", doc.data());
-
-        const aTodo = {
-            id: doc.id,
-            title: doc.data()["title"],
-            is_done: doc.data()["is_done"],
-            created_at: doc.data()["created_at"].toDate()
-        }
-
-        fetchedTodos.push(aTodo)
-    });
-
-
-    const res = {
-        state: 'SUCCES',
-        message: '성공',
-        data: fetchedTodos,
-    }
-    return NextResponse.json(res, { status: 201 })
-}
-
-
-
-/*
-@ path    POST /api/restaurant
-@ doc     맛집 추가하기
-@ access  public
-*/
 export const POST = async (req: NextRequest) => {
-    // 프론트에서 오는게 req
     const { userId, title, content, rating, address, category, isEdit } = await req.json();
-    // if (!title) return NextResponse.json({ state: 'FAILUE', message: 'title을 넣어주세요', }, { status: 422 });
 
+    const restaurantRef = adminDB.collection("restaurant").doc(); // ✅ adminDB 사용
 
-    // console.log('req?', userId, title, content, rating, address, category, isEdit)
-    // const addedTodo = await addTodo({ title })
-    const restaurantRef = doc(collection(db, "restaurant"))
-
-    // db 추가 확인 완료
-    // console.log('restaurantRef ??', restaurantRef)
-    const createAtTimestemp = Timestamp.fromDate(new Date());
     const restaurantData = {
-        // id: newTodoRef.id,
-        // title,
-        // is_done: false,
         userId,
         title,
         content,
@@ -73,19 +14,66 @@ export const POST = async (req: NextRequest) => {
         address,
         category,
         isEdit,
-        created_at: createAtTimestemp,
-    }
+        created_at: admin.firestore.Timestamp.fromDate(new Date()),
+    };
 
-    await setDoc(restaurantRef, restaurantData)
-    // return { ...newTodoData, created_at: createAtTimestemp.toDate() };
+    await restaurantRef.set(restaurantData); // ✅ admin SDK로 접근하면 권한 체크 안 함
+
+    return NextResponse.json({
+        state: "SUCCESS",
+        message: "추가",
+        data: { id: restaurantRef.id, ...restaurantData },
+    }, { status: 201 });
+};
 
 
 
-    const res = {
-        state: 'SUCCES',
-        message: '추가',
-        data: { ...restaurantRef, created_at: createAtTimestemp.toDate() },
-    }
+// import { NextRequest, NextResponse } from "next/server"
+// import { auth, db } from "@/src/data/firebaseClient";
+// import { admin } from "@/src/data/firebaseAdmin";
+// import { getFirestore, collection, query, getDocs, Timestamp, setDoc, doc, getDoc, deleteDoc, updateDoc } from "firebase/firestore";
 
-    return NextResponse.json(res, { status: 201 })
-}
+
+
+
+// /*
+// @ path    POST /api/restaurant
+// @ doc     맛집 추가하기
+// @ access  public
+// */
+// export const POST = async (req: NextRequest) => {
+//     // 프론트에서 오는게 req
+//     const { userId, title, content, rating, address, category, isEdit } = await req.json();
+//     // if (!title) return NextResponse.json({ state: 'FAILUE', message: 'title을 넣어주세요', }, { status: 422 });
+
+//     const restaurantRef = doc(collection(db, "restaurant"))
+
+//     // db 추가 확인 완료
+//     const createAtTimestemp = Timestamp.fromDate(new Date());
+//     const restaurantData = {
+//         // id: newTodoRef.id,
+//         // title,
+//         // is_done: false,
+//         userId,
+//         title,
+//         content,
+//         rating,
+//         address,
+//         category,
+//         isEdit,
+//         created_at: createAtTimestemp,
+//     }
+
+//     // 커미션 에러가 나는이유 ? backend에선 슈퍼권한을 얻음. client에서 사용하려면 파이어베이스에서 별도 설정해줘야됨
+//     // console.log('userid?', userId, (await admin.auth().getUser(userId)).uid)
+
+//     await setDoc(restaurantRef, restaurantData)
+
+//     const res = {
+//         state: 'SUCCES',
+//         message: '추가',
+//         data: { ...restaurantRef, created_at: createAtTimestemp.toDate() },
+//     }
+
+//     return NextResponse.json(res, { status: 201 })
+// }

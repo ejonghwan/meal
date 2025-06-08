@@ -11,9 +11,16 @@ import { useRestaurantListAll } from '@/src/store/queryies/restaurant/restaurant
 
 const RestaurantTable = ({ todos }) => {
 
-  const [stateTodos, setStateodos] = useState(todos)
-  // const { data: restaurantData, isError: restaurantError, isSuccess: restaurantSuccess, isLoading: restaurantLoading } = useRestaurantListAll(10)
 
+
+
+  const [stateTodos, setStateodos] = useState(todos)
+  const { data: restaurantData, isError: restaurantError, isSuccess: restaurantSuccess, isLoading: restaurantLoading } = useRestaurantListAll(10)
+
+
+  useEffect(() => {
+    console.log('??', restaurantData)
+  }, [restaurantSuccess])
 
 
   // useEffect(() => {
@@ -99,9 +106,9 @@ const RestaurantTable = ({ todos }) => {
         </div>
 
         <div>
-          {stateTodos && stateTodos.map((todo) => (
+          {/* {stateTodos && stateTodos.map((todo) => (
             <TodoItem todo={todo} key={todo.id} setStateodos={setStateodos} />
-          ))}
+          ))} */}
         </div>
       </div>
 

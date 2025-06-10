@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useEffect, useState } from "react";
-import TodoItem from "./restaurant-item";
+import RestaurantItem from "@/src/components/restaurant/restaurant-item";
 
 import { Accordion, AccordionItem } from "@heroui/accordion";
 import { useRestaurantListAll } from '@/src/store/queryies/restaurant/restaurantQueries'
@@ -9,53 +9,13 @@ import { useRestaurantListAll } from '@/src/store/queryies/restaurant/restaurant
 
 
 
-const RestaurantTable = ({ todos }) => {
-
-
-
-
-  const [stateTodos, setStateodos] = useState(todos)
+const RestaurantTable = () => {
   const { data: restaurantData, isError: restaurantError, isSuccess: restaurantSuccess, isLoading: restaurantLoading } = useRestaurantListAll(10)
-
 
   useEffect(() => {
     console.log('??', restaurantData)
   }, [restaurantSuccess])
 
-
-  // useEffect(() => {
-  //   if (restaurantSuccess && restaurantData.data) {
-
-  //   }
-
-  //   if (restaurantError) {
-
-  //   }
-  // }, [restaurantData, restaurantLoading])
-  // const [text, setText] = useState('');
-
-  // const handleInputChange = (e: Event) => {
-  //   const target = e.target as HTMLInputElement;
-  //   setText(target.value)
-  // }
-
-
-
-
-  // const handleTodoSubmit = async () => {
-  //   const options = {
-  //     method: "POST",
-  //     headers: { "Content-Type": "application/json", },
-  //     body: JSON.stringify({ title: text, is_done: false })
-  //   }
-
-  //   const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/todos/`, options)
-  //   const data = await res.json();
-  //   // console.log('data???', data)
-
-  //   setStateodos(prev => [data.data, ...prev])
-  //   // console.log(res.json());
-  // }
 
 
 
@@ -64,15 +24,14 @@ const RestaurantTable = ({ todos }) => {
     <div>
 
       <Accordion>
-        <AccordionItem key="1" aria-label="Accordion 1" title="Accordion 1">
-          aa 1
-        </AccordionItem>
-        <AccordionItem key="2" aria-label="Accordion 2" title="Accordion 2">
-          aa2
-        </AccordionItem>
-        <AccordionItem key="3" aria-label="Accordion 3" title="Accordion 3">
-          aa3
-        </AccordionItem>
+        {restaurantData.map((item) => {
+          return (
+            <AccordionItem key={item.id} aria-label={`Accordion ${item.id}`} title={item.title}>
+              <RestaurantItem restaurant={item}  />
+            </AccordionItem>
+          )
+        })}
+       
       </Accordion>
 
       <div className="my-[50px]">

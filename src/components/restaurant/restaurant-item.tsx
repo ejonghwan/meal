@@ -5,8 +5,10 @@ import React, { useState } from 'react'
 
 
 
-const RestaurantItem = ({ restaurantData }) => {
+const RestaurantItem = ({ restaurant }) => {
 
+
+    console.log('?', restaurant)
 
 
     return (

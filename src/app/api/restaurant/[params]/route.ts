@@ -1,17 +1,25 @@
 import { NextRequest, NextResponse } from "next/server";
-import { adminDB } from "@/src/data/firebaseAdmin"; // ✅ admin SDK로 Firestore 접근
+import { adminDB } from "@/src/data/firebaseAdmin";
 
-/*
-@ path    GET /api/restaurant/[page]
-@ doc     모든 글 가져오기
-@ access  server only
-*/
+
+
 export const GET = async (req: NextRequest, { params }: { params: { page: string } }) => {
-    const { page } = params;
+    const url = new URL(req.url);
+    const cursor = url.searchParams.get('cursor');  // cursor는 ISO 문자열 형태의 날짜 (created_at)
+    const limit = 10;
 
-    console.log('실행?', page);
+    let queryRef = adminDB.collection("restaurant")
+        .orderBy("created_at", "desc")  // 내림차순 (최신순)
+        .limit(limit);
 
-    const snapshot = await adminDB.collection("restaurant").get(); // ✅ admin SDK 사용
+    if (cursor) {
+        // cursor를 Firestore Timestamp 객체로 변환
+        const cursorTimestamp = new Date(cursor);
+        queryRef = queryRef.startAfter(cursorTimestamp);
+    }
+
+
+    const snapshot = await queryRef.get();
 
     if (snapshot.empty) {
         return NextResponse.json({
@@ -36,16 +44,68 @@ export const GET = async (req: NextRequest, { params }: { params: { page: string
         };
     });
 
-    const res = {
+    // 마지막 문서의 created_at 값을 다음 페이지 커서로 넘겨줌
+    const lastDoc = snapshot.docs[snapshot.docs.length - 1];
+    const nextCursor = lastDoc?.data().created_at?.toDate().toISOString() || null;
+
+    return NextResponse.json({
         state: "SUCCESS",
         message: "성공",
         data: fetchedRestaurant,
-    };
-
-    return NextResponse.json(res, { status: 200 });
+        nextCursor,
+    }, { status: 200 });
 };
 
 
+// import { NextRequest, NextResponse } from "next/server";
+// import { adminDB } from "@/src/data/firebaseAdmin";
+
+// export const GET = async (req: NextRequest, { params }: { params: { page: string } }) => {
+//     const { page } = params;
+
+//     const pageNum = Number(page) || 1;
+//     const pageSize = 10;
+//     const offset = (pageNum - 1) * pageSize;
+
+//     console.log('실행?', pageNum);
+
+//     const snapshot = await adminDB.collection("restaurant")
+//         .orderBy('created_at', 'desc') // 반드시 정렬 기준 필요
+//         .offset(offset)
+//         .limit(pageSize)
+//         .get();
+
+//     if (snapshot.empty) {
+//         return NextResponse.json({
+//             state: "SUCCESS",
+//             message: "데이터 없음",
+//             data: [],
+//         }, { status: 200 });
+//     }
+
+//     const fetchedRestaurant = snapshot.docs.map(doc => {
+//         const data = doc.data();
+//         return {
+//             id: doc.id,
+//             title: data.title,
+//             content: data.content,
+//             address: data.address,
+//             category: data.category,
+//             rating: data.rating,
+//             userId: data.userId,
+//             isEdit: data.isEdit,
+//             created_at: data.created_at ? data.created_at.toDate() : null,
+//         };
+//     });
+
+//     const res = {
+//         state: "SUCCESS",
+//         message: "성공",
+//         data: fetchedRestaurant,
+//     };
+
+//     return NextResponse.json(res, { status: 200 });
+// };
 
 
 

@@ -22,7 +22,9 @@ export const POST = async (req: NextRequest) => {
     return NextResponse.json({
         state: "SUCCESS",
         message: "추가",
-        data: { id: restaurantRef.id, ...restaurantData },
+        data: {
+            id: restaurantRef.id, ...restaurantData,
+        },
     }, { status: 201 });
 };
 
@@ -32,8 +34,6 @@ export const POST = async (req: NextRequest) => {
 // import { auth, db } from "@/src/data/firebaseClient";
 // import { admin } from "@/src/data/firebaseAdmin";
 // import { getFirestore, collection, query, getDocs, Timestamp, setDoc, doc, getDoc, deleteDoc, updateDoc } from "firebase/firestore";
-
-
 
 
 // /*

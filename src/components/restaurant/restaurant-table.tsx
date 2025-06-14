@@ -12,64 +12,28 @@ import { useRestaurantListAll } from '@/src/store/queryies/restaurant/restaurant
 const RestaurantTable = () => {
   const { data: restaurantData, isError: restaurantError, isSuccess: restaurantSuccess, isLoading: restaurantLoading } = useRestaurantListAll(10)
 
+
   useEffect(() => {
-    console.log('??', restaurantData)
-  }, [restaurantSuccess])
-
-
+    if (restaurantSuccess && restaurantData?.data) {
+      console.log(restaurantData.data);
+    }
+  }, [restaurantSuccess, restaurantData]);
 
 
 
   return (
     <div>
-
-      <Accordion>
-        {restaurantData.map((item) => {
+      {restaurantLoading && <p>로딩 중...</p>}
+      {restaurantError && <p>에러 발생</p>}
+      <Accordion selectionMode="multiple">
+        {restaurantSuccess && Array.isArray(restaurantData?.data) ? restaurantData?.data?.map(item => {
           return (
             <AccordionItem key={item.id} aria-label={`Accordion ${item.id}`} title={item.title}>
-              <RestaurantItem restaurant={item}  />
+              <RestaurantItem restaurant={item} />
             </AccordionItem>
           )
-        })}
-       
+        }) : null}
       </Accordion>
-
-      <div className="my-[50px]">
-        {/* <Input
-          attr={{
-            type: "text",
-            placeholder: "할일입력",
-            value: text,
-          }}
-          handleInputChange={handleInputChange}
-
-        />
-        <Button
-          attr={{
-            type: 'button',
-            style: { border: '1px solid #ddd', padding: "5px 10px", borderRadius: "14px" },
-            title: "asdasd"
-          }}
-          content="할일 입력"
-          onClick={handleTodoSubmit}
-        /> */}
-      </div>
-
-
-      <div className="">
-        <div className="flex justify-start gap-[20px]">
-          <div>아이디</div>
-          <div>할일내용</div>
-          <div>완료여부</div>
-          <div>생성일</div>
-        </div>
-
-        <div>
-          {/* {stateTodos && stateTodos.map((todo) => (
-            <TodoItem todo={todo} key={todo.id} setStateodos={setStateodos} />
-          ))} */}
-        </div>
-      </div>
 
     </div>
 

@@ -18,6 +18,7 @@ import dynamic from 'next/dynamic'
 const Darkmode = dynamic(() => import('@/src/components/common/darkmode'), { ssr: false });
 import { PiSignOutBold, PiAlienDuotone, PiKeyDuotone, PiFinnTheHumanDuotone, PiHeartDuotone, PiAtBold, PiBabyBold, PiChatCircleDotsDuotone, PiLinuxLogoDuotone, PiReceiptDuotone, PiFolderOpenDuotone, PiSunDuotone, PiMoonStarsDuotone, PiArrowRightBold } from "react-icons/pi";
 import { useTheme } from 'next-themes'
+import UserFirstName from '@/src/components/common/user-firstName'
 
 
 
@@ -67,10 +68,13 @@ const Header = () => {
                   {!userInfo && isAccToken === null && <Skeleton className='flex rounded-full size-[40px]' />}
                   {/* {isAccToken === null && <Skeleton className='flex rounded-full size-[40px]' />} */}
 
+                  {/* user first name */}
                   {isAccToken === true && (
-                     <Button type='button' size='none' onClick={handleClick} className="rounded-[50%] bg-gray-700 text-white size-[40px] p-[5px]">
-                        {userInfo?.providerData[0]?.displayName.slice(0, 1).toLocaleUpperCase()}
-                     </Button>
+                     <UserFirstName
+                        firstString={userInfo?.providerData[0]?.displayName.slice(0, 1).toLocaleUpperCase()}
+                        className={'rounded-[50%] bg-gray-700 text-white size-[40px] p-[5px]'}
+                        onClick={handleClick}
+                     />
                   )}
 
                   {isAccToken === false && (

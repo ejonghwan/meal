@@ -1,5 +1,9 @@
 "use client"
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@heroui/modal";
+
+import UserFirstName from '@/src/components/common/user-firstName';
+
 
 
 
@@ -7,14 +11,33 @@ import React, { useState } from 'react'
 
 const RestaurantItem = ({ restaurant }) => {
 
+    const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-    console.log('?', restaurant)
+    useEffect(() => {
+        console.log('?restaurant', restaurant)
+
+    }, [])
 
 
     return (
-        <div className="flex justify-between border border-solid border-[#333] rounded-[10px] mt-[10px] items-center">
-
-
+        <div className="">
+            {restaurant.user && (
+                <UserFirstName
+                    // userData={restaurant.user}
+                    firstString={restaurant.user.displayName?.slice(0, 1).toLocaleUpperCase()}
+                    className={'rounded-[50%] bg-gray-700 text-white size-[40px] p-[5px]'}
+                    onClick={onOpen}
+                />
+            )}
+            <ul>
+                <li>{restaurant.title}</li>
+                <li>{restaurant.content}</li>
+                <li>{restaurant.created_at}</li>
+                <li>{restaurant.category}</li>
+                <li>{restaurant.address}</li>
+                <li>{restaurant.rating}</li>
+                <li>{restaurant.userId}</li>
+            </ul>
 
             {/* <div title={todo.id} className="p-[10px]">{todo.id.slice(0, 3)}...</div>
             <div>
@@ -50,6 +73,63 @@ const RestaurantItem = ({ restaurant }) => {
                 </div>
             )} */}
 
+
+
+            <Modal
+                backdrop="blur"
+                isOpen={isOpen}
+                motionProps={{
+                    variants: {
+                        enter: {
+                            y: 0,
+                            opacity: 1,
+                            transition: {
+                                duration: 0.3,
+                                ease: "easeOut",
+                            },
+                        },
+                        exit: {
+                            y: -20,
+                            opacity: 0,
+                            transition: {
+                                duration: 0.2,
+                                ease: "easeIn",
+                            },
+                        },
+                    },
+                }}
+                onOpenChange={onOpenChange}
+            >
+                <ModalContent>
+                    {(onClose) => (
+                        <>
+                            <ModalHeader className="flex flex-col gap-1">Modal Title</ModalHeader>
+                            <ModalBody>
+                                <div>
+                                    {restaurant.user && (
+                                        <UserFirstName
+                                            // userData={restaurant.user}
+                                            firstString={restaurant.user.displayName?.slice(0, 1).toLocaleUpperCase()}
+                                            className={'rounded-[50%] bg-gray-700 text-white size-[140px] p-[5px]'}
+                                            onClick={onOpen}
+                                        />
+                                    )}
+                                </div>
+                                <div>{restaurant.user.displayName}</div>
+                                <div>{restaurant.user.email}</div>
+                            </ModalBody>
+                            <ModalFooter>
+                                <button type='button' color="danger" onClick={onClose}>
+                                    Close
+                                </button>
+                                <button type='button' color="primary" onClick={onClose}>
+                                    Action
+                                </button>
+                            </ModalFooter>
+                        </>
+                    )}
+                </ModalContent>
+            </Modal>
         </div>
     )
 }

@@ -73,56 +73,33 @@ export const GET = async (req: NextRequest, { params }: { params: { page: string
 };
 
 
-// import { NextRequest, NextResponse } from "next/server";
-// import { adminDB } from "@/src/data/firebaseAdmin";
 
-// export const GET = async (req: NextRequest, { params }: { params: { page: string } }) => {
-//     const { page } = params;
+export const POST = async (req: NextRequest) => {
+    const { userId, title, content, rating, address, category, isEdit } = await req.json();
 
-//     const pageNum = Number(page) || 1;
-//     const pageSize = 10;
-//     const offset = (pageNum - 1) * pageSize;
+    const restaurantRef = adminDB.collection("restaurant").doc(); // ✅ adminDB 사용
 
-//     console.log('실행?', pageNum);
+    const restaurantData = {
+        userId,
+        title,
+        content,
+        rating,
+        address,
+        category,
+        isEdit,
+        created_at: admin.firestore.Timestamp.fromDate(new Date()),
+    };
 
-//     const snapshot = await adminDB.collection("restaurant")
-//         .orderBy('created_at', 'desc') // 반드시 정렬 기준 필요
-//         .offset(offset)
-//         .limit(pageSize)
-//         .get();
+    await restaurantRef.set(restaurantData); // ✅ admin SDK로 접근하면 권한 체크 안 함
 
-//     if (snapshot.empty) {
-//         return NextResponse.json({
-//             state: "SUCCESS",
-//             message: "데이터 없음",
-//             data: [],
-//         }, { status: 200 });
-//     }
-
-//     const fetchedRestaurant = snapshot.docs.map(doc => {
-//         const data = doc.data();
-//         return {
-//             id: doc.id,
-//             title: data.title,
-//             content: data.content,
-//             address: data.address,
-//             category: data.category,
-//             rating: data.rating,
-//             userId: data.userId,
-//             isEdit: data.isEdit,
-//             created_at: data.created_at ? data.created_at.toDate() : null,
-//         };
-//     });
-
-//     const res = {
-//         state: "SUCCESS",
-//         message: "성공",
-//         data: fetchedRestaurant,
-//     };
-
-//     return NextResponse.json(res, { status: 200 });
-// };
-
+    return NextResponse.json({
+        state: "SUCCESS",
+        message: "추가",
+        data: {
+            id: restaurantRef.id, ...restaurantData,
+        },
+    }, { status: 201 });
+};
 
 
 

@@ -1,11 +1,17 @@
 "use client"
 
 import React, { useEffect } from 'react'
+import ContentWrap from './content-wrap'
+import Section from './content-section'
 const Main = ({ children }) => {
    return (
-      <main>
-         {children}
-      </main>
+      <ContentWrap>
+         <Section variant='content' size='large' className=''>
+            <main>
+               {children}
+            </main>
+         </Section>
+      </ContentWrap>
    )
 }
 

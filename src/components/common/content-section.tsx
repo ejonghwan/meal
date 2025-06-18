@@ -17,7 +17,7 @@ interface SectionProps extends ComponentProps<'div'>, VariantProps<typeof Sectio
 const SectionVariants = cva('sec__inner', {
    variants: {
       variant: {
-         content: 'py-[40px]',
+         content: 'my-[40px]',
          header: 'py-[20px]',
          footer: '',
          none: 'h-auto my-auto'

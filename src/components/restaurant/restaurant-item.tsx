@@ -24,7 +24,7 @@ const RestaurantItem = ({ restaurant }) => {
 
 
     return (
-        <div className="">
+        <div className="asd">
             {restaurant.user.uid === userInfo.uid && (
                 <div>
                     <button type='button'>수정</button>

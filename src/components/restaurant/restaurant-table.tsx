@@ -5,6 +5,7 @@ import RestaurantItem from "@/src/components/restaurant/restaurant-item";
 
 import { Accordion, AccordionItem } from "@heroui/accordion";
 import { useRestaurantListAll } from '@/src/store/queryies/restaurant/restaurantQueries'
+import { PiBowlFoodDuotone, PiStarDuotone, PiStarFill } from "react-icons/pi";
 
 
 
@@ -22,21 +23,30 @@ const RestaurantTable = () => {
 
 
   return (
-    <div>
+    <>
       {restaurantLoading && <p>로딩 중...</p>}
       {restaurantError && <p>에러 발생</p>}
-      <Accordion selectionMode="multiple">
+      <Accordion selectionMode="multiple" variant="splitted" className="px-0">
         {restaurantSuccess && Array.isArray(restaurantData?.data) ? restaurantData?.data?.map(item => {
           return (
-            <AccordionItem key={item.id} aria-label={`Accordion ${item.id}`} title={item.title}>
+            <AccordionItem
+              key={item.id}
+              aria-label={`Accordion ${item.id}`}
+              title={item.title}
+              startContent={
+                <div className="flex justify-center items-center flex-col">
+                  <PiStarFill className="size-[20px] text-[#ebdf32]" />
+                  <span className="text-[12px] text-[#999] mt-[5px]">{item.rating} / 5</span>
+                </div>
+              }
+              subtitle={item.content}
+            >
               <RestaurantItem restaurant={item} />
             </AccordionItem>
           )
         }) : null}
       </Accordion>
-
-    </div>
-
+    </>
   );
 }
 

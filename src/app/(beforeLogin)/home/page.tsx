@@ -10,20 +10,17 @@ import { useRestaurantListAll } from '@/src/store/queryies/restaurant/restaurant
 const HomePage = () => {
 
 
-   const { userInfo, setUserLogout } = useUserStore()
-   // const { loading } = useRestaurantListAll()
-   useEffect(() => {
-   }, [userInfo])
+   // const { userInfo, setUserLogout } = useUserStore()
+   // // const { loading } = useRestaurantListAll()
+   // useEffect(() => {
+   // }, [userInfo])
 
    return (
-      <div>HomePage
-
+      <>
          <Main>
-            메인
-            <RestaurantTable todos={[{ id: "a", is_done: false, title: "a title", created_at: "24" }]} />
+            <RestaurantTable />
          </Main>
-
-      </div>
+      </>
    )
 }
 

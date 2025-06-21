@@ -4,6 +4,7 @@ import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure
 
 import UserFirstName from '@/src/components/common/user-firstName';
 import { useUserStore } from '@/src/store/front/user';
+import MapLoad from '@/src/components/maps/map-load'
 
 
 
@@ -40,6 +41,7 @@ const RestaurantItem = ({ restaurant }) => {
                     onClick={onOpen}
                 />
             )}
+            <MapLoad mapData={{ name: 'a', location: { lat: 37.5665, lng: 126.9780 } }} />
             <ul>
                 <li>{restaurant.title}</li>
                 <li>{restaurant.content}</li>

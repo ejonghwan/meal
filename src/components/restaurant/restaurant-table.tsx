@@ -8,8 +8,6 @@ import { useRestaurantListAll } from '@/src/store/queryies/restaurant/restaurant
 import { PiBowlFoodDuotone, PiStarDuotone, PiStarFill } from "react-icons/pi";
 
 
-
-
 const RestaurantTable = () => {
   const { data: restaurantData, isError: restaurantError, isSuccess: restaurantSuccess, isLoading: restaurantLoading } = useRestaurantListAll(10)
 
@@ -19,7 +17,6 @@ const RestaurantTable = () => {
       console.log(restaurantData.data);
     }
   }, [restaurantSuccess, restaurantData]);
-
 
 
   return (

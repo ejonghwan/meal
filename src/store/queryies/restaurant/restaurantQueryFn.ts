@@ -55,11 +55,15 @@ export const onRestaurantDetailLoadAPI = async (restaurantId: string) => {
 // 글 생성
 export const onCreateRestaurantAPI = async (data: RestaurantData) => {
     try {
-        const { userId, title, content, rating, address, category, isEdit } = data;
+        const { userId, title, content, rating, address, category, isEdit, token } = data;
 
         const options: ExtendsRequestInit = {
             method: "POST",
-            headers: { "Content-Type": "application/json", },
+            headers: {
+                'Content-Type': 'application/json',
+                "x-acc-token": `Bearer ${token}`,
+                // "Authorization": `Bearer ${token}`,
+            },
             body: JSON.stringify({ userId, title, content, rating, address, category, isEdit }),
             next: { tags: ['restaurant', 'create'] },
             cache: "no-store",

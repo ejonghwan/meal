@@ -9,4 +9,5 @@ export interface RestaurantData {
     category: string;
     isEdit?: boolean;
     restaurantId?: string;
+    token: string;
 }

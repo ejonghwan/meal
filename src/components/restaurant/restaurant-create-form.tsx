@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef } from 'react'
 import { Input, Textarea } from "@heroui/input"
 import { Button } from "@heroui/button";
 import { RestaurantData } from '@/src/types/data/restaurant'
@@ -26,6 +26,11 @@ const RestaurantCreateForm = () => {
 
    const { mutate: createRestaurantMutation, isError: createRestaurantError, isSuccess: createRestaurantSuccess } = useCreateRestaurant()
    const { userInfo } = useUserStore()
+   const token = useRef(null);
+   if (typeof window !== 'undefined') {
+      // console.log(localStorage)
+      token.current = localStorage.getItem('x-acc-token')
+   }
    const [restaurant, setRestaurant] = useState<RestaurantData>({
       userId: "",
       title: "",
@@ -35,8 +40,11 @@ const RestaurantCreateForm = () => {
       category: "",
       isEdit: false,
       // restaurantId: "",
+      token: token.current,
 
    });
+
+
 
    const handleCreateRestaurant = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()

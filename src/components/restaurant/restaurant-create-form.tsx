@@ -6,7 +6,6 @@ import { Button } from "@heroui/button";
 import { RestaurantData } from '@/src/types/data/restaurant'
 import { Slider } from "@heroui/slider";
 import { PiStarFill } from "react-icons/pi";
-import '@/src/styles/common/range.css'
 import CategoryWrap from '../common/category/category-wrap';
 import { categorys } from '@/src/components/restaurant/restaurant-data'
 import { useCreateRestaurant } from '@/src/store/queryies/restaurant/restaurantQueries';
@@ -14,6 +13,7 @@ import { useUserStore } from '@/src/store/front/user';
 import MapSelect from '@/src/components/maps/map-select';
 import Search from '@/src/components/common/input/search';
 import _ from 'lodash'
+import '@/src/styles/common/range.css'
 
 
 
@@ -50,11 +50,13 @@ const RestaurantCreateForm = () => {
       token: token.current,
    });
 
+
    const handleCreateRestaurant = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
       createRestaurantMutation(restaurant)
       console.log('view?', restaurant)
    }
+
 
    const handleChangeRestaurantInfo = (e) => {
       e.preventDefault()
@@ -65,22 +67,13 @@ const RestaurantCreateForm = () => {
       })
    }
 
-   // const handleSearchInputChange = _.debounce((e) => {
-   //    console.log('debounce data??', e.target.value)
-   //    setKeyword(e.target.value);
-   // }, 500,);
-   // const handleSearchInputChange = useCallback(
-   //    _.debounce((e: string) => {
-   //       setKeyword(e);
-   //    }, 500), []
-   // );
 
 
    const debounceRef = useRef<(val: string) => void>();
    useEffect(() => {
       debounceRef.current = _.debounce((val: string) => {
          setKeyword(val); // 검색어 확정
-      }, 800); //0.8초 후 검색요청
+      }, 1200); //1.2초 후 검색요청
    }, []);
 
    const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -88,11 +81,6 @@ const RestaurantCreateForm = () => {
       setSearchValue(val);              // 즉시 반영 (인풋 UI)
       debounceRef.current?.(val);      // 디바운스 반영 (검색 요청용)
    };
-
-
-
-
-   // { trailing: false }
 
 
 
@@ -104,11 +92,6 @@ const RestaurantCreateForm = () => {
       })
    }
 
-   useEffect(() => {
-      console.log('restaurant?', restaurant, userInfo?.uid)
-
-   }, [restaurant])
-
 
    return (
       <>
@@ -116,7 +99,7 @@ const RestaurantCreateForm = () => {
 
             {/* 가게 찾기 */}
             <article>
-               <strong className='block mb-[10px] text-[18px]'>가게명</strong>
+               <strong className='block mb-[10px] text-[18px]'>가게명 검색</strong>
                <div className='flex gap-[10px]'>
                   {/* <Input
                      label="가게명"
@@ -144,7 +127,7 @@ const RestaurantCreateForm = () => {
 
             {/* 나머지 정보 입력 후 디비저장 */}
             <form onSubmit={handleCreateRestaurant}>
-               <article>
+               <article className='mt-[40px]'>
                   <div className='flex items-center'>
                      <strong>별점</strong>
                      <div><PiStarFill className='text-yellow-200' /></div>
@@ -166,7 +149,6 @@ const RestaurantCreateForm = () => {
                      classNames={{
                         base: "max-w-md",
                         // filler: "bg-gradient-to-r from-primary-500 to-secondary-400",
-
                         labelWrapper: "mb-2",
                         label: "font-medium text-default-700 text-medium",
                         // value: "font-medium text-default-500 text-small",
@@ -206,8 +188,8 @@ const RestaurantCreateForm = () => {
                   />
                </article>
 
-               <article>
-                  <strong className='text-[16px] '>리뷰</strong>
+               <article className='mt-[40px]'>
+                  <strong className='text-[16px]'>리뷰</strong>
                   <Textarea
                      label="리뷰"
                      isRequired
@@ -223,7 +205,7 @@ const RestaurantCreateForm = () => {
                   />
                </article>
 
-               <article>
+               <article className='mt-[40px]'>
                   <strong>asd</strong>
                   <Input
                      label="주소"

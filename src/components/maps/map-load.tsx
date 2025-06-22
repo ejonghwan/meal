@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, memo } from 'react';
 import { useKakaoMap } from '@/src/hooks/use-maps';
 
 interface Props {
@@ -92,7 +92,12 @@ const MapLoad = ({ mapData }: Props) => {
    );
 }
 
-export default MapLoad
+export default memo(MapLoad)
+
+
+
+
+
 
 // import React, { Fragment, useRef, useEffect, useState, useCallback } from 'react';
 // import _ from 'lodash';

@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useEffect, useRef, useCallback } from 'react'
 import { Input, Textarea } from "@heroui/input"
 import { Button } from "@heroui/button";
 import { RestaurantData } from '@/src/types/data/restaurant'
@@ -11,6 +11,11 @@ import CategoryWrap from '../common/category/category-wrap';
 import { categorys } from '@/src/components/restaurant/restaurant-data'
 import { useCreateRestaurant } from '@/src/store/queryies/restaurant/restaurantQueries';
 import { useUserStore } from '@/src/store/front/user';
+import MapSelect from '@/src/components/maps/map-select';
+import Search from '@/src/components/common/input/search';
+import _ from 'lodash'
+
+
 
 // userId
 // title: string;
@@ -31,6 +36,8 @@ const RestaurantCreateForm = () => {
       // console.log(localStorage)
       token.current = localStorage.getItem('x-acc-token')
    }
+   const [searchValue, setSearchValue] = useState('')
+   const [keyword, setKeyword] = useState('')
    const [restaurant, setRestaurant] = useState<RestaurantData>({
       userId: "",
       title: "",
@@ -41,10 +48,7 @@ const RestaurantCreateForm = () => {
       isEdit: false,
       // restaurantId: "",
       token: token.current,
-
    });
-
-
 
    const handleCreateRestaurant = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
@@ -60,6 +64,37 @@ const RestaurantCreateForm = () => {
          [e.target.name]: e.target.value
       })
    }
+
+   // const handleSearchInputChange = _.debounce((e) => {
+   //    console.log('debounce data??', e.target.value)
+   //    setKeyword(e.target.value);
+   // }, 500,);
+   // const handleSearchInputChange = useCallback(
+   //    _.debounce((e: string) => {
+   //       setKeyword(e);
+   //    }, 500), []
+   // );
+
+
+   const debounceRef = useRef<(val: string) => void>();
+   useEffect(() => {
+      debounceRef.current = _.debounce((val: string) => {
+         setKeyword(val); // 검색어 확정
+      }, 800); //0.8초 후 검색요청
+   }, []);
+
+   const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+      const val = e.target.value;
+      setSearchValue(val);              // 즉시 반영 (인풋 UI)
+      debounceRef.current?.(val);      // 디바운스 반영 (검색 요청용)
+   };
+
+
+
+
+   // { trailing: false }
+
+
 
    const handleChangeRating = (v) => {
       console.log('??? rating', v)
@@ -77,10 +112,38 @@ const RestaurantCreateForm = () => {
 
    return (
       <>
-         <form onSubmit={handleCreateRestaurant}>
+         <div className='flex flex-col gap-2 mt-[20px]'>
 
-            <div className='flex flex-col gap-2 mt-[20px]'>
+            {/* 가게 찾기 */}
+            <article>
+               <strong className='block mb-[10px] text-[18px]'>가게명</strong>
+               <div className='flex gap-[10px]'>
+                  {/* <Input
+                     label="가게명"
+                     isRequired
+                     className="w-full input_text"
+                     defaultValue=""
+                     type="text"
+                     placeholder="가게명은 정확하게 입력해주세요"
+                     name='title'
+                     value={restaurant.title}
+                     onChange={handleChangeRestaurantInfo}
+                  /> */}
 
+
+                  <Search className='w-full' onChange={handleSearchInputChange} value={searchValue} />
+                  {/* key 멈추면 submit 으로 변경*/}
+                  {/* <Button className='w-[150px] h-auto' type='submit' color="primary" >검색</Button> */}
+               </div>
+            </article>
+            <article>
+               <MapSelect keyword={keyword} />
+            </article>
+
+
+
+            {/* 나머지 정보 입력 후 디비저장 */}
+            <form onSubmit={handleCreateRestaurant}>
                <article>
                   <div className='flex items-center'>
                      <strong>별점</strong>
@@ -119,7 +182,6 @@ const RestaurantCreateForm = () => {
                         track: "bg-gray-800 ",
                         mark: 'bg-red-500 ',
                         filler: "bg-[yellow]",
-
                      }}
 
                      // formatOptions={{ style: "currency", currency: "USD" }}
@@ -144,24 +206,8 @@ const RestaurantCreateForm = () => {
                   />
                </article>
 
-
                <article>
-                  <strong>asd</strong>
-                  <Input
-                     label="가게명"
-                     isRequired
-                     className="w-full input_text"
-                     defaultValue=""
-                     type="text"
-                     name='title'
-                     placeholder="가게명은 정확하게 입력해주세요"
-                     value={restaurant.title}
-                     onChange={handleChangeRestaurantInfo}
-                  />
-               </article>
-
-               <article>
-                  <strong>asd</strong>
+                  <strong className='text-[16px] '>리뷰</strong>
                   <Textarea
                      label="리뷰"
                      isRequired
@@ -204,9 +250,10 @@ const RestaurantCreateForm = () => {
 
 
                <Button className='w-full' type='submit' color="primary">글 생성</Button>
-            </div>
 
-         </form>
+
+            </form>
+         </div>
       </>
    )
 }

@@ -1,12 +1,18 @@
 'use client';
 
-import { useRef } from 'react';
+import { useRef, memo } from 'react';
 import { useKakaoMap } from '@/src/hooks/use-maps';
+import _ from 'lodash'
 
-const MapCreate = () => {
+interface Props {
+   keyword: string;
+}
+
+const MapSelect = ({ keyword }: Props) => {
    const mapRef = useRef<HTMLDivElement>(null);
 
    console.log('map compo?')
+
 
    const handleMapLoad = () => {
       console.log('map??', window.kakao, !mapRef.current)
@@ -17,19 +23,58 @@ const MapCreate = () => {
          level: 3,
       });
 
+      // 장소 검색 객체를 생성합니다
+      const ps = new window.kakao.maps.services.Places();
+
+      // 키워드로 장소를 검색합니다
+      ps.keywordSearch(keyword, placesSearchCB);
+
 
       // 예시: 마커 추가
       new window.kakao.maps.Marker({
          map,
          position: new window.kakao.maps.LatLng(37.5665, 126.9780),
       });
+
+
+      // 키워드 검색 완료 시 호출되는 콜백함수
+      function placesSearchCB(data, status, pagination) {
+         if (status === window.kakao.maps.services.Status.OK) {
+            // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해 LatLngBounds 객체에 좌표를 추가
+            var bounds = new window.kakao.maps.LatLngBounds();
+            for (var i = 0; i < data.length; i++) {
+               displayMarker(data[i]);
+               bounds.extend(new window.kakao.maps.LatLng(data[i].y, data[i].x));
+            }
+            // 검색된 장소 위치를 기준으로 지도 범위를 재설정
+            map.setBounds(bounds);
+         }
+      }
+
+
+      // 지도에 마커를 표시하는 함수
+      function displayMarker(place) {
+         // 마커를 생성하고 지도에 표시합니다
+         var marker = new window.kakao.maps.Marker({
+            map: map,
+            position: new window.kakao.maps.LatLng(place.y, place.x)
+         });
+         // 마커에 클릭이벤트를 등록합니다
+         window.kakao.maps.event.addListener(marker, 'click', function () {
+            console.log('장소 클릭')
+            // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
+            // infowindow.setContent('<div style="padding:5px;font-size:12px;">' + place.place_name + '</div>');
+            // infowindow.open(map, marker);
+         });
+      }
+
    };
 
    useKakaoMap(handleMapLoad);
 
    return (
       <div>
-         <h2 className="text-lg font-bold mb-2">카카오 지도</h2>
+         <h2 className="text-lg font-bold mb-2"></h2>
          <div
             ref={mapRef}
             className="w-full h-[400px] border border-gray-300 rounded-md"
@@ -38,7 +83,14 @@ const MapCreate = () => {
    );
 }
 
-export default MapCreate
+export default memo(MapSelect)
+
+
+
+
+
+
+
 
 // import React, { Fragment, useRef, useEffect, useState, useCallback } from 'react';
 // import _ from 'lodash';

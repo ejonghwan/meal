@@ -201,19 +201,19 @@
    }
 
    /* 1줄 처리 아래꺼 or truncate */
-   .ellipsis-1 {
+   .eps-1 {
       @apply block whitespace-normal text-ellipsis line-clamp-1;
       display: -webkit-box;
    }
 
    /* 2줄 처리 */
-   .ellipsis-2 {
+   .eps-2 {
       @apply block whitespace-normal text-ellipsis line-clamp-2;
       display: -webkit-box;
    }
 
    /* 4줄 처리 */
-   .ellipsis-4 {
+   .eps-4 {
       @apply block whitespace-normal text-ellipsis line-clamp-4;
       display: -webkit-box;
    }
@@ -297,4 +297,26 @@
    .contents-wrapper {
       width: 100%;
    }
+}
+
+
+
+/* 마커 삼각형 */
+.customoverlay::before {
+   content: "";
+   position: absolute;
+   bottom: -10px;
+   left: 0;
+   right: 0;
+   margin: auto;
+   display: block;
+   width: 0;
+   height: 0;
+   border-left: 5px solid transparent;
+   border-right: 5px solid transparent;
+   border-bottom: 10px solid #FF6200;
+   /* 삼각형 색상 */
+   border-radius: 0px;
+   transform: rotate(180deg);
+   /* 필요시 방향 조절 */
 }

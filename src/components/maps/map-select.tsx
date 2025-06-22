@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, memo } from 'react';
+import { useState, useRef, memo } from 'react';
 import { useKakaoMap } from '@/src/hooks/use-maps';
 import _ from 'lodash'
 
@@ -22,6 +22,9 @@ interface Props {
 }
 
 const MapSelect = ({ keyword }: Props) => {
+
+   const [info, setInfo] = useState({ name: '', adress: '', category: '', categoryName: '', url: '', phone: '', y: '', x: '' })
+   const [active, setActive] = useState(false)
    const mapRef = useRef<HTMLDivElement>(null);
 
    console.log('map compo?')
@@ -54,7 +57,7 @@ const MapSelect = ({ keyword }: Props) => {
       // 키워드 검색 완료 시 호출되는 콜백함수
       function placesSearchCB(data, status, pagination) {
          if (status === window.kakao.maps.services.Status.OK) {
-            // console.log('dd?', data)
+            console.log('dd?', data)
             // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해 LatLngBounds 객체에 좌표를 추가
             var bounds = new window.kakao.maps.LatLngBounds();
 
@@ -105,7 +108,22 @@ const MapSelect = ({ keyword }: Props) => {
 
          // 클릭 이벤트
          content.addEventListener('click', () => {
-            console.log('???????', place.place_name)
+            // console.log('???????', place.place_name)
+
+            console.log('this?', content.children[0])
+            content.children[0].innerHTML = `asdasd`
+
+            setInfo(prev => ({
+               ...prev,
+               name: place.place_name,
+               adress: place.road_address_name,
+               category: place.category_name,
+               categoryName: place.category_group_name,
+               url: place.place_url,
+               phone: place.phone,
+               y: place.y,
+               x: place.x
+            }))
          })
       }
 
@@ -137,12 +155,23 @@ const MapSelect = ({ keyword }: Props) => {
             ref={mapRef}
             className="w-full h-[400px] border border-gray-300 rounded-md"
          />
+         <div>
+            <ul>
+               <li>{info.name}</li>
+               <li>{info.adress}</li>
+               <li>{info.category}</li>
+               <li>{info.categoryName}</li>
+               <li>{info.url}</li>
+               <li>{info.phone}</li>
+               <li>{info.y}</li>
+               <li>{info.x}</li>
+            </ul>
+         </div>
       </div>
    );
 }
 
 export default memo(MapSelect)
-
 
 
 

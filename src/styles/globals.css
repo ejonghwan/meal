@@ -320,3 +320,7 @@
    transform: rotate(180deg);
    /* 필요시 방향 조절 */
 }
+
+/* .customoverlay.active {
+   background-color: red;
+} */

@@ -31,11 +31,11 @@ const MapLoad = ({ mapData }: Props) => {
       // const imageOption = { offset: new window.kakao.maps.Point(27, 69) };
       // const markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize, imageOption)
       // 마커 추가
-      const rMarker = new window.kakao.maps.Marker({
-         map,
-         position: new window.kakao.maps.LatLng(mapData.location.lat, mapData.location.lng),
-         // image: markerImage
-      });
+      // const rMarker = new window.kakao.maps.Marker({
+      //    map,
+      //    position: new window.kakao.maps.LatLng(mapData.location.lat, mapData.location.lng),
+      //    // image: markerImage
+      // });
 
 
       // const infowindow = new window.kakao.maps.InfoWindow({
@@ -54,7 +54,7 @@ const MapLoad = ({ mapData }: Props) => {
          map: map,
          position: new window.kakao.maps.LatLng(mapData.location.lat, mapData.location.lng),
          content: `
-            <div class="customoverlay flex items-center gap-[6px] border border-1 border-primary bg-[#fff] p-[4px] pr-[8px]" style="min-width: 100px;  min-height: 11px; border-radius: 20px; position: relative; top: -9px; left: -0px; right:0;">
+            <div class="customoverlay flex items-center gap-[6px] border border-1.5 border-primary bg-[#fff] p-[4px] pr-[8px]" style="min-width: 100px;  min-height: 11px; border-radius: 20px; position: relative; top: -9px; left: -0px; right:0;">
 
                <div style="width: 22px; height: 22px; border-radius: 50%; flex: 0 0 auto;" class="bg-primary">
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 26" class="map_ico" fill="#fff">

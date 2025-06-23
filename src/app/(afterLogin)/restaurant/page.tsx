@@ -20,7 +20,7 @@ const RestaurantPage = () => {
 	*/
 
 	return (
-		<ContentWrap>
+		<ContentWrap className='pb-[80px]'>
 			<Section>
 				<RestaurantCreateForm />
 			</Section>

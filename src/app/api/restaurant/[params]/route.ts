@@ -52,11 +52,11 @@ export const GET = async (req: NextRequest, { params }: { params: { page: string
             user,
             title: data.title,
             content: data.content,
-            address: data.address,
             category: data.category,
             rating: data.rating,
             userId: data.userId,
             isEdit: data.isEdit,
+            mapInfo: data.mapInfo,
             created_at: data.created_at?.toDate() ?? null,
         };
     }));

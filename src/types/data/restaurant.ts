@@ -1,13 +1,24 @@
 
 
+export interface MapInfo {
+    name: string;
+    adress: string;
+    category: string;
+    categoryName: string;
+    url: string;
+    phone: string;
+    y: string;
+    x: string;
+}
+
 export interface RestaurantData {
     userId: string
     title: string;
     content: string;
     rating: number;
-    address: string;
     category: string;
     isEdit?: boolean;
     restaurantId?: string;
     token: string;
+    mapInfo: MapInfo;
 }

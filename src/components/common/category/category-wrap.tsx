@@ -38,7 +38,7 @@ const CategoryWrap = ({ category, setRestaurant }: CategoryWrapProps) => {
 
    return (
       <>
-         <RadioGroup description="카테고리를 골라주세요" label="카테고리">
+         <RadioGroup description=" " label=" ">
             <div className='flex gap-[5px] flex-wrap'>
 
                {category.map((item, idx) => {

@@ -1,8 +1,10 @@
 'use client';
 
-import { useState, useRef, memo } from 'react';
+import { useState, useRef, memo, useCallback } from 'react';
 import { useKakaoMap } from '@/src/hooks/use-maps';
 import _ from 'lodash'
+import { Input } from "@heroui/input"
+import Link from 'next/link';
 
 // address_name: "서울 도봉구 창동 13"
 // category_group_code: "CE7"
@@ -19,19 +21,16 @@ import _ from 'lodash'
 
 interface Props {
    keyword: string;
+   restaurant: any;
+   setRestaurant: any;
 }
 
-const MapSelect = ({ keyword }: Props) => {
+const MapSelect = ({ keyword, restaurant, setRestaurant }: Props) => {
 
-   const [info, setInfo] = useState({ name: '', adress: '', category: '', categoryName: '', url: '', phone: '', y: '', x: '' })
-   const [active, setActive] = useState(false)
+   // const [mapInfo, setMapInfo] = useState({ name: '', adress: '', category: '', categoryName: '', url: '', phone: '', y: '', x: '' })
    const mapRef = useRef<HTMLDivElement>(null);
 
-   console.log('map compo?')
-
-
-   const handleMapLoad = () => {
-      console.log('map??', window.kakao, !mapRef.current)
+   const handleMapLoad = useCallback(() => {
       if (!window.kakao || !mapRef.current) return;
 
       const map = new window.kakao.maps.Map(mapRef.current, {
@@ -44,14 +43,6 @@ const MapSelect = ({ keyword }: Props) => {
 
       // 키워드로 장소를 검색합니다
       ps.keywordSearch(keyword, placesSearchCB);
-
-
-      // 마커 추가
-      // new window.kakao.maps.Marker({
-      //    map,
-      //    position: new window.kakao.maps.LatLng(37.5665, 126.9780),
-      // });
-
 
 
       // 키워드 검색 완료 시 호출되는 콜백함수
@@ -79,8 +70,7 @@ const MapSelect = ({ keyword }: Props) => {
          const content = document.createElement('div');
          content.innerHTML = `
             <div class="customoverlay flex items-center gap-[6px] border border-1.5 border-primary bg-[#fff] p-[4px] pr-[8px]" style="min-width: 100px;  min-height: 11px; border-radius: 20px; position: relative; top: -9px; left: -0px; right:0;">
-
-                  <div style="width: 22px; height: 22px; border-radius: 50%; flex: 0 0 auto;" class="bg-primary">
+                  <div style="width: 22px; height: 22px; border-radius: 50%; flex: 0 0 auto;" class="map_ico_wrap bg-primary">
                      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 26 26" class="map_ico" fill="#fff">
                         <path fill-rule="evenodd" d="M5.5 9.307C5.5 7.205 7.069 5.5 9.004 5.5s3.504 1.705 3.504 3.807c0 1.818-1.171 3.334-2.738 3.714v7.48H8.368V13.05C6.738 12.724 5.5 11.174 5.5 9.307zm13.599.694V5.823H20.5V10c0 1.574-1.064 2.882-2.453 3.123V20.5h-1.4v-7.376c-1.388-.24-2.453-1.549-2.453-3.123V5.823h1.4V10c0 .73.444 1.343 1.052 1.558V5.823h1.401v5.736c.608-.215 1.052-.827 1.052-1.558z" clip-rule="evenodd">
                         </path>
@@ -88,12 +78,12 @@ const MapSelect = ({ keyword }: Props) => {
                   </div>
 
                   <div class="text-[#333] text-[11px] ">
-                     <p class=" leading-none" style="">${place.place_name}</p>
+                     <p class="name leading-none" >${place.place_name}</p>
                      <div class="flex items-center gap-[3px]" >
-                        <div class="size-[8px] ">
-                           <svg xmlns="http://www.w3.org/2000/svg" fill="#999" viewBox="0 0 13 13"><path d="M8.263 4.682h4.258a.479.479 0 0 1 .28.866L9.353 8.022l1.324 4.01a.477.477 0 0 1-.175.537.482.482 0 0 1-.563 0l-3.438-2.49-3.44 2.49a.48.48 0 0 1-.737-.538l1.324-4.01L.2 5.549a.477.477 0 0 1 .28-.867l4.258.001L6.044.675a.48.48 0 0 1 .912 0l1.307 4.007z"></path></svg>
+                        <div class="size-[8px] star">
+                           <svg xmlns="http://www.w3.org/2000/svg" fill="#cdcdcd" viewBox="0 0 13 13"><path d="M8.263 4.682h4.258a.479.479 0 0 1 .28.866L9.353 8.022l1.324 4.01a.477.477 0 0 1-.175.537.482.482 0 0 1-.563 0l-3.438-2.49-3.44 2.49a.48.48 0 0 1-.737-.538l1.324-4.01L.2 5.549a.477.477 0 0 1 .28-.867l4.258.001L6.044.675a.48.48 0 0 1 .912 0l1.307 4.007z"></path></svg>
                         </div>
-                        <p class="text-[10px] mt-[2px] leading-none">${place.category_group_name}</p>
+                        <p class="group_name text-[10px] mt-[2px] leading-none">${place.category_group_name}</p>
                      </div>
                   </div>
 
@@ -106,23 +96,27 @@ const MapSelect = ({ keyword }: Props) => {
             yAnchor: 1
          });
 
+
          // 클릭 이벤트
          content.addEventListener('click', () => {
-            // console.log('???????', place.place_name)
 
-            console.log('this?', content.children[0])
-            content.children[0].innerHTML = `asdasd`
+            const customoverlayAll = document.querySelectorAll('.customoverlay')
+            customoverlayAll.forEach(item => item.classList.remove('active'))
+            content.children[0].classList.add('active')
 
-            setInfo(prev => ({
+            setRestaurant(prev => ({
                ...prev,
-               name: place.place_name,
-               adress: place.road_address_name,
-               category: place.category_name,
-               categoryName: place.category_group_name,
-               url: place.place_url,
-               phone: place.phone,
-               y: place.y,
-               x: place.x
+               title: place.place_name,
+               mapInfo: {
+                  name: place.place_name,
+                  adress: place.road_address_name,
+                  category: place.category_name,
+                  categoryName: place.category_group_name,
+                  url: place.place_url,
+                  phone: place.phone,
+                  y: place.y,
+                  x: place.x
+               }
             }))
          })
       }
@@ -144,9 +138,10 @@ const MapSelect = ({ keyword }: Props) => {
       //    });
       // }
 
-   };
+   }, [keyword]);
 
    useKakaoMap(handleMapLoad);
+
 
    return (
       <div>
@@ -157,14 +152,77 @@ const MapSelect = ({ keyword }: Props) => {
          />
          <div>
             <ul>
-               <li>{info.name}</li>
-               <li>{info.adress}</li>
-               <li>{info.category}</li>
-               <li>{info.categoryName}</li>
-               <li>{info.url}</li>
-               <li>{info.phone}</li>
-               <li>{info.y}</li>
-               <li>{info.x}</li>
+               <li className='mt-[20px]'>
+                  <Input
+                     label="가게명"
+                     className="w-full input_text"
+                     defaultValue=""
+                     type="text"
+                     name='name'
+                     placeholder="검색 후 가게를 선택해주세요"
+                     isRequired
+                     disabled
+                     value={restaurant.mapInfo.name}
+                     autoComplete='on'
+                  />
+
+               </li>
+               <li className='mt-[8px]'>
+                  <Input
+                     label="가게주소"
+                     className="w-full input_text"
+                     defaultValue=""
+                     type="text"
+                     name='name'
+                     placeholder="-"
+                     isRequired
+                     disabled
+                     value={restaurant.mapInfo.adress}
+                     autoComplete='on'
+                  />
+               </li>
+               <li className='mt-[8px]'>
+                  <Input
+                     label="분류"
+                     className="w-full input_text"
+                     defaultValue=""
+                     type="text"
+                     name='name'
+                     placeholder="-"
+                     disabled
+                     value={restaurant.mapInfo.category}
+                     autoComplete='on'
+                  />
+               </li>
+               <li className='mt-[8px]'>
+                  <Input
+                     label="업종"
+                     className="w-full input_text"
+                     defaultValue=""
+                     type="text"
+                     name='name'
+                     placeholder="-"
+                     disabled
+                     value={restaurant.mapInfo.categoryName}
+                     autoComplete='on'
+                  />
+               </li>
+               <li className='mt-[8px]'>
+                  <Input
+                     label="전화번호"
+                     className="w-full input_text"
+                     defaultValue=""
+                     type="text"
+                     name='name'
+                     placeholder="-"
+                     disabled
+                     value={restaurant.mapInfo.phone}
+                     autoComplete='on'
+                  />
+               </li>
+               {/* <li>{restaurant.mapInfo.url}</li> */}
+               {/* <li>{restaurant.mapInfo.y}</li> */}
+               {/* <li>{restaurant.mapInfo.x}</li> */}
             </ul>
          </div>
       </div>
@@ -177,147 +235,3 @@ export default memo(MapSelect)
 
 
 
-
-
-// import React, { Fragment, useRef, useEffect, useState, useCallback } from 'react';
-// import _ from 'lodash';
-
-// import Tab from '../common/tab/Tab';
-// import Showroom from './showroom/Showroom';
-
-// import markerImg from '../../assets/images/common/marker.svg'
-
-// const Map = ({ mapData }) => {
-
-//    const { kakao } = window;
-//    const mapContainerRef = useRef(null);
-//    const infoContainerRef = useRef(null);
-//    const [TargetLatLng, setTargetLatLng] = useState(null);
-
-//    const [MapIns, setMapIns] = useState(null);
-//    const [Traffic, setTraffic] = useState(false);
-
-
-
-
-//    const createMarker = useCallback((mapIns, info) => {
-//       // 인포생성
-//       info.forEach((info, idx) => {
-//          const marker = new kakao.maps.Marker({
-//             position: new kakao.maps.LatLng(info.letlong.lat, info.letlong.long),
-//             image: new kakao.maps.MarkerImage(markerImg, new kakao.maps.Size(40, 60),
-//                { offset: new kakao.maps.Point(20, 60) })
-//          });
-//          marker.setMap(mapIns);
-
-//          // 인포윈도우를 생성
-//          const infowindow = new kakao.maps.InfoWindow({
-//             position: new kakao.maps.LatLng(info.letlong.lat, info.letlong.long),
-//             content: `
-// 				    <div class="map_inner_info" style="min-height: 140px; padding: 10px 10px;  border-radius: 10px;">
-// 				        <div class="info_type">${info.type}</div>
-// 				        <span class="map_move">${info.point}</span>
-// 				        <div class="info_add">${info.address}</div>
-// 				        <div class="info_tel"><a href="tel:${info.tel}" title="매장 전화걸기">${info.tel}</a></div>
-// 				        <ul class="cars">
-// 				            ${info.car.map(car => `
-// 				                <li>${car}</li>
-// 				            `).join('')}
-// 				        </ul>
-// 				    </div>
-// 				`,
-//             removable: true,
-//          });
-//          // 마커 위에 인포윈도우를 표시합니다. 두번째 파라미터인 marker를 넣어주지 않으면 지도 위에 표시됩니다
-//          infowindow.open(mapIns, marker);
-//       })
-//    }, [kakao])
-
-
-
-//    const createMap = useCallback(() => {
-//       const mapInfo = mapData.map(data => data.items.map(item => item.info.map(info => info))).flat(Infinity)
-//       const mapIns = new kakao.maps.Map(mapContainerRef.current, { center: new kakao.maps.LatLng(mapInfo[0].letlong.lat, mapInfo[0].letlong.long), level: 3 });
-
-//       // 줌 컨트롤 붙이기
-//       const zoomControl = new kakao.maps.ZoomControl();
-//       mapIns.addControl(zoomControl, kakao.maps.ControlPosition.RIGHT);
-
-//       // 맵 타입 위성 붙이기
-//       const mapTypeControl = new kakao.maps.MapTypeControl();
-//       mapIns.addControl(mapTypeControl, kakao.maps.ControlPosition.TOPRIGHT);
-
-//       //휠 줌 기능막기
-//       mapIns.setZoomable(false)
-
-//       mapIns.panTo(new kakao.maps.LatLng(mapInfo[1].letlong.lat, mapInfo[1].letlong.long))
-
-//       createMarker(mapIns, mapInfo);
-//       setMapIns(mapIns)
-//       document.querySelector('.map_move')?.click();
-//    }, [createMarker, kakao, mapData])
-
-
-
-//    useEffect(() => {
-//       createMap();
-//    }, [createMap])
-
-
-
-//    useEffect(() => {
-//       MapIns?.panTo(new kakao.maps.LatLng(TargetLatLng.lat, TargetLatLng.long));
-//    }, [MapIns, TargetLatLng, kakao])
-
-
-
-//    useEffect(() => {
-//       Traffic
-//          ? MapIns?.addOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC)
-//          : MapIns?.removeOverlayMapTypeId(kakao.maps.MapTypeId.TRAFFIC);
-//    }, [MapIns, Traffic, kakao]);
-
-//    const mapCenter = e => MapIns?.panTo(new kakao.maps.LatLng(TargetLatLng.lat, TargetLatLng.long));
-
-
-//    useEffect(() => {
-//       window.addEventListener('resize', _.debounce(mapCenter, 500))
-
-//       return () => {
-//          window.removeEventListener('resize', _.debounce(mapCenter, 500))
-//       };
-//    }, [MapIns])
-
-
-
-//    return (
-//       <div className='g_inner'>
-//          <h2 className="gl_title">전시관 찾기</h2>
-//          <div className='center_wrap' ref={infoContainerRef}>
-//             <div className='region'>
-//                <Tab
-//                   tabHead={["서울", "경기", "인천", "광주", "충남", "대구"]}
-//                   tabBody={[
-//                      <Showroom data={mapData.filter(map => map.region === "서울")} setTargetLatLng={setTargetLatLng} />,
-//                      <Showroom data={mapData.filter(map => map.region === "경기")} setTargetLatLng={setTargetLatLng} />,
-//                      <Showroom data={mapData.filter(map => map.region === "인천")} setTargetLatLng={setTargetLatLng} />,
-//                      <Showroom data={mapData.filter(map => map.region === "광주")} setTargetLatLng={setTargetLatLng} />,
-//                      <Showroom data={mapData.filter(map => map.region === "충남")} setTargetLatLng={setTargetLatLng} />,
-//                      <Showroom data={mapData.filter(map => map.region === "대구")} setTargetLatLng={setTargetLatLng} />
-//                   ].map((item, idx) => <Fragment key={idx}>{item}</Fragment>)}
-//                   id={"map_tab"}
-//                   className={"info_wrap tab_type3"}
-//                />
-//             </div>
-//             <div className='map'>
-//                <div id="map" ref={mapContainerRef}></div>
-//                <div className="btn_traffic_wrap">
-//                   <button onClick={() => setTraffic(!Traffic)}>{Traffic ? '교통량 끄기' : '교통량 보기'}</button>
-//                </div>
-//             </div>
-//          </div>
-//       </div>
-//    );
-// }
-
-// export default Map;

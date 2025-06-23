@@ -38,23 +38,24 @@ const RestaurantCreateForm = () => {
    }
    const [searchValue, setSearchValue] = useState('')
    const [keyword, setKeyword] = useState('')
+   // const [mapInfo, setMapInfo] = useState({ name: '', adress: '', category: '', categoryName: '', url: '', phone: '', y: '', x: '' })
    const [restaurant, setRestaurant] = useState<RestaurantData>({
       userId: "",
       title: "",
       content: "",
       rating: 3,
-      address: "",
       category: "",
       isEdit: false,
       // restaurantId: "",
       token: token.current,
+      mapInfo: { name: '', adress: '', category: '', categoryName: '', url: '', phone: '', y: '', x: '' }
    });
 
 
    const handleCreateRestaurant = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault()
       createRestaurantMutation(restaurant)
-      console.log('view?', restaurant)
+      // console.log('view?', restaurant)
    }
 
 
@@ -68,13 +69,13 @@ const RestaurantCreateForm = () => {
    }
 
 
-
    const debounceRef = useRef<(val: string) => void>();
    useEffect(() => {
       debounceRef.current = _.debounce((val: string) => {
          setKeyword(val); // 검색어 확정
       }, 1200); //1.2초 후 검색요청
    }, []);
+
 
    const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       const val = e.target.value;
@@ -83,9 +84,8 @@ const RestaurantCreateForm = () => {
    };
 
 
-
    const handleChangeRating = (v) => {
-      console.log('??? rating', v)
+      // console.log('??? rating', v)
       setRestaurant({
          ...restaurant,
          rating: v
@@ -101,18 +101,6 @@ const RestaurantCreateForm = () => {
             <article>
                <strong className='block mb-[10px] text-[18px]'>가게명 검색</strong>
                <div className='flex gap-[10px]'>
-                  {/* <Input
-                     label="가게명"
-                     isRequired
-                     className="w-full input_text"
-                     defaultValue=""
-                     type="text"
-                     placeholder="가게명은 정확하게 입력해주세요"
-                     name='title'
-                     value={restaurant.title}
-                     onChange={handleChangeRestaurantInfo}
-                  /> */}
-
 
                   <Search className='w-full' onChange={handleSearchInputChange} value={searchValue} />
                   {/* key 멈추면 submit 으로 변경*/}
@@ -120,7 +108,7 @@ const RestaurantCreateForm = () => {
                </div>
             </article>
             <article>
-               <MapSelect keyword={keyword} />
+               <MapSelect keyword={keyword} setRestaurant={setRestaurant} restaurant={restaurant} />
             </article>
 
 
@@ -128,10 +116,10 @@ const RestaurantCreateForm = () => {
             {/* 나머지 정보 입력 후 디비저장 */}
             <form onSubmit={handleCreateRestaurant}>
                <article className='mt-[40px]'>
-                  <div className='flex items-center'>
-                     <strong>별점</strong>
-                     <div><PiStarFill className='text-yellow-200' /></div>
-                     <div>{restaurant.rating}</div>
+                  <div className='flex items-center mb-[10px] '>
+                     <strong className='block text-[18px]'>별점</strong>
+                     <div className='text-[18px] ml-[10px]'><PiStarFill className='text-yellow-200' /></div>
+                     <div className='text-[18px]'>{restaurant.rating}</div>
                   </div>
                   <Slider
                      onChange={handleChangeRating}
@@ -189,7 +177,7 @@ const RestaurantCreateForm = () => {
                </article>
 
                <article className='mt-[40px]'>
-                  <strong className='text-[16px]'>리뷰</strong>
+                  <strong className='block mb-[10px] text-[18px]'>리뷰</strong>
                   <Textarea
                      label="리뷰"
                      isRequired
@@ -206,24 +194,8 @@ const RestaurantCreateForm = () => {
                </article>
 
                <article className='mt-[40px]'>
-                  <strong>asd</strong>
-                  <Input
-                     label="주소"
-                     className="w-full input_text"
-                     defaultValue=""
-                     type="text"
-                     name='address'
-                     // placeholder="password"
-                     value={restaurant.address}
-                     onChange={handleChangeRestaurantInfo}
-                     autoComplete='on'
-                  />
-               </article>
-
-
-               <article>
                   {/* 카테고리는 한종류로 해야되고, 먹은 메뉴는 또 다른 카테고리로 해야겠네 ;; */}
-                  <strong>asd</strong>
+                  <strong className='block mb-[10px] text-[18px]'>카테고리</strong>
                   <div className="flex flex-col gap-1 w-full">
                      <CategoryWrap category={categorys} setRestaurant={setRestaurant} />
                   </div>
@@ -231,7 +203,9 @@ const RestaurantCreateForm = () => {
 
 
 
-               <Button className='w-full' type='submit' color="primary">글 생성</Button>
+               <article className='fixed bottom-0 left-0 w-full p-[20px] z-[30] backdrop-blur-sm'>
+                  <Button className='w-full' type='submit' color="primary">글 생성</Button>
+               </article>
 
 
             </form>

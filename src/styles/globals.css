@@ -305,7 +305,7 @@
 .customoverlay::before {
    content: "";
    position: absolute;
-   bottom: -10px;
+   bottom: -8px;
    left: 0;
    right: 0;
    margin: auto;
@@ -314,13 +314,27 @@
    height: 0;
    border-left: 5px solid transparent;
    border-right: 5px solid transparent;
-   border-bottom: 10px solid #FF6200;
+   border-bottom: 7px solid #FF6200;
    /* 삼각형 색상 */
    border-radius: 0px;
    transform: rotate(180deg);
    /* 필요시 방향 조절 */
 }
 
-/* .customoverlay.active {
-   background-color: red;
-} */
+.customoverlay.active {
+   background-color: #FF6200;
+   color: #fff;
+}
+
+.customoverlay.active .map_ico_wrap {
+   border: 1px solid #fff;
+}
+
+.customoverlay.active .name,
+.customoverlay.active .group_name {
+   color: #fff;
+}
+
+.customoverlay.active .star>svg {
+   color: #fff;
+}

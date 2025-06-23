@@ -35,11 +35,15 @@ import { withAuth } from "@/src/app/api/middleware/withAuth";
 // };
 
 
+/*
+    @ path    POST /api/restaurant
+    @ doc     글 생성
+    @ access  public
+*/
 export const POST = withAuth(async (req: NextRequest) => {
     try {
 
-        const { userId, title, content, rating, address, category, isEdit } = await req.json();
-
+        const { userId, title, content, rating, category, isEdit, mapInfo } = await req.json();
         const restaurantRef = adminDB.collection("restaurant").doc(); // ✅ adminDB 사용
 
         const restaurantData = {
@@ -47,9 +51,9 @@ export const POST = withAuth(async (req: NextRequest) => {
             title,
             content,
             rating,
-            address,
             category,
             isEdit,
+            mapInfo,
             created_at: admin.firestore.Timestamp.fromDate(new Date()),
         };
 

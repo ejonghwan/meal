@@ -41,7 +41,7 @@ const RestaurantItem = ({ restaurant }) => {
                     onClick={onOpen}
                 />
             )}
-            <MapLoad mapData={{ name: 'a', location: { lat: 37.5665, lng: 126.9780 } }} />
+            <MapLoad mapData={{ name: restaurant.mapInfo.name, rating: 4.5, location: { lat: restaurant.mapInfo.y, lng: restaurant.mapInfo.x } }} />
             <ul>
                 <li>{restaurant.title}</li>
                 <li>{restaurant.content}</li>

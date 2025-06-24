@@ -3,11 +3,16 @@ import { adminDB, admin } from "@/src/data/firebaseAdmin";
 import { withAuth } from "@/src/app/api/middleware/withAuth";
 
 
-
-export const GET = async (req: NextRequest, { params }: { params: { page: string } }) => {
+/*
+    @ path    GET /api/restaurant
+    @ doc     글 로드
+    @ access  public
+*/
+export const GET = async (req: NextRequest, { params }: { params: { params: string } }) => {
+    const { params: page } = params;
     const url = new URL(req.url);
     const cursor = url.searchParams.get('cursor');  // cursor는 ISO 문자열 형태의 날짜 (created_at)
-    const limit = 10;
+    const limit = Number(page) //client에서 page로 보냄
 
 
     let queryRef = adminDB.collection("restaurant")
@@ -54,6 +59,7 @@ export const GET = async (req: NextRequest, { params }: { params: { page: string
             content: data.content,
             category: data.category,
             rating: data.rating,
+            totalRating: data.rating,
             userId: data.userId,
             isEdit: data.isEdit,
             mapInfo: data.mapInfo,
@@ -72,5 +78,106 @@ export const GET = async (req: NextRequest, { params }: { params: { page: string
         nextCursor,
     }, { status: 200 });
 };
+
+
+
+/*
+    @ path    PUT /api/restaurant
+    @ doc     글 전체 수정
+    @ access  public
+*/
+export const PUT = withAuth(async (req: NextRequest, { params }: { params: { restaurantId: string } }) => {
+    const { restaurantId } = params;
+
+    try {
+        const body = await req.json(); // 수정할 데이터
+        const {
+            title,
+            content,
+            category,
+            rating,
+            isEdit,
+            mapInfo,
+        } = body;
+
+        const docRef = adminDB.collection("restaurant").doc(restaurantId);
+        const docSnapshot = await docRef.get();
+
+        if (!docSnapshot.exists) {
+            return NextResponse.json({
+                state: "FAIL",
+                message: "해당 레스토랑 글이 존재하지 않습니다.",
+            }, { status: 404 });
+        }
+
+        await docRef.update({
+            ...(title !== undefined && { title }),
+            ...(content !== undefined && { content }),
+            ...(category !== undefined && { category }),
+            ...(rating !== undefined && { rating }),
+            ...(isEdit !== undefined && { isEdit }),
+            ...(mapInfo !== undefined && { mapInfo }),
+            updated_at: new Date(), // 수정 시간
+        });
+
+        return NextResponse.json({
+            state: "SUCCESS",
+            message: "글이 성공적으로 수정되었습니다.",
+        }, { status: 200 });
+
+    } catch (error) {
+        console.error("레스토랑 글 수정 실패:", error);
+        return NextResponse.json({
+            state: "ERROR",
+            message: "서버 에러가 발생했습니다.",
+        }, { status: 500 });
+    }
+});
+
+
+
+
+/*
+    @ path    PATCH  /api/restaurant
+    @ doc     글 일부 수정
+    @ access  public
+*/
+
+
+/*
+    @ path    DELETE /api/restaurant
+    @ doc     글 삭제
+    @ access  public
+*/
+export const DELETE = withAuth(async (req: NextRequest, { params }: { params: { restaurantId: string } }) => {
+
+    const { restaurantId } = params;
+    try {
+        // 문서 조회
+        const docRef = adminDB.collection("restaurant").doc(restaurantId);
+        const docSnap = await docRef.get();
+
+        if (!docSnap.exists) {
+            return NextResponse.json({
+                state: "NOT_FOUND",
+                message: "해당 글이 존재하지 않습니다.",
+            }, { status: 404 });
+        }
+
+        await docRef.delete();
+
+        return NextResponse.json({
+            state: "SUCCESS",
+            message: "글이 성공적으로 삭제되었습니다.",
+        }, { status: 200 });
+
+    } catch (error) {
+        console.error("글 삭제 중 오류:", error);
+        return NextResponse.json({
+            state: "ERROR",
+            message: "서버 오류가 발생했습니다.",
+        }, { status: 500 });
+    }
+});
 
 

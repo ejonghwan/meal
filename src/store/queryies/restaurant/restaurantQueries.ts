@@ -34,8 +34,6 @@ export const useRestaurantList = (restauranId: string) => {
 
 // 글쓰기
 export const useCreateRestaurant = () => {
-   // if (!token) return;
-
    return useMutation({
       mutationFn: (payload: RestaurantData) => {
          console.log('query fn ? ', payload)
@@ -48,7 +46,6 @@ export const useCreateRestaurant = () => {
 
 // 글 수정
 export const useEditRestaurant = () => {
-   // if (!token) return;
    return useMutation({
       mutationFn: (payload: RestaurantData) => {
          return onEditRestaurantAPI(payload)
@@ -60,10 +57,9 @@ export const useEditRestaurant = () => {
 
 // 글 삭제
 export const useDeleteRestaurant = () => {
-   // if (!token) return;
    return useMutation({
-      mutationFn: (restauranId: string) => {
-         return onDeleteRestaurantAPI(restauranId)
+      mutationFn: (payload: { restaurantId: string, token: string }) => {
+         return onDeleteRestaurantAPI(payload)
       },
    })
 }

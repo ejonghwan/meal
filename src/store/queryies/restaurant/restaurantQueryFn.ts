@@ -19,6 +19,8 @@ export const onRestaurantListLoadAPI = async (page) => {
             cache: "no-store",
         }
 
+
+        console.log('page', page)
         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/restaurant/${page}`, options)
 
         if (!res.ok) { throw new Error('Network response was not ok'); }
@@ -87,14 +89,18 @@ export const onCreateRestaurantAPI = async (data: RestaurantData) => {
 
 
 
-
+// 글 수정
 export const onEditRestaurantAPI = async (data: RestaurantData) => {
     try {
-        const { title, content, rating, category, isEdit, restaurantId, mapInfo } = data
+        const { userId, restaurantId, title, content, rating, category, isEdit, token, mapInfo } = data;
 
         const options: ExtendsRequestInit = {
-            method: "POST",
-            headers: { "Content-Type": "application/json", },
+            method: "PUT",
+            headers: {
+                'Content-Type': 'application/json',
+                "x-acc-token": `Bearer ${token}`,
+                // "Authorization": `Bearer ${token}`,
+            },
             body: JSON.stringify({ title, content, rating, category, isEdit, mapInfo }),
             next: { tags: ['restaurant', 'edit'] },
             cache: "no-store",
@@ -106,9 +112,9 @@ export const onEditRestaurantAPI = async (data: RestaurantData) => {
 
         if (!res.ok) {
             throw new Error(parse.message || 'Network response was not ok');
-
         }
         return parse;
+
     } catch (error) {
         console.error("Login Error:", error);
         throw error; // ✅ 에러도 명확히 throw 해야 mutation.isError에 잡힘
@@ -117,21 +123,25 @@ export const onEditRestaurantAPI = async (data: RestaurantData) => {
 
 
 
-// delete
-export const onDeleteRestaurantAPI = async (restaurantId: string) => {
+// 글 삭제
+export const onDeleteRestaurantAPI = async (data: { restaurantId: string, token: string }) => {
     try {
-        // 
+        const { restaurantId, token } = data;
         const options: ExtendsRequestInit = {
             method: "DELETE",
-            headers: { "Content-Type": "application/json", },
+            headers: {
+                'Content-Type': 'application/json',
+                "x-acc-token": `Bearer ${token}`,
+                // "Authorization": `Bearer ${token}`,
+            },
             next: { tags: ['restaurant', 'delete'] },
             cache: "no-store",
             credentials: 'include'
         }
         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/restaurant/${restaurantId}`, options)
-        const data = await res.json();
+        const parse = await res.json();
 
-        return data;
+        return parse;
     } catch (e) {
         console.error(e)
     }

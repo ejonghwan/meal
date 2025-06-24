@@ -5,6 +5,7 @@ import { useKakaoMap } from '@/src/hooks/use-maps';
 import _ from 'lodash'
 import { Input } from "@heroui/input"
 import Link from 'next/link';
+import MapInfo from '@/src/components/maps/map-info';
 
 // address_name: "서울 도봉구 창동 13"
 // category_group_code: "CE7"
@@ -114,29 +115,14 @@ const MapSelect = ({ keyword, restaurant, setRestaurant }: Props) => {
                   categoryName: place.category_group_name,
                   url: place.place_url,
                   phone: place.phone,
+                  id: place.id,
+                  categoryCode: place.category_group_code,
                   y: place.y,
                   x: place.x
                }
             }))
          })
       }
-
-
-      // 지도에 마커를 표시하는 함수
-      // function displayMarker(place) {
-      //    // 마커를 생성하고 지도에 표시합니다
-      //    var marker = new window.kakao.maps.Marker({
-      //       map: map,
-      //       position: new window.kakao.maps.LatLng(place.y, place.x)
-      //    });
-      //    // 마커에 클릭이벤트를 등록합니다
-      //    window.kakao.maps.event.addListener(marker, 'click', function () {
-      //       console.log('장소 클릭', place.place_name)
-      //       // 마커를 클릭하면 장소명이 인포윈도우에 표출됩니다
-      //       // infowindow.setContent('<div style="padding:5px;font-size:12px;">' + place.place_name + '</div>');
-      //       // infowindow.open(map, marker);
-      //    });
-      // }
 
    }, [keyword]);
 
@@ -151,79 +137,7 @@ const MapSelect = ({ keyword, restaurant, setRestaurant }: Props) => {
             className="w-full h-[400px] border border-gray-300 rounded-md"
          />
          <div>
-            <ul>
-               <li className='mt-[20px]'>
-                  <Input
-                     label="가게명"
-                     className="w-full input_text"
-                     defaultValue=""
-                     type="text"
-                     name='name'
-                     placeholder="검색 후 가게를 선택해주세요"
-                     isRequired
-                     disabled
-                     value={restaurant.mapInfo.name}
-                     autoComplete='on'
-                  />
-
-               </li>
-               <li className='mt-[8px]'>
-                  <Input
-                     label="가게주소"
-                     className="w-full input_text"
-                     defaultValue=""
-                     type="text"
-                     name='name'
-                     placeholder="-"
-                     isRequired
-                     disabled
-                     value={restaurant.mapInfo.adress}
-                     autoComplete='on'
-                  />
-               </li>
-               <li className='mt-[8px]'>
-                  <Input
-                     label="분류"
-                     className="w-full input_text"
-                     defaultValue=""
-                     type="text"
-                     name='name'
-                     placeholder="-"
-                     disabled
-                     value={restaurant.mapInfo.category}
-                     autoComplete='on'
-                  />
-               </li>
-               <li className='mt-[8px]'>
-                  <Input
-                     label="업종"
-                     className="w-full input_text"
-                     defaultValue=""
-                     type="text"
-                     name='name'
-                     placeholder="-"
-                     disabled
-                     value={restaurant.mapInfo.categoryName}
-                     autoComplete='on'
-                  />
-               </li>
-               <li className='mt-[8px]'>
-                  <Input
-                     label="전화번호"
-                     className="w-full input_text"
-                     defaultValue=""
-                     type="text"
-                     name='name'
-                     placeholder="-"
-                     disabled
-                     value={restaurant.mapInfo.phone}
-                     autoComplete='on'
-                  />
-               </li>
-               {/* <li>{restaurant.mapInfo.url}</li> */}
-               {/* <li>{restaurant.mapInfo.y}</li> */}
-               {/* <li>{restaurant.mapInfo.x}</li> */}
-            </ul>
+            <MapInfo restaurant={restaurant} />
          </div>
       </div>
    );

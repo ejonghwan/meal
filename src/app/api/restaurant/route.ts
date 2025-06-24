@@ -4,39 +4,6 @@ import { withAuth } from "@/src/app/api/middleware/withAuth";
 
 /*
     @ path    POST /api/restaurant
-    @ doc     단일 할일 목록 가져오기
-    @ access  public
-*/
-// export const POST = async (req: NextRequest) => {
-//     const { userId, title, content, rating, address, category, isEdit } = await req.json();
-
-//     const restaurantRef = adminDB.collection("restaurant").doc(); // ✅ adminDB 사용
-
-//     const restaurantData = {
-//         userId,
-//         title,
-//         content,
-//         rating,
-//         address,
-//         category,
-//         isEdit,
-//         created_at: admin.firestore.Timestamp.fromDate(new Date()),
-//     };
-
-//     await restaurantRef.set(restaurantData); // ✅ admin SDK로 접근하면 권한 체크 안 함
-
-//     return NextResponse.json({
-//         state: "SUCCESS",
-//         message: "추가",
-//         data: {
-//             id: restaurantRef.id, ...restaurantData,
-//         },
-//     }, { status: 201 });
-// };
-
-
-/*
-    @ path    POST /api/restaurant
     @ doc     글 생성
     @ access  public
 */
@@ -52,9 +19,11 @@ export const POST = withAuth(async (req: NextRequest) => {
             content,
             rating,
             category,
+            totalRating: rating, // 생성할땐 총 합이 작성자꺼만 
             isEdit,
             mapInfo,
             created_at: admin.firestore.Timestamp.fromDate(new Date()),
+            // updated_at: admin.firestore.Timestamp.fromDate(new Date()),
         };
 
         await restaurantRef.set(restaurantData); // ✅ admin SDK로 접근하면 권한 체크 안 함

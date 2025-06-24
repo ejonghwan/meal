@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, memo } from 'react';
+import { useRef, useCallback, memo } from 'react';
 import { useKakaoMap } from '@/src/hooks/use-maps';
 
 interface Props {
@@ -16,7 +16,7 @@ const MapLoad = ({ mapData }: Props) => {
 
    const mapRef = useRef<HTMLDivElement>(null);
 
-   const handleMapLoad = () => {
+   const handleMapLoad = useCallback(() => {
       if (!window.kakao || !mapRef.current) return;
 
       const map = new window.kakao.maps.Map(mapRef.current, {
@@ -32,7 +32,8 @@ const MapLoad = ({ mapData }: Props) => {
       // const rMarker = new window.kakao.maps.Marker({
       //    map,
       //    position: new window.kakao.maps.LatLng(mapData.location.lat, mapData.location.lng),
-      //    // image: markerImage
+      //    // image: markerImage 
+
       // });
 
 
@@ -76,7 +77,7 @@ const MapLoad = ({ mapData }: Props) => {
          yAnchor: 1
       });
 
-   };
+   }, []);
 
    useKakaoMap(handleMapLoad);
 

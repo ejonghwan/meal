@@ -8,12 +8,14 @@ import MapLoad from '@/src/components/maps/map-load'
 import { Input } from '@heroui/input';
 import MapSelect from '@/src/components/maps/map-select';
 import Search from '../common/input/search';
-import _ from 'lodash'
+import _, { xor } from 'lodash'
+import { useEditRestaurant } from '@/src/store/queryies/restaurant/restaurantQueries';
 
 
 
 const RestaurantItem = ({ restaurant }) => {
 
+    const { mutate: editMutate, data: editData, isError: editError, isSuccess: editSuccess } = useEditRestaurant()
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const { userInfo } = useUserStore()
     const [editRestaurant, setEditRestaurant] = useState(restaurant)
@@ -23,7 +25,6 @@ const RestaurantItem = ({ restaurant }) => {
     // 수정 컴포넌트 정리 다시 해야될듯
     const [searchValue, setSearchValue] = useState('')
     const [keyword, setKeyword] = useState('')
-
 
     const debounceRef = useRef<(val: string) => void>();
     useEffect(() => {
@@ -40,22 +41,41 @@ const RestaurantItem = ({ restaurant }) => {
     };
 
     // 수정 mutation 추가 
-    
+    const handleEditComplate = () => {
+        const savedToken = localStorage.getItem('x-acc-token');
+        console.log('edit mutate ?', editRestaurant)
+        setIsEdit(prev => !prev)
+        editMutate({
+            ...editRestaurant,
+            token: savedToken,
+            restaurantId: editRestaurant.id
+        })
+    }
+
+    // test
+    useEffect(() => {
+        // console.log('editRestaurant?', editRestaurant)
+    }, [editRestaurant])
+
 
     // 삭제 mutation 추가
-
-
-    useEffect(() => {
-        console.log('?restaurant', restaurant)
-    }, [])
 
 
     return (
         <div className="asd">
             {restaurant.user.uid === userInfo.uid && (
                 <div>
-                    <button type='button' onClick={() => setIsEdit(prev => !prev)}>수정</button>
-                    <button type='button'>삭제</button>
+                    {isEdit ? (
+                        <>
+                            <button type='button' onClick={() => setIsEdit(prev => !prev)}>취소</button>
+                            <button type='button' onClick={() => handleEditComplate()}>수정완료</button>
+                        </>
+                    ) : (
+                        <>
+                            <button type='button' onClick={() => setIsEdit(prev => !prev)}>수정</button>
+                            <button type='button'>삭제</button>
+                        </>
+                    )}
                 </div>
             )}
 
@@ -69,23 +89,25 @@ const RestaurantItem = ({ restaurant }) => {
             )}
 
             {/* 지도 */}
-            {restaurant.mapInfo && <MapLoad mapData={{ name: restaurant.mapInfo.name, rating: 4.5, location: { lat: restaurant.mapInfo.y, lng: restaurant.mapInfo.x } }} />}
 
+
+            {isEdit ? (
+                <>
+                    <strong className='block mb-[10px] text-[18px]'>가게명 검색</strong>
+                    <Search className='w-full mb-[10px]' onChange={handleSearchInputChange} value={searchValue} setSearchValue={setSearchValue} />
+                    <MapSelect
+                        initialMapData={restaurant.mapInfo.name}
+                        keyword={keyword}
+                        restaurant={editRestaurant}
+                        setRestaurant={setEditRestaurant}
+                    />
+                </>
+            ) : (
+                <>
+                    {restaurant.mapInfo && <MapLoad mapData={{ name: restaurant.mapInfo.name, rating: 4.5, location: { lat: restaurant.mapInfo.y, lng: restaurant.mapInfo.x } }} />}
+                </>
+            )}
             <ul>
-                {isEdit ? (
-                    <>
-                        <article>
-                            <strong className='block mb-[10px] text-[18px]'>가게명 검색</strong>
-                            <div className='flex gap-[10px]'>
-
-                                <Search className='w-full' onChange={handleSearchInputChange} value={searchValue} />
-                                {/* key 멈추면 submit 으로 변경*/}
-                                {/* <Button className='w-[150px] h-auto' type='submit' color="primary" >검색</Button> */}
-                            </div>
-                        </article>
-                        <MapSelect keyword={keyword} restaurant={editRestaurant} setRestaurant={setEditRestaurant} />
-                    </>
-                ) : '취소'}
                 {restaurant.title && <li>{restaurant.title}</li>}
                 {restaurant.content && <li>{restaurant.content}</li>}
                 {restaurant.created_at && <li>{restaurant.created_at}</li>}

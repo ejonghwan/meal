@@ -1,8 +1,7 @@
-import { useMutation, useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { restaurantKeys } from '@/src/store/queryies/restaurant/restaurantKeys'
 import { onRestaurantListLoadAPI, onRestaurantDetailLoadAPI, onCreateRestaurantAPI, onEditRestaurantAPI, onDeleteRestaurantAPI } from '@/src/store/queryies/restaurant/restaurantQueryFn'
 import { RestaurantData } from '@/src/types/data/restaurant'
-
 
 
 
@@ -46,9 +45,15 @@ export const useCreateRestaurant = () => {
 
 // 글 수정
 export const useEditRestaurant = () => {
+
+   const queryClient = useQueryClient();
    return useMutation({
       mutationFn: (payload: RestaurantData) => {
          return onEditRestaurantAPI(payload)
+      },
+      onSuccess: (data, variables) => {
+         queryClient.invalidateQueries([...restaurantKeys.listAll(10)]);
+         console.log('쿼리쪽 data?', data, variables)
       },
    })
 }

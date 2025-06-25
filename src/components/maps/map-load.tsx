@@ -77,7 +77,7 @@ const MapLoad = ({ mapData }: Props) => {
          yAnchor: 1
       });
 
-   }, []);
+   }, [mapData]);
 
    useKakaoMap(handleMapLoad);
 

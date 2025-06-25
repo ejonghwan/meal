@@ -1,6 +1,6 @@
 "use client"
 
-import React from 'react'
+import React, { useState } from 'react'
 import { Input } from "@heroui/input"
 
 
@@ -39,11 +39,10 @@ interface Props {
     className?: string;
     onChange?: any
     value?: any
+    setSearchValue?: any;
 }
 
-const Search = ({ className, onChange, value }: Props) => {
-
-    // console.log(value)
+const Search = ({ className, onChange, value, setSearchValue }: Props) => {
 
     return (
         // <div className="w-[340px] h-[240px] px-8 rounded-2xl flex justify-center items-center bg-gradient-to-tr from-pink-500 to-yellow-500 text-white shadow-lg">
@@ -80,6 +79,7 @@ const Search = ({ className, onChange, value }: Props) => {
                 name='title'
                 value={value}
                 onChange={onChange}
+                onClear={() => setSearchValue('')}
             />
         </div>
     );

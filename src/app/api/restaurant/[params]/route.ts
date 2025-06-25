@@ -4,7 +4,7 @@ import { withAuth } from "@/src/app/api/middleware/withAuth";
 
 
 /*
-    @ path    GET /api/restaurant
+    @ path    GET /api/restaurant/:params
     @ doc     글 로드
     @ access  public
 */
@@ -82,12 +82,15 @@ export const GET = async (req: NextRequest, { params }: { params: { params: stri
 
 
 /*
-    @ path    PUT /api/restaurant
+    @ path    PUT /api/restaurant/:params
     @ doc     글 전체 수정
     @ access  public
 */
-export const PUT = withAuth(async (req: NextRequest, { params }: { params: { restaurantId: string } }) => {
-    const { restaurantId } = params;
+export const PUT = withAuth(async (req: NextRequest, user, context: { params: { params: string } }) => {
+    console.log('param?', context)
+    console.log('req?', req.url)
+    const { params: { params: restaurantId } } = context;
+
 
     try {
         const body = await req.json(); // 수정할 데이터

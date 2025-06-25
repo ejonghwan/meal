@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useRef, memo, useCallback } from 'react';
+import { useState, useRef, memo, useCallback, useEffect } from 'react';
 import { useKakaoMap } from '@/src/hooks/use-maps';
 import _ from 'lodash'
 import { Input } from "@heroui/input"
@@ -24,12 +24,16 @@ interface Props {
    keyword: string;
    restaurant: any;
    setRestaurant: any;
+   initialMapData?: string;
 }
 
-const MapSelect = ({ keyword, restaurant, setRestaurant }: Props) => {
+const MapSelect = ({ keyword, restaurant, setRestaurant, initialMapData }: Props) => {
 
-   // const [mapInfo, setMapInfo] = useState({ name: '', adress: '', category: '', categoryName: '', url: '', phone: '', y: '', x: '' })
    const mapRef = useRef<HTMLDivElement>(null);
+
+   useEffect(() => {
+      if (initialMapData) keyword = initialMapData; //초기 데이터가 있다면 검색
+   }, [])
 
    const handleMapLoad = useCallback(() => {
       if (!window.kakao || !mapRef.current) return;
@@ -45,11 +49,10 @@ const MapSelect = ({ keyword, restaurant, setRestaurant }: Props) => {
       // 키워드로 장소를 검색합니다
       ps.keywordSearch(keyword, placesSearchCB);
 
-
       // 키워드 검색 완료 시 호출되는 콜백함수
       function placesSearchCB(data, status, pagination) {
          if (status === window.kakao.maps.services.Status.OK) {
-            console.log('dd?', data)
+            // console.log('dd?', data)
             // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해 LatLngBounds 객체에 좌표를 추가
             var bounds = new window.kakao.maps.LatLngBounds();
 
@@ -63,10 +66,10 @@ const MapSelect = ({ keyword, restaurant, setRestaurant }: Props) => {
          }
       }
 
-
       // 지도에 마커를 표시하는 함수
       function displayMarker(place) {
-         // 마커를 생성하고 지도에 표시합니다
+
+         // console.log('place?', place)
          // 가게명 추가
          const content = document.createElement('div');
          content.innerHTML = `
@@ -126,12 +129,11 @@ const MapSelect = ({ keyword, restaurant, setRestaurant }: Props) => {
 
    }, [keyword]);
 
+
    useKakaoMap(handleMapLoad);
 
-
    return (
-      <div>
-         <h2 className="text-lg font-bold mb-2"></h2>
+      <>
          <div
             ref={mapRef}
             className="w-full h-[400px] border border-gray-300 rounded-md"
@@ -139,7 +141,7 @@ const MapSelect = ({ keyword, restaurant, setRestaurant }: Props) => {
          <div>
             <MapInfo restaurant={restaurant} />
          </div>
-      </div>
+      </>
    );
 }
 

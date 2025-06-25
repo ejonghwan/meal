@@ -40,6 +40,7 @@ const RestaurantItem = ({ restaurant }) => {
     };
 
     // 수정 mutation 추가 
+    
 
     // 삭제 mutation 추가
 

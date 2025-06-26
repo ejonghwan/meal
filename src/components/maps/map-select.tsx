@@ -139,7 +139,7 @@ const MapSelect = ({ keyword, restaurant, setRestaurant, initialMapData }: Props
             className="w-full h-[400px] border border-gray-300 rounded-md"
          />
          <div>
-            <MapInfo restaurant={restaurant} />
+            <MapInfo restaurant={restaurant} setRestaurant={setRestaurant} />
          </div>
       </>
    );

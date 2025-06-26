@@ -4,7 +4,7 @@ import { withAuth } from "@/src/app/api/middleware/withAuth";
 
 
 /*
-    @ path    GET /api/restaurant/:params
+    @ path    GET /api/restaurant/:page
     @ doc     글 로드
     @ access  public
 */
@@ -63,7 +63,10 @@ export const GET = async (req: NextRequest, { params }: { params: { params: stri
             userId: data.userId,
             isEdit: data.isEdit,
             mapInfo: data.mapInfo,
+            like: data.like,
+            unlike: data.unlike,
             created_at: data.created_at?.toDate() ?? null,
+            updated_at: data.updated_at?.toDate() ?? null,
         };
     }));
 
@@ -87,8 +90,7 @@ export const GET = async (req: NextRequest, { params }: { params: { params: stri
     @ access  public
 */
 export const PUT = withAuth(async (req: NextRequest, user, context: { params: { params: string } }) => {
-    console.log('param?', context)
-    console.log('req?', req.url)
+
     const { params: { params: restaurantId } } = context;
 
 
@@ -152,9 +154,10 @@ export const PUT = withAuth(async (req: NextRequest, user, context: { params: { 
     @ doc     글 삭제
     @ access  public
 */
-export const DELETE = withAuth(async (req: NextRequest, { params }: { params: { restaurantId: string } }) => {
+export const DELETE = withAuth(async (req: NextRequest, user, context: { params: { params: string } }) => {
 
-    const { restaurantId } = params;
+    const { params: { params: restaurantId } } = context;
+
     try {
         // 문서 조회
         const docRef = adminDB.collection("restaurant").doc(restaurantId);

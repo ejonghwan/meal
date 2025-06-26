@@ -9,13 +9,15 @@ import { Input } from '@heroui/input';
 import MapSelect from '@/src/components/maps/map-select';
 import Search from '../common/input/search';
 import _, { xor } from 'lodash'
-import { useEditRestaurant } from '@/src/store/queryies/restaurant/restaurantQueries';
+import { useEditRestaurant, useDeleteRestaurant } from '@/src/store/queryies/restaurant/restaurantQueries';
+import Like from '@/src/components/like/like';
 
 
 
 const RestaurantItem = ({ restaurant }) => {
 
     const { mutate: editMutate, data: editData, isError: editError, isSuccess: editSuccess } = useEditRestaurant()
+    const { mutate: deleteMutate, data: deleteData, isError: deleteError, isSuccess: deleteSuccess } = useDeleteRestaurant()
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const { userInfo } = useUserStore()
     const [editRestaurant, setEditRestaurant] = useState(restaurant)
@@ -32,7 +34,6 @@ const RestaurantItem = ({ restaurant }) => {
             setKeyword(val); // 검색어 확정
         }, 1200); //1.2초 후 검색요청
     }, []);
-
 
     const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const val = e.target.value;
@@ -52,28 +53,38 @@ const RestaurantItem = ({ restaurant }) => {
         })
     }
 
-    // test
-    useEffect(() => {
-        // console.log('editRestaurant?', editRestaurant)
-    }, [editRestaurant])
 
 
     // 삭제 mutation 추가
+    const handleDelete = () => {
+        const savedToken = localStorage.getItem('x-acc-token');
+        const isDelete = confirm('정말 삭제하시겠습니까?')
+        if (!isDelete) return;
+        deleteMutate({
+            token: savedToken,
+            restaurantId: editRestaurant.id
+        })
+    }
 
 
     return (
         <div className="asd">
+
+            <div>
+                {/* 좋아요 싫어요 구현 */}
+                <Like />
+            </div>
             {restaurant.user.uid === userInfo.uid && (
                 <div>
                     {isEdit ? (
                         <>
                             <button type='button' onClick={() => setIsEdit(prev => !prev)}>취소</button>
-                            <button type='button' onClick={() => handleEditComplate()}>수정완료</button>
+                            <button type='button' onClick={handleEditComplate}>수정완료</button>
                         </>
                     ) : (
                         <>
                             <button type='button' onClick={() => setIsEdit(prev => !prev)}>수정</button>
-                            <button type='button'>삭제</button>
+                            <button type='button' onClick={handleDelete}>삭제</button>
                         </>
                     )}
                 </div>
@@ -87,9 +98,6 @@ const RestaurantItem = ({ restaurant }) => {
                     onClick={onOpen}
                 />
             )}
-
-            {/* 지도 */}
-
 
             {isEdit ? (
                 <>
@@ -105,16 +113,16 @@ const RestaurantItem = ({ restaurant }) => {
             ) : (
                 <>
                     {restaurant.mapInfo && <MapLoad mapData={{ name: restaurant.mapInfo.name, rating: 4.5, location: { lat: restaurant.mapInfo.y, lng: restaurant.mapInfo.x } }} />}
+                    <ul>
+                        {restaurant.title && <li>{restaurant.title}</li>}
+                        {restaurant.content && <li>{restaurant.content}</li>}
+                        {restaurant.created_at && <li>{restaurant.created_at}</li>}
+                        {restaurant.updated_at && <li>{restaurant.updated_at} 수정됨</li>}
+                        {restaurant.category && <li>{restaurant.category}</li>}
+                        {restaurant.rating && <li>{restaurant.rating}</li>}
+                    </ul>
                 </>
             )}
-            <ul>
-                {restaurant.title && <li>{restaurant.title}</li>}
-                {restaurant.content && <li>{restaurant.content}</li>}
-                {restaurant.created_at && <li>{restaurant.created_at}</li>}
-                {restaurant.category && <li>{restaurant.category}</li>}
-                {restaurant.rating && <li>{restaurant.rating}</li>}
-            </ul>
-
 
 
             <Modal

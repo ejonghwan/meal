@@ -20,11 +20,12 @@ export const AuthProviderAdmin = ({ children }: { children: React.ReactNode }) =
 
    const { data: userLoadData, isError: userLoadError, isSuccess: userLoadSuccess, isLoading: userLoadLoading } = useUserLoad(token.current)
    const { userInfo, setUserInfo, setUserLogout, setIsAccToken } = useUserStore();
+   const [checked, setChecked] = useState(false);
+
 
 
 
    useEffect(() => {
-
       if (userLoadLoading) return; // 로딩 중이면 판단 보류
 
       // 상태에 유저가 없는 경우
@@ -39,7 +40,6 @@ export const AuthProviderAdmin = ({ children }: { children: React.ReactNode }) =
 
 
    useEffect(() => {
-
       // 상태에 유저가 있고 acc token 으로 재 인증. onAuthStateChanged
       if (userLoadError) {
          console.error('❌ 서버 검증 실패');
@@ -51,24 +51,18 @@ export const AuthProviderAdmin = ({ children }: { children: React.ReactNode }) =
 
       if (userLoadSuccess && userLoadData.data.uid) {
          console.log('✅ 서버 검증 통과');
-
-
-         // const token = await user.getIdToken(); // ← 갱신 시 자동으로 최신 토큰 제공됨
-         // console.log(token)
-         // localStorage.setItem('x-acc-token', token);
-
          setUserInfo(userLoadData.data);
          setIsAccToken(true)
       }
 
    }, [userLoadSuccess]);
 
+   return (
+      <>
+         {children}
+      </>
+   )
 
-   // if (userLoadLoading) {
-   //    return <div>Loading...</div>; // 서버 검증 중 대기
-   // }
-
-   return <>{children}</>;
 }
 
 

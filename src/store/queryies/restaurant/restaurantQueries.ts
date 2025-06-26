@@ -52,8 +52,8 @@ export const useEditRestaurant = () => {
          return onEditRestaurantAPI(payload)
       },
       onSuccess: (data, variables) => {
-         queryClient.invalidateQueries({ queryKey: restaurantKeys.listAll(10)});
-         console.log('쿼리쪽 data?', data, variables)
+         queryClient.invalidateQueries({ queryKey: restaurantKeys.listAll(10) });
+         console.log('쿼리쪽 edit data?', data, variables)
       },
    })
 }
@@ -62,9 +62,14 @@ export const useEditRestaurant = () => {
 
 // 글 삭제
 export const useDeleteRestaurant = () => {
+   const queryClient = useQueryClient();
    return useMutation({
       mutationFn: (payload: { restaurantId: string, token: string }) => {
          return onDeleteRestaurantAPI(payload)
+      },
+      onSuccess: (data, variables) => {
+         queryClient.invalidateQueries({ queryKey: restaurantKeys.listAll(10) });
+         console.log('쿼리쪽 delete data?', data, variables)
       },
    })
 }

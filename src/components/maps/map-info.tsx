@@ -1,8 +1,25 @@
-import React from 'react'
-import { Input } from "@heroui/input"
-import Link from 'next/link';
+"use client"
 
-const MapInfo = ({ restaurant }) => {
+import React from 'react'
+import { Input, Textarea } from "@heroui/input"
+// import Link from 'next/link';
+
+interface Props {
+   restaurant: any;
+   setRestaurant: any;
+}
+
+
+const MapInfo = ({ restaurant, setRestaurant }: Props) => {
+
+   const handleChangeRestaurantInfo = (e) => {
+      setRestaurant(prev => ({
+         ...prev,
+         content: e.target.value
+      }))
+
+   }
+
    return (
       <ul>
          <li className='mt-[20px]'>
@@ -73,6 +90,22 @@ const MapInfo = ({ restaurant }) => {
                autoComplete='on'
             />
          </li>
+         <li className='mt-[8px]'>
+            <Textarea
+               label="리뷰"
+               isRequired
+               className="w-full input_textarea"
+               defaultValue=""
+               type="text"
+               name='content'
+               placeholder="소감을 200자 이내로 입력해주세요"
+               value={restaurant.content}
+               onChange={handleChangeRestaurantInfo}
+               autoComplete='on'
+               maxLength={200}
+            />
+         </li>
+
          {/* <li>{restaurant.mapInfo.url}</li> */}
          {/* <li>{restaurant.mapInfo.y}</li> */}
          {/* <li>{restaurant.mapInfo.x}</li> */}

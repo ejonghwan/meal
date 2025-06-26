@@ -22,8 +22,10 @@ export const POST = withAuth(async (req: NextRequest) => {
             totalRating: rating, // 생성할땐 총 합이 작성자꺼만 
             isEdit,
             mapInfo,
+            like: "0",
+            unlike: "0",
             created_at: admin.firestore.Timestamp.fromDate(new Date()),
-            // updated_at: admin.firestore.Timestamp.fromDate(new Date()),
+            updated_at: null,
         };
 
         await restaurantRef.set(restaurantData); // ✅ admin SDK로 접근하면 권한 체크 안 함

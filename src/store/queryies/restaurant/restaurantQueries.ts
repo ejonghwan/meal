@@ -52,7 +52,7 @@ export const useEditRestaurant = () => {
          return onEditRestaurantAPI(payload)
       },
       onSuccess: (data, variables) => {
-         queryClient.invalidateQueries([...restaurantKeys.listAll(10)]);
+         queryClient.invalidateQueries({ queryKey: restaurantKeys.listAll(10)});
          console.log('쿼리쪽 data?', data, variables)
       },
    })

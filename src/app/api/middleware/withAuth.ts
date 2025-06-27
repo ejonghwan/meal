@@ -14,7 +14,7 @@ export const withAuth = (handler: (req: NextRequest, user: any, ctx: { params: a
          return handler(req, user, ctx); // 인증된 유저와 함께 핸들러 호출
 
       } catch (error) {
-         console.error('asdasdsad?', error)
+         console.error('auth middle ware?', error)
          return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
       }
    }

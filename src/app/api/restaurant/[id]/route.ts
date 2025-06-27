@@ -8,8 +8,8 @@ import { withAuth } from "@/src/app/api/middleware/withAuth";
     @ doc     글 로드
     @ access  public
 */
-export const GET = async (req: NextRequest, { params }: { params: { params: string } }) => {
-    const { params: page } = params;
+export const GET = async (req: NextRequest, { params }: { params: { id: string } }) => {
+    const { id: page } = params;
     const url = new URL(req.url);
     const cursor = url.searchParams.get('cursor');  // cursor는 ISO 문자열 형태의 날짜 (created_at)
     const limit = Number(page) //client에서 page로 보냄
@@ -89,9 +89,9 @@ export const GET = async (req: NextRequest, { params }: { params: { params: stri
     @ doc     글 전체 수정
     @ access  public
 */
-export const PUT = withAuth(async (req: NextRequest, user, context: { params: { params: string } }) => {
+export const PUT = withAuth(async (req: NextRequest, user, context: { params: { id: string } }) => {
 
-    const { params: { params: restaurantId } } = context;
+    const { params: { id: restaurantId } } = context;
 
 
     try {
@@ -154,9 +154,9 @@ export const PUT = withAuth(async (req: NextRequest, user, context: { params: { 
     @ doc     글 삭제
     @ access  public
 */
-export const DELETE = withAuth(async (req: NextRequest, user, context: { params: { params: string } }) => {
+export const DELETE = withAuth(async (req: NextRequest, user, context: { params: { id: string } }) => {
 
-    const { params: { params: restaurantId } } = context;
+    const { params: { id: restaurantId } } = context;
 
     try {
         // 문서 조회

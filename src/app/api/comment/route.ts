@@ -11,7 +11,7 @@ export const POST = withAuth(async (req: NextRequest) => {
     try {
 
         const { userId, restaurantId, content, rating, isEdit } = await req.json();
-        const commentRef = adminDB.collection("comment").doc(); // ✅ adminDB 사용
+        const commentRef = adminDB.collection("comments").doc(); // ✅ adminDB 사용
 
         const commentData = {
             userId,

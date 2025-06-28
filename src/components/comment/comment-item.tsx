@@ -1,4 +1,9 @@
+"use client"
+
 import React from 'react'
+import { Input } from '@heroui/input'
+import { Button } from '@heroui/button';
+import RecommentCreate from '@/src/components/recomment/recomment-create'
 
 /*
    restaurantId,
@@ -29,8 +34,47 @@ import React from 'react'
 // 댓글에 평점을 남기면 글 평점과 계산해서 평점 업데이트 해야함.
 
 const CommentItem = () => {
+
+
    return (
-      <div>CommentItem</div>
+      <>
+         <div>
+            {/* 데이터 */}
+            코멘트 내용
+            <div>
+               <Button type="button">수정</Button>
+               <Button type="button">삭제</Button>
+            </div>
+            <div>
+               <Button type="button">좋아요</Button>
+               <Button type="button">싫어요</Button>
+            </div>
+
+
+            <div>
+               <Button type="button">답글 작성</Button>
+               <RecommentCreate />
+            </div>
+            <div>
+               {/* 아코디언 */}
+               <Button type="button">답글 뷰</Button>
+
+            </div>
+         </div>
+
+
+         <div>
+            {/* 수정하기 */}
+            <Input label="댓글" type="text" variant={'underlined'} />
+            <Button type="button">취소</Button>
+            <Button type="button">입력</Button>
+         </div>
+
+
+
+
+      </>
+
    )
 }
 

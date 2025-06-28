@@ -15,7 +15,7 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string }
     const limit = Number(page) //client에서 page로 보냄
 
 
-    let queryRef = adminDB.collection("comment")
+    let queryRef = adminDB.collection("comments")
         .orderBy("created_at", "desc")  // 내림차순 (최신순)
         .limit(limit);
 
@@ -103,7 +103,7 @@ export const PUT = withAuth(async (req: NextRequest, user, context: { params: { 
         if (!docSnapshot.exists) {
             return NextResponse.json({
                 state: "FAIL",
-                message: "해당 레스토랑 글이 존재하지 않습니다.",
+                message: "해당 레스토랑 댓글이 존재하지 않습니다.",
             }, { status: 404 });
         }
 

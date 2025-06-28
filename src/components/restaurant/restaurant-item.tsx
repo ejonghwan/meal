@@ -11,6 +11,7 @@ import Search from '../common/input/search';
 import _, { xor } from 'lodash'
 import { useEditRestaurant, useDeleteRestaurant } from '@/src/store/queryies/restaurant/restaurantQueries';
 import Like from '@/src/components/like/like';
+import CommentWrap from '@/src/components/comment/comment-wrap';
 
 
 
@@ -123,6 +124,9 @@ const RestaurantItem = ({ restaurant }) => {
                     </ul>
                 </>
             )}
+
+            {/* comment */}
+            <CommentWrap />
 
 
             <Modal

@@ -5,7 +5,7 @@ import { withAuth } from "@/src/app/api/middleware/withAuth";
 
 /*
     @ path    GET /api/comment/:page
-    @ doc     글 로드
+    @ doc     댓글 로드
     @ access  public
 */
 export const GET = async (req: NextRequest, { params }: { params: { id: string } }) => {
@@ -86,25 +86,18 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string }
 
 /*
     @ path    PUT /api/comment/:commentId
-    @ doc     글 전체 수정
+    @ doc     댓글 전체 수정
     @ access  public
 */
 export const PUT = withAuth(async (req: NextRequest, user, context: { params: { id: string } }) => {
 
-    const { params: { id: restaurantId } } = context;
+    const { params: { id: commentId } } = context;
 
     try {
         const body = await req.json(); // 수정할 데이터
-        const {
-            title,
-            content,
-            category,
-            rating,
-            isEdit,
-            mapInfo,
-        } = body;
+        const { content, rating, isEdit } = body;
 
-        const docRef = adminDB.collection("restaurant").doc(restaurantId);
+        const docRef = adminDB.collection("comments").doc(commentId);
         const docSnapshot = await docRef.get();
 
         if (!docSnapshot.exists) {
@@ -115,12 +108,9 @@ export const PUT = withAuth(async (req: NextRequest, user, context: { params: { 
         }
 
         await docRef.update({
-            ...(title !== undefined && { title }),
             ...(content !== undefined && { content }),
-            ...(category !== undefined && { category }),
             ...(rating !== undefined && { rating }),
             ...(isEdit !== undefined && { isEdit }),
-            ...(mapInfo !== undefined && { mapInfo }),
             updated_at: new Date(), // 수정 시간
         });
 
@@ -142,24 +132,24 @@ export const PUT = withAuth(async (req: NextRequest, user, context: { params: { 
 
 
 /*
-    @ path    PATCH  /api/restaurant
+    @ path    PATCH  /api/comment/:commentId
     @ doc     글 일부 수정
     @ access  public
 */
 
 
 /*
-    @ path    DELETE /api/restaurant
-    @ doc     글 삭제
+    @ path    DELETE /api/comment/:commentId
+    @ doc     댓글 삭제
     @ access  public
 */
 export const DELETE = withAuth(async (req: NextRequest, user, context: { params: { id: string } }) => {
 
-    const { params: { id: restaurantId } } = context;
+    const { params: { id: commentId } } = context;
 
     try {
         // 문서 조회
-        const docRef = adminDB.collection("restaurant").doc(restaurantId);
+        const docRef = adminDB.collection("comments").doc(commentId);
         const docSnap = await docRef.get();
 
         if (!docSnap.exists) {

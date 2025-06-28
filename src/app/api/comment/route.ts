@@ -17,7 +17,7 @@ export const POST = withAuth(async (req: NextRequest) => {
             userId,
             restaurantId,
             content,
-            rating, 
+            rating,
             isEdit,
             like: "0",
             unlike: "0",
@@ -27,10 +27,12 @@ export const POST = withAuth(async (req: NextRequest) => {
 
         await commentRef.set(commentData); // ✅ admin SDK로 접근하면 권한 체크 안 함
 
+
+
         // 추가. rating 받아서 글에 평점 추가해야함. 코드 검증해야됨
         const restaurantRef = adminDB.collection("restaurant").doc(restaurantId);
         const restaurantSnapshot = await restaurantRef.get();
-        if (!restaurantSnapshot.exists) {   
+        if (!restaurantSnapshot.exists) {
             return NextResponse.json({
                 state: "FAILURE",
                 message: "레스토랑이 존재하지 않습니다.",
@@ -52,11 +54,13 @@ export const POST = withAuth(async (req: NextRequest) => {
         // 추가. rating 받아서 글에 평점 추가해야함.
 
 
+
+
         return NextResponse.json({
             state: "SUCCESS",
             message: "추가",
             data: {
-                commentId: commentRef.id, 
+                commentId: commentRef.id,
                 ...commentRef,
             },
         }, { status: 201 });

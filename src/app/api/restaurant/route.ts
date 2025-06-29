@@ -7,14 +7,20 @@ import { withAuth } from "@/src/app/api/middleware/withAuth";
     @ doc     글 생성
     @ access  public
 */
-export const POST = withAuth(async (req: NextRequest) => {
+export const POST = withAuth(async (req: NextRequest, user) => {
     try {
 
+
+        console.log('user?', user)
         const { userId, title, content, rating, category, isEdit, mapInfo } = await req.json();
         const restaurantRef = adminDB.collection("restaurant").doc(); // ✅ adminDB 사용
 
         const restaurantData = {
-            userId,
+            userId: user.uid,
+            // user: {
+            //     info: user.providerData[0].UserInfo,
+            //     metadata: user.metadata,
+            // },
             title,
             content,
             rating,

@@ -126,7 +126,7 @@ const RestaurantItem = ({ restaurant }) => {
             )}
 
             {/* comment */}
-            <CommentWrap />
+            {/* <CommentWrap /> */}
 
 
             <Modal

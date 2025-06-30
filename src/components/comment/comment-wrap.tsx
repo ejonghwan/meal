@@ -1,7 +1,4 @@
-"use client"
 
-import React from 'react'
-import { Input } from '@heroui/input'
 import CommentItem from '@/src/components/comment/comment-item'
 
 const CommentWrap = ({ comments }) => {

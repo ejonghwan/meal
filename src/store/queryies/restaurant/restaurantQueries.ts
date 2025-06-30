@@ -1,15 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { restaurantKeys } from '@/src/store/queryies/restaurant/restaurantKeys'
-import { onRestaurantListLoadAPI, onRestaurantDetailLoadAPI, onCreateRestaurantAPI, onEditRestaurantAPI, onDeleteRestaurantAPI } from '@/src/store/queryies/restaurant/restaurantQueryFn'
+import { onLoadRestaurantListAPI, onLoadRestaurantDetailAPI, onCreateRestaurantAPI, onEditRestaurantAPI, onDeleteRestaurantAPI } from '@/src/store/queryies/restaurant/restaurantQueryFn'
 import { RestaurantData } from '@/src/types/data/restaurant'
 
 
 
 // 모든 글 로드
-export const useRestaurantListAll = (page: number) => {
+export const useRestaurantList = (page: number) => {
    return useQuery({
       queryKey: restaurantKeys.listAll(page),
-      queryFn: () => onRestaurantListLoadAPI(page),
+      queryFn: () => onLoadRestaurantListAPI(page),
       // staleTime: 60 * 1000,
       staleTime: 3600,
       gcTime: 4000,
@@ -19,10 +19,10 @@ export const useRestaurantListAll = (page: number) => {
 
 
 // 상세 로드
-export const useRestaurantList = (restauranId: string) => {
+export const useRestaurant = (restauranId: string) => {
    return useQuery({
       queryKey: restaurantKeys.detail(restauranId),
-      queryFn: () => onRestaurantDetailLoadAPI(restauranId),
+      queryFn: () => onLoadRestaurantDetailAPI(restauranId),
       // staleTime: 60 * 1000,
       staleTime: 3600,
       gcTime: 4000,

@@ -9,7 +9,7 @@ import { RestaurantData } from '@/src/types/data/restaurant'
 
 // restaurant
 // list load
-export const onRestaurantListLoadAPI = async (page) => {
+export const onLoadRestaurantListAPI = async (page) => {
     try {
         const options: ExtendsRequestInit = {
             method: "GET",
@@ -32,7 +32,7 @@ export const onRestaurantListLoadAPI = async (page) => {
 }
 
 // detail load
-export const onRestaurantDetailLoadAPI = async (restaurantId: string) => {
+export const onLoadRestaurantDetailAPI = async (restaurantId: string) => {
     try {
         const options: ExtendsRequestInit = {
             method: "GET",

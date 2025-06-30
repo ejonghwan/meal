@@ -4,12 +4,12 @@ import React, { useEffect, useState } from "react";
 import RestaurantItem from "@/src/components/restaurant/restaurant-item";
 
 import { Accordion, AccordionItem } from "@heroui/accordion";
-import { useRestaurantListAll } from '@/src/store/queryies/restaurant/restaurantQueries'
+import { useRestaurantList } from '@/src/store/queryies/restaurant/restaurantQueries'
 import { PiBowlFoodDuotone, PiStarDuotone, PiStarFill } from "react-icons/pi";
 
 
 const RestaurantTable = () => {
-  const { data: restaurantData, isError: restaurantError, isSuccess: restaurantSuccess, isLoading: restaurantLoading } = useRestaurantListAll(10)
+  const { data: restaurantData, isError: restaurantError, isSuccess: restaurantSuccess, isLoading: restaurantLoading } = useRestaurantList(10)
 
 
   useEffect(() => {

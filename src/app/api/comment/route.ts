@@ -54,8 +54,6 @@ export const POST = withAuth(async (req: NextRequest) => {
         // 추가. rating 받아서 글에 평점 추가해야함.
 
 
-
-
         return NextResponse.json({
             state: "SUCCESS",
             message: "추가",

@@ -1,15 +1,15 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { restaurantKeys } from '@/src/store/queryies/restaurant/restaurantKeys'
-import { onRestaurantListLoadAPI, onRestaurantDetailLoadAPI, onCreateRestaurantAPI, onEditRestaurantAPI, onDeleteRestaurantAPI } from '@/src/store/queryies/restaurant/restaurantQueryFn'
-import { CommentData } from '@/src/types/data/comment'
+import { commentKeys } from '@/src/store/queryies/comment/commentKeys'
+import { onLoadCommentListAPI, onLoadCommentDetailAPI, onCreateCommentAPI, onEditCommentAPI, onDeleteCommentAPI } from '@/src/store/queryies/comment/commentQueryFn'
+import { CommentData, DeleteCommentData, EditCommentData } from '@/src/types/data/comment'
 
 
 
-// 모든 글 로드
-export const useCommentIdListAll = (page: number) => {
+// 모든 댓글 로드
+export const useLoadCommentList = (page: number) => {
    return useQuery({
-      queryKey: commentIdKeys.listAll(page),
-      queryFn: () => onCommentIdListLoadAPI(page),
+      queryKey: commentKeys.listAll(page),
+      queryFn: () => onLoadCommentListAPI(page),
       // staleTime: 60 * 1000,
       staleTime: 3600,
       gcTime: 4000,
@@ -18,11 +18,11 @@ export const useCommentIdListAll = (page: number) => {
 
 
 
-// 상세 로드
-export const useCommentIdList = (restauranId: string) => {
+// 특정 댓글 로드
+export const useLoadComment = (commentId: string) => {
    return useQuery({
-      queryKey: commentIdKeys.detail(restauranId),
-      queryFn: () => onCommentIdDetailLoadAPI(restauranId),
+      queryKey: commentKeys.detail(commentId),
+      queryFn: () => onLoadCommentDetailAPI(commentId),
       // staleTime: 60 * 1000,
       staleTime: 3600,
       gcTime: 4000,
@@ -31,28 +31,16 @@ export const useCommentIdList = (restauranId: string) => {
 
 
 
-// 글쓰기
-export const useCreatecommentId = () => {
-   return useMutation({
-      mutationFn: (payload: CommentIdData) => {
-         console.log('query fn ? ', payload)
-         return onCreateCommentIdAPI(payload)
-      },
-   })
-}
-
-
-
-// 글 수정
-export const useEditCommentId = () => {
-
+// 댓글 쓰기
+export const useCreatecomment = () => {
    const queryClient = useQueryClient();
    return useMutation({
-      mutationFn: (payload: CommentIdData) => {
-         return onEditCommentIdAPI(payload)
+      mutationFn: (payload: CommentData) => {
+         console.log('query fn ? ', payload)
+         return onCreateCommentAPI(payload)
       },
       onSuccess: (data, variables) => {
-         queryClient.invalidateQueries({ queryKey: commentIdKeys.listAll(10) });
+         queryClient.invalidateQueries({ queryKey: commentKeys.listAll(10) });
          console.log('쿼리쪽 edit data?', data, variables)
       },
    })
@@ -60,15 +48,32 @@ export const useEditCommentId = () => {
 
 
 
-// 글 삭제
+// 댓글 수정
+export const useEditCommentId = () => {
+
+   const queryClient = useQueryClient();
+   return useMutation({
+      mutationFn: (payload: EditCommentData) => {
+         return onEditCommentAPI(payload)
+      },
+      onSuccess: (data, variables) => {
+         queryClient.invalidateQueries({ queryKey: commentKeys.listAll(10) });
+         console.log('쿼리쪽 edit data?', data, variables)
+      },
+   })
+}
+
+
+
+// 댓글 삭제
 export const useDeleteCommentId = () => {
    const queryClient = useQueryClient();
    return useMutation({
-      mutationFn: (payload: { commentIdId: string, token: string }) => {
-         return onDeleteCommentIdAPI(payload)
+      mutationFn: (payload: DeleteCommentData) => {
+         return onDeleteCommentAPI(payload)
       },
       onSuccess: (data, variables) => {
-         queryClient.invalidateQueries({ queryKey: commentIdKeys.listAll(10) });
+         queryClient.invalidateQueries({ queryKey: commentKeys.listAll(10) });
          console.log('쿼리쪽 delete data?', data, variables)
       },
    })

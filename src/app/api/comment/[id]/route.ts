@@ -54,15 +54,11 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string }
 
         return {
             id: doc.id,
-            user,
-            title: data.title,
-            content: data.content,
-            category: data.category,
-            rating: data.rating,
-            totalRating: data.rating,
             userId: data.userId,
+            user,
+            content: data.content,
+            rating: data.rating,
             isEdit: data.isEdit,
-            mapInfo: data.mapInfo,
             like: data.like,
             unlike: data.unlike,
             created_at: data.created_at?.toDate() ?? null,

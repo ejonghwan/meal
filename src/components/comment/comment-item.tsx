@@ -33,7 +33,7 @@ import RecommentCreate from '@/src/components/recomment/recomment-create'
 // 대댓글에는 남길 수 없고 댓글에만 별점을 매길 수 있게?  
 // 댓글에 평점을 남기면 글 평점과 계산해서 평점 업데이트 해야함.
 
-const CommentItem = () => {
+const CommentItem = ({ commentData }) => {
 
 
    return (

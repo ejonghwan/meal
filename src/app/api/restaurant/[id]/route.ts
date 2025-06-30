@@ -85,7 +85,7 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string }
 
 
 /*
-    @ path    PUT /api/restaurant/:params
+    @ path    PUT /api/restaurant/:restaurantId
     @ doc     글 전체 수정
     @ access  public
 */
@@ -143,14 +143,14 @@ export const PUT = withAuth(async (req: NextRequest, user, context: { params: { 
 
 
 /*
-    @ path    PATCH  /api/restaurant
+    @ path    PATCH  /api/restaurant/:restaurantId
     @ doc     글 일부 수정
     @ access  public
 */
 
 
 /*
-    @ path    DELETE /api/restaurant
+    @ path    DELETE /api/restaurant/:restaurantId
     @ doc     글 삭제
     @ access  public
 */

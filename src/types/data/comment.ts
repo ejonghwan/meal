@@ -1,11 +1,24 @@
 
 export interface CommentData {
     userId: string
-    title: string;
+    restaurantId?: string;
     content: string;
     rating: number;
-    category: string;
     isEdit?: boolean;
-    restaurantId?: string;
+    token: string;
+}
+
+export interface EditCommentData {
+    userId: string;
+    commentId: string;
+    content: string;
+    rating: number;
+    isEdit?: boolean;
+    token: string;
+}
+
+export interface DeleteCommentData {
+    userId: string;
+    commentId: string;
     token: string;
 }

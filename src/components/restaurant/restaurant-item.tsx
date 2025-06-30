@@ -8,10 +8,11 @@ import MapLoad from '@/src/components/maps/map-load'
 import { Input } from '@heroui/input';
 import MapSelect from '@/src/components/maps/map-select';
 import Search from '../common/input/search';
-import _, { xor } from 'lodash'
+import _ from 'lodash'
 import { useEditRestaurant, useDeleteRestaurant } from '@/src/store/queryies/restaurant/restaurantQueries';
 import Like from '@/src/components/like/like';
 import CommentWrap from '@/src/components/comment/comment-wrap';
+import CommentCreate from '@/src/components/comment/comment-create';
 
 
 
@@ -124,6 +125,9 @@ const RestaurantItem = ({ restaurant }) => {
                     </ul>
                 </>
             )}
+
+            {/* create comment */}
+            <CommentCreate restaurantId={restaurant.id} userId={restaurant.user.uid} />
 
             {/* comment */}
             <CommentWrap />

@@ -10,15 +10,16 @@ import { withAuth } from "@/src/app/api/middleware/withAuth";
 export const POST = withAuth(async (req: NextRequest) => {
     try {
 
-        const { userId, restaurantId, content, rating, isEdit } = await req.json();
+        const { userId, restaurantId, content, rating, isEdit, parentCommentId } = await req.json();
         const commentRef = adminDB.collection("comments").doc(); // ✅ adminDB 사용
 
         const commentData = {
             userId,
             restaurantId,
+            parentCommentId,
             content,
             rating,
-            isEdit,
+            isEdit: false,
             like: "0",
             unlike: "0",
             created_at: admin.firestore.Timestamp.fromDate(new Date()),

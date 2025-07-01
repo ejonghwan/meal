@@ -55,10 +55,10 @@ export const onLoadCommentDetailAPI = async (commentId: string) => {
 export const onCreateCommentAPI = async (payload: CommentData) => {
     try {
         const savedToken = localStorage.getItem('x-acc-token');
-        const { userId, content, rating, isEdit, token } = payload;
+        const { userId, content, rating, isEdit, restaurantId, parentCommentId } = payload;
 
         // 토큰 컴포넌트말고 여기서 보내서 테스트해보기
-
+       
         const options: ExtendsRequestInit = {
             method: "POST",
             headers: {
@@ -66,7 +66,7 @@ export const onCreateCommentAPI = async (payload: CommentData) => {
                 "x-acc-token": `Bearer ${savedToken}`,
                 // "Authorization": `Bearer ${token}`,
             },
-            body: JSON.stringify({ userId, content, rating, isEdit }),
+            body: JSON.stringify({ userId, content, rating, isEdit, restaurantId, parentCommentId }),
             next: { tags: ['comment', 'create'] },
             cache: "no-store",
             credentials: 'include'

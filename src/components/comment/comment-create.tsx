@@ -18,9 +18,9 @@ const CommentCreate = ({ userId, restaurantId }: Props) => {
    const [commentData, setCommentData] = useState({
       userId: userId,
       restaurantId: restaurantId,
+      parentCommentId: 'asd',
       content: '',
       rating: 3,
-      token: ''
    })
 
    const commentRef = useRef();

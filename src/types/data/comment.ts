@@ -5,7 +5,8 @@ export interface CommentData {
     content: string;
     rating: number;
     isEdit?: boolean;
-    token: string;
+    parentCommentId: string | null;
+    // token: string;
 }
 
 export interface EditCommentData {

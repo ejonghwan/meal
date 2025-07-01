@@ -6,10 +6,10 @@ import { CommentData, DeleteCommentData, EditCommentData } from '@/src/types/dat
 
 
 // 모든 댓글 로드
-export const useLoadCommentList = (page: number) => {
+export const useLoadCommentList = (restaurant: string, page: number) => {
    return useQuery({
-      queryKey: commentKeys.listAll(page),
-      queryFn: () => onLoadCommentListAPI(page),
+      queryKey: commentKeys.listAll(restaurant, page),
+      queryFn: () => onLoadCommentListAPI(restaurant, page),
       // staleTime: 60 * 1000,
       staleTime: 3600,
       gcTime: 4000,
@@ -40,7 +40,7 @@ export const useCreatecomment = () => {
          return onCreateCommentAPI(payload)
       },
       onSuccess: (data, variables) => {
-         queryClient.invalidateQueries({ queryKey: commentKeys.listAll(10) });
+         queryClient.invalidateQueries({ queryKey: commentKeys.listAll(variables.restaurantId, 10) });
          console.log('쿼리쪽 edit data?', data, variables)
       },
    })
@@ -57,7 +57,7 @@ export const useEditCommentId = () => {
          return onEditCommentAPI(payload)
       },
       onSuccess: (data, variables) => {
-         queryClient.invalidateQueries({ queryKey: commentKeys.listAll(10) });
+         queryClient.invalidateQueries({ queryKey: commentKeys.listAll(variables.restaurantId, 10) });
          console.log('쿼리쪽 edit data?', data, variables)
       },
    })
@@ -73,7 +73,7 @@ export const useDeleteCommentId = () => {
          return onDeleteCommentAPI(payload)
       },
       onSuccess: (data, variables) => {
-         queryClient.invalidateQueries({ queryKey: commentKeys.listAll(10) });
+         queryClient.invalidateQueries({ queryKey: commentKeys.listAll(variables.restaurantId, 10) });
          console.log('쿼리쪽 delete data?', data, variables)
       },
    })

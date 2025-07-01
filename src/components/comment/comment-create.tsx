@@ -18,7 +18,7 @@ const CommentCreate = ({ userId, restaurantId }: Props) => {
    const [commentData, setCommentData] = useState({
       userId: userId,
       restaurantId: restaurantId,
-      parentCommentId: 'asd',
+      parentCommentId: null,
       content: '',
       rating: 3,
    })
@@ -51,9 +51,10 @@ const CommentCreate = ({ userId, restaurantId }: Props) => {
       console.log('asdasdasd?', commentData)
    }
 
+
    useEffect(() => {
-      console.log('isComment?', isCommentBtn, commentData)
-   }, [isCommentBtn, commentData])
+      handleCommentClose()
+   }, [createCommentSuccess])
 
 
    return (

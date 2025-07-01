@@ -4,21 +4,23 @@ import React, { useEffect } from 'react';
 import { useLoadCommentList } from '@/src/store/queryies/comment/commentQueries'
 import CommentItem from '@/src/components/comment/comment-item'
 
-const CommentWrap = () => {
+const CommentWrap = ({ restaurantId }: { restaurantId: string }) => {
 
-   const { data: commentData, isError: commentError, isSuccess: commentSuccess, isLoading: commentLoading } = useLoadCommentList(10)
+   const { data: commentData, isError: commentError, isSuccess: commentSuccess, isLoading: commentLoading } = useLoadCommentList(restaurantId, 10)
 
 
    useEffect(() => {
       if (commentSuccess && commentData?.data) {
-         console.log(commentData.data);
+         console.log(commentData);
       }
    }, [commentSuccess, commentData]);
 
 
    return (
       <div>
-         <CommentItem commentData={commentData} />
+         {commentData?.data?.map(item => (
+            <CommentItem key={item.id} comment={item} />
+         ))}
       </div>
    )
 }

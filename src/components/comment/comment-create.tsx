@@ -51,9 +51,10 @@ const CommentCreate = ({ userId, restaurantId }: Props) => {
       console.log('asdasdasd?', commentData)
    }
 
+
    useEffect(() => {
-      console.log('isComment?', isCommentBtn, commentData)
-   }, [isCommentBtn, commentData])
+      handleCommentClose()
+   }, [createCommentSuccess])
 
 
    return (

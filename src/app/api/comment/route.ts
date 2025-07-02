@@ -10,7 +10,7 @@ import { withAuth } from "@/src/app/api/middleware/withAuth";
 export const POST = withAuth(async (req: NextRequest) => {
     try {
 
-        const { userId, restaurantId, content, rating, isEdit, parentCommentId } = await req.json();
+        const { userId, restaurantId, content, rating, isEdit, parentCommentId = null } = await req.json();
         const commentRef = adminDB.collection("comments").doc(); // ✅ adminDB 사용
 
         const commentData = {
@@ -49,8 +49,8 @@ export const POST = withAuth(async (req: NextRequest) => {
         const currentRating = parseFloat(restaurantData.rating) || 0;
         const newRating = (currentRating + parseFloat(rating)) / 2; // 평균 계산
         await restaurantRef.update({
-            rating: newRating.toString(),
-            totalRating: (parseFloat(restaurantData.totalRating) + parseFloat(rating)).toString(), // 총 평점 업데이트
+            totalRating: newRating.toString(),
+            // totalRating: (parseFloat(restaurantData.totalRating) + parseFloat(rating)).toString(), // 총 평점 업데이트
         });
         // 추가. rating 받아서 글에 평점 추가해야함.
 

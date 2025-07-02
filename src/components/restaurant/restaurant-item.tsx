@@ -20,7 +20,6 @@ const RestaurantItem = ({ restaurant }) => {
 
     const { mutate: editMutate, data: editData, isError: editError, isSuccess: editSuccess } = useEditRestaurant()
     const { mutate: deleteMutate, data: deleteData, isError: deleteError, isSuccess: deleteSuccess } = useDeleteRestaurant()
-    const { isOpen, onOpen, onOpenChange } = useDisclosure();
     const { userInfo } = useUserStore()
     const [editRestaurant, setEditRestaurant] = useState(restaurant)
     const [isEdit, setIsEdit] = useState(false)
@@ -31,11 +30,13 @@ const RestaurantItem = ({ restaurant }) => {
     const [keyword, setKeyword] = useState('')
 
     const debounceRef = useRef<(val: string) => void>();
+
     useEffect(() => {
         debounceRef.current = _.debounce((val: string) => {
             setKeyword(val); // 검색어 확정
         }, 1200); //1.2초 후 검색요청
     }, []);
+
 
     const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const val = e.target.value;
@@ -69,6 +70,9 @@ const RestaurantItem = ({ restaurant }) => {
     }
 
 
+    console.log('?????????????????', restaurant)
+
+
     return (
         <div className="asd">
 
@@ -94,10 +98,8 @@ const RestaurantItem = ({ restaurant }) => {
 
             {restaurant.user && (
                 <UserFirstName
-                    // userData={restaurant.user}
-                    firstString={restaurant.user.displayName?.slice(0, 1).toLocaleUpperCase()}
+                    user={restaurant.user}
                     className={'rounded-[50%] bg-gray-700 text-white size-[40px] p-[5px]'}
-                    onClick={onOpen}
                 />
             )}
 
@@ -114,14 +116,15 @@ const RestaurantItem = ({ restaurant }) => {
                 </>
             ) : (
                 <>
-                    {restaurant.mapInfo && <MapLoad mapData={{ name: restaurant.mapInfo.name, rating: 4.5, location: { lat: restaurant.mapInfo.y, lng: restaurant.mapInfo.x } }} />}
+                    {restaurant.mapInfo && <MapLoad mapData={{ name: restaurant.mapInfo.name, rating: restaurant.totalRating, location: { lat: restaurant.mapInfo.y, lng: restaurant.mapInfo.x } }} />}
                     <ul>
                         {restaurant.title && <li>{restaurant.title}</li>}
                         {restaurant.content && <li>{restaurant.content}</li>}
                         {restaurant.created_at && <li>{restaurant.created_at}</li>}
                         {restaurant.updated_at && <li>{restaurant.updated_at} 수정됨</li>}
                         {restaurant.category && <li>{restaurant.category}</li>}
-                        {restaurant.rating && <li>{restaurant.rating}</li>}
+                        {/* {restaurant.rating && <li>{restaurant.rating}</li>} */}
+                        {restaurant.totalRating && <li>{restaurant.totalRating}</li>}
                     </ul>
                 </>
             )}
@@ -130,66 +133,10 @@ const RestaurantItem = ({ restaurant }) => {
             <CommentCreate restaurantId={restaurant.id} userId={restaurant.user.uid} />
 
             {/* comment */}
-            <CommentWrap />
+            <CommentWrap restaurantId={restaurant.id} />
 
 
-            <Modal
-                backdrop="blur"
-                isOpen={isOpen}
-                motionProps={{
-                    variants: {
-                        enter: {
-                            y: 0,
-                            opacity: 1,
-                            transition: {
-                                duration: 0.3,
-                                ease: "easeOut",
-                            },
-                        },
-                        exit: {
-                            y: -20,
-                            opacity: 0,
-                            transition: {
-                                duration: 0.2,
-                                ease: "easeIn",
-                            },
-                        },
-                    },
-                }}
-                onOpenChange={onOpenChange}
-            >
 
-                {/* user Modal */}
-                <ModalContent>
-                    {(onClose) => (
-                        <>
-                            <ModalHeader className="flex flex-col gap-1">Modal Title</ModalHeader>
-                            <ModalBody>
-                                <div>
-                                    {restaurant.user && (
-                                        <UserFirstName
-                                            // userData={restaurant.user}
-                                            firstString={restaurant.user.displayName?.slice(0, 1).toLocaleUpperCase()}
-                                            className={'rounded-[50%] bg-gray-700 text-white size-[140px] p-[5px]'}
-                                            onClick={onOpen}
-                                        />
-                                    )}
-                                </div>
-                                <div>{restaurant.user.displayName}</div>
-                                <div>{restaurant.user.email}</div>
-                            </ModalBody>
-                            {/* <ModalFooter>
-                                <button type='button' color="danger" onClick={onClose}>
-                                    Close
-                                </button>
-                                <button type='button' color="primary" onClick={onClose}>
-                                    Action
-                                </button>
-                            </ModalFooter> */}
-                        </>
-                    )}
-                </ModalContent>
-            </Modal>
         </div>
     )
 }

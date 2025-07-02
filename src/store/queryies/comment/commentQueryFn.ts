@@ -8,7 +8,7 @@ import { CommentData, EditCommentData, DeleteCommentData } from '@/src/types/dat
 
 
 // 댓글 리스트 로드
-export const onLoadCommentListAPI = async (page) => {
+export const onLoadCommentListAPI = async (restaurantId, page) => {
     try {
         const options: ExtendsRequestInit = {
             method: "GET",
@@ -18,8 +18,8 @@ export const onLoadCommentListAPI = async (page) => {
             cache: "no-store",
         }
 
-        console.log('page', page)
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/comment/${page}`, options)
+        console.log('page', restaurantId, page)
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/comment/${restaurantId}/${page}`, options)
 
         if (!res.ok) { throw new Error('Network response was not ok'); }
         return res.json();
@@ -58,7 +58,7 @@ export const onCreateCommentAPI = async (payload: CommentData) => {
         const { userId, content, rating, isEdit, restaurantId, parentCommentId } = payload;
 
         // 토큰 컴포넌트말고 여기서 보내서 테스트해보기
-       
+
         const options: ExtendsRequestInit = {
             method: "POST",
             headers: {

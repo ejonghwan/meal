@@ -10,8 +10,8 @@ export const useRestaurantList = (page: number) => {
    return useQuery({
       queryKey: restaurantKeys.listAll(page),
       queryFn: () => onLoadRestaurantListAPI(page),
-      // staleTime: 60 * 1000,
-      staleTime: 3600,
+      staleTime: 60 * 1000,
+      // staleTime: 3600,
       gcTime: 4000,
    })
 }

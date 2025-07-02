@@ -10,8 +10,8 @@ export const useLoadCommentList = (restaurant: string, page: number) => {
    return useQuery({
       queryKey: commentKeys.listAll(restaurant, page),
       queryFn: () => onLoadCommentListAPI(restaurant, page),
-      // staleTime: 60 * 1000,
-      staleTime: 3600,
+      staleTime: 60 * 1000,
+      // staleTime: 3600,
       gcTime: 4000,
    })
 }

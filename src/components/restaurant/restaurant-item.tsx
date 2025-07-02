@@ -13,6 +13,7 @@ import { useEditRestaurant, useDeleteRestaurant } from '@/src/store/queryies/res
 import Like from '@/src/components/like/like';
 import CommentWrap from '@/src/components/comment/comment-wrap';
 import CommentCreate from '@/src/components/comment/comment-create';
+import { getRelativeTime, changeViewDate, timeForToday } from '@/src/utillity/utils';
 
 
 
@@ -120,8 +121,8 @@ const RestaurantItem = ({ restaurant }) => {
                     <ul>
                         {restaurant.title && <li>{restaurant.title}</li>}
                         {restaurant.content && <li>{restaurant.content}</li>}
-                        {restaurant.created_at && <li>{restaurant.created_at}</li>}
-                        {restaurant.updated_at && <li>{restaurant.updated_at} 수정됨</li>}
+                        {restaurant.created_at && (<li>{changeViewDate(restaurant.created_at, 'second')}</li>)}
+                        {restaurant.updated_at && (<li>{timeForToday(restaurant.updated_at)} 수정됨</li>)}
                         {restaurant.category && <li>{restaurant.category}</li>}
                         {/* {restaurant.rating && <li>{restaurant.rating}</li>} */}
                         {restaurant.totalRating && <li>{restaurant.totalRating}</li>}

@@ -17,10 +17,10 @@ export const questionData = [
 * @returns {undefined} 
 */
 export const delay = (endSecond: number, cb: () => void) => {
-   if(!endSecond || !cb) return console.error('인수 모두 채워주세요');
-   if(typeof endSecond !== 'number' || typeof cb !== 'function' ) {console.error('인수 타입체크해주세요')}
+   if (!endSecond || !cb) return console.error('인수 모두 채워주세요');
+   if (typeof endSecond !== 'number' || typeof cb !== 'function') { console.error('인수 타입체크해주세요') }
    setTimeout(() => {
-       cb()
+      cb()
    }, endSecond * 1000)
 
 }
@@ -36,19 +36,19 @@ export const delay = (endSecond: number, cb: () => void) => {
 * @returns {undefined} 
 */
 export const timer = (endSecond: number, startingPoint: number, cb: (n: number) => void, initialVariable: any) => {
-   if(!endSecond || !startingPoint || !cb ) return console.error('인수 모두 채워주세요');
-   if(typeof endSecond !== 'number' || typeof startingPoint !== 'number' || typeof cb !== 'function' ) return console.error('인수 타입체크해주세요')
+   if (!endSecond || !startingPoint || !cb) return console.error('인수 모두 채워주세요');
+   if (typeof endSecond !== 'number' || typeof startingPoint !== 'number' || typeof cb !== 'function') return console.error('인수 타입체크해주세요')
 
    const countPoint = endSecond - startingPoint //startingPoint = 몇초가 지났을때
 
    setTimeout(() => {
-       let down = startingPoint;
-       initialVariable = setInterval(() => {
-           down -= 1
-           cb(down)
-           if(typeof down !== 'number') return console.error('타이머 타입체크')
-           if(down <= 0) { clearInterval(initialVariable); }
-       }, 1000)
+      let down = startingPoint;
+      initialVariable = setInterval(() => {
+         down -= 1
+         cb(down)
+         if (typeof down !== 'number') return console.error('타이머 타입체크')
+         if (down <= 0) { clearInterval(initialVariable); }
+      }, 1000)
    }, countPoint * 1000)
 }
 
@@ -61,18 +61,18 @@ export const timer = (endSecond: number, startingPoint: number, cb: (n: number) 
 * @returns {string} 일 시간 분 초 
 */
 export const changeDate = (totalNumber: number, viewTime: string) => {
-   if(typeof totalNumber !== 'number') return console.error('넘버로 넣어줭')
+   if (typeof totalNumber !== 'number') return console.error('넘버로 넣어줭')
    let day = Math.floor(Math.floor(Math.floor(totalNumber / 60) / 60) / 24);
    let hour = Math.floor(Math.floor(totalNumber / 60) / 60) % 24;
    let minute = Math.floor(totalNumber / 60) % 60;
    let second = totalNumber % 60;
 
-   switch(viewTime) {
-       case 'day': return `${day}일 ${hour}시간 ${minute}분 ${second}초`;
-       case 'hour': return `${hour}시간 ${minute}분 ${second}초`;
-       case 'minute': return `${minute}분 ${second}초`;
-       case 'second': return `${second}초`;
-       default: return `${day}일 ${hour}시간 ${minute}분 ${second}초`;
+   switch (viewTime) {
+      case 'day': return `${day}일 ${hour}시간 ${minute}분 ${second}초`;
+      case 'hour': return `${hour}시간 ${minute}분 ${second}초`;
+      case 'minute': return `${minute}분 ${second}초`;
+      case 'second': return `${second}초`;
+      default: return `${day}일 ${hour}시간 ${minute}분 ${second}초`;
    }
 }
 
@@ -90,14 +90,14 @@ export const changeViewDate = (date: number, viewTime: string) => {
    const minute = new Date(date).getMinutes();
    const second = new Date(date).getSeconds();
 
-   switch(viewTime) {
-       case 'year': return `${year}.`;
-       case 'month': return `${year}. ${month}.`
-       case 'day': return `${year}. ${month}. ${day}.`;
-       case 'hour': return `${year}. ${month}. ${day}. ${hour}`;
-       case 'minute': return `${year}. ${month}. ${day}. ${hour}:${minute}`;
-       case 'second': return `${year}. ${month}. ${day}. ${hour}:${minute}:${second}`;
-       default: return `${year}. ${month}. ${day}.`;
+   switch (viewTime) {
+      case 'year': return `${year}.`;
+      case 'month': return `${year}. ${month}.`
+      case 'day': return `${year}. ${month}. ${day}.`;
+      case 'hour': return `${year}. ${month}. ${day}. ${hour}`;
+      case 'minute': return `${year}. ${month}. ${day}. ${hour}:${minute}`;
+      case 'second': return `${year}. ${month}. ${day}. ${hour}:${minute}:${second}`;
+      default: return `${year}. ${month}. ${day}.`;
    }
 }
 
@@ -109,8 +109,8 @@ export const changeViewDate = (date: number, viewTime: string) => {
 */
 export const initTime = () => {
    const sampleTimestamp = Date.now();
-    // const millis = Math.floor((Date.now() - start) / 1000); //경과시간
-    const date = new Date(sampleTimestamp); //타임스탬프를 인자로 받아 Date 객체 생성
+   // const millis = Math.floor((Date.now() - start) / 1000); //경과시간
+   const date = new Date(sampleTimestamp); //타임스탬프를 인자로 받아 Date 객체 생성
 
    const year = date.getFullYear().toString().slice(-2); //년도 뒤에 두자리
    const month = ("0" + (date.getMonth() + 1)).slice(-2); //월 2자리 (01, 02 ... 12)
@@ -135,17 +135,17 @@ export const timeForToday = (date: string) => {
    const betweenTime = Math.floor((today.getTime() - timeValue.getTime()) / 1000 / 60);
    if (betweenTime < 1) return '방금전';
    if (betweenTime < 60) {
-       return `${betweenTime}분전`;
+      return `${betweenTime}분전`;
    }
 
    const betweenTimeHour = Math.floor(betweenTime / 60);
    if (betweenTimeHour < 24) {
-       return `${betweenTimeHour}시간전`;
+      return `${betweenTimeHour}시간전`;
    }
 
    const betweenTimeDay = Math.floor(betweenTime / 60 / 24);
    if (betweenTimeDay < 365) {
-       return `${betweenTimeDay}일전`;
+      return `${betweenTimeDay}일전`;
    }
 
    return `${Math.floor(betweenTimeDay / 365)}년전`;
@@ -161,12 +161,12 @@ export const timeForToday = (date: string) => {
 */
 export const statusCode = (statusCode: number, matched: number[] | string[]) => {
    const code = (statusCode).toString();
-   if(matched instanceof Array) {
-       for(let i = 0; i < matched.length; i++) {
-           if(code[0] === matched[i]) return true;
-       }
+   if (matched instanceof Array) {
+      for (let i = 0; i < matched.length; i++) {
+         if (code[0] === matched[i]) return true;
+      }
    }
-   if(typeof matched === 'number') { return Number(code[0]) === matched ? true : false; }
+   if (typeof matched === 'number') { return Number(code[0]) === matched ? true : false; }
    return false;
 }
 
@@ -177,9 +177,9 @@ export const statusCode = (statusCode: number, matched: number[] | string[]) => 
 * @returns {Boolean} - 정규식 체크 후 불리언값 리턴
 */
 export const passwordChecked = (password: string) => {
-  if(typeof password !== 'string') return console.error('문자열 아님')
-  const regexp = /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+])(?!.*[^a-zA-z0-9$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/g;
-  return password.match(regexp) ? true : false;
+   if (typeof password !== 'string') return console.error('문자열 아님')
+   const regexp = /^(?=.*[a-zA-z])(?=.*[0-9])(?=.*[$`~!@$!%*#^?&\\(\\)\-_=+])(?!.*[^a-zA-z0-9$`~!@$!%*#^?&\\(\\)\-_=+]).{8,16}$/g;
+   return password.match(regexp) ? true : false;
 }
 
 
@@ -189,10 +189,10 @@ export const passwordChecked = (password: string) => {
 * @returns {Boolean} - 정규식 체크 후 불리언값 리턴
 */
 export const englishChecked = (str: string) => {
-   if(typeof str !== 'string') return console.error('문자열 아님')
-//    const regexp = /[^a-zA-Z]/;   
-  const regexp = /^[a-zA-Z0-9]*$/;   
-  return str.match(regexp) ? false : true;
+   if (typeof str !== 'string') return console.error('문자열 아님')
+   //    const regexp = /[^a-zA-Z]/;   
+   const regexp = /^[a-zA-Z0-9]*$/;
+   return str.match(regexp) ? false : true;
 }
 
 /**
@@ -201,7 +201,7 @@ export const englishChecked = (str: string) => {
 * @returns {Boolean} - 체크 후 불리언값 리턴
 */
 export const onlyNumChecked = (str: string) => {
-   if(!str) return console.error('인자없음');
+   if (!str) return console.error('인자없음');
    const regexp = /^[0-9]+$/;
    return str.match(regexp) ? true : false;
 }
@@ -214,8 +214,8 @@ export const onlyNumChecked = (str: string) => {
 * @returns {Boolean} - 체크 후 불리언값 리턴
 */
 export const stringLengthChecked = (arg: string, len: number) => {
-   if(!arg && typeof arg !== 'string') return console.error('타입 확인')
-   if(!arg && typeof arg !== 'number') return console.error('타입 확인')
+   if (!arg && typeof arg !== 'string') return console.error('타입 확인')
+   if (!arg && typeof arg !== 'number') return console.error('타입 확인')
    return arg.length === len ? true : false;
 }
 
@@ -229,11 +229,11 @@ export const stringLengthChecked = (arg: string, len: number) => {
 */
 export const setWithExpire = (keyName: string, keyValue: string, exp: string) => {
    const obj = {
-       value : keyValue,
-       expire : Date.now() + exp
-     }
-     const objString = JSON.stringify(obj);
-     localStorage.setItem(keyName, objString);
+      value: keyValue,
+      expire: Date.now() + exp
+   }
+   const objString = JSON.stringify(obj);
+   localStorage.setItem(keyName, objString);
 }
 
 
@@ -245,14 +245,14 @@ export const setWithExpire = (keyName: string, keyValue: string, exp: string) =>
 * @returns {void}
 */
 export const getWithExpire = (keyName: string) => {
- const objString = localStorage.getItem(keyName);
- if(!objString) return null;
- const obj = JSON.parse(objString);
- if(Date.now() > obj.expire) {
-   localStorage.removeItem(keyName);
-   return null;
- }
- return obj.value;
+   const objString = localStorage.getItem(keyName);
+   if (!objString) return null;
+   const obj = JSON.parse(objString);
+   if (Date.now() > obj.expire) {
+      localStorage.removeItem(keyName);
+      return null;
+   }
+   return obj.value;
 }
 
 
@@ -262,14 +262,45 @@ export const getWithExpire = (keyName: string) => {
 * @param {string} string - 계산할 문자열
 * @returns {number}
 */
-export const getByteLengthOfString = function(str: string, b: number, i: number, c: number) {
-   for(b = i = 0; c = str.charCodeAt(i++); b += c >> 11 ? 3 : c >> 7 ? 2 : 1);
+export const getByteLengthOfString = function (str: string, b: number, i: number, c: number) {
+   for (b = i = 0; c = str.charCodeAt(i++); b += c >> 11 ? 3 : c >> 7 ? 2 : 1);
    return b;
 };
 
 
 
 
+
+
+// gpt가 짜준건데 좀 이상함... timeForToday 내가 짠거 씀./ 코드 어디가잘못된지 나중에 보기 
+export const getRelativeTime = (dateString: string): string => {
+   const date = new Date(dateString);
+   const now = new Date();
+   const diff = (now.getTime() - date.getTime()) / 1000; // 초 차이
+
+   if (isNaN(diff)) return "방금 전";
+
+   const units: [number, string][] = [
+      [60, "초"],           // 60초 → 1분
+      [60, "분"],           // 60분 → 1시간
+      [24, "시간"],         // 24시간 → 1일
+      [7, "일"],            // 7일 → 1주
+      [4.345, "주"],        // 약 4.345주 → 1달
+      [12, "개월"],         // 12달 → 1년
+   ];
+
+   let value = diff;
+   let unit = "초";
+
+   for (let i = 0; i < units.length; i++) {
+      if (value < units[i][0]) break;
+      value /= units[i][0];
+      unit = units[i][1];
+   }
+
+   const rounded = Math.floor(value);
+   return rounded <= 0 ? "방금 전" : `${rounded}${unit} 전`;
+};
 
 
 

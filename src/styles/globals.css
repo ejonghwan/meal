@@ -73,6 +73,10 @@
       @apply appearance-none;
    }
 
+   div,
+   p {
+      word-break: break-all;
+   }
 
    em {
       @apply not-italic;

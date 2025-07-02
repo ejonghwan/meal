@@ -80,7 +80,7 @@ const RestaurantItem = ({ restaurant }) => {
                 {/* 좋아요 싫어요 구현 */}
                 <Like />
             </div>
-            {restaurant.user.uid === userInfo.uid && (
+            {restaurant?.user?.uid === userInfo?.uid && (
                 <div>
                     {isEdit ? (
                         <>

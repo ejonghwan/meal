@@ -29,7 +29,7 @@ import '@/src/styles/common/range.css'
 
 const RestaurantCreateForm = () => {
 
-   const { mutate: createRestaurantMutation, isError: createRestaurantError, isSuccess: createRestaurantSuccess } = useCreateRestaurant()
+   const { mutate: createRestaurantMutation, isError: createRestaurantError, isSuccess: createRestaurantSuccess, isPending: createRestaurantPending } = useCreateRestaurant()
    const { userInfo } = useUserStore()
    const token = useRef(null);
    if (typeof window !== 'undefined') {
@@ -38,6 +38,7 @@ const RestaurantCreateForm = () => {
    }
    const [searchValue, setSearchValue] = useState('')
    const [keyword, setKeyword] = useState('')
+   const [isWrite, setIsWrite] = useState(false)
    // const [mapInfo, setMapInfo] = useState({ name: '', adress: '', category: '', categoryName: '', url: '', phone: '', y: '', x: '' })
    const [restaurant, setRestaurant] = useState<RestaurantData>({
       userId: "",
@@ -50,6 +51,7 @@ const RestaurantCreateForm = () => {
       token: token.current,
       mapInfo: { name: '', adress: '', category: '', categoryName: '', url: '', phone: '', y: '', x: '' }
    });
+
 
 
    const handleCreateRestaurant = (e: React.FormEvent<HTMLFormElement>) => {
@@ -93,6 +95,11 @@ const RestaurantCreateForm = () => {
    }
 
 
+   useEffect(() => {
+      restaurant.title && restaurant.content && restaurant.category ? setIsWrite(true) : setIsWrite(false)
+      console.log('restaurant?', restaurant)
+   }, [restaurant])
+
    return (
       <>
          <div className='flex flex-col gap-2 mt-[20px]'>
@@ -102,7 +109,7 @@ const RestaurantCreateForm = () => {
                <strong className='block mb-[10px] text-[18px]'>가게명 검색</strong>
                <div className='flex gap-[10px]'>
 
-                  <Search className='w-full' onChange={handleSearchInputChange} value={searchValue} />
+                  <Search className='w-full' onChange={handleSearchInputChange} value={searchValue} setSearchValue={setSearchValue} />
                   {/* key 멈추면 submit 으로 변경*/}
                   {/* <Button className='w-[150px] h-auto' type='submit' color="primary" >검색</Button> */}
                </div>
@@ -177,23 +184,6 @@ const RestaurantCreateForm = () => {
                </article>
 
                <article className='mt-[40px]'>
-                  <strong className='block mb-[10px] text-[18px]'>리뷰</strong>
-                  <Textarea
-                     label="리뷰"
-                     isRequired
-                     className="w-full input_textarea"
-                     defaultValue=""
-                     type="text"
-                     name='content'
-                     placeholder="소감을 200자 이내로 입력해주세요"
-                     value={restaurant.content}
-                     onChange={handleChangeRestaurantInfo}
-                     autoComplete='on'
-                     maxLength={10}
-                  />
-               </article>
-
-               <article className='mt-[40px]'>
                   {/* 카테고리는 한종류로 해야되고, 먹은 메뉴는 또 다른 카테고리로 해야겠네 ;; */}
                   <strong className='block mb-[10px] text-[18px]'>카테고리</strong>
                   <div className="flex flex-col gap-1 w-full">
@@ -202,9 +192,8 @@ const RestaurantCreateForm = () => {
                </article>
 
 
-
                <article className='fixed bottom-0 left-0 w-full p-[20px] z-[30] backdrop-blur-sm'>
-                  <Button className='w-full' type='submit' color="primary">글 생성</Button>
+                  <Button className='w-full' type='submit' variant='shadow' color={isWrite ? 'primary' : 'default'} isLoading={createRestaurantPending} isDisabled={!isWrite}>글 생성</Button>
                </article>
 
 

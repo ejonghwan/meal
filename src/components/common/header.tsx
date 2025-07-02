@@ -29,7 +29,7 @@ const Header = () => {
    const { theme, setTheme } = useTheme()
 
    const handleClick = () => {
-      console.log(drawerIsOpen)
+      // console.log(drawerIsOpen)
       setDrawerIsOpen(true)
    }
 
@@ -68,13 +68,13 @@ const Header = () => {
                   {!userInfo && isAccToken === null && <Skeleton className='flex rounded-full size-[40px]' />}
                   {/* {isAccToken === null && <Skeleton className='flex rounded-full size-[40px]' />} */}
 
-                  {/* user first name */}
+                  {/* header */}
                   {isAccToken === true && (
-                     <UserFirstName
-                        firstString={userInfo?.providerData[0]?.displayName.slice(0, 1).toLocaleUpperCase()}
+                     <button type="button"
                         className={'rounded-[50%] bg-gray-700 text-white size-[40px] p-[5px]'}
-                        onClick={handleClick}
-                     />
+                        onClick={handleClick}>
+                        {userInfo?.providerData[0]?.displayName.slice(0, 1).toLocaleUpperCase()}
+                     </button>
                   )}
 
                   {isAccToken === false && (

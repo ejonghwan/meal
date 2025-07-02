@@ -3,7 +3,7 @@ import { ComponentProps, ReactNode } from 'react'
 import { cn } from '@/src/utillity/cn'
 import Link, { LinkProps } from 'next/link'
 
-// 홍열 2024.07.08 버튼컴포넌트 커스텀
+
 const buttonAreaVariants = cva('flex', {
    variants: {
       grid: {

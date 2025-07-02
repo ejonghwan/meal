@@ -59,7 +59,7 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string }
             content: data.content,
             category: data.category,
             rating: data.rating,
-            totalRating: data.rating,
+            totalRating: data.totalRating,
             userId: data.userId,
             isEdit: data.isEdit,
             mapInfo: data.mapInfo,

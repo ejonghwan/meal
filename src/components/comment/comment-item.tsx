@@ -6,6 +6,7 @@ import { Button } from '@heroui/button';
 import RecommentCreate from '@/src/components/recomment/recomment-create'
 import { PiStarFill, PiDotsThreeOutlineVerticalDuotone, PiGithubLogoDuotone, PiHeartDuotone, PiHeartBreakDuotone } from 'react-icons/pi';
 import UserFirstName from '@/src/components/common/user-firstName';
+import { useUserStore } from '@/src/store/front/user';
 import {
    useDisclosure, Modal,
    ModalContent,
@@ -49,6 +50,7 @@ const CommentItem = ({ comment }) => {
    const { isOpen, onOpen, onOpenChange } = useDisclosure();
    const targetRef = React.useRef(null);
    const { moveProps } = useDraggable({ targetRef, isDisabled: !isOpen });
+   const { userInfo } = useUserStore()
 
    return (
       <>
@@ -65,22 +67,22 @@ const CommentItem = ({ comment }) => {
 
                   {/* 아이디 + 댓글 */}
                   <div className='flex items-center gap-[5px]'>
-                     <button type='button' className='text-[12px]' onClick={() => { }}>
+                     <span className='text-[12px]'>
                         @{comment.user.displayName}
-                     </button>
+                     </span>
                      <span className='text-[12px] text-[#999]'>2개월전</span>
                   </div>
                   <div className='mt-[0px]'>{comment.content}</div>
 
                   {/* 평점 + 좋아요 */}
                   <div className="flex items-center mt-[5px]">
-                     <PiStarFill className="size-[18px] text-[#ebdf32] mr-[2px]" />
+                     <PiStarFill className="size-[14px] text-[#ebdf32] mr-[4px]" />
                      <span className="text-[14px] text-[#999] flex items-center gap-[1px]">
                         <span className="text-[#ebdf32] font-bold">{comment.rating}</span>
                         <span>/</span>5
                      </span>
 
-                     <div className='flex items-center ml-[10px] gap-[3px]'>
+                     <div className='flex items-center ml-[15px] gap-[4px]'>
                         <button type="button">
                            <PiHeartDuotone className='size-[18px]' />
                         </button>
@@ -101,12 +103,14 @@ const CommentItem = ({ comment }) => {
 
 
                {/* 자기 댓글이면 */}
-               <div className='ml-auto'>
-                  <button type='button' className='p-[3px]' onClick={onOpen}>
-                     <PiDotsThreeOutlineVerticalDuotone className='size-[20px]' />
-                     {/* <PiGithubLogoDuotone className='size-[20px]' /> */}
-                  </button>
-               </div>
+               {comment?.user?.uid === userInfo?.uid && (
+                  <div className='ml-auto'>
+                     <button type='button' className='p-[3px]' onClick={onOpen}>
+                        <PiDotsThreeOutlineVerticalDuotone className='size-[20px]' />
+                        {/* <PiGithubLogoDuotone className='size-[20px]' /> */}
+                     </button>
+                  </div>
+               )}
             </div>
 
 
@@ -135,12 +139,10 @@ const CommentItem = ({ comment }) => {
                {(onClose) => (
                   <>
                      <ModalHeader {...moveProps} className="flex flex-col gap-1">
-                        삭제삭제수정수정
+                        삭제 / 수정
                      </ModalHeader>
                      <ModalBody>
-                        <p>
-                           삭제삭제수정수정
-                        </p>
+                        <p>한번 수정 및 삭제 시 복구할 수 없습니다<br />그래도 변경하시겠습니까?</p>
                      </ModalBody>
                      <ModalFooter>
                         <Button color="danger" variant="light" onPress={onClose}>

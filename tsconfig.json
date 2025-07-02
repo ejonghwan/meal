@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "target": "es5",
+    "downlevelIteration": true, // ✅ ES5일 경우에도 Set spread 허용
     "lib": [
       "dom",
       "dom.iterable",

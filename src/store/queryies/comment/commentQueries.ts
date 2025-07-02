@@ -69,6 +69,7 @@ export const useEditCommentId = () => {
 export const useDeleteCommentId = () => {
    const queryClient = useQueryClient();
    return useMutation({
+      // payload로 온 데이터가 variables에 들어가는듯
       mutationFn: (payload: DeleteCommentData) => {
          return onDeleteCommentAPI(payload)
       },

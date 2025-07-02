@@ -18,7 +18,7 @@ const CommentCreate = ({ userId, restaurantId }: Props) => {
    const [commentData, setCommentData] = useState({
       userId: userId,
       restaurantId: restaurantId,
-      parentCommentId: 'asd',
+      parentCommentId: null,
       content: '',
       rating: 3,
    })

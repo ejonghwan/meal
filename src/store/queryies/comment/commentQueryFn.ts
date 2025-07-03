@@ -8,11 +8,14 @@ import { CommentData, EditCommentData, DeleteCommentData } from '@/src/types/dat
 
 
 // 댓글 리스트 로드
-export const onLoadCommentListAPI = async (restaurantId, page) => {
+export const onLoadCommentListAPI = async (restaurantId, page, userId) => {
     try {
         const options: ExtendsRequestInit = {
             method: "GET",
-            headers: { 'Content-Type': 'application/json', },
+            headers: {
+                'Content-Type': 'application/json',
+                "x-user-uid": userId || null
+            },
             credentials: 'include', // 쿠키를 포함하려면 'include'로 설정
             next: { tags: ['comment', 'listAll'] },
             cache: "no-store",

@@ -16,6 +16,11 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string; 
    const cursor = url.searchParams.get('cursor');  // cursor는 ISO 문자열 형태의 날짜 (created_at)
    const limit = Number(page) //client에서 page로 보냄
 
+   // user
+   const uid = req.headers.get("x-user-uid");
+   if (!uid) return NextResponse.json({ message: "유저 인증 정보가 없습니다." }, { status: 401 });
+
+
 
    let queryRef = adminDB.collection("comments")
       .where("restaurantId", "==", restaurantId)
@@ -39,8 +44,10 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string; 
       }, { status: 200 });
    }
 
+
    const fetchedRestaurant = await Promise.all(snapshot.docs.map(async doc => {
       const data = doc.data();
+
 
       let user = null;
       try {
@@ -65,6 +72,7 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string; 
          isEdit: data.isEdit,
          like: data.like,
          unlike: data.unlike,
+         hasMyComment: data.userId === uid,
          created_at: data.created_at?.toDate() ?? null,
          updated_at: data.updated_at?.toDate() ?? null,
       };

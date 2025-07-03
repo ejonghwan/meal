@@ -24,6 +24,8 @@ const RestaurantItem = ({ restaurant }) => {
     const { userInfo } = useUserStore()
     const [editRestaurant, setEditRestaurant] = useState(restaurant)
     const [isEdit, setIsEdit] = useState(false)
+    const [hasMyComment, setHasMyComment] = useState(false)
+
 
 
     // 수정 컴포넌트 정리 다시 해야될듯
@@ -131,10 +133,11 @@ const RestaurantItem = ({ restaurant }) => {
             )}
 
             {/* create comment */}
-            <CommentCreate restaurantId={restaurant.id} userId={restaurant.user.uid} />
+            {/* ui는 나오게 하고 비로그인 시 로그인 페이지로 넘기는게 나을듯 */}
+            {userInfo?.uid && !hasMyComment && <CommentCreate restaurantId={restaurant.id} userId={restaurant.user.uid} />}
 
             {/* comment */}
-            <CommentWrap restaurantId={restaurant.id} />
+            <CommentWrap restaurantId={restaurant.id} setHasMyComment={setHasMyComment} />
 
 
 

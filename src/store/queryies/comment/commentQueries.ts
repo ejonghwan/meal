@@ -7,10 +7,10 @@ import { CommentData, DeleteCommentData, EditCommentData } from '@/src/types/dat
 
 
 // 모든 댓글 로드
-export const useLoadCommentList = (restaurant: string, page: number) => {
+export const useLoadCommentList = (restaurant: string, page: number, userId: string) => {
    return useQuery({
       queryKey: commentKeys.listAll(restaurant, page),
-      queryFn: () => onLoadCommentListAPI(restaurant, page),
+      queryFn: () => onLoadCommentListAPI(restaurant, page, userId),
       staleTime: 60 * 1000,
       // staleTime: 3600,
       gcTime: 4000,

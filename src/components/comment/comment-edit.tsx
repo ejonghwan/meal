@@ -18,6 +18,7 @@ import {
    useDraggable
 } from '@heroui/modal';
 import SelectWrap from '../common/input/select';
+import { ratingSelectOPT } from '@/src/components/comment/comment-data'
 
 
 /*
@@ -29,42 +30,41 @@ import SelectWrap from '../common/input/select';
 */
 
 
-const CommentEdit = ({ comment }) => {
+const CommentEdit = ({ comment, isEditComment, setIsEditComment }) => {
 
 
    const { mutate: editCommentMutate, isError: editCommentError, isSuccess: editCommentSuccess, isPending: editCommentPending } = useEditCommentId()
-   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-   const targetRef = useRef(null);
-   const { moveProps } = useDraggable({ targetRef, isDisabled: !isOpen });
+
    const { userInfo } = useUserStore()
-   const [ratingValue, setRatingValue] = useState(new Set([]));
+   const [ratingValue, setRatingValue] = useState(new Set([comment.rating]));
 
 
-   const [isEditComment, setIsEditComment] = useState(false)
    const [isRecomment, setIsRecomment] = useState(false)
-   const [editCommentData, EditCommentData] = useState({ 
-      ...comment
-      })
+   const [editCommentData, EditCommentData] = useState({
+      ...comment,
+      commentId: comment.id,
+      restaurantId: comment.restaurantId
+   })
 
 
-   const handleEditCommentView = () => {
-      setIsEditComment(true)
-   }
-   const handleRecommentView = () => {
-      setIsRecomment(true)
-   }
-
-   const handleEditComment = (e) => {
+   const handleChangeComment = (e) => {
       EditCommentData(prev => ({
          ...prev,
          content: e.target.value,
       }))
    }
 
+   // 수정
    const handleEditCommentSubmit = (e) => {
       e.preventDefault();
       editCommentMutate(editCommentData)
    }
+
+   // 대댓
+   const handleRecommentView = () => {
+      setIsRecomment(true)
+   }
+
 
    useEffect(() => {
       EditCommentData(prev => ({
@@ -73,16 +73,15 @@ const CommentEdit = ({ comment }) => {
       }))
    }, [ratingValue])
 
-   useEffect(() => { console.log('payload data?' ,editCommentData) }, [editCommentData])
+   useEffect(() => {
+      if (editCommentSuccess) setIsEditComment(false)
+   }, [editCommentSuccess])
 
 
-   const rating = [
-      { key: "5", label: "5" },
-      { key: "4", label: "4" },
-      { key: "3", label: "3" },
-      { key: "2", label: "2" },
-      { key: "1", label: "1" },
-   ];
+
+
+   // useEffect(() => { console.log('payload data?', editCommentData) }, [editCommentData])
+
 
 
    return (
@@ -90,57 +89,31 @@ const CommentEdit = ({ comment }) => {
          <form onSubmit={handleEditCommentSubmit}>
             <div className='mt-[10px] mb-[5px]'>
                {/* 수정하기 */}
-               <div className='flex items-center justify-between mb-[5px]'>
-                  
-                  <Input label="댓글 수정" type="text" variant={'flat'} className='mb-[5px]' fullWidth value={editCommentData.content} onChange={handleEditComment}/>
+               <div className='flex flex-wrap items-center justify-between mb-[5px]'>
                   <SelectWrap
-                     defaultSelectedKeys={'3'}
-                     className={'w-[75px] flex-auto flex-shrink-0 flex-grow-0'}
+                     defaultSelectedKeys={String(editCommentData.rating)}
+                     className={'w-[75px] flex-auto flex-shrink-0 flex-grow-0 mb-[5px]'}
                      ico={<PiStarFill className='text-[#ebdf32] size-[36px]' />}
-                     selectItem={rating}
+                     selectItem={ratingSelectOPT}
                      setSelectValue={setRatingValue}
                   />
+                  <Input label="댓글 수정" type="text" variant={'flat'} className='mb-[5px]' fullWidth value={editCommentData.content} onChange={handleChangeComment} />
+
                </div>
                <div className='flex justify-end gap-[5px]'>
-                  <Button type="button" variant='light'>취소</Button>
+                  <Button type="button" variant='light' onPress={() => setIsEditComment(false)}>취소</Button>
                   <Button
                      type="submit"
                      variant='shadow'
-                  // color={commentData.content ? 'primary' : 'default'}
-                  // disabled={!commentData.content}
-                  // isLoading={createCommentPending}
+                     color={editCommentData.content !== comment.content || editCommentData.rating !== comment.rating ? 'primary' : 'default'}
+                     disabled={editCommentData === comment || editCommentData.rating === comment.rating}
+                     isLoading={editCommentPending}
                   >
                      수정
                   </Button>
                </div>
             </div>
          </form>
-                  
-         <Modal ref={targetRef} isOpen={isOpen} onOpenChange={onOpenChange}>
-            <ModalContent>
-               {(onClose) => (
-                  <>
-                     <ModalHeader {...moveProps} className="flex flex-col gap-1">
-                        삭제 / 수정
-                     </ModalHeader>
-                     <ModalBody>
-                        <p>한번 수정 및 삭제 시 복구할 수 없습니다<br />그래도 변경하시겠습니까?</p>
-                     </ModalBody>
-                     <ModalFooter>
-                        <Button color="danger" variant="light" onPress={onClose}>
-                           삭제
-                        </Button>
-                        <Button color="primary" onPress={handleEditCommentView}>
-                           수정
-                        </Button>
-                     </ModalFooter>
-                  </>
-               )}
-            </ModalContent>
-         </Modal>
-
-
-
 
       </>
 

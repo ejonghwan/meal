@@ -92,16 +92,17 @@ export const onCreateCommentAPI = async (payload: CommentData) => {
 // 댓글 수정
 export const onEditCommentAPI = async (payload: EditCommentData) => {
     try {
-        const { userId, commentId, content, rating, isEdit, token } = payload;
+        const savedToken = localStorage.getItem('x-acc-token');
+        const { commentId, content, rating, isEdit, restaurantId } = payload;
 
         const options: ExtendsRequestInit = {
             method: "PUT",
             headers: {
                 'Content-Type': 'application/json',
-                "x-acc-token": `Bearer ${token}`,
+                "x-acc-token": `Bearer ${savedToken}`,
                 // "Authorization": `Bearer ${token}`,
             },
-            body: JSON.stringify({ content, rating, isEdit }),
+            body: JSON.stringify({ content, rating, isEdit, restaurantId }),
             next: { tags: ['comment', 'edit'] },
             cache: "no-store",
             credentials: 'include'

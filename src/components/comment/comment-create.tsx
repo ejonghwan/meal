@@ -8,16 +8,17 @@ import { useCreatecomment } from '@/src/store/queryies/comment/commentQueries';
 import { useUserStore } from '@/src/store/front/user';
 import SelectWrap from '@/src/components/common/input/select';
 import { PiStarFill } from 'react-icons/pi';
-
+import { ratingSelectOPT } from '@/src/components/comment/comment-data'
 
 interface Props {
    userId: string
    restaurantId: string
 }
 
+
+// 평점 댓글은 한번만 달 수 있게
+
 const CommentCreate = ({ userId, restaurantId }: Props) => {
-
-
 
 
    const { mutate: createCommentMutate, isError: createCommentError, isSuccess: createCommentSuccess, isPending: createCommentPending } = useCreatecomment()
@@ -40,6 +41,8 @@ const CommentCreate = ({ userId, restaurantId }: Props) => {
 
    const handleCommentClose = () => {
       if (!createCommentPending) {
+
+         console.log('실행되나?')
          setIsCommentBtn(false)
          setCommentData(prev => ({
             ...prev,
@@ -71,20 +74,11 @@ const CommentCreate = ({ userId, restaurantId }: Props) => {
 
 
    useEffect(() => {
-      handleCommentClose()
+      if (createCommentSuccess) handleCommentClose();
    }, [createCommentSuccess])
 
 
-   const rating = [
-      { key: "5", label: "5" },
-      { key: "4", label: "4" },
-      { key: "3", label: "3" },
-      { key: "2", label: "2" },
-      { key: "1", label: "1" },
-   ];
-
-
-   useEffect(() => { console.log(commentData) }, [commentData])
+   // useEffect(() => { console.log(commentData) }, [commentData])
 
 
    return (
@@ -93,11 +87,13 @@ const CommentCreate = ({ userId, restaurantId }: Props) => {
             <div className='flex gap-[10px]'>
                <Input label="댓글" type="text" variant={'underlined'} ref={commentRef} onFocus={handleCommentHover} onChange={handleWriteComment} value={commentData.content} />
                <SelectWrap
-                  defaultSelectedKeys={'3'}
+                  defaultSelectedKeys={String(commentData.rating)}
                   className={'w-[75px] flex-auto flex-shrink-0 flex-grow-0'}
                   ico={<PiStarFill className='text-[#ebdf32] size-[36px]' />}
-                  selectItem={rating}
+                  selectItem={ratingSelectOPT}
                   setSelectValue={setRatingValue}
+                  placeholder='3'
+
                />
             </div>
             {isCommentBtn && (

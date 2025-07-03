@@ -30,11 +30,12 @@ const RestaurantTable = () => {
               key={item.id}
               aria-label={`Accordion ${item.id}`}
               title={item.title}
+              className="px-[14px]"
               startContent={
                 <div className="flex justify-center items-center flex-col">
                   <PiStarFill className="size-[20px] text-[#ebdf32]" />
                   <span className="text-[12px] text-[#999] mt-[5px] flex items-center gap-[1px]">
-                    <span className="text-[#ebdf32] font-bold">{item.totalRating}</span>
+                    <span className="text-[#ebdf32] font-bold">{Number(item.totalRating).toFixed(1)}</span>
                     <span className="text-[12px]">/</span>5
                   </span>
                 </div>

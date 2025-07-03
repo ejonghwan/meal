@@ -46,7 +46,7 @@ export const POST = withAuth(async (req: NextRequest) => {
                 message: "레스토랑 데이터가 없습니다.",
             }, { status: 404 });
         }
-        const currentRating = parseFloat(restaurantData.rating) || 0;
+        const currentRating = parseFloat(restaurantData.totalRating) || 0;
         const newRating = (currentRating + parseFloat(rating)) / 2; // 평균 계산
         await restaurantRef.update({
             totalRating: newRating.toString(),

@@ -71,8 +71,6 @@ const RestaurantItem = ({ restaurant }) => {
     }
 
 
-    console.log('?????????????????', restaurant)
-
 
     return (
         <div className="asd">
@@ -121,11 +119,13 @@ const RestaurantItem = ({ restaurant }) => {
                     <ul>
                         {restaurant.title && <li>{restaurant.title}</li>}
                         {restaurant.content && <li>{restaurant.content}</li>}
+                        {restaurant.rating && <li> 작성자 평점 : {restaurant.rating}</li>}
                         {restaurant.created_at && (<li>{changeViewDate(restaurant.created_at, 'second')}</li>)}
                         {restaurant.updated_at && (<li>{timeForToday(restaurant.updated_at)} 수정됨</li>)}
                         {restaurant.category && <li>{restaurant.category}</li>}
                         {/* {restaurant.rating && <li>{restaurant.rating}</li>} */}
-                        {restaurant.totalRating && <li>{restaurant.totalRating}</li>}
+                        {restaurant.totalRating && <li>총 평점 : {restaurant.totalRating}</li>}
+                        {/* 5.3.toFixed(1).includes('0') ? 5.0.toFixed(1).slice(0, 1) : 5.3.toFixed(1) */}
                     </ul>
                 </>
             )}

@@ -11,7 +11,7 @@ const CommentWrap = ({ restaurantId }: { restaurantId: string }) => {
 
    useEffect(() => {
       if (commentSuccess && commentData?.data) {
-         console.log(commentData);
+         // console.log(commentData);
       }
    }, [commentSuccess, commentData]);
 

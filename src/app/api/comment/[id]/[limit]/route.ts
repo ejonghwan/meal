@@ -57,6 +57,7 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string; 
 
       return {
          id: doc.id,
+         restaurantId: data.restaurantId,
          userId: data.userId,
          user,
          content: data.content,

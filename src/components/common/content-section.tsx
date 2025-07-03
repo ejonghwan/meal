@@ -25,7 +25,7 @@ const SectionVariants = cva('sec__inner', {
       },
       size: {
          // xlarge: '',
-         large: 'pc:max-w-[1000px] pc:m-auto mo:w-auto mo:px-[24px]',
+         large: 'pc:max-w-[1000px] pc:m-auto mo:w-auto mo:px-[18px]',
          medium: '',
          small: 'pc:max-w-[400px]',
          none: 'w-auto'

@@ -1,6 +1,6 @@
 "use client"
 
-import React from 'react'
+import React, { useState, useRef } from 'react'
 import { Input } from '@heroui/input'
 import { Button } from '@heroui/button';
 import RecommentCreate from '@/src/components/recomment/recomment-create'
@@ -8,6 +8,7 @@ import { PiStarFill, PiDotsThreeOutlineVerticalDuotone, PiGithubLogoDuotone, PiH
 import UserFirstName from '@/src/components/common/user-firstName';
 import { useUserStore } from '@/src/store/front/user';
 import { getRelativeTime, timeForToday } from '@/src/utillity/utils';
+import CommentEdit from '@/src/components/comment/comment-edit';
 import {
    useDisclosure, Modal,
    ModalContent,
@@ -49,14 +50,14 @@ import {
 const CommentItem = ({ comment }) => {
 
    const { isOpen, onOpen, onOpenChange } = useDisclosure();
-   const targetRef = React.useRef(null);
+   const targetRef = useRef(null);
    const { moveProps } = useDraggable({ targetRef, isDisabled: !isOpen });
    const { userInfo } = useUserStore()
 
 
-   const [isEditComment, setIsEditComment] = React.useState(false)
-   const [isRecomment, setIsRecomment] = React.useState(false)
-
+   const [isEditComment, setIsEditComment] = useState(false)
+   const [isRecomment, setIsRecomment] = useState(false)
+ 
 
 
    const handleEditCommentView = () => {
@@ -65,7 +66,6 @@ const CommentItem = ({ comment }) => {
    const handleRecommentView = () => {
       setIsRecomment(true)
    }
-
 
 
    return (
@@ -93,22 +93,7 @@ const CommentItem = ({ comment }) => {
 
                   {/* 댓글 */}
                   {isEditComment ? (
-                     <div className='mt-[10px] mb-[5px]'>
-                        {/* 수정하기 */}
-                        <Input label="댓글 수정" type="text" variant={'flat'} className='mb-[5px]' fullWidth value={comment.content} />
-                        <div className='flex justify-end gap-[5px]'>
-                           <Button type="button" variant='light'>취소</Button>
-                           <Button
-                              type="button"
-                              variant='shadow'
-                           // color={commentData.content ? 'primary' : 'default'}
-                           // disabled={!commentData.content}
-                           // isLoading={createCommentPending}
-                           >
-                              수정
-                           </Button>
-                        </div>
-                     </div>
+                     <CommentEdit comment={comment}/>
                   ) : (
                      <>
                         {/* 내용 */}

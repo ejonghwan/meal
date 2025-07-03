@@ -57,7 +57,7 @@ export const useEditCommentId = () => {
          return onEditCommentAPI(payload)
       },
       onSuccess: (data, variables) => {
-         queryClient.invalidateQueries({ queryKey: commentKeys.listAll(variables.restaurantId, 10) });
+         queryClient.invalidateQueries({ queryKey: commentKeys.listAll(variables.commentId, 10) });
          console.log('쿼리쪽 edit data?', data, variables)
       },
    })

@@ -106,7 +106,7 @@ export const onEditCommentAPI = async (payload: EditCommentData) => {
             cache: "no-store",
             credentials: 'include'
         }
-
+        // /api/comment/:commentId
         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/comment/${commentId}`, options)
         const parse = await res.json();
 

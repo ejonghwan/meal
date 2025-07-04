@@ -8,7 +8,7 @@ import { PiStarFill, PiDotsThreeOutlineVerticalDuotone, PiGithubLogoDuotone, PiH
 import UserFirstName from '@/src/components/common/user-firstName';
 import { useUserStore } from '@/src/store/front/user';
 import { getRelativeTime, timeForToday } from '@/src/utillity/utils';
-import { useEditCommentId } from '@/src/store/queryies/comment/commentQueries';
+import { useEditComment } from '@/src/store/queryies/comment/commentQueries';
 import {
    useDisclosure, Modal,
    ModalContent,
@@ -33,7 +33,7 @@ import { ratingSelectOPT } from '@/src/components/comment/comment-data'
 const CommentEdit = ({ comment, isEditComment, setIsEditComment }) => {
 
 
-   const { mutate: editCommentMutate, isError: editCommentError, isSuccess: editCommentSuccess, isPending: editCommentPending } = useEditCommentId()
+   const { mutate: editCommentMutate, isError: editCommentError, isSuccess: editCommentSuccess, isPending: editCommentPending } = useEditComment()
 
    const { userInfo } = useUserStore()
    const [ratingValue, setRatingValue] = useState(new Set([comment.rating]));
@@ -106,7 +106,7 @@ const CommentEdit = ({ comment, isEditComment, setIsEditComment }) => {
                      type="submit"
                      variant='shadow'
                      color={editCommentData.content !== comment.content || editCommentData.rating !== comment.rating ? 'primary' : 'default'}
-                     disabled={editCommentData === comment || editCommentData.rating === comment.rating}
+                     disabled={editCommentData === comment && editCommentData.rating === comment.rating}
                      isLoading={editCommentPending}
                   >
                      수정

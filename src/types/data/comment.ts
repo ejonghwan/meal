@@ -22,6 +22,5 @@ export interface EditCommentData {
 export interface DeleteCommentData {
     userId: string;
     commentId: string;
-    token: string;
     restaurantId: string
 }

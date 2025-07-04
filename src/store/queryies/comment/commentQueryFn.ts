@@ -130,12 +130,14 @@ export const onEditCommentAPI = async (payload: EditCommentData) => {
 // 댓글 삭제
 export const onDeleteCommentAPI = async (payload: DeleteCommentData) => {
     try {
-        const { commentId, token } = payload;
+        console.log('payload?', payload)
+        const savedToken = localStorage.getItem('x-acc-token');
+        const { userId, commentId, restaurantId } = payload;
         const options: ExtendsRequestInit = {
             method: "DELETE",
             headers: {
                 'Content-Type': 'application/json',
-                "x-acc-token": `Bearer ${token}`,
+                "x-acc-token": `Bearer ${savedToken}`,
                 // "Authorization": `Bearer ${token}`,
             },
             next: { tags: ['comment', 'delete'] },

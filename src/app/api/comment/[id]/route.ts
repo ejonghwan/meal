@@ -97,7 +97,7 @@ export const PUT = withAuth(async (req: NextRequest, user, context: { params: { 
 export const DELETE = withAuth(async (req: NextRequest, user, context: { params: { id: string } }) => {
 
     const { params: { id: commentId } } = context;
-
+    console.log('back commentid ??', commentId)
     try {
         // 문서 조회
         const docRef = adminDB.collection("comments").doc(commentId);

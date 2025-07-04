@@ -50,7 +50,7 @@ export const useCreatecomment = () => {
 
 
 // 댓글 수정
-export const useEditCommentId = () => {
+export const useEditComment = () => {
 
    const queryClient = useQueryClient();
    return useMutation({
@@ -84,7 +84,7 @@ export const useEditCommentId = () => {
 
 
 // 댓글 삭제
-export const useDeleteCommentId = () => {
+export const useDeleteComment = () => {
    const queryClient = useQueryClient();
    return useMutation({
       // payload로 온 데이터가 variables에 들어가는듯

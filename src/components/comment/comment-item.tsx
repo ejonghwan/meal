@@ -68,7 +68,7 @@ const CommentItem = ({ comment }) => {
 
    const handleDeleteComment = () => {
       confirm('정말로 삭제하시겠습니까?')
-      deleteCommentMutate({ userId: comment.uid, commentId: comment.id, restaurantId: comment.restaurantId })
+      deleteCommentMutate({ userId: comment.uid, commentId: comment.id, restaurantId: comment.restaurantId, rating: comment.rating })
       // onClose()
 
    }

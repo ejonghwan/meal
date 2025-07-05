@@ -24,7 +24,7 @@ const CommentCreate = ({ userId, restaurantId }: Props) => {
    const { mutate: createCommentMutate, isError: createCommentError, isSuccess: createCommentSuccess, isPending: createCommentPending } = useCreatecomment()
    const { userInfo } = useUserStore()
    const [isCommentBtn, setIsCommentBtn] = useState(false)
-   const [ratingValue, setRatingValue] = useState(new Set([]));
+   const [ratingValue, setRatingValue] = useState(new Set([3]));
    const [commentData, setCommentData] = useState({
       userId: userInfo.uid,
       restaurantId: restaurantId,
@@ -66,6 +66,7 @@ const CommentCreate = ({ userId, restaurantId }: Props) => {
    }
 
    useEffect(() => {
+      console.log('rating change ?')
       setCommentData(prev => ({
          ...prev,
          rating: Number([...ratingValue][0]) //set 객체 이렇게 풀어도됨
@@ -78,7 +79,7 @@ const CommentCreate = ({ userId, restaurantId }: Props) => {
    }, [createCommentSuccess])
 
 
-   // useEffect(() => { console.log(commentData) }, [commentData])
+   useEffect(() => { console.log(commentData) }, [commentData])
 
 
    return (

@@ -15,7 +15,7 @@ export const PUT = withAuth(async (req: NextRequest, user, context: { params: { 
 
     try {
         const body = await req.json(); // 수정할 데이터
-        const { content, rating, isEdit, restaurantId } = body;
+        const { content, rating, isEdit, restaurantId, prevRating } = body;
 
         const docRef = adminDB.collection("comments").doc(commentId);
         const docSnapshot = await docRef.get();
@@ -23,35 +23,26 @@ export const PUT = withAuth(async (req: NextRequest, user, context: { params: { 
 
         // console.log('docRef??', docRef, 'docSnapshot??', docSnapshot)
 
-        if (!docSnapshot.exists) {
-            return NextResponse.json({
-                state: "FAIL",
-                message: "해당 레스토랑 댓글이 존재하지 않습니다.",
-            }, { status: 404 });
+        if (!docSnapshot.exists) return NextResponse.json({ state: "FAIL", message: "해당 레스토랑 댓글이 존재하지 않습니다.", }, { status: 404 });
+
+
+        // 추가. rating 받아서 글에 평점 추가해야함. 검증 완료
+        if (rating !== prevRating) {
+            const restaurantRef = adminDB.collection("restaurant").doc(restaurantId);
+            const restaurantSnapshot = await restaurantRef.get();
+            if (!restaurantSnapshot.exists) return NextResponse.json({ state: "FAILURE", message: "레스토랑이 존재하지 않습니다.", }, { status: 404 });
+
+            const restaurantData = restaurantSnapshot.data();
+            if (!restaurantData) return NextResponse.json({ state: "FAILURE", message: "레스토랑 데이터가 없습니다.", }, { status: 404 });
+
+
+            // 역산 후 재계산 아직 처리전 
+            const currentRating = parseFloat(restaurantData.totalRating) || 0;
+            const newRating = (currentRating + parseFloat(rating)) / 2; // 평균 계산
+            await restaurantRef.update({ totalRating: newRating.toString() });
         }
 
-        // 추가. rating 받아서 글에 평점 추가해야함. 코드 검증해야됨
-        const restaurantRef = adminDB.collection("restaurant").doc(restaurantId);
-        const restaurantSnapshot = await restaurantRef.get();
-        if (!restaurantSnapshot.exists) {
-            return NextResponse.json({
-                state: "FAILURE",
-                message: "레스토랑이 존재하지 않습니다.",
-            }, { status: 404 });
-        }
-        const restaurantData = restaurantSnapshot.data();
-        if (!restaurantData) {
-            return NextResponse.json({
-                state: "FAILURE",
-                message: "레스토랑 데이터가 없습니다.",
-            }, { status: 404 });
-        }
-        const currentRating = parseFloat(restaurantData.totalRating) || 0;
-        const newRating = (currentRating + parseFloat(rating)) / 2; // 평균 계산
-        await restaurantRef.update({
-            totalRating: newRating.toString(),
-            // totalRating: (parseFloat(restaurantData.totalRating) + parseFloat(rating)).toString(), // 총 평점 업데이트
-        });
+
 
 
 
@@ -64,18 +55,12 @@ export const PUT = withAuth(async (req: NextRequest, user, context: { params: { 
             updated_at: new Date(), // 수정 시간
         });
 
-        return NextResponse.json({
-            state: "SUCCESS",
-            message: "글이 성공적으로 수정되었습니다.",
-            // 수정된 데이터 안내려줌 
-        }, { status: 200 });
+        // 수정된 데이터 안내려줌
+        return NextResponse.json({ state: "SUCCESS", message: "글이 성공적으로 수정되었습니다.", }, { status: 200 });
 
     } catch (error) {
         console.error("레스토랑 글 수정 실패:", error);
-        return NextResponse.json({
-            state: "ERROR",
-            message: "서버 에러가 발생했습니다.",
-        }, { status: 500 });
+        return NextResponse.json({ state: "ERROR", message: "서버 에러가 발생했습니다.", }, { status: 500 });
     }
 });
 
@@ -95,34 +80,45 @@ export const PUT = withAuth(async (req: NextRequest, user, context: { params: { 
     @ access  public
 */
 export const DELETE = withAuth(async (req: NextRequest, user, context: { params: { id: string } }) => {
-
-    const { params: { id: commentId } } = context;
-    console.log('back commentid ??', commentId)
     try {
+        const { params: { id: commentId } } = context;
+        // console.log('back commentid ??', commentId)
+
+        const body = await req.json(); // 수정할 데이터
+        const { rating, restaurantId } = body;
+
+        console.log('rating backend ?', rating)
+
         // 문서 조회
         const docRef = adminDB.collection("comments").doc(commentId);
         const docSnap = await docRef.get();
 
-        if (!docSnap.exists) {
-            return NextResponse.json({
-                state: "NOT_FOUND",
-                message: "해당 글이 존재하지 않습니다.",
-            }, { status: 404 });
-        }
-
+        // 댓글 체크 후 삭제
+        if (!docSnap.exists) return NextResponse.json({ state: "NOT_FOUND", message: "해당 글이 존재하지 않습니다." }, { status: 404 });
         await docRef.delete();
 
-        return NextResponse.json({
-            state: "SUCCESS",
-            message: "글이 성공적으로 삭제되었습니다.",
-        }, { status: 200 });
+        // 댓글 검증 후 삭제 완료 후 글에서 평균 빼기
+        // 추가. rating 받아서 글에 평점 추가해야함. 검증 완료
+        const restaurantRef = adminDB.collection("restaurant").doc(restaurantId);
+        const restaurantSnapshot = await restaurantRef.get();
+        if (!restaurantSnapshot.exists) return NextResponse.json({ state: "FAILURE", message: "레스토랑이 존재하지 않습니다.", }, { status: 404 });
+
+        const restaurantData = restaurantSnapshot.data();
+        if (!restaurantData) return NextResponse.json({ state: "FAILURE", message: "레스토랑 데이터가 없습니다.", }, { status: 404 });
+
+        const currentRating = parseFloat(restaurantData.totalRating) || 0;
+        const newRating = 2 * currentRating - parseFloat(rating); // 토탈 평균에서 삭제 글 평균 빼기
+
+        console.log('delete total rating calc??', newRating)
+
+        await restaurantRef.update({ totalRating: newRating.toString() });
+
+
+        return NextResponse.json({ state: "SUCCESS", message: "글이 성공적으로 삭제되었습니다." }, { status: 200 });
 
     } catch (error) {
         console.error("글 삭제 중 오류:", error);
-        return NextResponse.json({
-            state: "ERROR",
-            message: "서버 오류가 발생했습니다.",
-        }, { status: 500 });
+        return NextResponse.json({ state: "ERROR", message: "서버 오류가 발생했습니다." }, { status: 500 });
     }
 });
 

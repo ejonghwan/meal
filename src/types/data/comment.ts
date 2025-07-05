@@ -17,10 +17,12 @@ export interface EditCommentData {
     isEdit?: boolean;
     token: string;
     restaurantId: string;
+    prevRating: string;
 }
 
 export interface DeleteCommentData {
     userId: string;
     commentId: string;
-    restaurantId: string
+    restaurantId: string;
+    rating: string;
 }

@@ -49,7 +49,7 @@ import {
 // 댓글에 평점을 남기면 글 평점과 계산해서 평점 업데이트 해야함.
 
 const CommentItem = ({ comment }) => {
-   
+
    const { mutate: deleteCommentMutate, isError: deleteCommentError, isSuccess: deleteCommentSuccess, isPending: deleteCommentPending } = useDeleteComment()
 
    const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
@@ -68,9 +68,9 @@ const CommentItem = ({ comment }) => {
 
    const handleDeleteComment = () => {
       confirm('정말로 삭제하시겠습니까?')
-      deleteCommentMutate(comment.id)
+      deleteCommentMutate({ userId: comment.uid, commentId: comment.id, restaurantId: comment.restaurantId })
       // onClose()
-      
+
    }
 
    const handleRecommentView = () => {
@@ -83,7 +83,7 @@ const CommentItem = ({ comment }) => {
 
 
    useEffect(() => {
-      if(deleteCommentSuccess) onClose()
+      if (deleteCommentSuccess) onClose()
    }, [deleteCommentSuccess])
 
    return (
@@ -186,9 +186,9 @@ const CommentItem = ({ comment }) => {
                            <p>한번 수정 및 삭제 시 복구할 수 없습니다<br />그래도 변경하시겠습니까?</p>
                         </ModalBody>
                         <ModalFooter>
-                           <Button 
-                              color="danger" 
-                              variant="light"  
+                           <Button
+                              color="danger"
+                              variant="light"
                               onPress={handleDeleteComment}
                               isLoading={deleteCommentPending}
                            >

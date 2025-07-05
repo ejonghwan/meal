@@ -96,7 +96,7 @@ export const onCreateCommentAPI = async (payload: CommentData) => {
 export const onEditCommentAPI = async (payload: EditCommentData) => {
     try {
         const savedToken = localStorage.getItem('x-acc-token');
-        const { commentId, content, rating, isEdit, restaurantId } = payload;
+        const { commentId, content, rating, isEdit, restaurantId, prevRating } = payload;
 
         const options: ExtendsRequestInit = {
             method: "PUT",
@@ -105,7 +105,7 @@ export const onEditCommentAPI = async (payload: EditCommentData) => {
                 "x-acc-token": `Bearer ${savedToken}`,
                 // "Authorization": `Bearer ${token}`,
             },
-            body: JSON.stringify({ content, rating, isEdit, restaurantId }),
+            body: JSON.stringify({ content, rating, isEdit, restaurantId, prevRating }),
             next: { tags: ['comment', 'edit'] },
             cache: "no-store",
             credentials: 'include'
@@ -132,7 +132,7 @@ export const onDeleteCommentAPI = async (payload: DeleteCommentData) => {
     try {
         console.log('payload?', payload)
         const savedToken = localStorage.getItem('x-acc-token');
-        const { userId, commentId, restaurantId } = payload;
+        const { userId, rating, commentId, restaurantId } = payload;
         const options: ExtendsRequestInit = {
             method: "DELETE",
             headers: {
@@ -140,6 +140,7 @@ export const onDeleteCommentAPI = async (payload: DeleteCommentData) => {
                 "x-acc-token": `Bearer ${savedToken}`,
                 // "Authorization": `Bearer ${token}`,
             },
+            body: JSON.stringify({ restaurantId }),
             next: { tags: ['comment', 'delete'] },
             cache: "no-store",
             credentials: 'include'

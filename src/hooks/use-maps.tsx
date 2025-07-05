@@ -8,8 +8,13 @@ declare global {
    }
 }
 
+
+// const loaded = useKakaoMap(() => { });
+
 export const useKakaoMap = (onLoad: () => void) => {
    const [loaded, setLoaded] = useState(false);
+
+
 
    useEffect(() => {
 

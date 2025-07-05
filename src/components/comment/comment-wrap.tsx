@@ -16,10 +16,12 @@ const CommentWrap = ({ restaurantId, setHasMyComment }: { restaurantId: string; 
       commentData?.data?.map(item => {
          // console.log('item?', item.hasMyComment)
          if (item.hasMyComment) {
-            console.log('댓글있음')
+            // console.log('댓글있음')
             setHasMyComment(true)
          }
       })
+
+      // console.log('load setHasMyComment?', setHasMyComment)
    }, [commentSuccess])
 
 
@@ -27,7 +29,7 @@ const CommentWrap = ({ restaurantId, setHasMyComment }: { restaurantId: string; 
    return (
       <div>
          {commentData?.data?.map(item => (
-            <CommentItem key={item.id} comment={item} />
+            <CommentItem key={item.id} comment={item} setHasMyComment={setHasMyComment} />
          ))}
       </div>
    )

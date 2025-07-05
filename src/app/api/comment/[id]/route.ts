@@ -24,7 +24,7 @@ export const PUT = withAuth(async (req: NextRequest, user, context: { params: { 
         // 글 검증
         if (!docSnapshot.exists) return NextResponse.json({ state: "FAIL", message: "해당 레스토랑 댓글이 존재하지 않습니다.", }, { status: 404 });
 
-
+        let newRating = null;
         // 넘어온 rating과 이전 prevRating이 다를 경우 역산 후 재계산하고 db 업데이트
         if (rating !== prevRating) {
             const restaurantRef = adminDB.collection("restaurant").doc(restaurantId);
@@ -38,7 +38,7 @@ export const PUT = withAuth(async (req: NextRequest, user, context: { params: { 
             const currentTotalRating = parseFloat(restaurantData.totalRating) || 0;
             const inversion = 2 * currentTotalRating - prevRating // 역산 a = 2 * 총평점 - 기존 별점
 
-            const newRating = (inversion + parseFloat(rating)) / 2;  // 역산 후 재계산
+            newRating = (inversion + parseFloat(rating)) / 2;  // 역산 후 재계산
             await restaurantRef.update({ totalRating: newRating.toString() });
         }
 
@@ -56,7 +56,7 @@ export const PUT = withAuth(async (req: NextRequest, user, context: { params: { 
         });
 
         // 수정된 데이터 안내려줌
-        return NextResponse.json({ state: "SUCCESS", message: "글이 성공적으로 수정되었습니다.", }, { status: 200 });
+        return NextResponse.json({ state: "SUCCESS", message: "글이 성공적으로 수정되었습니다.", data: { newRating } }, { status: 200 });
 
     } catch (error) {
         console.error("레스토랑 글 수정 실패:", error);
@@ -87,6 +87,7 @@ export const DELETE = withAuth(async (req: NextRequest, user, context: { params:
         const body = await req.json(); // 수정할 데이터
         const { rating, restaurantId } = body;
 
+        if (!rating) throw new Error('back : rating이 없음')
         console.log('rating backend ?', rating)
 
         // 문서 조회
@@ -97,7 +98,7 @@ export const DELETE = withAuth(async (req: NextRequest, user, context: { params:
         if (!docSnap.exists) return NextResponse.json({ state: "NOT_FOUND", message: "해당 글이 존재하지 않습니다." }, { status: 404 });
         await docRef.delete();
 
-        // 댓글 검증 후 삭제 완료 후 글에서 평균 빼기
+        // 삭제 완료 후 글에서 평균 빼기
         // 추가. rating 받아서 글에 평점 추가해야함. 검증 완료
         const restaurantRef = adminDB.collection("restaurant").doc(restaurantId);
         const restaurantSnapshot = await restaurantRef.get();
@@ -114,7 +115,7 @@ export const DELETE = withAuth(async (req: NextRequest, user, context: { params:
         await restaurantRef.update({ totalRating: newRating.toString() });
 
 
-        return NextResponse.json({ state: "SUCCESS", message: "글이 성공적으로 삭제되었습니다." }, { status: 200 });
+        return NextResponse.json({ state: "SUCCESS", message: "글이 성공적으로 삭제되었습니다.", data: { newRating } }, { status: 200 });
 
     } catch (error) {
         console.error("글 삭제 중 오류:", error);

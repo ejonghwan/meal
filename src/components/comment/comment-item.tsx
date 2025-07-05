@@ -48,7 +48,21 @@ import {
 // 대댓글에는 남길 수 없고 댓글에만 별점을 매길 수 있게?  
 // 댓글에 평점을 남기면 글 평점과 계산해서 평점 업데이트 해야함.
 
-const CommentItem = ({ comment }) => {
+
+
+
+// type Props = {
+//    comment: any;
+//    setHasMyComment: (val: boolean) => void;
+// };
+
+interface Props {
+   comment: any;
+   setHasMyComment: (val: boolean) => void;
+}
+
+const CommentItem = ({ comment, setHasMyComment }: Props) => {
+
 
    const { mutate: deleteCommentMutate, isError: deleteCommentError, isSuccess: deleteCommentSuccess, isPending: deleteCommentPending } = useDeleteComment()
 
@@ -83,7 +97,10 @@ const CommentItem = ({ comment }) => {
 
 
    useEffect(() => {
-      if (deleteCommentSuccess) onClose()
+      if (deleteCommentSuccess) {
+         onClose();
+         if (deleteCommentSuccess && typeof setHasMyComment === 'function') setHasMyComment(false)
+      }
    }, [deleteCommentSuccess])
 
    return (

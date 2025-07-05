@@ -13,16 +13,19 @@ import { ratingSelectOPT } from '@/src/components/comment/comment-data'
 interface Props {
    userId: string
    restaurantId: string
+   hasMyComment: any;
+   setHasMyComment: any;
 }
 
 
 // 평점 댓글은 한번만 달 수 있게
 
-const CommentCreate = ({ userId, restaurantId }: Props) => {
+const CommentCreate = ({ userId, restaurantId, hasMyComment, setHasMyComment }: Props) => {
 
 
    const { mutate: createCommentMutate, isError: createCommentError, isSuccess: createCommentSuccess, isPending: createCommentPending } = useCreatecomment()
    const { userInfo } = useUserStore()
+   const [isCommentInput, setIsCommentInput] = useState(false)
    const [isCommentBtn, setIsCommentBtn] = useState(false)
    const [ratingValue, setRatingValue] = useState(new Set([3]));
    const [commentData, setCommentData] = useState({
@@ -42,7 +45,7 @@ const CommentCreate = ({ userId, restaurantId }: Props) => {
    const handleCommentClose = () => {
       if (!createCommentPending) {
 
-         console.log('실행되나?')
+         // console.log('실행되나?')
          setIsCommentBtn(false)
          setCommentData(prev => ({
             ...prev,
@@ -66,7 +69,7 @@ const CommentCreate = ({ userId, restaurantId }: Props) => {
    }
 
    useEffect(() => {
-      console.log('rating change ?')
+      // console.log('rating change ?')
       setCommentData(prev => ({
          ...prev,
          rating: Number([...ratingValue][0]) //set 객체 이렇게 풀어도됨
@@ -75,31 +78,38 @@ const CommentCreate = ({ userId, restaurantId }: Props) => {
 
 
    useEffect(() => {
-      if (createCommentSuccess) handleCommentClose();
+      if (createCommentSuccess) {
+         handleCommentClose();
+         setHasMyComment(true)
+      }
    }, [createCommentSuccess])
 
 
-   useEffect(() => { console.log(commentData) }, [commentData])
+   // useEffect(() => { console.log(commentData) }, [commentData])
 
 
    return (
       <>
          <form onSubmit={handleCreateComment}>
             <div className='flex gap-[10px]'>
-               <Input label="댓글" type="text" variant={'underlined'} ref={commentRef} onFocus={handleCommentHover} onChange={handleWriteComment} value={commentData.content} />
-               <SelectWrap
-                  defaultSelectedKeys={String(commentData.rating)}
-                  className={'w-[75px] flex-auto flex-shrink-0 flex-grow-0'}
-                  ico={<PiStarFill className='text-[#ebdf32] size-[36px]' />}
-                  selectItem={ratingSelectOPT}
-                  setSelectValue={setRatingValue}
-                  placeholder='3'
+               {!hasMyComment && (
+                  <>
+                     <Input label="댓글" type="text" variant={'underlined'} ref={commentRef} onFocus={handleCommentHover} onChange={handleWriteComment} value={commentData.content} />
+                     <SelectWrap
+                        defaultSelectedKeys={String(commentData.rating)}
+                        className={'w-[75px] flex-auto flex-shrink-0 flex-grow-0'}
+                        ico={<PiStarFill className='text-[#ebdf32] size-[36px]' />}
+                        selectItem={ratingSelectOPT}
+                        setSelectValue={setRatingValue}
+                        placeholder='3'
 
-               />
+                     />
+                  </>
+               )}
             </div>
             {isCommentBtn && (
                <div className='flex justify-end gap-[5px] mt-[8px]'>
-                  <Button type="button" variant='light' onClick={handleCommentClose}>취소</Button>
+                  <Button type="button" variant='light' onPress={handleCommentClose}>취소</Button>
                   <Button type='submit'
                      variant='shadow'
                      color={commentData.content ? 'primary' : 'default'}

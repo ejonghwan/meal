@@ -50,7 +50,7 @@ const RestaurantItem = ({ restaurant }) => {
     // 수정 mutation 추가 
     const handleEditComplate = () => {
         const savedToken = localStorage.getItem('x-acc-token');
-        console.log('edit mutate ?', editRestaurant)
+        // console.log('edit mutate ?', editRestaurant)
         setIsEdit(prev => !prev)
         editMutate({
             ...editRestaurant,
@@ -134,7 +134,7 @@ const RestaurantItem = ({ restaurant }) => {
 
             {/* create comment */}
             {/* ui는 나오게 하고 비로그인 시 로그인 페이지로 넘기는게 나을듯 */}
-            {userInfo?.uid && !hasMyComment && <CommentCreate restaurantId={restaurant.id} userId={restaurant.user.uid} />}
+            {userInfo?.uid && !hasMyComment && <CommentCreate restaurantId={restaurant.id} userId={restaurant.user.uid} hasMyComment={hasMyComment} setHasMyComment={setHasMyComment} />}
 
             {/* comment */}
             <CommentWrap restaurantId={restaurant.id} setHasMyComment={setHasMyComment} />

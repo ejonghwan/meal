@@ -13,7 +13,9 @@ export const useRestaurantList = (page: number) => {
       staleTime: 60 * 1000,
       // staleTime: 3600,
       gcTime: 4000,
+
    })
+
 }
 
 

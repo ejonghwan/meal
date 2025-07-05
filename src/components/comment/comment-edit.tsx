@@ -47,9 +47,6 @@ const CommentEdit = ({ comment, isEditComment, setIsEditComment }) => {
       restaurantId: comment.restaurantId
    })
 
-   // 문제가 처음 글 평균인 1, 5점에서 는 정상적으로 추가가 됨 
-   // 근데 위 결과가 3이 나왔고 여기서 수정을 하면 처음 값인 5점이 아닌 지금 평균 3점에서 수정이 된다는게 문제
-   // 해결방법 : 기존 댓글 평점을 총평점에 역산해서 기존으로 만들고 다시 수정된 값으로 업데이트 하기
 
    const handleChangeComment = (e) => {
       EditCommentData(prev => ({

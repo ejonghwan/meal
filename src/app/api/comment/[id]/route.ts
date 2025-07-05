@@ -21,12 +21,11 @@ export const PUT = withAuth(async (req: NextRequest, user, context: { params: { 
         const docSnapshot = await docRef.get();
 
 
-        // console.log('docRef??', docRef, 'docSnapshot??', docSnapshot)
-
+        // 글 검증
         if (!docSnapshot.exists) return NextResponse.json({ state: "FAIL", message: "해당 레스토랑 댓글이 존재하지 않습니다.", }, { status: 404 });
 
 
-        // 추가. rating 받아서 글에 평점 추가해야함. 검증 완료
+        // 넘어온 rating과 이전 prevRating이 다를 경우 역산 후 재계산하고 db 업데이트
         if (rating !== prevRating) {
             const restaurantRef = adminDB.collection("restaurant").doc(restaurantId);
             const restaurantSnapshot = await restaurantRef.get();
@@ -36,9 +35,10 @@ export const PUT = withAuth(async (req: NextRequest, user, context: { params: { 
             if (!restaurantData) return NextResponse.json({ state: "FAILURE", message: "레스토랑 데이터가 없습니다.", }, { status: 404 });
 
 
-            // 역산 후 재계산 아직 처리전 
-            const currentRating = parseFloat(restaurantData.totalRating) || 0;
-            const newRating = (currentRating + parseFloat(rating)) / 2; // 평균 계산
+            const currentTotalRating = parseFloat(restaurantData.totalRating) || 0;
+            const inversion = 2 * currentTotalRating - prevRating // 역산 a = 2 * 총평점 - 기존 별점
+
+            const newRating = (inversion + parseFloat(rating)) / 2;  // 역산 후 재계산
             await restaurantRef.update({ totalRating: newRating.toString() });
         }
 

@@ -140,7 +140,7 @@ export const onDeleteCommentAPI = async (payload: DeleteCommentData) => {
                 "x-acc-token": `Bearer ${savedToken}`,
                 // "Authorization": `Bearer ${token}`,
             },
-            body: JSON.stringify({ restaurantId }),
+            body: JSON.stringify({ restaurantId, rating, userId }),
             next: { tags: ['comment', 'delete'] },
             cache: "no-store",
             credentials: 'include'

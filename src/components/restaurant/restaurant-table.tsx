@@ -8,6 +8,7 @@ import { Accordion, AccordionItem } from "@heroui/accordion";
 import { PiBowlFoodDuotone, PiStarDuotone, PiStarFill, PiCakeDuotone } from "react-icons/pi";
 import Link from "next/link";
 import { Button } from "@heroui/button";
+import { changeViewDate } from "@/src/utillity/utils";
 
 
 const RestaurantTable = ({ restaurantData, restaurantSuccess, restaurantLoading, restaurantError, fetchNextPage, hasNextPage, isFetchingNextPage }) => {
@@ -16,38 +17,54 @@ const RestaurantTable = ({ restaurantData, restaurantSuccess, restaurantLoading,
 
   return (
     <>
+      {/* 로딩중 */}
       {restaurantLoading && (
         <>
           {Array(10).fill('1').map((_, idx) => (
             <Fragment key={idx}>
-              {/* <Skeleton className='h-[22px] w-[50px] mb-[20px]' /> */}
-              <div className="flex flex-wrap items-center bg-[#18181b] h-[76px] rounded-[12px] p-[15px] mb-[5px]">
-                <Skeleton className='w-[30%] h-[10px] rounded-[20px]' />
-                <Skeleton className='w-[80%] h-[10px] rounded-[20px]' />
+              <div className="flex flex-wrap items-center bg-[#18181b] h-[114px] rounded-[12px] p-[20px] mb-[5px]">
+                <Skeleton className='w-[35%] h-[10px] rounded-[20px]' />
+                <Skeleton className='w-[70%] h-[10px] rounded-[20px] mt-[13px]' />
+                <Skeleton className='w-[100%] h-[10px] rounded-[20px] mt-[3px]' />
               </div>
             </Fragment>
           ))}
         </>
       )}
+
+      {/* 에러 메시지 */}
       {restaurantError && <p>에러 발생</p>}
+
+      {/* 데이터 성공일 때 */}
       <Accordion selectionMode="multiple" variant="splitted" className="px-0">
         {restaurantSuccess && Array.isArray(restaurantData) ? restaurantData?.map(item => {
           return (
             <AccordionItem
               key={item.id}
               aria-label={`Accordion ${item.id}`}
-              title={item.title}
-              className="px-[14px]"
-              startContent={
-                <div className="flex justify-center items-center flex-col">
-                  <PiStarFill className="size-[20px] text-[#ebdf32]" />
-                  <span className="text-[12px] text-[#999] mt-[5px] flex items-center gap-[1px]">
-                    <span className="text-[#ebdf32] font-bold">{Number(item.totalRating).toFixed(1)}</span>
-                    <span className="text-[12px]">/</span>5
-                  </span>
+              title={
+                <div className="">
+
+                  <div className="flex items-center">
+                    <div className="flex items-center">
+                      <PiStarFill className="size-[16px] text-[#ebdf32] mr-[5px]" />
+                      <span className="text-[13px] text-[#999] flex items-center gap-[1px]">
+                        <span className="text-[#ebdf32] font-bold">{Number(item.totalRating).toFixed(1)}</span>
+                        <span className="text-[13px]">/</span>5
+                      </span>
+                    </div>
+                    <i className="block size-[3px] bg-[#505050] rounded-[50%] mx-[7px]"></i>
+                    <div className="text-[13px] text-[#999]">
+                      {changeViewDate(item.created_at, 'day').slice(2)}
+                    </div>
+                  </div>
+                  <div className="text-[16px] mt-[10px]">{item.title}</div>
+                  <div className="text-[14px] text-[#999]">{item.content}</div>
                 </div>
               }
-              subtitle={item.content}
+              className="px-[14px]"
+            // startContent={''}
+            // subtitle={}
             >
               <RestaurantItem restaurant={item} />
             </AccordionItem>
@@ -55,6 +72,7 @@ const RestaurantTable = ({ restaurantData, restaurantSuccess, restaurantLoading,
         }) : null}
       </Accordion>
 
+      {/* 데이터 없을 때 */}
       {restaurantSuccess && restaurantData.length === 0 && (
         <div className="no-data mt-[40px]">
           <div className="text-center mb-[40px]">
@@ -70,6 +88,7 @@ const RestaurantTable = ({ restaurantData, restaurantSuccess, restaurantLoading,
         </div>
       )}
 
+      {/* 무한 스크롤 ? 더보기 ? 고민중 */}
       {hasNextPage && (
         <div className="mt-[30px] flex justify-center">
           <Button type="button" variant="shadow" color="default" onPress={() => fetchNextPage()} disabled={isFetchingNextPage}>더 보기</Button>

@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState, useRef, useEffect } from 'react'
+import React, { useState, useRef, useEffect, Fragment } from 'react'
 import { Input } from '@heroui/input'
 import { Button } from '@heroui/button';
 import RecommentCreate from '@/src/components/recomment/recomment-create'
@@ -105,124 +105,114 @@ const CommentItem = ({ comment, setHasMyComment }: Props) => {
 
    return (
       <>
-         <div>
-            {/* 데이터 */}
-            <div className='flex gap-[10px] mt-[25px] relative'>
-               {comment.user && (
-                  <UserFirstName
-                     user={comment.user}
-                     className={'rounded-[50%] bg-gray-700 text-white text-[14px] size-[35px] p-[5px] basis-auto grow-[0] flex-shrink-[0] m-0'}
-                  />
-               )}
-               <div className='w-full text-[14px]'>
+         {/* 데이터 */}
+         <div className='flex gap-[10px] mt-[25px] relative'>
+            {comment.user && (
+               <UserFirstName
+                  user={comment.user}
+                  className={'rounded-[50%] bg-gray-700 text-white text-[14px] size-[35px] p-[5px] basis-auto grow-[0] flex-shrink-[0] m-0'}
+               />
+            )}
+            <div className='w-full text-[14px]'>
 
-                  {/* 아이디 */}
-                  <div className='flex items-center gap-[8px]'>
-                     <span className='text-[12px]'>
-                        @{comment.user.displayName}
-                     </span>
-                     <span className='text-[12px] text-[#999]'>
-                        {timeForToday(comment.created_at)}
-                     </span>
-                  </div>
-
-                  {/* 댓글 */}
-                  {isEditComment ? (
-                     <CommentEdit
-                        comment={comment}
-                        isEditComment={isEditComment}
-                        setIsEditComment={setIsEditComment}
-                     />
-                  ) : (
-                     <>
-                        {/* 내용 */}
-                        <div className='mt-[2px]'>{comment.content}</div>
-
-                        {/* 평점 + 좋아요 */}
-                        <div className="flex items-center mt-[5px]">
-                           <PiStarFill className="size-[14px] text-[#ebdf32] mr-[4px]" />
-                           <span className="text-[14px] text-[#999] flex items-center gap-[1px]">
-                              <span className="text-[#ebdf32] font-bold">{Number(comment.rating).toFixed(1)}</span>
-                              <span>/</span>5
-                           </span>
-
-                           <div className='flex items-center ml-[15px] gap-[4px]'>
-                              <button type="button">
-                                 <PiHeartDuotone className='size-[18px]' />
-                              </button>
-                              <span>33</span>
-                           </div>
-                           {/* <button type="button"><PiHeartBreakDuotone /></button> */}
-
-                           {/* 대댓글 */}
-                           <div>
-                              <Button type="button" variant="light" className='text-[12px] px-[5px] py-[2px] !w-[20px] h-[20px]' onPress={handleRecommentView}>답글</Button>
-                              {isRecomment && <RecommentCreate />}
-                           </div>
-                        </div>
-                     </>
-
-                  )}
-
-
-
-
-
+               {/* 아이디 */}
+               <div className='flex items-center gap-[8px]'>
+                  <span className='text-[12px]'>
+                     @{comment.user.displayName}
+                  </span>
+                  <span className='text-[12px] text-[#999]'>
+                     {timeForToday(comment.created_at)}
+                  </span>
                </div>
 
+               {/* 댓글 */}
+               {isEditComment ? (
+                  <CommentEdit
+                     comment={comment}
+                     isEditComment={isEditComment}
+                     setIsEditComment={setIsEditComment}
+                  />
+               ) : (
+                  <>
+                     {/* 내용 */}
+                     <div className='mt-[2px]'>{comment.content}</div>
 
+                     {/* 평점 + 좋아요 */}
+                     <div className="flex items-center mt-[5px]">
+                        <PiStarFill className="size-[14px] text-[#ebdf32] mr-[4px]" />
+                        <span className="text-[14px] text-[#999] flex items-center gap-[1px]">
+                           <span className="text-[#ebdf32] font-bold">{Number(comment.rating).toFixed(1)}</span>
+                           <span>/</span>5
+                        </span>
 
-               {/* 자기 댓글이면 */}
-               {comment?.user?.uid === userInfo?.uid && (
-                  <div className='absolute right-0 top-0'>
-                     <button type='button' className='' onClick={handleEditPopOpen}>
-                        <PiDotsThreeVerticalBold className='size-[20px]' />
-                        {/* <PiGithubLogoDuotone className='size-[20px]' /> */}
-                     </button>
-                  </div>
+                        <div className='flex items-center ml-[15px] gap-[4px]'>
+                           <button type="button">
+                              <PiHeartDuotone className='size-[18px]' />
+                           </button>
+                           <span>33</span>
+                        </div>
+                        {/* <button type="button"><PiHeartBreakDuotone /></button> */}
+
+                        {/* 대댓글 */}
+                        <div>
+                           <Button type="button" variant="light" className='text-[12px] px-[5px] py-[2px] !w-[20px] h-[20px]' onPress={handleRecommentView}>답글</Button>
+                           {isRecomment && <RecommentCreate />}
+                        </div>
+                     </div>
+                  </>
+
                )}
             </div>
 
 
-            <div>
-               {/* 아코디언 */}
-               {/* <Button type="button">답글 뷰</Button> */}
-            </div>
 
-
-
-
-            <Modal ref={targetRef} isOpen={isOpen} onOpenChange={onOpenChange}>
-               <ModalContent>
-                  {(onClose) => (
-                     <>
-                        <ModalHeader {...moveProps} className="flex flex-col gap-1">
-                           삭제 / 수정
-                        </ModalHeader>
-                        <ModalBody>
-                           <p>한번 수정 및 삭제 시 복구할 수 없습니다<br />그래도 변경하시겠습니까?</p>
-                        </ModalBody>
-                        <ModalFooter>
-                           <Button
-                              color="danger"
-                              variant="light"
-                              onPress={handleDeleteComment}
-                              isLoading={deleteCommentPending}
-                           >
-                              삭제
-                           </Button>
-                           <Button color="primary" onPress={handleEditCommentView}>
-                              수정
-                           </Button>
-                        </ModalFooter>
-                     </>
-                  )}
-               </ModalContent>
-            </Modal>
-
+            {/* 자기 댓글이면 */}
+            {comment?.user?.uid === userInfo?.uid && (
+               <div className='absolute right-0 top-0'>
+                  <button type='button' className='' onClick={handleEditPopOpen}>
+                     <PiDotsThreeVerticalBold className='size-[20px]' />
+                     {/* <PiGithubLogoDuotone className='size-[20px]' /> */}
+                  </button>
+               </div>
+            )}
          </div>
 
 
+         <div>
+            {/* 아코디언 */}
+            {/* <Button type="button">답글 뷰</Button> */}
+         </div>
+
+
+
+
+         <Modal ref={targetRef} isOpen={isOpen} onOpenChange={onOpenChange}>
+            <ModalContent>
+               {(onClose) => (
+                  <>
+                     <ModalHeader {...moveProps} className="flex flex-col gap-1">
+                        삭제 / 수정
+                     </ModalHeader>
+                     <ModalBody>
+                        <p>한번 수정 및 삭제 시 복구할 수 없습니다<br />그래도 변경하시겠습니까?</p>
+                     </ModalBody>
+                     <ModalFooter>
+                        <Button
+                           color="danger"
+                           variant="light"
+                           onPress={handleDeleteComment}
+                           isLoading={deleteCommentPending}
+                        >
+                           삭제
+                        </Button>
+                        <Button color="primary" onPress={handleEditCommentView}>
+                           수정
+                        </Button>
+                     </ModalFooter>
+                  </>
+               )}
+            </ModalContent>
+         </Modal>
       </>
 
    )

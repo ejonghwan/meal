@@ -44,7 +44,7 @@ export const useCreatecomment = () => {
          queryClient.invalidateQueries({ queryKey: commentKeys.listAll(variables.restaurantId, 10) });
          console.log('쿼리쪽 edit data?', data, variables)
 
-         // 글에 달린 총평점도 업데이트 
+         // 글에 달린 총평점도 업데이트  이거 쿼리키 수정해야됨
          queryClient.setQueryData(restaurantKeys.listAll(10), (oldData: any) => {
             return {
                ...oldData,
@@ -86,7 +86,7 @@ export const useEditComment = () => {
             };
          });
 
-         // 글에 달린 총평점도 업데이트 
+         // 글에 달린 총평점도 업데이트 // 이거 쿼리키 수정해야됨
          queryClient.setQueryData(restaurantKeys.listAll(10), (oldData: any) => {
 
             console.log('oldData?', oldData, data)
@@ -124,7 +124,7 @@ export const useDeleteComment = () => {
          queryClient.invalidateQueries({ queryKey: commentKeys.listAll(variables.restaurantId, 10) });
          console.log('쿼리쪽 delete data?', data, variables)
 
-         // 글에 달린 총평점도 업데이트 
+         // 글에 달린 총평점도 업데이트  이거 쿼리키 수정해야됨
          queryClient.setQueryData(restaurantKeys.listAll(10), (oldData: any) => {
             return {
                ...oldData,

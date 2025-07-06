@@ -9,7 +9,33 @@ import { RestaurantData } from '@/src/types/data/restaurant'
 
 // restaurant
 // list load
-export const onLoadRestaurantListAPI = async (page) => {
+export const onLoadRestaurantListAPI = async (page, categoryName) => {
+    try {
+        const options: ExtendsRequestInit = {
+            method: "GET",
+            headers: { 'Content-Type': 'application/json', },
+            credentials: 'include', // 쿠키를 포함하려면 'include'로 설정
+            next: { tags: ['restaurant', 'listAll'] },
+            cache: "no-store",
+        }
+
+        const enCodeCategoryName = encodeURIComponent(categoryName) //encode
+
+        // console.log('page', page)
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/restaurant/${page}/${enCodeCategoryName}`, options)
+
+        if (!res.ok) { throw new Error('Network response was not ok'); }
+        return res.json();
+
+    } catch (e) {
+        console.error('fetch error: ', e)
+    }
+}
+
+
+// restaurant
+// category list load
+export const onLoadRestaurantCategoryListAPI = async (page, categoryName) => {
     try {
         const options: ExtendsRequestInit = {
             method: "GET",
@@ -21,7 +47,7 @@ export const onLoadRestaurantListAPI = async (page) => {
 
 
         console.log('page', page)
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/restaurant/${page}`, options)
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/restaurant/${categoryName}/${page}`, options)
 
         if (!res.ok) { throw new Error('Network response was not ok'); }
         return res.json();
@@ -30,6 +56,8 @@ export const onLoadRestaurantListAPI = async (page) => {
         console.error('fetch error: ', e)
     }
 }
+
+
 
 // detail load
 export const onLoadRestaurantDetailAPI = async (restaurantId: string) => {

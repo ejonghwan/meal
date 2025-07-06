@@ -21,6 +21,11 @@
    --color-gray10: #8B8B8B;
    --scroll-color: rgb(108, 108, 108);
    --scroll-bg-color: rgb(71, 71, 71);
+
+   --color-primary: #D85010;
+   --color-primary2: #D85010;
+   --color-secondary: #8FE519;
+   --color-secondary2: #6DBC00;
 }
 
 .dark {
@@ -37,6 +42,10 @@
    --color-gray10: #8B8B8B;
    --scroll-color: rgb(108, 108, 108);
    --scroll-bg-color: rgb(71, 71, 71);
+   --color-primary: #D85010;
+   --color-primary2: #D85010;
+   --color-secondary: #8FE519;
+   --color-secondary2: #6DBC00;
 }
 
 

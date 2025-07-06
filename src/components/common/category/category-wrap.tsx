@@ -22,7 +22,6 @@ const CategoryWrap = ({ category, setRestaurant }: CategoryWrapProps) => {
    }, [])
 
 
-
    const handleChangeCategory = (e: React.ChangeEvent<HTMLInputElement>) => {
       console.log('카테고리?', e.target.value)
 
@@ -33,8 +32,6 @@ const CategoryWrap = ({ category, setRestaurant }: CategoryWrapProps) => {
       //    category: e.target.value
       // }))
    }
-
-
 
    return (
       <>

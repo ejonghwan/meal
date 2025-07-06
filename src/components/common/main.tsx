@@ -6,7 +6,7 @@ import Section from './content-section'
 const Main = ({ children }) => {
    return (
       <ContentWrap>
-         <Section variant='content' size='large' className=''>
+         <Section variant='content' size='large' className='mt-[20px]'>
             <main>
                {children}
             </main>

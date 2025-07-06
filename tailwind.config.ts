@@ -43,12 +43,16 @@ module.exports = {
       },
       colors: {
         default: 'black', // text black
-        primary: '#FF6200', // primary normal color
-        primary1: '#FFEFE6', // primary light color
-        primary2: '#D85010', // primary heavy color
-        secondary: '#8FE519', // secondary normal color
-        secondary1: '#6DBC00', // secondary light color
-        secondary2: '#D4F8A3', // secondary heavy color
+        // primary: '#FF6200', // primary normal color
+        // primary1: '#FFEFE6', // primary light color
+        // primary2: '#D85010', // primary heavy color
+        // secondary: '#8FE519', // secondary normal color
+        // secondary1: '#6DBC00', // secondary light color
+        // secondary2: '#D4F8A3', // secondary heavy color
+        primary: 'var(--color-primary)', // primary normal color
+        primary2: 'var(--color-primary2)', // primary light color
+        secondary: 'var(--color-secondary)', // secondary normal color
+        secondary2: 'var(--color-secondary2)', // secondary light color
         rating: 'yellow', // secondary heavy color
         semantic: '#FF4343', // accent
         gray1: 'var(--color-gray1)', // gray-900

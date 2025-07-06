@@ -7,7 +7,7 @@ import { RestaurantData } from '@/src/types/data/restaurant'
 import { Slider } from "@heroui/slider";
 import { PiStarFill } from "react-icons/pi";
 import CategoryWrap from '../common/category/category-wrap';
-import { categorys } from '@/src/components/restaurant/restaurant-data'
+import { categorys } from '@/src/components/common/category/category-data'
 import { useCreateRestaurant } from '@/src/store/queryies/restaurant/restaurantQueries';
 import { useUserStore } from '@/src/store/front/user';
 import MapSelect from '@/src/components/maps/map-select';

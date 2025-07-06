@@ -7,9 +7,12 @@ import { Skeleton } from "@heroui/skeleton";
 import { Accordion, AccordionItem } from "@heroui/accordion";
 import { PiBowlFoodDuotone, PiStarDuotone, PiStarFill, PiCakeDuotone } from "react-icons/pi";
 import Link from "next/link";
+import { Button } from "@heroui/button";
 
 
-const RestaurantTable = ({ restaurantData, restaurantSuccess, restaurantLoading, restaurantError }) => {
+const RestaurantTable = ({ restaurantData, restaurantSuccess, restaurantLoading, restaurantError, fetchNextPage, hasNextPage, isFetchingNextPage }) => {
+
+  useEffect(() => { console.log('restaurantData?', restaurantData) }, [])
 
   return (
     <>
@@ -28,7 +31,7 @@ const RestaurantTable = ({ restaurantData, restaurantSuccess, restaurantLoading,
       )}
       {restaurantError && <p>에러 발생</p>}
       <Accordion selectionMode="multiple" variant="splitted" className="px-0">
-        {restaurantSuccess && Array.isArray(restaurantData?.data) ? restaurantData?.data?.map(item => {
+        {restaurantSuccess && Array.isArray(restaurantData) ? restaurantData?.map(item => {
           return (
             <AccordionItem
               key={item.id}
@@ -52,8 +55,8 @@ const RestaurantTable = ({ restaurantData, restaurantSuccess, restaurantLoading,
         }) : null}
       </Accordion>
 
-      {restaurantSuccess && restaurantData.data.length === 0 && (
-        <div className="no-data">
+      {restaurantSuccess && restaurantData.length === 0 && (
+        <div className="no-data mt-[40px]">
           <div className="text-center mb-[40px]">
             <strong className="text-[16px]">등록된 식당이 없습니다</strong>
             <p className="text-[14px] mt-[4px]">또 가고 싶은 식당을 등록해보세요</p>
@@ -64,6 +67,12 @@ const RestaurantTable = ({ restaurantData, restaurantSuccess, restaurantLoading,
             </div>
             <span className="text-[14px] mt-[10px] underline">맛집 등록하러 가기</span>
           </Link>
+        </div>
+      )}
+
+      {hasNextPage && (
+        <div className="mt-[30px] flex justify-center">
+          <Button type="button" variant="shadow" color="default" onPress={() => fetchNextPage()} disabled={isFetchingNextPage}>더 보기</Button>
         </div>
       )}
     </>

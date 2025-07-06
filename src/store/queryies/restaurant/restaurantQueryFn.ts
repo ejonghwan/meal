@@ -5,32 +5,61 @@ import { RestaurantData } from '@/src/types/data/restaurant'
 
 
 
+type RestaurantListResponse = {
+    data: any[]; // 정확한 타입 써줘도 좋음
+    nextCursor: string | null;
+};
 
 
 // restaurant
 // list load
-export const onLoadRestaurantListAPI = async (page, categoryName) => {
-    try {
-        const options: ExtendsRequestInit = {
-            method: "GET",
-            headers: { 'Content-Type': 'application/json', },
-            credentials: 'include', // 쿠키를 포함하려면 'include'로 설정
-            next: { tags: ['restaurant', 'listAll'] },
-            cache: "no-store",
-        }
 
-        const enCodeCategoryName = encodeURIComponent(categoryName) //encode
+export const onLoadRestaurantListAPI = async (page: number, categoryName: string, cursor?: string, cursorId?: string) => {
+    const encodedCategory = encodeURIComponent(categoryName);
+    const url = new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/api/restaurant/${page}/${encodedCategory}`);
+    if (cursor) url.searchParams.set('cursor', cursor);
+    if (cursorId) url.searchParams.set('cursorId', cursorId);
 
-        // console.log('page', page)
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/restaurant/${page}/${enCodeCategoryName}`, options)
+    const res = await fetch(url.toString(), {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+        cache: 'no-store',
+        credentials: 'include',
+    });
 
-        if (!res.ok) { throw new Error('Network response was not ok'); }
-        return res.json();
+    if (!res.ok) throw new Error('Network error');
+    return res.json();
+};
 
-    } catch (e) {
-        console.error('fetch error: ', e)
-    }
-}
+// export const onLoadRestaurantListAPI = async ({ page, categoryName, cursor }: {
+//     page: number;
+//     cursor: string | null;
+//     categoryName: string;
+// }): Promise<RestaurantListResponse> => {
+//     try {
+//         const options: ExtendsRequestInit = {
+//             method: "GET",
+//             headers: { 'Content-Type': 'application/json', },
+//             credentials: 'include', // 쿠키를 포함하려면 'include'로 설정
+//             next: { tags: ['restaurant', 'listAll'] },
+//             cache: "no-store",
+//         }
+
+//         const url = new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/api/restaurant`);
+//         if (cursor) url.searchParams.set("cursor", cursor);
+
+//         const enCodeCategoryName = encodeURIComponent(categoryName) //encode
+
+//         // console.log('page', page)
+//         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/restaurant/${page}/${enCodeCategoryName}?cursor=${cursor ?? ''}`, options)
+
+//         if (!res.ok) { throw new Error('Network response was not ok'); }
+//         return res.json();
+
+//     } catch (e) {
+//         console.error('fetch error: ', e)
+//     }
+// }
 
 
 // restaurant

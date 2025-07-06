@@ -2,33 +2,70 @@ import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { restaurantKeys } from '@/src/store/queryies/restaurant/restaurantKeys'
 import { onLoadRestaurantListAPI, onLoadRestaurantDetailAPI, onCreateRestaurantAPI, onEditRestaurantAPI, onDeleteRestaurantAPI, onLoadRestaurantCategoryListAPI } from '@/src/store/queryies/restaurant/restaurantQueryFn'
 import { RestaurantData } from '@/src/types/data/restaurant'
-
+import { useInfiniteQuery } from '@tanstack/react-query'
 
 
 // 모든 글 로드
-export const useRestaurantList = (page: number, categoryName: string = '전체') => {
-   return useQuery({
-      queryKey: restaurantKeys.listAll(categoryName),
-      queryFn: () => onLoadRestaurantListAPI(page, categoryName),
-      staleTime: 60 * 1000,
-      // staleTime: 3600,
-      gcTime: 4000,
+export const useRestaurantListInfinite = (limit: number, categoryName: string) => {
+   return useInfiniteQuery({
+      queryKey: ['restaurant', 'listInfinite', categoryName],
+      queryFn: ({ pageParam }) => {
+         const { cursor, cursorId } = pageParam || {};
+         return onLoadRestaurantListAPI(limit, categoryName, cursor, cursorId);
+      },
+      getNextPageParam: (lastPage) => {
+         // 백엔드에서 넘겨준 다음 커서 정보
+         if (!lastPage?.nextCursor || !lastPage?.nextCursorId) return undefined;
 
-   })
-}
+         return {
+            cursor: lastPage.nextCursor,
+            cursorId: lastPage.nextCursorId,
+         };
+      },
+      initialPageParam: {
+         cursor: null,
+         cursorId: null,
+      },
+      staleTime: 1000 * 60,
+   });
+};
+// export const useRestaurantListInfinite = (page: number, categoryName: string = '전체') => {
+//    return useInfiniteQuery({
+//       queryKey: ['restaurant', 'listAll', categoryName],
+//       queryFn: async ({ pageParam = null }) => {
+//          return await onLoadRestaurantListAPI({ page, categoryName, cursor: pageParam });
+//       },
+//       initialPageParam: null, // ✅ 에러 해결!
+//       getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
+//    });
+// }
+
+// export const useRestaurantList = (page: number, categoryName: string = '전체') => {
+//    return useQuery({
+//       queryKey: restaurantKeys.listAll(page, categoryName),
+//       queryFn: () => onLoadRestaurantListAPI(page, categoryName),
+//       staleTime: 60 * 1000,
+//       // staleTime: 3600,
+//       gcTime: 4000,
+
+//    })
+// }
+
+
+
 
 
 // 아래껀 사용안함
 // 카테고리 글 로드
-export const useRestaurantCategoryList = (page: number, categoryName: string) => {
-   return useQuery({
-      queryKey: restaurantKeys.categoryListAll(page),
-      queryFn: () => onLoadRestaurantCategoryListAPI(page, categoryName),
-      staleTime: 60 * 1000,
-      // staleTime: 3600,
-      gcTime: 4000,
-   })
-}
+// export const useRestaurantCategoryList = (page: number, categoryName: string) => {
+//    return useQuery({
+//       queryKey: restaurantKeys.categoryListAll(page),
+//       queryFn: () => onLoadRestaurantCategoryListAPI(page, categoryName),
+//       staleTime: 60 * 1000,
+//       // staleTime: 3600,
+//       gcTime: 4000,
+//    })
+// }
 
 
 

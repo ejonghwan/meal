@@ -14,11 +14,10 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string; 
 
    let queryRef: Query<DocumentData> = adminDB.collection("restaurant");
 
-   if (decodeSearch !== "전체") {
-      queryRef = queryRef.where("category", "==", decodeSearch);
-   }
-
+   // 카테고리 서치 유무
+   if (decodeSearch !== "전체") queryRef = queryRef.where("category", "==", decodeSearch);
    queryRef = queryRef.orderBy("created_at", "desc").limit(limit);
+
 
    // ✅ 문서 ID 기반 커서 처리
    if (cursor && cursorId) {

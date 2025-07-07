@@ -6,14 +6,14 @@ import RestaurantItem from "@/src/components/restaurant/restaurant-item";
 import { Skeleton } from "@heroui/skeleton";
 import { Accordion, AccordionItem } from "@heroui/accordion";
 import { PiBowlFoodDuotone, PiStarDuotone, PiStarFill, PiCakeDuotone } from "react-icons/pi";
-import Link from "next/link";
 import { Button } from "@heroui/button";
 import { changeViewDate } from "@/src/utillity/utils";
+import Link from "next/link";
 
 
 const RestaurantTable = ({ restaurantData, restaurantSuccess, restaurantLoading, restaurantError, fetchNextPage, hasNextPage, isFetchingNextPage }) => {
 
-  useEffect(() => { console.log('restaurantData?', restaurantData) }, [])
+  useEffect(() => { console.log('restaurantData?', restaurantData, 'ㅗㅁㄴ?', hasNextPage) }, [])
 
   return (
     <>
@@ -58,8 +58,8 @@ const RestaurantTable = ({ restaurantData, restaurantSuccess, restaurantLoading,
                       {changeViewDate(item.created_at, 'day').slice(2)}
                     </div>
                   </div>
-                  <div className="text-[16px] mt-[10px]">{item.title}</div>
-                  <div className="text-[14px] text-[#999]">{item.content}</div>
+                  <div className="text-[16px] mt-[10px] eps-1">{item.title}</div>
+                  <div className="text-[14px] text-[#999] eps-2">{item.content}</div>
                 </div>
               }
               className="px-[14px]"

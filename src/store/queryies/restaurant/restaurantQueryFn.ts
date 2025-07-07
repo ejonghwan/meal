@@ -5,15 +5,8 @@ import { RestaurantData } from '@/src/types/data/restaurant'
 
 
 
-type RestaurantListResponse = {
-    data: any[]; // 정확한 타입 써줘도 좋음
-    nextCursor: string | null;
-};
 
-
-// restaurant
 // list load
-
 export const onLoadRestaurantListAPI = async (page: number, categoryName: string, cursor?: string, cursorId?: string) => {
     const encodedCategory = encodeURIComponent(categoryName);
     const url = new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/api/restaurant/${page}/${encodedCategory}`);
@@ -24,6 +17,7 @@ export const onLoadRestaurantListAPI = async (page: number, categoryName: string
         method: 'GET',
         headers: { 'Content-Type': 'application/json' },
         cache: 'no-store',
+        next: { tags: ['restaurant', 'listAll'] },
         credentials: 'include',
     });
 

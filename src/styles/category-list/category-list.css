@@ -5,7 +5,8 @@
 
 .category__list--swiper {
    margin-bottom: 20px;
-
+   padding-right: 40px;
+   ;
 }
 
 .category__list--swiper .swiper-wrapper {

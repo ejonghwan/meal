@@ -92,12 +92,12 @@ export const changeViewDate = (date: number, viewTime: string) => {
 
    switch (viewTime) {
       case 'year': return `${year}`;
-      case 'month': return `${year}-${month}`
-      case 'day': return `${year}-${month}-${day}`;
-      case 'hour': return `${year}-${month}-${day} ${hour}시`;
-      case 'minute': return `${year}-${month}-${day} ${hour}시 ${minute}분`;
-      case 'second': return `${year}-${month}-${day} ${hour}시 ${minute}분 ${second}초`;
-      default: return `${year}-${month}-${day}`;
+      case 'month': return `${year}년 ${month}`
+      case 'day': return `${year}년 ${month}월 ${day}일`;
+      case 'hour': return `${year}년 ${month}월 ${day}일 ${hour}시`;
+      case 'minute': return `${year}년 ${month}월 ${day}일 ${hour}시 ${minute}분`;
+      case 'second': return `${year}년 ${month}월 ${day}일 ${hour}시 ${minute}분 ${second}초`;
+      default: return `${year}년 ${month}월 ${day}일`;
    }
 }
 

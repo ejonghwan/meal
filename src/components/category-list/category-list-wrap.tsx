@@ -1,7 +1,7 @@
 "use client"
 
-import React, { useRef, useState } from 'react';
-import { useRouter } from 'next/navigation'
+import React, { useEffect, useRef, useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Pagination, Navigation } from 'swiper/modules';
 
@@ -20,6 +20,7 @@ const CategoryWrap = () => {
    const [swiperInstance, setSwiperInstance] = useState(null);
    const [activeIndex, setActiveIndex] = useState(0);
    const [clickIndex, setClickIndex] = useState(0);
+   const searchParams = useSearchParams()
 
    const handleSearch = (keyword) => {
       if (!keyword.trim()) return
@@ -40,6 +41,10 @@ const CategoryWrap = () => {
       e.preventDefault();
    }
 
+   useEffect(() => {
+      setClickIndex(categorys.filter(item => item.value === searchParams.get('search'))[0].id)
+   }, [])
+
    return (
       <div className='category__list--wrap'>
          <Swiper
@@ -54,12 +59,11 @@ const CategoryWrap = () => {
             onSwiper={setSwiperInstance}
             onSlideChange={(e) => setActiveIndex(e.activeIndex)}
             loop={false}
-            centeredSlides={false}         // ❌ 초기에는 센터 정렬 X
-            initialSlide={0}      // 👉 첫 번째 슬라이드부터 시작
+         // centeredSlides={false}         // ❌ 초기에는 센터 정렬 X
+         // initialSlide={0}      // 👉 첫 번째 슬라이드부터 시작
 
          >
             {categorys.map((category, idx) => (
-
                <SwiperSlide key={idx} className={`category__list--item`} onClick={() => handleClickCategory(category.id)} >
                   <form onSubmit={handleSerachCategory}>
                      <button className={`category__list--btn ${category.id === clickIndex ? 'active' : ''}`}>

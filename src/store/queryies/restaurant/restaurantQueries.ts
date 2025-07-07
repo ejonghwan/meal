@@ -11,11 +11,16 @@ export const useRestaurantListInfinite = (limit: number, categoryName: string) =
       queryKey: ['restaurant', 'listInfinite', categoryName],
       queryFn: ({ pageParam }) => {
          const { cursor, cursorId } = pageParam || {};
+
+         console.log('언제 실행되는지 ?', pageParam)
+
          return onLoadRestaurantListAPI(limit, categoryName, cursor, cursorId);
       },
       getNextPageParam: (lastPage) => {
          // 백엔드에서 넘겨준 다음 커서 정보
-         if (!lastPage?.nextCursor || !lastPage?.nextCursorId) return undefined;
+         console.log('백엔드에서 넘겨준 다음 커서정보', lastPage)
+         // if (!lastPage?.nextCursor || !lastPage?.nextCursorId) return undefined;
+         if (lastPage?.data?.length < 10) return undefined;
 
          return {
             cursor: lastPage.nextCursor,
@@ -29,29 +34,6 @@ export const useRestaurantListInfinite = (limit: number, categoryName: string) =
       staleTime: 1000 * 60,
    });
 };
-// export const useRestaurantListInfinite = (page: number, categoryName: string = '전체') => {
-//    return useInfiniteQuery({
-//       queryKey: ['restaurant', 'listAll', categoryName],
-//       queryFn: async ({ pageParam = null }) => {
-//          return await onLoadRestaurantListAPI({ page, categoryName, cursor: pageParam });
-//       },
-//       initialPageParam: null, // ✅ 에러 해결!
-//       getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,
-//    });
-// }
-
-// export const useRestaurantList = (page: number, categoryName: string = '전체') => {
-//    return useQuery({
-//       queryKey: restaurantKeys.listAll(page, categoryName),
-//       queryFn: () => onLoadRestaurantListAPI(page, categoryName),
-//       staleTime: 60 * 1000,
-//       // staleTime: 3600,
-//       gcTime: 4000,
-
-//    })
-// }
-
-
 
 
 

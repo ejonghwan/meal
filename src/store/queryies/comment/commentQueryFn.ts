@@ -7,8 +7,12 @@ import { CommentData, EditCommentData, DeleteCommentData } from '@/src/types/dat
 
 
 
-// 댓글 리스트 로드
-export const onLoadCommentListAPI = async (restaurantId, page, userId) => {
+/*
+    @ path    GET /api/comment/:restaurantId/:limit
+    @ doc     댓글 로드
+    @ access  public
+*/
+export const onLoadCommentListAPI = async (restaurantId: string, limit: string, userId: string) => {
     try {
         const options: ExtendsRequestInit = {
             method: "GET",
@@ -21,8 +25,8 @@ export const onLoadCommentListAPI = async (restaurantId, page, userId) => {
             cache: "no-store",
         }
 
-        console.log('page', restaurantId, page)
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/comment/${restaurantId}/${page}`, options)
+        // console.log('limit', restaurantId, limit)
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/comment/${restaurantId}/${limit}`, options)
 
         if (!res.ok) { throw new Error('Network response was not ok'); }
         return res.json();
@@ -31,7 +35,12 @@ export const onLoadCommentListAPI = async (restaurantId, page, userId) => {
     }
 }
 
-// 특정 댓글 로드
+
+/*
+    @ path    GET /api/comment/:commentId
+    @ doc     특정 댓글 로드
+    @ access  public
+*/
 export const onLoadCommentDetailAPI = async (commentId: string) => {
     try {
         const options: ExtendsRequestInit = {
@@ -54,7 +63,11 @@ export const onLoadCommentDetailAPI = async (commentId: string) => {
 }
 
 
-// 댓글 생성
+/*
+    @ path    POST /api/comment
+    @ doc     댓글 생성
+    @ access  public
+*/
 export const onCreateCommentAPI = async (payload: CommentData) => {
     try {
         const savedToken = localStorage.getItem('x-acc-token');
@@ -92,7 +105,11 @@ export const onCreateCommentAPI = async (payload: CommentData) => {
 
 
 
-// 댓글 수정
+/*
+    @ path    PUT /api/comment/:commentId
+    @ doc     댓글 수정
+    @ access  public
+*/
 export const onEditCommentAPI = async (payload: EditCommentData) => {
     try {
         const savedToken = localStorage.getItem('x-acc-token');
@@ -127,7 +144,11 @@ export const onEditCommentAPI = async (payload: EditCommentData) => {
 
 
 
-// 댓글 삭제
+/*
+    @ path    DELETE /api/comment/:commentId
+    @ doc     댓글 삭제
+    @ access  public
+*/
 export const onDeleteCommentAPI = async (payload: DeleteCommentData) => {
     try {
         console.log('payload?', payload)

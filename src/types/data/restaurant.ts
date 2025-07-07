@@ -11,6 +11,11 @@ export interface MapInfo {
     x: string;
 }
 
+export interface RestaurantLikeData {
+    userId: string;
+    restaurantId: string;
+}
+
 export interface RestaurantData {
     userId: string
     title: string;

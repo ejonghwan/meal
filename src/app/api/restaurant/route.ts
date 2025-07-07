@@ -11,7 +11,7 @@ export const POST = withAuth(async (req: NextRequest, user) => {
     try {
 
 
-        console.log('user?', user)
+        // console.log('user?', user)
         const { userId, title, content, rating, category, isEdit, mapInfo } = await req.json();
         const restaurantRef = adminDB.collection("restaurant").doc(); // ✅ adminDB 사용
 
@@ -28,8 +28,8 @@ export const POST = withAuth(async (req: NextRequest, user) => {
             totalRating: rating, // 생성할땐 총 합이 작성자꺼만 
             isEdit,
             mapInfo,
-            like: "0",
-            unlike: "0",
+            like: 0,
+            unlike: 0,
             created_at: admin.firestore.Timestamp.fromDate(new Date()),
             updated_at: null,
         };
@@ -48,6 +48,17 @@ export const POST = withAuth(async (req: NextRequest, user) => {
         console.error('e', e)
     }
 });
+
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -106,7 +106,7 @@ const CommentItem = ({ comment, setHasMyComment }: Props) => {
    return (
       <>
          {/* 데이터 */}
-         <div className='flex gap-[10px] mt-[25px] relative'>
+         <div className='flex gap-[10px] mt-[25px] relative last:pb-[25px]'>
             {comment.user && (
                <UserFirstName
                   user={comment.user}
@@ -176,14 +176,6 @@ const CommentItem = ({ comment, setHasMyComment }: Props) => {
                </div>
             )}
          </div>
-
-
-         <div>
-            {/* 아코디언 */}
-            {/* <Button type="button">답글 뷰</Button> */}
-         </div>
-
-
 
 
          <Modal ref={targetRef} isOpen={isOpen} onOpenChange={onOpenChange}>

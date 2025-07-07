@@ -9,7 +9,7 @@ import { Input } from '@heroui/input';
 import MapSelect from '@/src/components/maps/map-select';
 import Search from '../common/input/search';
 import _ from 'lodash'
-import { useEditRestaurant, useDeleteRestaurant } from '@/src/store/queryies/restaurant/restaurantQueries';
+import { useEditRestaurant, useDeleteRestaurant, useLikeRestaurant } from '@/src/store/queryies/restaurant/restaurantQueries';
 import Like from '@/src/components/like/like';
 import CommentWrap from '@/src/components/comment/comment-wrap';
 import CommentCreate from '@/src/components/comment/comment-create';
@@ -21,6 +21,8 @@ const RestaurantItem = ({ restaurant }) => {
 
     const { mutate: editMutate, data: editData, isError: editError, isSuccess: editSuccess } = useEditRestaurant()
     const { mutate: deleteMutate, data: deleteData, isError: deleteError, isSuccess: deleteSuccess } = useDeleteRestaurant()
+    const { mutate: LikeRestaurantMutate, isError: LikeRestaurantError, isPending: LikeRestaurantPending, isSuccess: LikeRestaurantSuccess } = useLikeRestaurant()
+
     const { userInfo } = useUserStore()
     const [editRestaurant, setEditRestaurant] = useState(restaurant)
     const [isEdit, setIsEdit] = useState(false)
@@ -72,6 +74,11 @@ const RestaurantItem = ({ restaurant }) => {
         })
     }
 
+    const handleClickLike = () => {
+        // like 클릭 시 userId restaurantId 보냄
+        LikeRestaurantMutate({ userId: userInfo.uid, restaurantId: restaurant.id })
+    }
+
 
 
     return (
@@ -79,7 +86,7 @@ const RestaurantItem = ({ restaurant }) => {
 
             <div>
                 {/* 좋아요 싫어요 구현 */}
-                <Like />
+                <Like handleLikeClick={handleClickLike} likeLength={restaurant.like} hasMyLike={restaurant.hasMyLike} />
             </div>
             {restaurant?.user?.uid === userInfo?.uid && (
                 <div>

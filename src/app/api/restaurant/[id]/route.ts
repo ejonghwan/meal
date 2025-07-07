@@ -63,9 +63,63 @@ export const PUT = withAuth(async (req: NextRequest, user, context: { params: { 
 
 /*
     @ path    PATCH  /api/restaurant/:restaurantId
-    @ doc     글 일부 수정
+    @ doc     좋아요 토글
     @ access  public
 */
+export const PATCH = withAuth(async (req: NextRequest, user, context: { params: { id: string } }) => {
+    const { params: { id: restaurantId } } = context;
+
+    try {
+        const { userId } = await req.json();
+        if (!userId) return NextResponse.json({ state: "FAIL", message: "userId가 없습니다." }, { status: 400 });
+
+
+        const restaurantRef = adminDB.collection("restaurant").doc(restaurantId);
+        const likeRef = adminDB.collection("restaurantLikes").doc(`${userId}_${restaurantId}`);
+
+        let action: 'LIKE' | 'UNLIKE' = 'LIKE';
+
+
+        await adminDB.runTransaction(async (transaction) => {
+            const restaurantSnap = await transaction.get(restaurantRef);
+            const likeSnap = await transaction.get(likeRef);
+
+            if (!restaurantSnap.exists) {
+                throw new Error("해당 레스토랑 글이 존재하지 않습니다.");
+            }
+
+            const currentLike = restaurantSnap.data().like || 0;
+
+            if (likeSnap.exists) {
+                // 👎 이미 좋아요 했으면 취소
+                transaction.delete(likeRef);
+                transaction.update(restaurantRef, {
+                    like: Math.max(currentLike - 1, 0), // 음수 방지
+                });
+                action = 'UNLIKE';
+            } else {
+                // 👍 좋아요 추가
+                transaction.set(likeRef, {
+                    userId,
+                    restaurantId,
+                    createdAt: new Date(),
+                });
+                transaction.update(restaurantRef, {
+                    like: currentLike + 1,
+                });
+                action = 'LIKE';
+            }
+        });
+
+        return NextResponse.json({ state: "SUCCESS", message: action === 'LIKE' ? "좋아요 추가됨" : "좋아요 취소됨", action, }, { status: 200 });
+
+    } catch (error) {
+        console.error("좋아요 토글 실패:", error);
+        return NextResponse.json({ state: "ERROR", message: error.message || "서버 에러가 발생했습니다." }, { status: 500 });
+    }
+});
+
+
 
 
 /*

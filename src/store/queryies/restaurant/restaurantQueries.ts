@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { restaurantKeys } from '@/src/store/queryies/restaurant/restaurantKeys'
-import { onLoadRestaurantListAPI, onLoadRestaurantDetailAPI, onCreateRestaurantAPI, onEditRestaurantAPI, onDeleteRestaurantAPI, onLoadRestaurantCategoryListAPI } from '@/src/store/queryies/restaurant/restaurantQueryFn'
-import { RestaurantData } from '@/src/types/data/restaurant'
+import { onLoadRestaurantListAPI, onLoadRestaurantDetailAPI, onCreateRestaurantAPI, onEditRestaurantAPI, onDeleteRestaurantAPI, onLikeRestaurantAPI } from '@/src/store/queryies/restaurant/restaurantQueryFn'
+import { RestaurantData, RestaurantLikeData } from '@/src/types/data/restaurant'
 import { useInfiniteQuery } from '@tanstack/react-query'
 
 
@@ -11,14 +11,14 @@ export const useRestaurantListInfinite = (limit: number, categoryName: string) =
       queryKey: ['restaurant', 'listInfinite', categoryName],
       queryFn: ({ pageParam }) => {
          const { cursor, cursorId } = pageParam || {};
-
-         console.log('언제 실행되는지 ?', pageParam)
+         // pageParam은 요청 보낼 때의 값
+         // console.log('언제 실행되는지 ?', pageParam)
 
          return onLoadRestaurantListAPI(limit, categoryName, cursor, cursorId);
       },
       getNextPageParam: (lastPage) => {
          // 백엔드에서 넘겨준 다음 커서 정보
-         console.log('백엔드에서 넘겨준 다음 커서정보', lastPage)
+         // console.log('백엔드에서 넘겨준 다음 커서정보', lastPage)
          // if (!lastPage?.nextCursor || !lastPage?.nextCursorId) return undefined;
          if (lastPage?.data?.length < 10) return undefined;
 
@@ -34,20 +34,6 @@ export const useRestaurantListInfinite = (limit: number, categoryName: string) =
       staleTime: 1000 * 60,
    });
 };
-
-
-
-// 아래껀 사용안함
-// 카테고리 글 로드
-// export const useRestaurantCategoryList = (page: number, categoryName: string) => {
-//    return useQuery({
-//       queryKey: restaurantKeys.categoryListAll(page),
-//       queryFn: () => onLoadRestaurantCategoryListAPI(page, categoryName),
-//       staleTime: 60 * 1000,
-//       // staleTime: 3600,
-//       gcTime: 4000,
-//    })
-// }
 
 
 
@@ -90,6 +76,24 @@ export const useEditRestaurant = () => {
       },
    })
 }
+
+
+// 글 수정
+export const useLikeRestaurant = () => {
+
+   const queryClient = useQueryClient();
+   return useMutation({
+      mutationFn: (payload: RestaurantLikeData) => {
+         return onLikeRestaurantAPI(payload)
+      },
+      // onSuccess: (data, variables) => {
+      //    queryClient.invalidateQueries({ queryKey: restaurantKeys.listAll(10) });
+      //    console.log('쿼리쪽 edit data?', data, variables)
+      // },
+   })
+}
+
+
 
 
 

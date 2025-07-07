@@ -30,9 +30,9 @@ const HomePage = () => {
    } = useRestaurantListInfinite(10, category);
 
 
-   useEffect(() => {
-      console.log('???????????????', restaurantData, 'ohoho', restaurantData?.pages.flatMap(page => page.data) ?? [])
-   }, [restaurantData])
+   // useEffect(() => {
+   //    console.log('???????????????', restaurantData, 'ohoho', restaurantData?.pages.flatMap(page => page.data) ?? [])
+   // }, [restaurantData])
 
 
    // const { userInfo, setUserLogout } = useUserStore()

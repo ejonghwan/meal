@@ -12,7 +12,7 @@ import { CommentData, EditCommentData, DeleteCommentData } from '@/src/types/dat
     @ doc     댓글 로드
     @ access  public
 */
-export const onLoadCommentListAPI = async (restaurantId: string, limit: string, userId: string) => {
+export const onLoadCommentListAPI = async (restaurantId: string, limit: number, userId: string) => {
     try {
         const options: ExtendsRequestInit = {
             method: "GET",

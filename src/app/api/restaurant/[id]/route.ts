@@ -76,12 +76,14 @@ export const PATCH = withAuth(async (req: NextRequest, user, context: { params: 
 
         const restaurantRef = adminDB.collection("restaurant").doc(restaurantId);
         const likeRef = adminDB.collection("restaurantLikes").doc(`${userId}_${restaurantId}`);
+        let restaurantSnap = null;
 
         let action: 'LIKE' | 'UNLIKE' = 'LIKE';
 
 
+
         await adminDB.runTransaction(async (transaction) => {
-            const restaurantSnap = await transaction.get(restaurantRef);
+            restaurantSnap = await transaction.get(restaurantRef);
             const likeSnap = await transaction.get(likeRef);
 
             if (!restaurantSnap.exists) {
@@ -111,7 +113,7 @@ export const PATCH = withAuth(async (req: NextRequest, user, context: { params: 
             }
         });
 
-        return NextResponse.json({ state: "SUCCESS", message: action === 'LIKE' ? "좋아요 추가됨" : "좋아요 취소됨", action, }, { status: 200 });
+        return NextResponse.json({ state: "SUCCESS", message: action === 'LIKE' ? "좋아요 추가됨" : "좋아요 취소됨", data: { action, hasMyLike: action === 'LIKE' ? true : false, ...restaurantSnap.data() }, }, { status: 200 });
 
     } catch (error) {
         console.error("좋아요 토글 실패:", error);

@@ -78,7 +78,7 @@ export const useEditRestaurant = () => {
 }
 
 
-// 글 수정
+// 글 좋아요
 export const useLikeRestaurant = () => {
 
    const queryClient = useQueryClient();
@@ -86,10 +86,20 @@ export const useLikeRestaurant = () => {
       mutationFn: (payload: RestaurantLikeData) => {
          return onLikeRestaurantAPI(payload)
       },
-      // onSuccess: (data, variables) => {
-      //    queryClient.invalidateQueries({ queryKey: restaurantKeys.listAll(10) });
-      //    console.log('쿼리쪽 edit data?', data, variables)
-      // },
+      onSuccess: (data, variables) => {
+        // 글에 좋아요 업데이트
+        queryClient.setQueryData(restaurantKeys.listAll(10), (oldData: any) => {
+
+         console.log('oldData??', oldData, 'data?', data, '변수?', variables)
+
+         return {
+            ...oldData,
+            data: oldData.data.map((restaurant) =>
+               restaurant.id === variables.restaurantId ? { ...restaurant, like: data.data.like, hasMyLike: data.data.hasMyLike } : restaurant
+            ),
+         };
+      });
+      },
    })
 }
 

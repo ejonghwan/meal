@@ -42,7 +42,7 @@ const CategoryWrap = () => {
    }
 
    useEffect(() => {
-      setClickIndex(categorys.filter(item => item.value === searchParams.get('search'))[0].id)
+      setClickIndex(categorys.filter(item => item.value === searchParams.get('search'))[0]?.id || 0)
    }, [])
 
    return (

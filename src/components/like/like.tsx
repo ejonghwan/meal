@@ -1,6 +1,7 @@
 "use client"
 
 import React from 'react'
+import { Button } from '@heroui/button';
 import { PiHeartDuotone } from 'react-icons/pi';
 
 
@@ -9,17 +10,21 @@ import { PiHeartDuotone } from 'react-icons/pi';
 interface Props {
    handleLikeClick?: any;
    likeLength: number;
-   hasMyLike: boolean
+   hasMyLike: boolean;
+   isPending: boolean;
+   isSuccess: boolean;
+   isError: boolean;
    // handleUnLikeClick?: any;
 }
 
-const Like = ({ handleLikeClick, likeLength, hasMyLike }: Props) => {
+const Like = ({ handleLikeClick, likeLength, hasMyLike, isPending, isSuccess, isError }: Props) => {
+
    return (
       <>
          <div className='flex items-center ml-[15px] gap-[4px]'>
-            <button type="button" onClick={handleLikeClick}>
-               <PiHeartDuotone className={`size-[18px] ${hasMyLike ? 'text-[#ff5151]' : ''}`} />
-            </button>
+            <Button className='rounded-[50%] w-auto h-auto size-[32px] p-[5px] min-w-0' variant={'light'} isLoading={isPending} type="button" onPress={handleLikeClick}>
+               {!isPending && <PiHeartDuotone className={`size-[20px] ${hasMyLike ? 'text-[#ff5151]' : ''}`} />}
+            </Button>
             <span>{likeLength}</span>
          </div>
          {/* <button type='button' onClick={handleUnLikeClick}>싫어요</button> */}

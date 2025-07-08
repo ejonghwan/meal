@@ -64,6 +64,7 @@ export const useRestaurant = (restauranId: string) => {
 
 // 글쓰기
 export const useCreateRestaurant = () => {
+
    return useMutation({
       mutationFn: (payload: RestaurantData) => {
          console.log('query fn ? ', payload)
@@ -77,13 +78,16 @@ export const useCreateRestaurant = () => {
 // 글 수정
 export const useEditRestaurant = () => {
 
+   const searchParams = useSearchParams()
+   const category = searchParams.get('search') || '전체'
+
    const queryClient = useQueryClient();
    return useMutation({
       mutationFn: (payload: RestaurantData) => {
          return onEditRestaurantAPI(payload)
       },
       onSuccess: (data, variables) => {
-         queryClient.invalidateQueries({ queryKey: restaurantKeys.listAll(10) });
+         queryClient.invalidateQueries({ queryKey: restaurantKeys.listAll(category) });
          console.log('쿼리쪽 edit data?', data, variables)
       },
    })
@@ -118,7 +122,7 @@ export const useLikeRestaurant = () => {
                   ...page,
                   data: page.data.map((restaurant) =>
                      restaurant.id === variables.restaurantId
-                        ? { ...restaurant, like: data.data.like }
+                        ? { ...restaurant, like: data.data.like, hasMyLike: data.data.hasMyLike }
                         : restaurant
                   ),
                })),
@@ -147,13 +151,17 @@ export const useLikeRestaurant = () => {
 
 // 글 삭제
 export const useDeleteRestaurant = () => {
+
+   const searchParams = useSearchParams()
+   const category = searchParams.get('search') || '전체'
+
    const queryClient = useQueryClient();
    return useMutation({
       mutationFn: (payload: { restaurantId: string, token: string }) => {
          return onDeleteRestaurantAPI(payload)
       },
       onSuccess: (data, variables) => {
-         queryClient.invalidateQueries({ queryKey: restaurantKeys.listAll(10) });
+         queryClient.invalidateQueries({ queryKey: restaurantKeys.listAll(category) });
          console.log('쿼리쪽 delete data?', data, variables)
       },
    })

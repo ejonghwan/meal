@@ -12,6 +12,7 @@ import { useCreateRestaurant } from '@/src/store/queryies/restaurant/restaurantQ
 import { useUserStore } from '@/src/store/front/user';
 import MapSelect from '@/src/components/maps/map-select';
 import Search from '@/src/components/common/input/search';
+import { useRouter, useSearchParams } from 'next/navigation'
 import _ from 'lodash'
 import '@/src/styles/common/range.css'
 
@@ -31,11 +32,14 @@ const RestaurantCreateForm = () => {
 
    const { mutate: createRestaurantMutation, isError: createRestaurantError, isSuccess: createRestaurantSuccess, isPending: createRestaurantPending } = useCreateRestaurant()
    const { userInfo } = useUserStore()
+   const router = useRouter()
+
    const token = useRef(null);
    if (typeof window !== 'undefined') {
       // console.log(localStorage)
       token.current = localStorage.getItem('x-acc-token')
    }
+
    const [searchValue, setSearchValue] = useState('')
    const [keyword, setKeyword] = useState('')
    const [isWrite, setIsWrite] = useState(false)
@@ -99,6 +103,10 @@ const RestaurantCreateForm = () => {
       restaurant.title && restaurant.content && restaurant.category ? setIsWrite(true) : setIsWrite(false)
       console.log('restaurant?', restaurant)
    }, [restaurant])
+
+   useEffect(() => {
+      if (createRestaurantSuccess) router.push(`/home?search=${restaurant.category}`)
+   }, [createRestaurantSuccess])
 
    return (
       <>

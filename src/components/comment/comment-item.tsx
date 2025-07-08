@@ -142,7 +142,7 @@ const CommentItem = ({ comment, setHasMyComment }: Props) => {
                      <div className="flex items-center mt-[5px]">
                         <PiStarFill className="size-[14px] text-[#ebdf32] mr-[4px]" />
                         <span className="text-[14px] text-[#999] flex items-center gap-[1px]">
-                           <span className="text-[#ebdf32] font-bold">{Number(comment.rating).toFixed(1)}</span>
+                           <span className="text-[#ebdf32] font-medium">{Number(comment.rating).toFixed(1)}</span>
                            <span>/</span>5
                         </span>
 

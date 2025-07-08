@@ -1,5 +1,5 @@
 "use client"
-import React, { useRef, useEffect, useState } from 'react'
+import React, { useRef, useEffect, useState, useCallback } from 'react'
 import { Modal, ModalContent, ModalHeader, ModalBody, ModalFooter, useDisclosure } from "@heroui/modal";
 
 import UserFirstName from '@/src/components/common/user-firstName';
@@ -21,7 +21,7 @@ const RestaurantItem = ({ restaurant }) => {
 
     const { mutate: editMutate, data: editData, isError: editError, isSuccess: editSuccess } = useEditRestaurant()
     const { mutate: deleteMutate, data: deleteData, isError: deleteError, isSuccess: deleteSuccess } = useDeleteRestaurant()
-    const { mutate: LikeRestaurantMutate, isError: LikeRestaurantError, isPending: LikeRestaurantPending, isSuccess: LikeRestaurantSuccess } = useLikeRestaurant()
+    const { mutate: likeRestaurantMutate, isError: likeRestaurantError, isPending: likeRestaurantPending, isSuccess: likeRestaurantSuccess } = useLikeRestaurant()
 
     const { userInfo } = useUserStore()
     const [editRestaurant, setEditRestaurant] = useState(restaurant)
@@ -74,10 +74,20 @@ const RestaurantItem = ({ restaurant }) => {
         })
     }
 
-    const handleClickLike = () => {
-        // like 클릭 시 userId restaurantId 보냄
-        LikeRestaurantMutate({ userId: userInfo.uid, restaurantId: restaurant.id })
-    }
+    // 기존
+    // const handleClickLike = () => {
+    //     // like 클릭 시 userId restaurantId 보냄
+    //     LikeRestaurantMutate({ userId: userInfo.uid, restaurantId: restaurant.id })
+    // }
+
+    // 의존성 경고
+    // const handleClickLike = useCallback(_.debounce((userId: string, restaurantId: string) =>
+    //     likeRestaurantMutate({ userId, restaurantId }), 1200), [likeRestaurantMutate]);
+
+    // 의존성 경고때문에  ref로 수정
+    const debouncedLike = useRef(_.debounce((userId: string, restaurantId: string) => {
+        likeRestaurantMutate({ userId, restaurantId });
+    }, 1200)).current;
 
 
 
@@ -86,7 +96,15 @@ const RestaurantItem = ({ restaurant }) => {
 
             <div>
                 {/* 좋아요 싫어요 구현 */}
-                <Like handleLikeClick={handleClickLike} likeLength={restaurant.like} hasMyLike={restaurant.hasMyLike} />
+                <Like
+                    handleLikeClick={() => debouncedLike(userInfo.uid, restaurant.id)}
+                    likeLength={restaurant.like}
+                    hasMyLike={restaurant.hasMyLike}
+                    isPending={likeRestaurantPending}
+                    isError={likeRestaurantError}
+                    isSuccess={likeRestaurantSuccess}
+
+                />
             </div>
             {restaurant?.user?.uid === userInfo?.uid && (
                 <div>

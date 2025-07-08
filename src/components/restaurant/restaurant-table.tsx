@@ -3,34 +3,30 @@
 import React, { Fragment, useEffect, useState } from "react";
 import RestaurantItem from "@/src/components/restaurant/restaurant-item";
 
-import { Skeleton } from "@heroui/skeleton";
+
 import { Accordion, AccordionItem } from "@heroui/accordion";
 import { PiBowlFoodDuotone, PiStarDuotone, PiStarFill, PiCakeDuotone } from "react-icons/pi";
 import { Button } from "@heroui/button";
-import { changeViewDate } from "@/src/utillity/utils";
+import { changeViewDate, timeForToday } from "@/src/utillity/utils";
 import Link from "next/link";
+import RestaurantSkeleton from "@/src/components/restaurant/restaurant-skeleton";
 
 
 const RestaurantTable = ({ restaurantData, restaurantSuccess, restaurantLoading, restaurantError, fetchNextPage, hasNextPage, isFetchingNextPage }) => {
 
   useEffect(() => { console.log('restaurantData?', restaurantData, 'ㅗㅁㄴ?', hasNextPage) }, [])
 
+
+  const handleClickNextPage = () => {
+
+    fetchNextPage()
+  }
+
+
   return (
     <>
       {/* 로딩중 */}
-      {restaurantLoading && (
-        <>
-          {Array(10).fill('1').map((_, idx) => (
-            <Fragment key={idx}>
-              <div className="flex flex-wrap items-center bg-[#18181b] h-[114px] rounded-[12px] p-[20px] mb-[5px]">
-                <Skeleton className='w-[35%] h-[10px] rounded-[20px]' />
-                <Skeleton className='w-[70%] h-[10px] rounded-[20px] mt-[13px]' />
-                <Skeleton className='w-[100%] h-[10px] rounded-[20px] mt-[3px]' />
-              </div>
-            </Fragment>
-          ))}
-        </>
-      )}
+      {restaurantLoading && <RestaurantSkeleton len={5} />}
 
       {/* 에러 메시지 */}
       {restaurantError && <p>에러 발생</p>}
@@ -49,17 +45,21 @@ const RestaurantTable = ({ restaurantData, restaurantSuccess, restaurantLoading,
                     <div className="flex items-center">
                       <PiStarFill className="size-[16px] text-[#ebdf32] mr-[5px]" />
                       <span className="text-[13px] text-[#999] flex items-center gap-[1px]">
-                        <span className="text-[#ebdf32] font-bold">{Number(item.totalRating).toFixed(1)}</span>
-                        <span className="text-[13px]">/</span>5
+                        <span className="text-[#ebdf32] font-medium">{Number(item.totalRating).toFixed(1)}</span>
+                        <span className="text-[13px] ">/</span>5
                       </span>
                     </div>
                     <i className="block size-[3px] bg-[#505050] rounded-[50%] mx-[7px]"></i>
                     <div className="text-[13px] text-[#999]">
                       {changeViewDate(item.created_at, 'day').slice(2)}
                     </div>
+                    {item.updated_at && <i className="block size-[3px] bg-[#505050] rounded-[50%] mx-[7px]"></i>}
+                    <div className="text-[13px] text-[#999]">
+                      {item.updated_at && <span className="text-[13px]">{timeForToday(item.updated_at)} 수정됨</span>}
+                    </div>
                   </div>
                   <div className="text-[16px] mt-[10px] eps-1">{item.title}</div>
-                  <div className="text-[14px] text-[#999] eps-2">{item.content}</div>
+                  <div className="text-[14px] text-[#999] eps-2 mt-[5px]">{item.content}</div>
                 </div>
               }
               className="px-[14px]"
@@ -90,9 +90,12 @@ const RestaurantTable = ({ restaurantData, restaurantSuccess, restaurantLoading,
 
       {/* 무한 스크롤 ? 더보기 ? 고민중 */}
       {hasNextPage && (
-        <div className="mt-[30px] flex justify-center">
-          <Button type="button" variant="shadow" color="default" onPress={() => fetchNextPage()} disabled={isFetchingNextPage}>더 보기</Button>
-        </div>
+        <>
+          <div className="mt-[30px] flex justify-center">
+            <Button type="button" variant="shadow" color="default" onPress={handleClickNextPage} isLoading={isFetchingNextPage} disabled={isFetchingNextPage}>더 보기</Button>
+          </div>
+          {isFetchingNextPage && <RestaurantSkeleton len={3} />}
+        </>
       )}
     </>
   );

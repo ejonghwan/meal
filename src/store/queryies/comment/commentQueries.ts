@@ -3,6 +3,7 @@ import { commentKeys } from '@/src/store/queryies/comment/commentKeys'
 import { restaurantKeys } from '@/src/store/queryies/restaurant/restaurantKeys'
 import { onLoadCommentListAPI, onLoadCommentDetailAPI, onCreateCommentAPI, onEditCommentAPI, onDeleteCommentAPI } from '@/src/store/queryies/comment/commentQueryFn'
 import { CommentData, DeleteCommentData, EditCommentData } from '@/src/types/data/comment'
+import { useSearchParams } from 'next/navigation'
 
 
 
@@ -11,8 +12,9 @@ export const useLoadCommentList = (restaurant: string, page: number, userId: str
    return useQuery({
       queryKey: commentKeys.listAll(restaurant, page),
       queryFn: () => onLoadCommentListAPI(restaurant, page, userId),
-      staleTime: 60 * 1000,
-      // staleTime: 3600,
+      // staleTime: 60 * 1000 * 10, //10분
+      // gcTime: 60 * 1000 * 11,
+      staleTime: 3600,
       gcTime: 4000,
    })
 }
@@ -24,9 +26,10 @@ export const useLoadComment = (commentId: string) => {
    return useQuery({
       queryKey: commentKeys.detail(commentId),
       queryFn: () => onLoadCommentDetailAPI(commentId),
-      // staleTime: 60 * 1000,
-      staleTime: 3600,
-      gcTime: 4000,
+      staleTime: 60 * 1000 * 10, //10분
+      gcTime: 60 * 1000 * 11,
+      // staleTime: 3600,
+      // gcTime: 4000,
    })
 }
 
@@ -64,47 +67,78 @@ export const useCreatecomment = () => {
 // 댓글 수정
 export const useEditComment = () => {
 
+   const searchParams = useSearchParams()
+   const category = searchParams.get('search') || '전체'
+
    const queryClient = useQueryClient();
    return useMutation({
       mutationFn: (payload: EditCommentData) => {
          return onEditCommentAPI(payload)
       },
+
       onSuccess: (data, variables) => {
+         try {
 
-         // 이건 안됨. 리스트를 그리고 있기 떄문에 특정 글 쿼리키 만들어서 해당글만 업데이트해도 반응없음
-         // queryClient.invalidateQueries({ queryKey: commentKeys.edit(variables.commentId) });
+            // 이건 안됨. 리스트를 그리고 있기 떄문에 특정 글 쿼리키 만들어서 해당글만 업데이트해도 반응없음
+            // queryClient.invalidateQueries({ queryKey: commentKeys.edit(variables.commentId) });
 
-         // data : response 받은값
-         // variables : payload 값 
+            // data : response 받은값
+            // variables : payload 값 
 
-         console.log('쿼리쪽 edit data?', data, variables)
-         queryClient.setQueryData(commentKeys.listAll(variables.restaurantId, 10), (oldData: any) => {
-            console.log('comment oldData?', oldData, data)
-            return {
-               ...oldData,
-               data: oldData.data.map((comment) => comment.id === variables.commentId ? { ...comment, ...variables } : comment),
-            };
-         });
+            console.log('쿼리쪽 edit data?', data, variables)
+            queryClient.setQueryData(commentKeys.listAll(variables.restaurantId, 10), (oldData: any) => {
+               console.log('comment oldData?', oldData, data)
+               return {
+                  ...oldData,
+                  data: oldData.data.map((comment) => comment.id === variables.commentId ? { ...comment, ...variables } : comment),
+               };
+            });
 
-         // 글에 달린 총평점도 업데이트 // 이거 쿼리키 수정해야됨
-         queryClient.setQueryData(restaurantKeys.listAll(10), (oldData: any) => {
+            // 인피니티 쿼리 적용하면서 데이터 구조 변경됨. 불변 재설정
+            queryClient.setQueryData(restaurantKeys.listAll(category), (oldData: any) => {
+               console.log('캐시 ?', queryClient.getQueryCache().findAll());
+               if (!oldData) return;
 
-            console.log('oldData?', oldData, data)
-            // oldData : 이전 restaurant 값이 data
-            // (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
-            // message "성공"
-            // nextCursor 2025-06-29T15:17:16.885Z"
-            // state"SUCCESS"
+               console.log('oldData??', oldData)
+               console.log('data??', data)
 
-            //data : 리스폰스 받은 data message state 세개 들어있음
+               return {
+                  ...oldData,
+                  pages: oldData.pages.map((page) => ({
+                     ...page,
+                     data: page.data.map((restaurant) =>
+                        restaurant.id === variables.restaurantId
+                           ? { ...restaurant, totalRating: data.data.newTotalRating }
+                           : restaurant
+                     ),
+                  })),
+               };
+            });
 
-            return {
-               ...oldData,
-               data: oldData.data.map((restaurant) =>
-                  restaurant.id === variables.restaurantId ? { ...restaurant, totalRating: data.data.newRating } : restaurant
-               ),
-            };
-         });
+
+            // 글에 달린 총평점도 업데이트 // 이거 쿼리키 수정해야됨
+            // queryClient.setQueryData(restaurantKeys.listAll('전체'), (oldData: any) => {
+            //    console.log('oldData?', oldData)
+            //    console.log('data?', data)
+            //    // oldData : 이전 restaurant 값이 data
+            //    // (10) [{…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}, {…}]
+            //    // message "성공"
+            //    // nextCursor 2025-06-29T15:17:16.885Z"
+            //    // state"SUCCESS"
+
+            //    //data : 리스폰스 받은 data message state 세개 들어있음
+            //    // console.log(queryClient.getQueryCache().findAll());
+            //    // return {
+            //    //    ...oldData,
+            //    //    data: oldData?.data.map((restaurant) =>
+            //    //       restaurant.id === variables.restaurantId ? { ...restaurant, totalRating: data.data.newTotalRating } : restaurant
+            //    //    ),
+            //    // };
+
+            // });
+         } catch (e) {
+            console.error('mutate error', e)
+         }
 
       },
    })

@@ -43,7 +43,8 @@ const CategoryWrap = () => {
 
    useEffect(() => {
       setClickIndex(categorys.filter(item => item.value === searchParams.get('search'))[0]?.id || 0)
-   }, [])
+      swiperInstance?.slideTo(categorys.filter(item => item.value === searchParams.get('search'))[0]?.id || 0)
+   }, [swiperInstance])
 
    return (
       <div className='category__list--wrap'>

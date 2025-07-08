@@ -110,7 +110,7 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string; 
                .get();
             hasMyLike = likeDoc.exists;
 
-            console.log('hohohohoho', hasMyLike, 'doc?', `${userId}_${doc.id}`)
+            // console.log('hohohohoho', hasMyLike, 'doc?', `${userId}_${doc.id}`)
          }
 
 

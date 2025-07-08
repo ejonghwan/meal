@@ -96,6 +96,7 @@ const CommentItem = ({ comment, setHasMyComment }: Props) => {
    }
 
 
+
    useEffect(() => {
       if (deleteCommentSuccess) {
          onClose();
@@ -121,7 +122,7 @@ const CommentItem = ({ comment, setHasMyComment }: Props) => {
                      @{comment.user.displayName}
                   </span>
                   <span className='text-[12px] text-[#999]'>
-                     {timeForToday(comment.created_at)}
+                     {timeForToday(comment.created_at)}{comment.updated_at && <span> (수정됨)</span>}
                   </span>
                </div>
 

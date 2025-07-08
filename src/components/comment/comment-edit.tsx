@@ -47,6 +47,12 @@ const CommentEdit = ({ comment, isEditComment, setIsEditComment }) => {
       restaurantId: comment.restaurantId
    })
 
+   // useEffect(() => {
+   //    console.log('editCommentSuccess:', editCommentSuccess)
+   //    console.log('editCommentError:', editCommentError)
+   //    console.log('editCommentPending:', editCommentPending)
+   // }, [editCommentSuccess, editCommentError, editCommentPending])
+
 
    const handleChangeComment = (e) => {
       EditCommentData(prev => ({

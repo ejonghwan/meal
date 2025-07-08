@@ -3,12 +3,23 @@ import { restaurantKeys } from '@/src/store/queryies/restaurant/restaurantKeys'
 import { onLoadRestaurantListAPI, onLoadRestaurantDetailAPI, onCreateRestaurantAPI, onEditRestaurantAPI, onDeleteRestaurantAPI, onLikeRestaurantAPI } from '@/src/store/queryies/restaurant/restaurantQueryFn'
 import { RestaurantData, RestaurantLikeData } from '@/src/types/data/restaurant'
 import { useInfiniteQuery } from '@tanstack/react-query'
+import { useSearchParams } from 'next/navigation'
+
+/*
+1. 글 리스트 로드할 때 캐싱된 쿼리키
+2. 해당 리스트를 변경하려면 쿼리키를 동일학 ㅔ맞춰서 업데이트 해줘야됨 
+예를 들어 로드할떈 ['restaurant', 'listInfinite', categoryName], 이렇게 적었으면 업데이트할떄도 동일하게 적어줘야됨
+*/
 
 
 // 모든 글 로드
 export const useRestaurantListInfinite = (limit: number, categoryName: string) => {
+
+   // console.log('cate??', categoryName)
+
    return useInfiniteQuery({
-      queryKey: ['restaurant', 'listInfinite', categoryName],
+      // queryKey: ['restaurant', 'listInfinite', categoryName],
+      queryKey: restaurantKeys.listAll(categoryName),
       queryFn: ({ pageParam }) => {
          const { cursor, cursorId } = pageParam || {};
          // pageParam은 요청 보낼 때의 값
@@ -31,7 +42,7 @@ export const useRestaurantListInfinite = (limit: number, categoryName: string) =
          cursor: null,
          cursorId: null,
       },
-      staleTime: 1000 * 60,
+      staleTime: 1000 * 60 * 10, //10분
    });
 };
 
@@ -42,9 +53,10 @@ export const useRestaurant = (restauranId: string) => {
    return useQuery({
       queryKey: restaurantKeys.detail(restauranId),
       queryFn: () => onLoadRestaurantDetailAPI(restauranId),
-      // staleTime: 60 * 1000,
-      staleTime: 3600,
-      gcTime: 4000,
+      staleTime: 60 * 1000 * 10, //10분
+      gcTime: 60 * 1000 * 11,
+      // staleTime: 3600,
+      // gcTime: 4000,
    })
 }
 
@@ -81,24 +93,50 @@ export const useEditRestaurant = () => {
 // 글 좋아요
 export const useLikeRestaurant = () => {
 
+   const searchParams = useSearchParams()
+   const category = searchParams.get('search') || '전체'
+
    const queryClient = useQueryClient();
    return useMutation({
       mutationFn: (payload: RestaurantLikeData) => {
          return onLikeRestaurantAPI(payload)
       },
       onSuccess: (data, variables) => {
-        // 글에 좋아요 업데이트
-        queryClient.setQueryData(restaurantKeys.listAll(10), (oldData: any) => {
 
-         console.log('oldData??', oldData, 'data?', data, '변수?', variables)
+         queryClient.setQueryData(restaurantKeys.listAll(category), (oldData: any) => {
+            // console.log('oldData??', oldData, 'data?', data, '변수?', variables)
+            // console.log('캐시 ?', queryClient.getQueryCache().findAll());
+            if (!oldData) return;
 
-         return {
-            ...oldData,
-            data: oldData.data.map((restaurant) =>
-               restaurant.id === variables.restaurantId ? { ...restaurant, like: data.data.like, hasMyLike: data.data.hasMyLike } : restaurant
-            ),
-         };
-      });
+            // console.log('oldData??', oldData)
+            // console.log('data??', data)
+            // console.log('variables??', variables)
+
+            return {
+               ...oldData,
+               pages: oldData.pages.map((page) => ({
+                  ...page,
+                  data: page.data.map((restaurant) =>
+                     restaurant.id === variables.restaurantId
+                        ? { ...restaurant, like: data.data.like }
+                        : restaurant
+                  ),
+               })),
+            };
+         });
+
+         // // 글에 좋아요 업데이트
+         // queryClient.setQueryData(restaurantKeys.listAll(category), (oldData: any) => {
+
+         //    console.log('oldData??', oldData, 'data?', data, '변수?', variables)
+
+         //    return {
+         //       ...oldData,
+         //       data: oldData.data.map((restaurant) =>
+         //          restaurant.id === variables.restaurantId ? { ...restaurant, like: data.data.like, hasMyLike: data.data.hasMyLike } : restaurant
+         //       ),
+         //    };
+         // });
       },
    })
 }

@@ -52,7 +52,7 @@ export const POST = withAuth(async (req: NextRequest) => {
             message: "추가",
             data: {
                 commentId: commentRef.id,
-                newRating: newRating,
+                newTotalRating: newRating,
                 ...commentRef,
             },
         }, { status: 201 });

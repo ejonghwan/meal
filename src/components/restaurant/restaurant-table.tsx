@@ -14,11 +14,10 @@ import RestaurantSkeleton from "@/src/components/restaurant/restaurant-skeleton"
 
 const RestaurantTable = ({ restaurantData, restaurantSuccess, restaurantLoading, restaurantError, fetchNextPage, hasNextPage, isFetchingNextPage }) => {
 
-  useEffect(() => { console.log('restaurantData?', restaurantData, 'ㅗㅁㄴ?', hasNextPage) }, [])
+  // useEffect(() => { console.log('restaurantData?', restaurantData, 'ㅗㅁㄴ?', hasNextPage) }, [])
 
 
   const handleClickNextPage = () => {
-
     fetchNextPage()
   }
 

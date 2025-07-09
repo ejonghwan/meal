@@ -115,7 +115,7 @@ export const DELETE = withAuth(async (req: NextRequest, user, context: { params:
         await restaurantRef.update({ totalRating: newRating.toString() });
 
 
-        return NextResponse.json({ state: "SUCCESS", message: "글이 성공적으로 삭제되었습니다.", data: { newRating } }, { status: 200 });
+        return NextResponse.json({ state: "SUCCESS", message: "글이 성공적으로 삭제되었습니다.", data: { newTotalRating: newRating } }, { status: 200 });
 
     } catch (error) {
         console.error("글 삭제 중 오류:", error);

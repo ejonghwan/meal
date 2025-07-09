@@ -31,7 +31,7 @@ export const useRestaurantListInfinite = (limit: number, categoryName: string) =
          // 백엔드에서 넘겨준 다음 커서 정보
          // console.log('백엔드에서 넘겨준 다음 커서정보', lastPage)
          // if (!lastPage?.nextCursor || !lastPage?.nextCursorId) return undefined;
-         if (lastPage?.data?.length < 10) return undefined;
+         if (lastPage?.data?.length < limit) return undefined;
 
          return {
             cursor: lastPage.nextCursor,

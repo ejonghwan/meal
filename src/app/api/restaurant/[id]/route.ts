@@ -113,7 +113,7 @@ export const PATCH = withAuth(async (req: NextRequest, user, context: { params: 
             }
         });
 
-        return NextResponse.json({ state: "SUCCESS", message: action === 'LIKE' ? "좋아요 추가됨" : "좋아요 취소됨", data: { action, hasMyLike: action === 'LIKE' ? true : false, ...restaurantSnap.data(), like: action === 'LIKE' ? restaurantSnap.data().like + 1 : restaurantSnap.data().like - 1 }, }, { status: 200 });
+        return NextResponse.json({ state: "SUCCESS", message: action === 'LIKE' ? "좋아요 추가됨" : "좋아요 취소됨", data: { action, hasMyLike: action === 'LIKE' ? true : false, ...restaurantSnap.data(), like: action === 'LIKE' ? Number(restaurantSnap.data().like) + 1 : Number(restaurantSnap.data().like) - 1 }, }, { status: 200 });
         // 하 ..일단 이렇게 해결. restaurantSnap이 이전 데이터라 강제로 +1 -1 붙임
 
     } catch (error) {

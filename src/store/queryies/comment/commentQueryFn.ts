@@ -12,24 +12,31 @@ import { CommentData, EditCommentData, DeleteCommentData } from '@/src/types/dat
     @ doc     댓글 로드
     @ access  public
 */
-export const onLoadCommentListAPI = async (restaurantId: string, limit: number, userId: string) => {
+export const onLoadCommentListAPI = async (restaurantId: string, limit: number, userId: string, cursor?: string, cursorId?: string) => {
     try {
-        const options: ExtendsRequestInit = {
+
+        const savedToken = localStorage.getItem('x-acc-token');
+        const url = new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/api/comment/${restaurantId}/${limit}`);
+
+        if (cursor) url.searchParams.set('cursor', cursor);
+        if (cursorId) url.searchParams.set('cursorId', cursorId);
+
+
+        const res = await fetch(url.toString(), {
             method: "GET",
             headers: {
                 'Content-Type': 'application/json',
-                "x-user-uid": userId || null
+                "x-user-uid": userId || null,
+                "x-acc-token": `Bearer ${savedToken ? savedToken : ''}`,
             },
             credentials: 'include', // 쿠키를 포함하려면 'include'로 설정
             next: { tags: ['comment', 'listAll'] },
             cache: "no-store",
-        }
+        });
 
-        // console.log('limit', restaurantId, limit)
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/comment/${restaurantId}/${limit}`, options)
-
-        if (!res.ok) { throw new Error('Network response was not ok'); }
+        if (!res.ok) throw new Error('Network error');
         return res.json();
+
     } catch (e) {
         console.error('fetch error: ', e)
     }

@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
    // const [token, setToken] = useState<string | null>(null)
    const { userInfo, setUserInfo, setLoading, setUserLogout, setIsAccToken } = useUserStore();
 
-   const test = ['/home', '/login']
+   // const test = ['/home', '/login']
 
    useEffect(() => {
 

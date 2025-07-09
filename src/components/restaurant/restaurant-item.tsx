@@ -153,6 +153,9 @@ const RestaurantItem = ({ restaurant }) => {
                         {/* {restaurant.rating && <li>{restaurant.rating}</li>} */}
                         {restaurant.totalRating && <li>총 평점 : {restaurant.totalRating}</li>}
                         {/* 5.3.toFixed(1).includes('0') ? 5.0.toFixed(1).slice(0, 1) : 5.3.toFixed(1) */}
+
+                        {<li>댓글 개수 : {restaurant.commentCount}</li>}
+                        {<li>대댓글 개수 : {restaurant.recommentCount}</li>}
                     </ul>
                 </>
             )}

@@ -20,15 +20,15 @@ export const POST = withAuth(async (req: NextRequest) => {
             content,
             rating,
             isEdit: false,
-            like: "0",
-            unlike: "0",
+            like: 0,
+            unlike: 0,
             created_at: admin.firestore.Timestamp.fromDate(new Date()),
             updated_at: null,
         };
 
         await commentRef.set(commentData); // ✅ admin SDK로 접근하면 권한 체크 안 함
 
-        console.log('commentData?', commentData)
+        // console.log('commentData?', commentData)
 
         // 추가. rating 받아서 글에 평점 추가해야함. 코드 검증완료
         const restaurantRef = adminDB.collection("restaurant").doc(restaurantId);
@@ -41,9 +41,9 @@ export const POST = withAuth(async (req: NextRequest) => {
         const currentRating = parseFloat(restaurantData.totalRating) || 0;
         const newRating = (currentRating + parseFloat(rating)) / 2; // 평균 계산
 
-        console.log('create back ? newRating?', newRating, currentRating, newRating.toString())
+        // console.log('create back ? newRating?', newRating, currentRating, newRating.toString())
 
-        await restaurantRef.update({ totalRating: newRating.toString() });
+        await restaurantRef.update({ totalRating: newRating.toString(), commentCount: Number(restaurantSnapshot.data().commentCount) + 1 });
 
 
 

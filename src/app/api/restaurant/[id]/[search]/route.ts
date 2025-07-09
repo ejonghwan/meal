@@ -113,8 +113,10 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string; 
             // console.log('hohohohoho', hasMyLike, 'doc?', `${userId}_${doc.id}`)
          }
 
+         // console.log('re data?', data)
 
          return {
+            ...data,
             id: doc.id,
             user,
             title: data.title,
@@ -122,6 +124,8 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string; 
             category: data.category,
             rating: data.rating,
             totalRating: data.totalRating,
+            commentCount: data.commentCount,
+            recommentCount: data.recommentCount,
             userId: data.userId,
             isEdit: data.isEdit,
             mapInfo: data.mapInfo,

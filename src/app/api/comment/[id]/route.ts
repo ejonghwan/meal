@@ -110,9 +110,9 @@ export const DELETE = withAuth(async (req: NextRequest, user, context: { params:
         const currentRating = parseFloat(restaurantData.totalRating) || 0;
         const newRating = 2 * currentRating - parseFloat(rating); // 토탈 평균에서 삭제 글 평균 빼기
 
-        console.log('delete total rating calc??', newRating)
+        // console.log('delete total rating calc??', newRating)
 
-        await restaurantRef.update({ totalRating: newRating.toString() });
+        await restaurantRef.update({ totalRating: newRating.toString(), commentCount: Number(restaurantSnapshot.data().commentCount) - 1 });
 
 
         return NextResponse.json({ state: "SUCCESS", message: "글이 성공적으로 삭제되었습니다.", data: { newTotalRating: newRating } }, { status: 200 });

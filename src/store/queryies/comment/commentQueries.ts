@@ -8,19 +8,20 @@ import { useSearchParams } from 'next/navigation'
 
 
 // 모든 댓글 로드
-export const useLoadCommentListInfinite = (restaurant: string, limet: number, userId: string) => {
+export const useLoadCommentListInfinite = (restaurantId: string, limet: number, userId: string) => {
 
    // console.log('cate??', categoryName)
 
+   console.log('res??', restaurantId)
    return useInfiniteQuery({
       // queryKey: ['restaurant', 'listInfinite', categoryName],
-      queryKey: commentKeys.listAll(restaurant, limet),
+      queryKey: commentKeys.listAll(restaurantId, limet),
       queryFn: ({ pageParam }) => {
          const { cursor, cursorId } = pageParam || {};
          // pageParam은 요청 보낼 때의 값
          // console.log('언제 실행되는지 ?', pageParam)
 
-         return onLoadCommentListAPI(restaurant, limet, userId, cursor, cursorId);
+         return onLoadCommentListAPI(restaurantId, limet, userId, cursor, cursorId);
       },
       getNextPageParam: (lastPage) => {
          // 백엔드에서 넘겨준 다음 커서 정보
@@ -82,8 +83,22 @@ export const useCreatecomment = () => {
          return onCreateCommentAPI(payload)
       },
       onSuccess: (data, variables) => {
-         queryClient.invalidateQueries({ queryKey: commentKeys.listAll(variables.restaurantId, 10) });
-         console.log('쿼리쪽 edit data?', data, variables)
+         // queryClient.invalidateQueries({ queryKey: commentKeys.listAll(variables.restaurantId, 10) });
+         // console.log('쿼리쪽 edit data?', data, variables)
+
+         // 식당 아이디 잘 받는데 렌더링안됨 확인 해야댐
+         queryClient.setQueryData(commentKeys.listAll(variables.restaurantId, 10), (oldData: any) => {
+            if (!oldData) return;
+            return {
+               ...oldData,
+               pages: oldData.pages.map((page) => ({
+                  ...page,
+                  data: page.data.map((comment) =>
+                     comment.restaurantId === variables.restaurantId ? { ...comment } : comment
+                  ),
+               })),
+            };
+         });
 
          // 글에 달린 총평점도 업데이트  이거 쿼리키 수정해야됨
          queryClient.setQueryData(restaurantKeys.listAll(category), (oldData: any) => {

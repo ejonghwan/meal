@@ -63,18 +63,7 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string; 
 
    const snapshot = await queryRef.get();
 
-   if (snapshot.empty) {
-      return NextResponse.json(
-         {
-            state: "SUCCESS",
-            message: "데이터 없음",
-            data: [],
-            nextCursor: null,
-            nextCursorId: null,
-         },
-         { status: 200 }
-      );
-   }
+   if (snapshot.empty) NextResponse.json({ state: "SUCCESS", message: "데이터 없음", data: [], nextCursor: null, nextCursorId: null, }, { status: 200 });
 
 
    const docs = snapshot.docs;
@@ -103,12 +92,16 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string; 
 
          // ✅ 로그인한 경우에만 좋아요 정보 확인
          let hasMyLike = false;
+         let hasMyComment = false;
          if (userId) {
-            const likeDoc = await adminDB
-               .collection("restaurantLikes")
-               .doc(`${userId}_${doc.id}`)
+            const likeDoc = await adminDB.collection("restaurantLikes").doc(`${userId}_${doc.id}`).get();
+            const commentDoc = await adminDB.collection("comments")
+               .where("restaurantId", "==", doc.id)      // 해당 식당에
+               .where("userId", "==", userId)            // 해당 유저가
+               .limit(1)                                 // 1개만 찾으면 됨
                .get();
-            hasMyLike = likeDoc.exists;
+            hasMyLike = likeDoc.exists; // .exists는 **DocumentSnapshot**에만
+            hasMyComment = !commentDoc.empty; // commentSnapshot은 **QuerySnapshot** 타입
 
             // console.log('hohohohoho', hasMyLike, 'doc?', `${userId}_${doc.id}`)
          }
@@ -132,6 +125,7 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string; 
             like: data.like, //count
             unlike: data.unlike,
             hasMyLike: hasMyLike,
+            hasMyComment: hasMyComment,
             created_at: data.created_at?.toDate() ?? null,
             updated_at: data.updated_at?.toDate() ?? null,
          };

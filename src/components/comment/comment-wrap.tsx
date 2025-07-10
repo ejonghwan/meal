@@ -25,20 +25,19 @@ const CommentWrap = ({ restaurantId, setHasMyComment }: { restaurantId: string; 
       isSuccess: commentSuccess
    } = useLoadCommentListInfinite(restaurantId, 5, userInfo?.uid ? userInfo?.uid : null);
 
-   useEffect(() => {
-      // console.log('commentData?.pages?', commentData?.pages)
-      commentData?.pages.flatMap(item => {
-         // console.log('item?', item)
-         item?.data?.map(comment => {
-            // console.log('comment?', comment)
-            if (comment.hasMyComment) {
-               // console.log('댓글있음')
-               setHasMyComment(true)
-            }
-         })
-      })
-      // console.log('load setHasMyComment?', setHasMyComment)
-   }, [commentSuccess])
+   // useEffect(() => {
+   // commentData?.pages.flatMap(item => {
+   //    // console.log('item?', item)
+   //    item?.data?.map(comment => {
+   //       // console.log('comment?', comment)
+   //       if (comment.hasMyComment) {
+   //          // console.log('댓글있음')
+   //          setHasMyComment(true)
+   //       }
+   //    })
+   // })
+
+   // }, [commentSuccess])
 
 
    const handleClickNextComment = () => {

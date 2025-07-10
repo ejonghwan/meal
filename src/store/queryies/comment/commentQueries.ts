@@ -83,22 +83,21 @@ export const useCreatecomment = () => {
          return onCreateCommentAPI(payload)
       },
       onSuccess: (data, variables) => {
-         // queryClient.invalidateQueries({ queryKey: commentKeys.listAll(variables.restaurantId, 10) });
+         queryClient.invalidateQueries({ queryKey: commentKeys.listAll(variables.restaurantId, 5) });
          // console.log('쿼리쪽 edit data?', data, variables)
 
          // 식당 아이디 잘 받는데 렌더링안됨 확인 해야댐
-         queryClient.setQueryData(commentKeys.listAll(variables.restaurantId, 10), (oldData: any) => {
-            if (!oldData) return;
-            return {
-               ...oldData,
-               pages: oldData.pages.map((page) => ({
-                  ...page,
-                  data: page.data.map((comment) =>
-                     comment.restaurantId === variables.restaurantId ? { ...comment } : comment
-                  ),
-               })),
-            };
-         });
+         // queryClient.setQueryData(commentKeys.listAll(variables.restaurantId, 5), (oldData: any) => {
+         //    console.log('????????베리어블스', variables, oldData)
+         //    if (!oldData) return;
+         //    return {
+         //       ...oldData,
+         //       pages: oldData.pages.map((page) => ({
+         //          ...page,
+         //          data: [variables, ...data]
+         //       })),
+         //    };
+         // });
 
          // 글에 달린 총평점도 업데이트  이거 쿼리키 수정해야됨
          queryClient.setQueryData(restaurantKeys.listAll(category), (oldData: any) => {
@@ -145,11 +144,20 @@ export const useEditComment = () => {
             // variables : payload 값 
 
             console.log('쿼리쪽 edit data?', data, variables)
-            queryClient.setQueryData(commentKeys.listAll(variables.restaurantId, 10), (oldData: any) => {
+            queryClient.setQueryData(commentKeys.listAll(variables.restaurantId, 5), (oldData: any) => {
                console.log('comment oldData?', oldData, data)
+               // return {
+               //    ...oldData,
+               //    data: oldData.data.map((comment) => comment.id === variables.commentId ? { ...comment, ...variables } : comment),
+               // };
                return {
                   ...oldData,
-                  data: oldData.data.map((comment) => comment.id === variables.commentId ? { ...comment, ...variables } : comment),
+                  pages: oldData.pages.map((page) => ({
+                     ...page,
+                     data: page.data.map((comment) =>
+                        comment.id === variables.commentId ? { ...comment, content: data.data.content, rating: data.data.rating } : comment
+                     ),
+                  })),
                };
             });
 
@@ -217,7 +225,7 @@ export const useDeleteComment = () => {
          return onDeleteCommentAPI(payload)
       },
       onSuccess: (data, variables) => {
-         queryClient.invalidateQueries({ queryKey: commentKeys.listAll(variables.restaurantId, 10) });
+         queryClient.invalidateQueries({ queryKey: commentKeys.listAll(variables.restaurantId, 5) });
          console.log('쿼리쪽 delete data?', data, variables)
 
          // 글에 달린 총평점도 업데이트  이거 쿼리키 수정해야됨

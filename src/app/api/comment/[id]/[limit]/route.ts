@@ -19,8 +19,8 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string; 
    const cursorId = url.searchParams.get("cursorId"); // Firestore Document ID
 
    // user
-   const uid = req.headers.get("x-user-uid");
-   if (!uid) return NextResponse.json({ message: "유저 인증 정보가 없습니다." }, { status: 401 });
+   // const uid = req.headers.get("x-user-uid");
+   // if (!uid) return NextResponse.json({ message: "유저 인증 정보가 없습니다." }, { status: 401 });
 
 
    // 🔐 로그인 유저 확인
@@ -55,9 +55,8 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string; 
    const snapshot = await queryRef.get();
 
    // 데이터없음
-   if (snapshot.empty) {
-      return NextResponse.json({ state: "SUCCESS", message: "데이터 없음 1", data: [], nextCursor: null, nextCursorId: null, }, { status: 200 });
-   }
+   if (snapshot.empty) NextResponse.json({ state: "SUCCESS", message: "데이터 없음 1", data: [], nextCursor: null, nextCursorId: null, }, { status: 200 });
+
 
    const docs = snapshot.docs;
    const hasNext = docs.length > limit;
@@ -86,13 +85,8 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string; 
          // ✅ 로그인한 경우에만 좋아요 정보 확인
          let hasMyLike = false;
          if (userId) {
-            const likeDoc = await adminDB
-               .collection("commentLikes")
-               .doc(`${userId}_${doc.id}`)
-               .get();
+            const likeDoc = await adminDB.collection("commentLikes").doc(`${userId}_${doc.id}`).get();
             hasMyLike = likeDoc.exists;
-
-            // console.log('hohohohoho', hasMyLike, 'doc?', `${userId}_${doc.id}`)
          }
 
 
@@ -106,7 +100,7 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string; 
             like: data.like,
             rating: data.rating,
             unlike: data.unlike,
-            hasMyComment: data.userId === uid,
+            // hasMyComment: data.userId === uid, // hasMyComment는 식당글로 옮김
             hasMyLike: hasMyLike,
             created_at: data.created_at?.toDate() ?? null,
             updated_at: data.updated_at?.toDate() ?? null,
@@ -120,7 +114,8 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string; 
    // const nextCursor = hasNext ? lastDoc?.data().created_at?.toDate().toISOString() : null;
    // const nextCursorId = hasNext ? lastDoc?.id : null;
 
-   const lastDoc = hasNext ? docs[limit] : docs[docs.length - 1];
+   // const lastDoc = hasNext ? docs[limit] : docs[docs.length - 1];
+   const lastDoc = slicedDocs[slicedDocs.length - 1];
    const nextCursor = hasNext ? lastDoc?.data().created_at?.toDate().toISOString() : null;
    const nextCursorId = hasNext ? lastDoc?.id : null;
 

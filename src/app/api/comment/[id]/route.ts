@@ -55,8 +55,11 @@ export const PUT = withAuth(async (req: NextRequest, user, context: { params: { 
             updated_at: new Date(), // 수정 시간
         });
 
+        const updatedDoc = await docRef.get();
+        const updatedComment = updatedDoc.data();
+
         // 수정된 데이터 안내려줌
-        return NextResponse.json({ state: "SUCCESS", message: "글이 성공적으로 수정되었습니다.", data: { newTotalRating: newRating } }, { status: 200 });
+        return NextResponse.json({ state: "SUCCESS", message: "글이 성공적으로 수정되었습니다.", data: { ...updatedComment, id: commentId, newTotalRating: newRating } }, { status: 200 });
 
     } catch (error) {
         console.error("레스토랑 글 수정 실패:", error);

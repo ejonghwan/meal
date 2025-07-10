@@ -26,7 +26,7 @@ const RestaurantItem = ({ restaurant }) => {
     const { userInfo } = useUserStore()
     const [editRestaurant, setEditRestaurant] = useState(restaurant)
     const [isEdit, setIsEdit] = useState(false)
-    const [hasMyComment, setHasMyComment] = useState(false)
+    const [hasMyComment, setHasMyComment] = useState(restaurant.hasMyComment)
 
 
 

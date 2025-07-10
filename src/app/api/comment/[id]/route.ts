@@ -69,12 +69,65 @@ export const PUT = withAuth(async (req: NextRequest, user, context: { params: { 
 
 
 
-
 /*
     @ path    PATCH  /api/comment/:commentId
-    @ doc     글 일부 수정
+    @ doc     좋아요 토글
     @ access  public
 */
+export const PATCH = withAuth(async (req: NextRequest, user, context: { params: { id: string } }) => {
+    const { params: { id: commentId } } = context;
+
+    try {
+        const { userId } = await req.json();
+        if (!userId) return NextResponse.json({ state: "FAIL", message: "userId가 없습니다." }, { status: 400 });
+
+
+        const commentRef = adminDB.collection("comments").doc(commentId);
+        const likeRef = adminDB.collection("commentLikes").doc(`${userId}_${commentId}`);
+        let commentSnap = null;
+
+        let action: 'LIKE' | 'UNLIKE' = 'LIKE';
+
+
+
+        await adminDB.runTransaction(async (transaction) => {
+            commentSnap = await transaction.get(commentRef);
+            const likeSnap = await transaction.get(likeRef);
+
+            if (!commentSnap.exists) throw new Error("해당 레스토랑 글이 존재하지 않습니다.");
+
+            const currentLike = commentSnap.data().like || 0;
+
+            if (likeSnap.exists) {
+                // 👎 이미 좋아요 했으면 취소
+                transaction.delete(likeRef);
+                transaction.update(commentRef, {
+                    like: Math.max(currentLike - 1, 0), // 음수 방지
+                });
+                action = 'UNLIKE';
+            } else {
+                // 👍 좋아요 추가
+                transaction.set(likeRef, {
+                    userId,
+                    commentId,
+                    createdAt: new Date(),
+                });
+                transaction.update(commentRef, {
+                    like: currentLike + 1,
+                });
+                action = 'LIKE';
+            }
+        });
+
+        return NextResponse.json({ state: "SUCCESS", message: action === 'LIKE' ? "좋아요 추가됨" : "좋아요 취소됨", data: { action, hasMyLike: action === 'LIKE' ? true : false, ...commentSnap.data(), like: action === 'LIKE' ? Number(commentSnap.data().like) + 1 : Number(commentSnap.data().like) - 1 }, restaurantId: commentSnap.data().restaurantId }, { status: 200 });
+        // 하 ..일단 이렇게 해결. commentSnap이 이전 데이터라 강제로 +1 -1 붙임
+
+    } catch (error) {
+        console.error("좋아요 토글 실패:", error);
+        return NextResponse.json({ state: "ERROR", message: error.message || "서버 에러가 발생했습니다." }, { status: 500 });
+    }
+});
+
 
 
 /*

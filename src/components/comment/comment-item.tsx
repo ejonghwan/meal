@@ -9,7 +9,8 @@ import UserFirstName from '@/src/components/common/user-firstName';
 import { useUserStore } from '@/src/store/front/user';
 import { getRelativeTime, timeForToday } from '@/src/utillity/utils';
 import CommentEdit from '@/src/components/comment/comment-edit';
-import { useDeleteComment } from '@/src/store/queryies/comment/commentQueries';
+import { useDeleteComment, useLikeComment } from '@/src/store/queryies/comment/commentQueries';
+import _ from 'lodash'
 import {
    useDisclosure, Modal,
    ModalContent,
@@ -18,6 +19,7 @@ import {
    ModalFooter,
    useDraggable
 } from '@heroui/modal';
+import Like from '../like/like';
 
 
 /*
@@ -65,6 +67,7 @@ const CommentItem = ({ comment, setHasMyComment }: Props) => {
 
 
    const { mutate: deleteCommentMutate, isError: deleteCommentError, isSuccess: deleteCommentSuccess, isPending: deleteCommentPending } = useDeleteComment()
+   const { mutate: likeCommentMutate, isError: likeCommentError, isSuccess: likeCommentSuccess, isPending: likeCommentPending } = useLikeComment();
 
    const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
    const targetRef = useRef(null);
@@ -94,6 +97,11 @@ const CommentItem = ({ comment, setHasMyComment }: Props) => {
    const handleEditPopOpen = () => {
       onOpen()
    }
+
+   // 의존성 경고때문에  ref로 수정
+   const debouncedLike = useRef(_.debounce((userId: string, commentId: string, restaurantId: string) => {
+      likeCommentMutate({ userId, commentId, restaurantId });
+   }, 1200)).current;
 
 
 
@@ -147,10 +155,14 @@ const CommentItem = ({ comment, setHasMyComment }: Props) => {
                         </span>
 
                         <div className='flex items-center ml-[15px] gap-[4px]'>
-                           <button type="button">
-                              <PiHeartDuotone className='size-[18px]' />
-                           </button>
-                           <span>33</span>
+                           <Like
+                              likeLength={comment.like}
+                              hasMyLike={comment.hasMyLike}
+                              isPending={likeCommentPending}
+                              isSuccess={likeCommentSuccess}
+                              isError={likeCommentError}
+                              handleLikeClick={() => debouncedLike(userInfo.uid, comment.id, comment.restaurantId)}
+                           />
                         </div>
                         {/* <button type="button"><PiHeartBreakDuotone /></button> */}
 

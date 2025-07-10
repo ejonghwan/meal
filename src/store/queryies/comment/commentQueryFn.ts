@@ -1,7 +1,7 @@
 import { QueryFunction } from "@tanstack/query-core";
 import { ExtendsRequestInit } from '@/src/types/request/index';
 import { useUserStore } from "@/src/store/front/user";
-import { CommentData, EditCommentData, DeleteCommentData } from '@/src/types/data/comment'
+import { CommentData, EditCommentData, DeleteCommentData, CommentLikeData } from '@/src/types/data/comment'
 
 
 
@@ -148,6 +148,46 @@ export const onEditCommentAPI = async (payload: EditCommentData) => {
         throw error; // ✅ 에러도 명확히 throw 해야 mutation.isError에 잡힘
     }
 }
+
+
+
+
+/*
+    @ path    PATCH  /api/comment/:commentId
+    @ doc     좋아요 토글
+    @ access  public
+*/
+export const onLikeCommentAPI = async (data: CommentLikeData) => {
+    try {
+        const savedToken = localStorage.getItem('x-acc-token');
+        const { userId, commentId } = data;
+        const options: ExtendsRequestInit = {
+            method: "PATCH",
+            headers: {
+                'Content-Type': 'application/json',
+                "x-acc-token": `Bearer ${savedToken}`,
+                // "Authorization": `Bearer ${token}`,
+            },
+            body: JSON.stringify({ userId }),
+            next: { tags: ['comment', 'like'] },
+            cache: "no-store",
+            credentials: 'include'
+        }
+
+        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/comment/${commentId}`, options)
+        const parse = await res.json();
+
+        if (!res.ok) {
+            throw new Error(parse.message || 'Network response was not ok');
+        }
+        return parse;
+
+    } catch (error) {
+        console.error("Login Error:", error);
+        throw error; // ✅ 에러도 명확히 throw 해야 mutation.isError에 잡힘
+    }
+}
+
 
 
 

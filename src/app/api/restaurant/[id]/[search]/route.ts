@@ -33,7 +33,7 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string; 
    const token = req.headers.get("x-acc-token")?.replace("Bearer ", "");
    let userId: string | null = null;
 
-   console.log('token??', token)
+   // console.log('token??', token)
 
    if (token) {
       try {

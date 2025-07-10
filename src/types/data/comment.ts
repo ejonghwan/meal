@@ -26,3 +26,10 @@ export interface DeleteCommentData {
     restaurantId: string;
     rating: string;
 }
+
+
+export interface CommentLikeData {
+    userId: string;
+    commentId: string;
+    restaurantId: string;
+}

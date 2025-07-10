@@ -5,7 +5,7 @@ import RestaurantItem from "@/src/components/restaurant/restaurant-item";
 
 
 import { Accordion, AccordionItem } from "@heroui/accordion";
-import { PiBowlFoodDuotone, PiStarDuotone, PiStarFill, PiCakeDuotone } from "react-icons/pi";
+import { PiBowlFoodDuotone, PiStarDuotone, PiStarFill, PiCakeDuotone, PiChatTeardropDotsDuotone } from "react-icons/pi";
 import { Button } from "@heroui/button";
 import { changeViewDate, timeForToday } from "@/src/utillity/utils";
 import Link from "next/link";
@@ -42,6 +42,7 @@ const RestaurantTable = ({ restaurantData, restaurantSuccess, restaurantLoading,
 
                   <div className="flex items-center">
                     <div className="flex items-center">
+                      {/* 평점 */}
                       <PiStarFill className="size-[16px] text-[#ebdf32] mr-[5px]" />
                       <span className="text-[13px] text-[#999] flex items-center gap-[1px]">
                         <span className="text-[#ebdf32] font-medium">{Number(item.totalRating).toFixed(1)}</span>
@@ -55,6 +56,13 @@ const RestaurantTable = ({ restaurantData, restaurantSuccess, restaurantLoading,
                     {item.updated_at && <i className="block size-[3px] bg-[#505050] rounded-[50%] mx-[7px]"></i>}
                     <div className="text-[13px] text-[#999]">
                       {item.updated_at && <span className="text-[13px]">{timeForToday(item.updated_at)} 수정됨</span>}
+                    </div>
+                    <div className="ml-auto">
+                      {/* 댓글 + 대댓글 개수 */}
+                      <span className="flex items-center text-[13px] text-[#999]">
+                        <PiChatTeardropDotsDuotone className="size-[20px] mr-[2px]" />
+                        {Number(item.commentCount) + Number(item.recommentCount)}
+                      </span>
                     </div>
                   </div>
                   <div className="text-[16px] mt-[10px] eps-1">{item.title}</div>

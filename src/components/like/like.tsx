@@ -25,7 +25,7 @@ const Like = ({ handleLikeClick, likeLength, hasMyLike, isPending, isSuccess, is
             <Button className='rounded-[50%] w-auto h-auto size-[32px] p-[5px] min-w-0' variant={'light'} isLoading={isPending} type="button" onPress={handleLikeClick}>
                {!isPending && <PiHeartDuotone className={`size-[20px] ${hasMyLike ? 'text-[#ff5151]' : ''}`} />}
             </Button>
-            <span>{likeLength}</span>
+            <span>{likeLength || 0}</span>
          </div>
          {/* <button type='button' onClick={handleUnLikeClick}>싫어요</button> */}
       </>

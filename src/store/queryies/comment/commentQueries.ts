@@ -1,8 +1,8 @@
 import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { commentKeys } from '@/src/store/queryies/comment/commentKeys'
 import { restaurantKeys } from '@/src/store/queryies/restaurant/restaurantKeys'
-import { onLoadCommentListAPI, onLoadCommentDetailAPI, onCreateCommentAPI, onEditCommentAPI, onDeleteCommentAPI } from '@/src/store/queryies/comment/commentQueryFn'
-import { CommentData, DeleteCommentData, EditCommentData } from '@/src/types/data/comment'
+import { onLoadCommentListAPI, onLoadCommentDetailAPI, onCreateCommentAPI, onEditCommentAPI, onDeleteCommentAPI, onLikeCommentAPI } from '@/src/store/queryies/comment/commentQueryFn'
+import { CommentData, DeleteCommentData, EditCommentData, CommentLikeData } from '@/src/types/data/comment'
 import { useSearchParams } from 'next/navigation'
 
 
@@ -210,6 +210,49 @@ export const useEditComment = () => {
       },
    })
 }
+
+
+
+// 댓글 좋아요
+export const useLikeComment = () => {
+
+   const searchParams = useSearchParams()
+   const category = searchParams.get('search') || '전체'
+
+   const queryClient = useQueryClient();
+   return useMutation({
+      mutationFn: (payload: CommentLikeData) => {
+         console.log('payload commnetid', payload)
+         return onLikeCommentAPI(payload)
+      },
+      onSuccess: (data, variables) => {
+
+         queryClient.setQueryData(commentKeys.listAll(variables.restaurantId, 5), (oldData: any) => {
+            console.log('oldData??', oldData, 'data?', data, '변수?', variables)
+            console.log('캐시 ?', queryClient.getQueryCache().findAll());
+            if (!oldData) return;
+
+            // console.log('oldData??', oldData)
+            // console.log('data??', data)
+            // console.log('variables??', variables)
+
+            return {
+               ...oldData,
+               pages: oldData.pages.map((page) => ({
+                  ...page,
+                  data: page.data.map((comment) =>
+                     comment.id === variables.commentId
+                        ? { ...comment, like: data.data.like, hasMyLike: data.data.hasMyLike }
+                        : comment
+                  ),
+               })),
+            };
+         });
+
+      },
+   })
+}
+
 
 
 

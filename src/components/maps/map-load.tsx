@@ -2,6 +2,7 @@
 
 import { useRef, useCallback, memo } from 'react';
 import { useKakaoMap } from '@/src/hooks/use-maps';
+import { Skeleton } from '@heroui/skeleton';
 
 interface Props {
    mapData: {
@@ -9,10 +10,11 @@ interface Props {
       location: { lat: number; lng: number; }
       rating: any;
    }
+   className?: string;
 }
 
 
-const MapLoad = ({ mapData }: Props) => {
+const MapLoad = ({ mapData, className }: Props) => {
 
    const mapRef = useRef<HTMLDivElement>(null);
 
@@ -83,10 +85,16 @@ const MapLoad = ({ mapData }: Props) => {
 
    return (
       <>
-         <div
-            ref={mapRef}
-            className="w-full h-[400px] border border-gray-300 rounded-md"
-         />
+         {!mapRef ? (
+            <Skeleton className={`${className ? className : 'w-full h-[400px] border rounded-md'}`} />
+         ) : (
+            <div
+               ref={mapRef}
+               className={`${className ? className : 'w-full h-[400px] border rounded-md'}`}
+            >
+            </div>
+         )}
+
       </>
    );
 }

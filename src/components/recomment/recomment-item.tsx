@@ -1,8 +1,10 @@
 import React from 'react'
 
-const RecommentItem = () => {
+const RecommentItem = ({ recommnet }) => {
    return (
-      <div>RecommentItem</div>
+      <div>
+         {recommnet}
+      </div>
    )
 }
 

@@ -15,17 +15,18 @@ interface Props {
    isSuccess: boolean;
    isError: boolean;
    // handleUnLikeClick?: any;
+   className?: string;
 }
 
-const Like = ({ handleLikeClick, likeLength, hasMyLike, isPending, isSuccess, isError }: Props) => {
+const Like = ({ handleLikeClick, likeLength, hasMyLike, isPending, isSuccess, isError, className }: Props) => {
 
    return (
       <>
-         <div className='flex items-center ml-[15px] gap-[4px]'>
+         <div className={className ? className : ' '}>
             <Button className='rounded-[50%] w-auto h-auto size-[32px] p-[5px] min-w-0' variant={'light'} isLoading={isPending} type="button" onPress={handleLikeClick}>
                {!isPending && <PiHeartDuotone className={`size-[20px] ${hasMyLike ? 'text-[#ff5151]' : ''}`} />}
             </Button>
-            <span>{likeLength || 0}</span>
+            <span className='text-[13px] text-[#d3d3d3] mt-[2px]'>{likeLength || 0}</span>
          </div>
          {/* <button type='button' onClick={handleUnLikeClick}>싫어요</button> */}
       </>

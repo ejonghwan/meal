@@ -3,7 +3,6 @@
 import React, { useState, useRef, useEffect, Fragment } from 'react'
 import { Input } from '@heroui/input'
 import { Button } from '@heroui/button';
-import RecommentCreate from '@/src/components/recomment/recomment-create'
 import { PiStarFill, PiDotsThreeOutlineVerticalDuotone, PiGithubLogoDuotone, PiHeartDuotone, PiHeartBreakDuotone, PiDotsThreeVerticalBold } from 'react-icons/pi';
 import UserFirstName from '@/src/components/common/user-firstName';
 import { useUserStore } from '@/src/store/front/user';
@@ -20,6 +19,7 @@ import {
    useDraggable
 } from '@heroui/modal';
 import Like from '../like/like';
+import RecommentWrap from '../recomment/recomment-wrap';
 
 
 /*
@@ -57,6 +57,8 @@ import Like from '../like/like';
 //    comment: any;
 //    setHasMyComment: (val: boolean) => void;
 // };
+
+
 
 interface Props {
    comment: any;
@@ -162,15 +164,26 @@ const CommentItem = ({ comment, setHasMyComment }: Props) => {
                               isSuccess={likeCommentSuccess}
                               isError={likeCommentError}
                               handleLikeClick={() => debouncedLike(userInfo.uid, comment.id, comment.restaurantId)}
+                              className='flex items-center mr-[15px]'
                            />
                         </div>
                         {/* <button type="button"><PiHeartBreakDuotone /></button> */}
 
-                        {/* 대댓글 */}
+                        {/* 대댓글 생성 */}
                         <div>
-                           <Button type="button" variant="light" className='text-[12px] px-[5px] py-[2px] !w-[20px] h-[20px]' onPress={handleRecommentView}>답글</Button>
-                           {isRecomment && <RecommentCreate />}
+                           <Button type="button" variant="light" className='text-[12px] px-[5px] py-[2px] !w-[20px] h-[20px] min-w-[50px] ml-[auto]' onPress={handleRecommentView}>답글</Button>
                         </div>
+                     </div>
+
+                     {/* 대댓글 */}
+                     <div>
+                        <RecommentWrap
+                           handleRecommentView={handleRecommentView}
+                           isRecomment={isRecomment}
+                           commentId={comment.id}
+                           restaurantId={comment.restaurantId}
+                           hasMyRecomment={false} //임시
+                        />
                      </div>
                   </>
 

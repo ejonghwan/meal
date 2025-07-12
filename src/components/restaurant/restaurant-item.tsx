@@ -103,6 +103,7 @@ const RestaurantItem = ({ restaurant }) => {
                     isPending={likeRestaurantPending}
                     isError={likeRestaurantError}
                     isSuccess={likeRestaurantSuccess}
+                    className='flex items-center ml-[15px] gap-[4px]'
 
                 />
             </div>

@@ -83,37 +83,24 @@ export const useCreateRecomment = () => {
          return onCreateRecommentAPI(payload)
       },
       onSuccess: (data, variables) => {
-         queryClient.invalidateQueries({ queryKey: recommentKeys.listAll(variables.restaurantId, 5) });
+         // queryClient.invalidateQueries({ queryKey: recommentKeys.listAll(variables.restaurantId, 5) });
          // console.log('쿼리쪽 edit data?', data, variables)
 
-         // 식당 아이디 잘 받는데 렌더링안됨 확인 해야댐
-         // queryClient.setQueryData(recommentKeys.listAll(variables.restaurantId, 5), (oldData: any) => {
-         //    console.log('????????베리어블스', variables, oldData)
+         // 글에 달린 총평점도 업데이트  이거 쿼리키 수정해야됨
+         // queryClient.setQueryData(restaurantKeys.listAll(category), (oldData: any) => {
          //    if (!oldData) return;
          //    return {
          //       ...oldData,
          //       pages: oldData.pages.map((page) => ({
          //          ...page,
-         //          data: [variables, ...data]
+         //          data: page.data.map((restaurant) =>
+         //             restaurant.id === variables.restaurantId
+         //                ? { ...restaurant, totalRating: data.data.newTotalRating }
+         //                : restaurant
+         //          ),
          //       })),
          //    };
          // });
-
-         // 글에 달린 총평점도 업데이트  이거 쿼리키 수정해야됨
-         queryClient.setQueryData(restaurantKeys.listAll(category), (oldData: any) => {
-            if (!oldData) return;
-            return {
-               ...oldData,
-               pages: oldData.pages.map((page) => ({
-                  ...page,
-                  data: page.data.map((restaurant) =>
-                     restaurant.id === variables.restaurantId
-                        ? { ...restaurant, totalRating: data.data.newTotalRating }
-                        : restaurant
-                  ),
-               })),
-            };
-         });
 
 
       },

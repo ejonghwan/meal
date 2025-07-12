@@ -12,11 +12,11 @@ import { RecommentData, EditRecommentData, DeleteRecommentData, LikeRecommentDat
     @ doc     댓글 로드
     @ access  public
 */
-export const onLoadRecommentListAPI = async (restaurantId: string, limit: number, userId: string, cursor?: string, cursorId?: string) => {
+export const onLoadRecommentListAPI = async (parentCommentId: string, limit: number, userId: string, cursor?: string, cursorId?: string) => {
     try {
 
         const savedToken = localStorage.getItem('x-acc-token');
-        const url = new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/api/recomment/${restaurantId}/${limit}`);
+        const url = new URL(`${process.env.NEXT_PUBLIC_BASE_URL}/api/recomment/${parentCommentId}/${limit}`);
 
         if (cursor) url.searchParams.set('cursor', cursor);
         if (cursorId) url.searchParams.set('cursorId', cursorId);

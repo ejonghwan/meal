@@ -163,7 +163,14 @@ const RestaurantItem = ({ restaurant }) => {
 
             {/* create comment */}
             {/* ui는 나오게 하고 비로그인 시 로그인 페이지로 넘기는게 나을듯 */}
-            {userInfo?.uid && !hasMyComment && <CommentCreate restaurantId={restaurant.id} userId={restaurant.user.uid} hasMyComment={hasMyComment} setHasMyComment={setHasMyComment} />}
+            {userInfo?.uid && !hasMyComment &&
+                <CommentCreate
+                    restaurantId={restaurant.id}
+                    userId={restaurant.user.uid}
+                    hasMyComment={hasMyComment}
+                    setHasMyComment={setHasMyComment}
+                />
+            }
 
             {/* comment */}
             <CommentWrap restaurantId={restaurant.id} setHasMyComment={setHasMyComment} />

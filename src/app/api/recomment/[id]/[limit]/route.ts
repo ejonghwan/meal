@@ -4,15 +4,15 @@ import { withAuth } from "@/src/app/api/middleware/withAuth";
 import { DocumentData, Query } from "firebase-admin/firestore";
 
 /*
-    @ path    GET /api/comment/:restaurantId/:page
-    @ doc     댓글 로드
+    @ path    GET /api/recomment/:parentCommentId/:page
+    @ doc     대댓글 로드
     @ access  public
 */
 export const GET = async (req: NextRequest, { params }: { params: { id: string; limit: string } }) => {
 
    // console.log('params????????????????????????????????', params)
 
-   const { id: restaurantId, limit: page } = params;
+   const { id: parentCommentId, limit: page } = params;
    const limit = Number(page) //client에서 page로 보냄
    const url = new URL(req.url);
    const cursor = url.searchParams.get('cursor');  // cursor는 ISO 문자열 형태의 날짜 (created_at)
@@ -40,30 +40,30 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string; 
 
 
    // 마지막 값 구분 위해 11개 가져와서 10개로 짜름
-   let queryRef: Query<DocumentData> = adminDB.collection("comments")
-      .where("restaurantId", "==", restaurantId)
+   let queryRef: Query<DocumentData> = adminDB.collection("recomments")
+      .where("parentCommentId", "==", parentCommentId)
       .orderBy("created_at", "desc")
       .limit(limit + 1);
 
 
    // ✅ 문서 ID 기반 커서 처리
    if (cursor && cursorId) {
-      const cursorDocSnap = await adminDB.collection("comments").doc(cursorId).get(); //커서아이디로 특정 부분 스냅샷
+      const cursorDocSnap = await adminDB.collection("recomments").doc(cursorId).get(); //커서아이디로 특정 부분 스냅샷
       if (cursorDocSnap.exists) queryRef = queryRef.startAfter(cursorDocSnap);
    }
 
    const snapshot = await queryRef.get();
 
    // 데이터없음
-   if (snapshot.empty) NextResponse.json({ state: "SUCCESS", message: "데이터 없음 1", data: [], nextCursor: null, nextCursorId: null, }, { status: 200 });
+   if (snapshot.empty) NextResponse.json({ state: "SUCCESS", message: "대댓글 데이터 없음", data: [], nextCursor: null, nextCursorId: null, }, { status: 200 });
 
 
    const docs = snapshot.docs;
    const hasNext = docs.length > limit;
-   const slicedDocs = hasNext ? docs.slice(0, limit) : docs; // 마지막 값 구분 위해 11개 가져와서 10개로 짜름
+   const slicedDocs = hasNext ? docs.slice(0, limit) : docs; // 마지막 값 구분 위해 6개 가져와서 5개로 짜름
 
 
-   const fetchedComment = await Promise.all(
+   const fetchedRecomment = await Promise.all(
       // snapshot.docs.map(async (doc) => {
       slicedDocs.map(async (doc) => {
          const data = doc.data();
@@ -85,7 +85,7 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string; 
          // ✅ 로그인한 경우에만 좋아요 정보 확인
          let hasMyLike = false;
          if (userId) {
-            const likeDoc = await adminDB.collection("commentLikes").doc(`${userId}_${doc.id}`).get();
+            const likeDoc = await adminDB.collection("recommentLikes").doc(`${userId}_${doc.id}`).get();
             hasMyLike = likeDoc.exists;
          }
 
@@ -93,12 +93,11 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string; 
          return {
             id: doc.id,
             restaurantId: data.restaurantId,
+            parentCommentId: data.parentCommentId,
             userId: data.userId,
             user,
             content: data.content,
-            isEdit: data.isEdit,
             like: data.like,
-            rating: data.rating,
             unlike: data.unlike,
             // hasMyComment: data.userId === uid, // hasMyComment는 식당글로 옮김
             hasMyLike: hasMyLike,
@@ -119,7 +118,7 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string; 
    const nextCursor = hasNext ? lastDoc?.data().created_at?.toDate().toISOString() : null;
    const nextCursorId = hasNext ? lastDoc?.id : null;
 
-   return NextResponse.json({ state: "SUCCESS", message: "성공", data: fetchedComment, nextCursor, nextCursorId, }, { status: 200 });
+   return NextResponse.json({ state: "SUCCESS", message: "성공", data: fetchedRecomment, nextCursor, nextCursorId, }, { status: 200 });
 };
 
 

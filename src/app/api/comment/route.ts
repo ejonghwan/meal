@@ -22,6 +22,7 @@ export const POST = withAuth(async (req: NextRequest) => {
             isEdit: false,
             like: 0,
             unlike: 0,
+            recommentLen: 0,
             created_at: admin.firestore.Timestamp.fromDate(new Date()),
             updated_at: null,
         };

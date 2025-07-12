@@ -1,9 +1,11 @@
 import React from 'react'
+import Loader from '../loader/loader'
 
-const RecommentItem = ({ recommnet }) => {
+const RecommentItem = ({ recomment }) => {
    return (
       <div>
-         {recommnet}
+         <Loader />
+         {recomment.content}
       </div>
    )
 }

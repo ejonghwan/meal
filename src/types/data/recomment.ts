@@ -21,10 +21,15 @@ export interface DeleteRecommentData {
     recommentId: string
 }
 
-
 export interface LikeRecommentData {
     userId: string;
     restaurantId: string;
     parentCommentId: string;
     recommentId: string;
+}
+
+export interface LoadRecommentData {
+    parentCommentId: string;
+    limet: number;
+    userId: string;
 }

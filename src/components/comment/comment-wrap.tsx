@@ -66,13 +66,14 @@ const CommentWrap = ({ restaurantId, setHasMyComment }: { restaurantId: string; 
          {/* 에러 발생 */}
          {commentError && <div>에러 발생</div>}
 
-
+         {/* 목록 */}
          {commentData?.pages.flatMap(item => (
             item.data.map(comment => (
                <CommentItem key={comment.id} comment={comment} setHasMyComment={setHasMyComment} />
             ))
          ))}
 
+         {/* 더보기 버튼 */}
          {hasNextPage && (
             <>
                <div className="mt-[30px] flex justify-center">

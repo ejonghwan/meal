@@ -2,26 +2,24 @@ import { useInfiniteQuery, useMutation, useQuery, useQueryClient } from '@tansta
 import { recommentKeys } from '@/src/store/queryies/recomment/recommentKeys'
 import { restaurantKeys } from '@/src/store/queryies/restaurant/restaurantKeys'
 import { onLoadRecommentListAPI, onLoadRecommentDetailAPI, onCreateRecommentAPI, onEditRecommentAPI, onDeleteRecommentAPI, onLikeRecommentAPI } from '@/src/store/queryies/recomment/recommentQueryFn'
-import { RecommentData, DeleteRecommentData, EditRecommentData, LikeRecommentData } from '@/src/types/data/recomment'
+import { RecommentData, DeleteRecommentData, EditRecommentData, LikeRecommentData, LoadRecommentData } from '@/src/types/data/recomment'
 import { useSearchParams } from 'next/navigation'
 
 
-
 // 모든 댓글 로드
-export const useLoadRecommentListInfinite = (restaurantId: string, limet: number, userId: string) => {
+export const useLoadRecommentListInfinite = (payload: LoadRecommentData) => {
 
-   // console.log('cate??', categoryName)
+   const { parentCommentId, limet, userId } = payload;
 
-   console.log('res??', restaurantId)
    return useInfiniteQuery({
       // queryKey: ['restaurant', 'listInfinite', categoryName],
-      queryKey: recommentKeys.listAll(restaurantId, limet),
+      queryKey: recommentKeys.listAll(parentCommentId, limet),
       queryFn: ({ pageParam }) => {
          const { cursor, cursorId } = pageParam || {};
          // pageParam은 요청 보낼 때의 값
          // console.log('언제 실행되는지 ?', pageParam)
 
-         return onLoadRecommentListAPI(restaurantId, limet, userId, cursor, cursorId);
+         return onLoadRecommentListAPI(parentCommentId, limet, userId, cursor, cursorId);
       },
       getNextPageParam: (lastPage) => {
          // 백엔드에서 넘겨준 다음 커서 정보
@@ -41,17 +39,6 @@ export const useLoadRecommentListInfinite = (restaurantId: string, limet: number
       staleTime: 1000 * 60 * 10, //10분
    });
 };
-
-// export const useLoadreCommentList = (restaurant: string, page: number, userId: string) => {
-//    return useQuery({
-//       queryKey: recommentKeys.listAll(restaurant, page),
-//       queryFn: () => onLoadreCommentListAPI(restaurant, page, userId),
-//       // staleTime: 60 * 1000 * 10, //10분
-//       // gcTime: 60 * 1000 * 11,
-//       staleTime: 3600,
-//       gcTime: 4000,
-//    })
-// }
 
 
 

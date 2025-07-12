@@ -16,15 +16,16 @@ interface Props {
    isError: boolean;
    // handleUnLikeClick?: any;
    className?: string;
+   icoClassName?: string;
 }
 
-const Like = ({ handleLikeClick, likeLength, hasMyLike, isPending, isSuccess, isError, className }: Props) => {
+const Like = ({ handleLikeClick, likeLength, hasMyLike, isPending, isSuccess, isError, className, icoClassName }: Props) => {
 
    return (
       <>
          <div className={className ? className : ' '}>
-            <Button className='rounded-[50%] w-auto h-auto size-[32px] p-[5px] min-w-0' variant={'light'} isLoading={isPending} type="button" onPress={handleLikeClick}>
-               {!isPending && <PiHeartDuotone className={`size-[20px] ${hasMyLike ? 'text-[#ff5151]' : ''}`} />}
+            <Button className={icoClassName ? icoClassName : 'rounded-[50%] w-auto h-auto size-[32px] p-[5px] min-w-0'} variant={'light'} isLoading={isPending} type="button" onPress={handleLikeClick}>
+               {!isPending && <PiHeartDuotone className={`${hasMyLike ? 'text-[#ff5151]' : ''} w-full h-full`} />}
             </Button>
             <span className='text-[13px] text-[#d3d3d3] mt-[2px]'>{likeLength || 0}</span>
          </div>

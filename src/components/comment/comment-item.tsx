@@ -165,6 +165,7 @@ const CommentItem = ({ comment, setHasMyComment }: Props) => {
                               isError={likeCommentError}
                               handleLikeClick={() => debouncedLike(userInfo.uid, comment.id, comment.restaurantId)}
                               className='flex items-center mr-[15px]'
+                              icoClassName='rounded-[50%] size-[18px] mr-[5px] p-[0px] min-w-0'
                            />
                         </div>
                         {/* <button type="button"><PiHeartBreakDuotone /></button> */}

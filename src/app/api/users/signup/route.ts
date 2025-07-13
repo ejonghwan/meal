@@ -23,11 +23,18 @@ export const POST = async (req: NextRequest) => {
 
     // const signup = await signupEmail(email, password, displayName); //기존소스
 
+    // 프로필 bg 컬러 임시
+    const colors = ['#428f80', '#42788f', '#428f4d', '#7e8f42', '#8f8942', '#955877', '#4468a9', '#44a9a5', '#50844b', '#4b7e84',]
+    const randomColor = colors[Math.floor(Math.random() * colors.length)];
+
+
     await adminDB.collection('users').doc(result.user.uid).set({
         uid: result.user.uid,
         email,
         displayName,
         darkmode: !!darkmode,
+        bg: randomColor, // 랜덤으로 수정하기
+        role: 'user', // 권한 설정하기
         createdAt: new Date(),
     });
 

@@ -35,6 +35,9 @@ export const POST = withAuth(async (req: NextRequest, user) => {
                 tokensValidAfterTime: user.tokensValidAfterTime,
                 uid: user.uid,
                 providerData: user.providerData,
+                bg: user.bg,
+                darkmode: user.darkmode,
+                role: user.role,
                 // accToken: auth.currentUser.getIdToken(),
                 // customAccToken: customAccToken,
 

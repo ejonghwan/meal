@@ -1,0 +1,9 @@
+.acc--wrap {}
+
+.acc--wrap [data-slot="indicator"] [data-open="true"] {
+   transform: rotate(270deg);
+}
+
+.acc--wrap [role="presentation"] {
+   transform: rotate(90deg);
+}

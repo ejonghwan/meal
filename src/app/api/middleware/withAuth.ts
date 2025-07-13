@@ -1,6 +1,6 @@
 
 import { NextRequest, NextResponse } from "next/server";
-import { admin } from '@/src/data/firebaseAdmin'
+import { admin, adminDB } from '@/src/data/firebaseAdmin'
 
 
 export const withAuth = (handler: (req: NextRequest, user: any, ctx: { params: any }) => Promise<NextResponse>) =>
@@ -11,7 +11,14 @@ export const withAuth = (handler: (req: NextRequest, user: any, ctx: { params: a
 
          const decoded = await admin.auth().verifyIdToken(token);
          const user = await admin.auth().getUser(decoded.uid)
-         return handler(req, user, ctx); // 인증된 유저와 함께 핸들러 호출
+
+         // 콜렉션 유저 불러와서 합성
+         const userDoc = await adminDB.collection('users').doc(user.uid).get();
+         const userData = userDoc.data();
+
+         // console.log('back mi?', user, userData)
+
+         return handler(req, { ...user, ...userData }, ctx); // 인증된 유저와 함께 핸들러 호출
 
       } catch (error) {
          console.error('auth middle ware?', error)

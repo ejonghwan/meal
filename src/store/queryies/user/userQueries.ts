@@ -20,9 +20,10 @@ export const useUserLoad = (token: string) => {
     return useQuery({
         queryKey: userKeys.load(),
         queryFn: () => onUserLoadAPI(token),
-        // staleTime: 60 * 1000,
-        staleTime: 3600,
-        gcTime: 4000,
+        staleTime: 60 * 1000 * 10, //10분
+        gcTime: 60 * 1000 * 11,
+        // staleTime: 3600,
+        // gcTime: 4000,
         enabled: !!token,
     })
 }

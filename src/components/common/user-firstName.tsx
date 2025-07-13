@@ -16,9 +16,11 @@ const UserFirstName = ({ user, className }: Props) => {
 
     const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
+    // console.log('user?', user)
+
     return (
         <>
-            <button type='button' onClick={onOpen} className={className ? className : ''}>
+            <button type='button' onClick={onOpen} className={`${className ? className : ''}`} style={{ background: user?.bg }}>
                 {user?.displayName.slice(0, 1).toLocaleUpperCase()}
             </button>
 
@@ -52,7 +54,7 @@ const UserFirstName = ({ user, className }: Props) => {
                 <ModalContent>
                     {(onClose) => (
                         <>
-                            <ModalHeader className="flex flex-col gap-1">Modal Title</ModalHeader>
+                            <ModalHeader className="flex flex-col gap-1">{user?.displayName} 프로필</ModalHeader>
                             <ModalBody>
                                 <div className='rounded-[50%] bg-gray-700 text-white size-[60px] p-[5px] flex items-center justify-center'>
                                     {/* {data.user && (

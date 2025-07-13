@@ -1,20 +1,23 @@
 "use client"
 
-import React, { useRef } from 'react'
+import React, { useState, useRef } from 'react'
 import Loader from '../loader/loader'
 import UserFirstName from '../common/user-firstName'
 import { useUserStore } from '@/src/store/front/user'
 import { Button } from '@heroui/button'
 import { timeForToday } from '@/src/utillity/utils'
 import Like from '../like/like'
+import RecommentCreate from './recomment-create'
 
 const RecommentItem = ({ recomment }) => {
 
    const { userInfo } = useUserStore()
+   const [createRecomment, setCreateRecomment] = useState(false)
 
 
    const handleRecommentView = () => {
       // setIsRecomment(true)
+      setCreateRecomment(true)
    }
 
    // 의존성 경고때문에  ref로 수정
@@ -26,14 +29,14 @@ const RecommentItem = ({ recomment }) => {
 
    return (
       // first:mt-0
-      <div className='flex flex-wrap items-start gap-[10px] mt-[12px] first:mt-[20px]'>
+      <div className='flex flex-wrap items-start gap-[10px] mt-[12px] first:mt-[10px]'>
 
          {/* 대댓 좌측 */}
          <div className='flex-shrink-0 flex-grow-0'>
             {userInfo.uid && (
                <UserFirstName
                   user={userInfo.providerData[0]}
-                  className={'rounded-[50%] flex items-center justify-center bg-gray-700 text-white text-[12px] size-[25px] p-[5px] basis-auto grow-[0] flex-shrink-[0] m-0'}
+                  className={'rounded-[50%] flex items-center justify-center bg-gray-700 text-white text-[11px] size-[25px] p-[5px] basis-auto grow-[0] flex-shrink-[0] m-0'}
                />
             )}
          </div>
@@ -51,7 +54,7 @@ const RecommentItem = ({ recomment }) => {
             <div> {recomment.content}</div>
 
             {/* 좋아요 + 댓글 */}
-            <div className='w-full'>
+            <div className='flex flex-wrap'>
                <Like
                   likeLength={recomment.like}
                   hasMyLike={recomment.hasMyLike}
@@ -62,9 +65,20 @@ const RecommentItem = ({ recomment }) => {
                   className='flex items-center mr-[15px]'
                   icoClassName='rounded-[50%] size-[18px] mr-[5px] p-[0px] min-w-0'
                />
+               <div>
+                  <Button type="button" variant="light" className='text-[12px] px-[5px] py-[2px] !w-[20px] h-[20px] min-w-[50px] ml-[auto]' onPress={handleRecommentView}>답글</Button>
+               </div>
             </div>
+
+            {/* 대댓글에 답글 */}
             <div>
-               <Button type="button" variant="light" className='text-[12px] px-[5px] py-[2px] !w-[20px] h-[20px] min-w-[50px] ml-[auto]' onPress={handleRecommentView}>답글</Button>
+               {/* {createRecomment &&
+                  <RecommentCreate
+                     handleRecommentView={handleRecommentView}
+                     hasMyRecomment={hasMyRecomment}
+                     restaurantId={restaurantId}
+                     commentId={commentId}
+                  />} */}
             </div>
          </div>
 

@@ -72,8 +72,11 @@ const Header = () => {
                   {isAccToken === true && (
                      <button type="button"
                         className={'rounded-[50%] bg-gray-700 text-white size-[40px] p-[5px]'}
-                        onClick={handleClick}>
+                        onClick={handleClick}
+                        style={{ background: userInfo?.bg }}
+                     >
                         {userInfo?.providerData[0]?.displayName.slice(0, 1).toLocaleUpperCase()}
+
                      </button>
                   )}
 
@@ -90,7 +93,7 @@ const Header = () => {
                         {/* <div className="text-light-1 dark:text-dark-1">다크 모드 텍스트</div> */}
 
                         <div className='drawer__userInfo--wrap'>
-                           <div className="flex items-center justify-center rounded-[50%] bg-gray-700 text-white size-[40px] p-[5px]">
+                           <div className="flex items-center justify-center rounded-[50%] bg-gray-700 text-white size-[40px] p-[5px]" style={{ background: userInfo?.bg }}>
                               {userInfo?.providerData[0]?.displayName.slice(0, 1).toLocaleUpperCase()}
                            </div>
                            <div>

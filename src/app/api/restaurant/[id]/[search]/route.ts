@@ -40,7 +40,7 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string; 
          const decoded = await admin.auth().verifyIdToken(token);
          userId = decoded.uid;
 
-         console.log('??? userId', userId)
+         // console.log('??? userId', userId)
 
       } catch (err) {
          console.warn("Invalid or expired token");
@@ -78,13 +78,19 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string; 
          let user = null;
 
          try {
-            const userRecord = await admin.auth().getUser(data.userId);
-            user = {
-               uid: userRecord.uid,
-               email: userRecord.email,
-               displayName: userRecord.displayName,
-               photoURL: userRecord.photoURL,
-            };
+            // 어드민 유저 말고 콜렉션 유저 가져오기로 수정
+            // const userRecord = await admin.auth().getUser(data.userId);
+            // user = {
+            //    uid: userRecord.uid,
+            //    email: userRecord.email,
+            //    displayName: userRecord.displayName,
+            //    photoURL: userRecord.photoURL,
+            // };
+
+            const userDoc = await adminDB.collection('users').doc(data.userId).get();
+            const userData = userDoc.data();
+            user = { ...userData };
+
          } catch (error) {
             console.error("유저 정보 조회 실패:", data.userId, error);
          }
@@ -136,14 +142,19 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string; 
    // const nextCursor = lastDoc?.data().created_at?.toDate().toISOString() || null;
    // const nextCursorId = lastDoc?.id || null;
    // 마지막 값 구분 추가
+   // const lastDoc = slicedDocs[slicedDocs.length - 1];
+   // const nextCursor = hasNext ? lastDoc?.data().created_at?.toDate().toISOString() : null;
+   // const nextCursorId = hasNext ? lastDoc?.id : null;
+
    const lastDoc = slicedDocs[slicedDocs.length - 1];
-   const nextCursor = hasNext ? lastDoc?.data().created_at?.toDate().toISOString() : null;
-   const nextCursorId = hasNext ? lastDoc?.id : null;
+   const createdAt = lastDoc?.data().created_at;
 
+   const nextCursor = lastDoc && createdAt instanceof admin.firestore.Timestamp
+      ? createdAt.toDate().toISOString()
+      : null;
 
-   // console.log('cursor:', cursor)
-   // console.log('fetchedRestaurant:', fetchedRestaurant.length)
-   // console.log('nextCursor:', nextCursor, 'nextCursorId:', nextCursorId)
+   const nextCursorId = lastDoc?.id ?? null;
+
 
    return NextResponse.json(
       {

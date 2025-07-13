@@ -27,7 +27,8 @@ export const useLoadCommentListInfinite = (restaurantId: string, limet: number, 
          // 백엔드에서 넘겨준 다음 커서 정보
          // console.log('백엔드에서 넘겨준 다음 커서정보', lastPage)
          // if (!lastPage?.nextCursor || !lastPage?.nextCursorId) return undefined;
-         if (lastPage?.data?.length < limet) return undefined;
+         // if (lastPage?.data?.length < limet) return undefined;
+         if (!lastPage.hasNext) return undefined;
 
          return {
             cursor: lastPage.nextCursor,

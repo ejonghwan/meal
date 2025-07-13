@@ -39,10 +39,10 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string; 
    }
 
 
-   // 마지막 값 구분 위해 11개 가져와서 10개로 짜름
+   // 마지막 값 구분 위해 6개 가져와서 5개로 짜름
    let queryRef: Query<DocumentData> = adminDB.collection("recomments")
       .where("parentCommentId", "==", parentCommentId)
-      .orderBy("created_at", "desc")
+      .orderBy("created_at", "asc") //desc : 내림차순 asc : 오름차순 
       .limit(limit + 1);
 
 
@@ -52,6 +52,7 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string; 
       if (cursorDocSnap.exists) queryRef = queryRef.startAfter(cursorDocSnap);
    }
 
+
    const snapshot = await queryRef.get();
 
    // 데이터없음
@@ -60,8 +61,8 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string; 
 
    const docs = snapshot.docs;
    const hasNext = docs.length > limit;
-   const slicedDocs = hasNext ? docs.slice(0, limit) : docs; // 마지막 값 구분 위해 6개 가져와서 5개로 짜름
-
+   // const slicedDocs = hasNext ? docs.slice(0, limit) : docs;
+   const slicedDocs = hasNext ? docs.slice(0, limit) : docs;
 
    const fetchedRecomment = await Promise.all(
       // snapshot.docs.map(async (doc) => {
@@ -70,13 +71,18 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string; 
          let user = null;
 
          try {
-            const userRecord = await admin.auth().getUser(data.userId);
-            user = {
-               uid: userRecord.uid,
-               email: userRecord.email,
-               displayName: userRecord.displayName,
-               photoURL: userRecord.photoURL,
-            };
+            // 어드민 유저 말고 콜렉션 유저로 수정
+            // const userRecord = await admin.auth().getUser(data.userId);
+            // user = {
+            //    uid: userRecord.uid,
+            //    email: userRecord.email,
+            //    displayName: userRecord.displayName,
+            //    photoURL: userRecord.photoURL,
+            // };
+
+            const userDoc = await adminDB.collection('users').doc(data.userId).get();
+            const userData = userDoc.data();
+            user = { ...userData };
          } catch (error) {
             console.error("유저 정보 조회 실패:", data.userId, error);
          }
@@ -108,17 +114,33 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string; 
    );
 
 
+
+
    // 마지막 값 구분 추가
+
+
    // const lastDoc = slicedDocs[slicedDocs.length - 1];
    // const nextCursor = hasNext ? lastDoc?.data().created_at?.toDate().toISOString() : null;
    // const nextCursorId = hasNext ? lastDoc?.id : null;
 
-   // const lastDoc = hasNext ? docs[limit] : docs[docs.length - 1];
-   const lastDoc = slicedDocs[slicedDocs.length - 1];
-   const nextCursor = hasNext ? lastDoc?.data().created_at?.toDate().toISOString() : null;
-   const nextCursorId = hasNext ? lastDoc?.id : null;
+   // console.log('lastDoc.created_at', lastDoc.data().created_at); // 이거 Timestamp 인지 확인
+   // console.log('lastDoc.exists', lastDoc.exists); // true 여야 됨
 
-   return NextResponse.json({ state: "SUCCESS", message: "성공", data: fetchedRecomment, nextCursor, nextCursorId, }, { status: 200 });
+   const lastDoc = slicedDocs[slicedDocs.length - 1];
+   const createdAt = lastDoc?.data().created_at;
+
+   const nextCursor = lastDoc && createdAt instanceof admin.firestore.Timestamp
+      ? createdAt.toDate().toISOString()
+      : null;
+
+   const nextCursorId = lastDoc?.id ?? null;
+
+
+   // console.log("docs", docs.map(doc => doc.id));
+   // console.log("lastDoc", lastDoc?.id, lastDoc?.data());
+   // console.log("cursor result", nextCursor, nextCursorId);
+
+   return NextResponse.json({ state: "SUCCESS", message: "성공", data: fetchedRecomment, nextCursor, nextCursorId, hasNext }, { status: 200 });
 };
 
 

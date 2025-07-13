@@ -60,7 +60,7 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string; 
 
    const docs = snapshot.docs;
    const hasNext = docs.length > limit;
-   const slicedDocs = hasNext ? docs.slice(0, limit) : docs; // 마지막 값 구분 위해 11개 가져와서 10개로 짜름
+   const slicedDocs = hasNext ? docs.slice(0, limit) : docs; // 마지막 값 구분 위해 6개 가져와서 5개로 짜름
 
 
    const fetchedComment = await Promise.all(
@@ -70,13 +70,17 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string; 
          let user = null;
 
          try {
-            const userRecord = await admin.auth().getUser(data.userId);
-            user = {
-               uid: userRecord.uid,
-               email: userRecord.email,
-               displayName: userRecord.displayName,
-               photoURL: userRecord.photoURL,
-            };
+            // 어드민 유저 말고 콜레션 유저로 수정
+            // const userRecord = await admin.auth().getUser(data.userId);
+            // user = {
+            //    uid: userRecord.uid,
+            //    email: userRecord.email,
+            //    displayName: userRecord.displayName,
+            //    photoURL: userRecord.photoURL,
+            // };
+            const userDoc = await adminDB.collection('users').doc(data.userId).get();
+            const userData = userDoc.data();
+            user = { ...userData };
          } catch (error) {
             console.error("유저 정보 조회 실패:", data.userId, error);
          }
@@ -102,6 +106,7 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string; 
             unlike: data.unlike,
             // hasMyComment: data.userId === uid, // hasMyComment는 식당글로 옮김
             hasMyLike: hasMyLike,
+            recommentLen: data.recommentLen,
             created_at: data.created_at?.toDate() ?? null,
             updated_at: data.updated_at?.toDate() ?? null,
          };
@@ -110,14 +115,27 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string; 
 
 
    // 마지막 값 구분 추가
+
+   // 1번쨰 소스 
    // const lastDoc = slicedDocs[slicedDocs.length - 1];
    // const nextCursor = hasNext ? lastDoc?.data().created_at?.toDate().toISOString() : null;
    // const nextCursorId = hasNext ? lastDoc?.id : null;
 
    // const lastDoc = hasNext ? docs[limit] : docs[docs.length - 1];
+   // 2번쨰 소스 
+   // const lastDoc = slicedDocs[slicedDocs.length - 1];
+   // const nextCursor = hasNext ? lastDoc?.data().created_at?.toDate().toISOString() : null;
+   // const nextCursorId = hasNext ? lastDoc?.id : null;
+
    const lastDoc = slicedDocs[slicedDocs.length - 1];
-   const nextCursor = hasNext ? lastDoc?.data().created_at?.toDate().toISOString() : null;
-   const nextCursorId = hasNext ? lastDoc?.id : null;
+   const createdAt = lastDoc?.data().created_at;
+
+   const nextCursor = lastDoc && createdAt instanceof admin.firestore.Timestamp
+      ? createdAt.toDate().toISOString()
+      : null;
+
+   const nextCursorId = lastDoc?.id ?? null;
+
 
    return NextResponse.json({ state: "SUCCESS", message: "성공", data: fetchedComment, nextCursor, nextCursorId, }, { status: 200 });
 };

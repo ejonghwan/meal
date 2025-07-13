@@ -35,6 +35,9 @@ const RestaurantTable = ({ restaurantData, restaurantSuccess, restaurantLoading,
         {restaurantSuccess && Array.isArray(restaurantData) ? restaurantData?.map(item => {
           return (
             <AccordionItem
+              classNames={{
+                indicator: "rotate-[270deg] data-[open=true]:rotate-[90deg]",
+              }}
               key={item.id}
               aria-label={`Accordion ${item.id}`}
               title={

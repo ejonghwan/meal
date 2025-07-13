@@ -121,7 +121,7 @@ const CommentItem = ({ comment, setHasMyComment }: Props) => {
             {comment.user && (
                <UserFirstName
                   user={comment.user}
-                  className={'rounded-[50%] bg-gray-700 text-white text-[14px] size-[35px] p-[5px] basis-auto grow-[0] flex-shrink-[0] m-0'}
+                  className={'rounded-[50%] bg-gray-700 text-white text-[13px] size-[30px] flex justify-center items-center p-[5px] basis-auto grow-[0] flex-shrink-[0] m-0'}
                />
             )}
             <div className='w-full text-[14px]'>
@@ -184,6 +184,7 @@ const CommentItem = ({ comment, setHasMyComment }: Props) => {
                            commentId={comment.id}
                            restaurantId={comment.restaurantId}
                            hasMyRecomment={false} //임시
+                           childCommentLen={comment.recommentLen}
                         />
                      </div>
                   </>

@@ -7,7 +7,7 @@ import { useSearchParams } from 'next/navigation'
 
 
 // 모든 댓글 로드
-export const useLoadRecommentListInfinite = (payload: LoadRecommentData) => {
+export const useLoadRecommentListInfinite = (payload: LoadRecommentData, options = {}) => {
 
    const { parentCommentId, limet, userId } = payload;
 
@@ -25,7 +25,8 @@ export const useLoadRecommentListInfinite = (payload: LoadRecommentData) => {
          // 백엔드에서 넘겨준 다음 커서 정보
          // console.log('백엔드에서 넘겨준 다음 커서정보', lastPage)
          // if (!lastPage?.nextCursor || !lastPage?.nextCursorId) return undefined;
-         if (lastPage?.data?.length < limet) return undefined;
+         // if (lastPage?.data?.length < limet) return undefined;
+         if (!lastPage.hasNext) return undefined;
 
          return {
             cursor: lastPage.nextCursor,
@@ -37,6 +38,7 @@ export const useLoadRecommentListInfinite = (payload: LoadRecommentData) => {
          cursorId: null,
       },
       staleTime: 1000 * 60 * 10, //10분
+      ...options
    });
 };
 

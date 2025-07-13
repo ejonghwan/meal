@@ -1,0 +1,15 @@
+.recomment--acc {
+   padding: 0;
+   margin-top: 10px;
+}
+
+.recomment--acc [data-slot="title"] {
+   font-size: 12px;
+   width: auto;
+}
+
+.recomment--acc [data-slot="trigger"] {
+   padding: 0;
+   width: auto;
+   gap: 5px;
+}

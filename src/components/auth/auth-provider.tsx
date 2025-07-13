@@ -40,11 +40,15 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
                // 비로그인 페이지에서도 유저가 있으면 load api로 검증 후 유저를 가져옴. 이건 나중에 손보기
                const verifiedUser = await verifyToken(token);
+
+               // console.log('??????????????????, ', verifiedUser)
+
                setUserInfo({
-                  uid: verifiedUser.data.uid,
-                  email: verifiedUser.data.email,
-                  metadata: verifiedUser.data.metadata,
-                  providerData: verifiedUser.data.providerData
+                  // uid: verifiedUser.data.uid,
+                  // email: verifiedUser.data.email,
+                  // metadata: verifiedUser.data.metadata,
+                  // providerData: verifiedUser.data.providerData
+                  ...verifiedUser.data
                });
             } catch (err) {
 

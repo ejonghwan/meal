@@ -12,7 +12,7 @@ import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure
 import { PiDotsThreeVerticalBold } from 'react-icons/pi'
 import RecommentEdit from './recomment-edit'
 import { useDeleteRecomment, useLikeRecomment } from '@/src/store/queryies/recomment/recommentQueries'
-
+import { useRouter, useSearchParams } from 'next/navigation'
 
 
 
@@ -28,8 +28,16 @@ const RecommentItem = ({ recomment }) => {
    const targetRef = useRef(null);
    const { moveProps } = useDraggable({ targetRef, isDisabled: !isOpen });
    const [isEditComment, setIsEditComment] = useState(false)
+   const router = useRouter()
+   const searchParams = useSearchParams()
+   const category = searchParams.get('search') || '전체'
 
    const handleRecommentView = () => {
+      if (!userInfo?.uid) {
+         alert('로그인 후 가능합니다')
+         router.push(`/login?prevpage=${category}`)
+         return;
+      }
       // setIsRecomment(true)
       setCreateRecomment(true)
    }
@@ -109,6 +117,8 @@ const RecommentItem = ({ recomment }) => {
                         className='flex items-center mr-[15px]'
                         icoClassName='rounded-[50%] size-[18px] mr-[5px] p-[0px] min-w-0'
                      />
+
+                     {/* 답글 */}
                      <div>
                         <Button type="button" variant="light" className='text-[12px] px-[5px] py-[2px] !w-[20px] h-[20px] min-w-[50px] ml-[auto]' onPress={handleRecommentView}>답글</Button>
                      </div>

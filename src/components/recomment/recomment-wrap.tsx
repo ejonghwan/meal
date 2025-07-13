@@ -37,7 +37,7 @@ const RecommentWrap = ({ isRecomment, handleRecommentView, hasMyRecomment, resta
       isError: recommentError,
       isLoading: recommentLoading,
       isSuccess: recommentSuccess
-   } = useLoadRecommentListInfinite({ parentCommentId: commentId, limet: 5, userId: userInfo.uid }, { enabled: isRecommentView })
+   } = useLoadRecommentListInfinite({ parentCommentId: commentId, limet: 5, userId: userInfo?.uid }, { enabled: isRecommentView })
 
 
    const handleClickRecommentView = () => {

@@ -10,6 +10,7 @@ import { getRelativeTime, timeForToday } from '@/src/utillity/utils';
 import CommentEdit from '@/src/components/comment/comment-edit';
 import { useDeleteComment, useLikeComment } from '@/src/store/queryies/comment/commentQueries';
 import _ from 'lodash'
+import { useRouter, useSearchParams } from 'next/navigation'
 import {
    useDisclosure, Modal,
    ModalContent,
@@ -75,7 +76,9 @@ const CommentItem = ({ comment, setHasMyComment }: Props) => {
    const targetRef = useRef(null);
    const { moveProps } = useDraggable({ targetRef, isDisabled: !isOpen });
    const { userInfo } = useUserStore()
-
+   const router = useRouter();
+   const searchParams = useSearchParams()
+   const category = searchParams.get('search') || '전체'
 
    const [isEditComment, setIsEditComment] = useState(false)
    const [isRecomment, setIsRecomment] = useState(false)
@@ -93,6 +96,11 @@ const CommentItem = ({ comment, setHasMyComment }: Props) => {
    }
 
    const handleRecommentView = () => {
+      if (!userInfo?.uid) {
+         alert('로그인 후 가능합니다')
+         router.push(`/login?prevpage=${category}`)
+         return;
+      }
       setIsRecomment(true)
    }
 
@@ -174,6 +182,7 @@ const CommentItem = ({ comment, setHasMyComment }: Props) => {
                         <div>
                            <Button type="button" variant="light" className='text-[12px] px-[5px] py-[2px] !w-[20px] h-[20px] min-w-[50px] ml-[auto]' onPress={handleRecommentView}>답글</Button>
                         </div>
+
                      </div>
 
                      {/* 대댓글 */}

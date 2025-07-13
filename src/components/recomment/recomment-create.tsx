@@ -27,7 +27,7 @@ const RecommentCreate = ({ hasMyRecomment, handleRecommentView, setIsRecommentVi
    const [isRecommentInput, setIsRecommentInput] = useState(false)
    const [isRecommentBtn, setIsRecommentBtn] = useState(false)
    const [recommentData, setRecommentData] = useState({
-      userId: userInfo.uid,
+      userId: userInfo?.uid,
       restaurantId: restaurantId,
       parentCommentId: commentId,
       content: '',

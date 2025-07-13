@@ -13,12 +13,13 @@ import { ratingSelectOPT } from '@/src/components/comment/comment-data'
 
 interface Props {
    handleRecommentView: (val: boolean) => void;
+   setIsRecommentView: (val: boolean) => void;
    restaurantId: string;
    commentId: string;
    hasMyRecomment: boolean;
 }
 
-const RecommentCreate = ({ hasMyRecomment, handleRecommentView, restaurantId, commentId }: Props) => {
+const RecommentCreate = ({ hasMyRecomment, handleRecommentView, setIsRecommentView, restaurantId, commentId }: Props) => {
 
 
    const { mutate: createRecommentMutate, isError: createRecommentError, isSuccess: createRecommentSuccess, isPending: createRecommentPending } = useCreateRecomment()
@@ -74,6 +75,14 @@ const RecommentCreate = ({ hasMyRecomment, handleRecommentView, restaurantId, co
 
 
    // useEffect(() => { console.log(commentData) }, [commentData])
+
+   useEffect(() => {
+      // 댓글 생성 시 답글보기 열림
+      if (createRecommentSuccess) {
+         setIsRecommentView(true)
+      }
+
+   }, [createRecommentSuccess])
 
 
    return (

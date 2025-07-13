@@ -7,8 +7,8 @@ import { useLoadRecommentListInfinite } from '@/src/store/queryies/recomment/rec
 import { useUserStore } from '@/src/store/front/user';
 import { Button } from '@heroui/button';
 import { Accordion, AccordionItem } from '@heroui/accordion';
-import '@/src/styles/recomment/recomment.css'
 import RecommentSkeleton from '@/src/components/recomment/recomment-skeleton';
+import '@/src/styles/recomment/recomment.css'
 
 
 
@@ -22,8 +22,11 @@ interface Props {
 }
 
 const RecommentWrap = ({ isRecomment, handleRecommentView, hasMyRecomment, restaurantId, commentId, childCommentLen }: Props) => {
+
+
    const { userInfo } = useUserStore()
    const [isRecommentView, setIsRecommentView] = useState(false) // 대댓글 보기
+   // const [isAccOpen, setIsAccOpen] = useState(false) // 생성 시 아코디언 열기
 
 
    const {
@@ -45,8 +48,6 @@ const RecommentWrap = ({ isRecomment, handleRecommentView, hasMyRecomment, resta
       fetchNextPage()
    }
 
-   // 270 90 
-
    return (
       <>
          {/* 대댓글 생성 */}
@@ -54,6 +55,7 @@ const RecommentWrap = ({ isRecomment, handleRecommentView, hasMyRecomment, resta
             {isRecomment &&
                <RecommentCreate
                   handleRecommentView={handleRecommentView}
+                  setIsRecommentView={setIsRecommentView}
                   hasMyRecomment={hasMyRecomment}
                   restaurantId={restaurantId}
                   commentId={commentId}
@@ -63,7 +65,13 @@ const RecommentWrap = ({ isRecomment, handleRecommentView, hasMyRecomment, resta
          {childCommentLen > 0 && (
             <div>
                {/* <Button type="button" variant="light" className='text-[12px] px-[5px] py-[2px] !w-[20px] h-[20px] min-w-[50px] ml-[auto]' onPress={handleClickRecommentView}>답글 보기</Button> */}
-               <Accordion selectionMode="multiple" className='recomment--acc'>
+               <Accordion
+                  selectionMode="multiple"
+                  className='recomment--acc'
+               // isCompact
+               // selectedKeys={isAccOpen ? new Set(["1"]) : new Set([])}
+               >
+
                   <AccordionItem key="1" aria-label="답글 보기"
                      classNames={{
                         indicator: "rotate-[270deg] data-[open=true]:rotate-[90deg]",
@@ -76,6 +84,10 @@ const RecommentWrap = ({ isRecomment, handleRecommentView, hasMyRecomment, resta
                      }
                      onPress={handleClickRecommentView}
                   >
+
+                     {/* {스켈레튼} */}
+                     {recommentLoading && (<RecommentSkeleton len={3} />)}
+
                      {/* 대댓글 리스트 */}
                      {isRecommentView && (
                         <div>
@@ -100,7 +112,7 @@ const RecommentWrap = ({ isRecomment, handleRecommentView, hasMyRecomment, resta
                   </AccordionItem>
 
                </Accordion>
-            </div>
+            </div >
          )}
       </>
    )

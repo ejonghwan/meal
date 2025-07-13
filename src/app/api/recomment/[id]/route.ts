@@ -131,47 +131,44 @@ export const PATCH = withAuth(async (req: NextRequest, user, context: { params: 
 
 
 /*
-    @ path    DELETE /api/comment/:commentId
-    @ doc     댓글 삭제
+    @ path    DELETE /api/recomment/:recommentId
+    @ doc     대댓글 삭제
     @ access  public
 */
 export const DELETE = withAuth(async (req: NextRequest, user, context: { params: { id: string } }) => {
     try {
-        const { params: { id: commentId } } = context;
+        const { params: { id: recommentId } } = context;
         // console.log('back commentid ??', commentId)
 
         const body = await req.json(); // 수정할 데이터
-        const { rating, restaurantId } = body;
+        const { parentCommentId, restaurantId } = body;
 
-        if (!rating) throw new Error('back : rating이 없음')
-        console.log('rating backend ?', rating)
 
         // 문서 조회
-        const docRef = adminDB.collection("comments").doc(commentId);
+        const docRef = adminDB.collection("recomments").doc(recommentId);
         const docSnap = await docRef.get();
 
         // 댓글 체크 후 삭제
         if (!docSnap.exists) return NextResponse.json({ state: "NOT_FOUND", message: "해당 글이 존재하지 않습니다." }, { status: 404 });
         await docRef.delete();
 
-        // 삭제 완료 후 글에서 평균 빼기
-        // 추가. rating 받아서 글에 평점 추가해야함. 검증 완료
-        const restaurantRef = adminDB.collection("restaurant").doc(restaurantId);
-        const restaurantSnapshot = await restaurantRef.get();
-        if (!restaurantSnapshot.exists) return NextResponse.json({ state: "FAILURE", message: "레스토랑이 존재하지 않습니다.", }, { status: 404 });
+        let recommentLen = null;
+        if (docSnap.exists) {
+            // 개수업데이트
+            const commentRef = adminDB.collection("comments").doc(parentCommentId);
+            const commentSnapshot = await commentRef.get();
+            if (!commentSnapshot.exists) return NextResponse.json({ state: "FAILURE", message: "대댓글이 존재하지 않습니다." }, { status: 404 });
 
-        const restaurantData = restaurantSnapshot.data();
-        if (!restaurantData) return NextResponse.json({ state: "FAILURE", message: "레스토랑 데이터가 없습니다.", }, { status: 404 });
+            const commentData = commentSnapshot.data();
+            if (!commentData) return NextResponse.json({ state: "FAILURE", message: "대댓글 데이터가 없습니다." }, { status: 404 });
 
-        const currentRating = parseFloat(restaurantData.totalRating) || 0;
-        const newRating = 2 * currentRating - parseFloat(rating); // 토탈 평균에서 삭제 글 평균 빼기
-
-        // console.log('delete total rating calc??', newRating)
-
-        await restaurantRef.update({ totalRating: newRating.toString(), commentCount: Number(restaurantSnapshot.data().commentCount) - 1 });
+            recommentLen = Number(commentSnapshot.data().recommentLen) - 1
+            await commentRef.update({ recommentLen: Number(commentSnapshot.data().recommentLen) === 0 ? 0 : recommentLen });
+        }
 
 
-        return NextResponse.json({ state: "SUCCESS", message: "글이 성공적으로 삭제되었습니다.", data: { newTotalRating: newRating } }, { status: 200 });
+
+        return NextResponse.json({ state: "SUCCESS", message: "글이 성공적으로 삭제되었습니다.", data: { recommentId, parentCommentId, restaurantId, recommentLen } }, { status: 200 });
 
     } catch (error) {
         console.error("글 삭제 중 오류:", error);

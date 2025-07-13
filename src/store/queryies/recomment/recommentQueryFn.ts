@@ -200,7 +200,7 @@ export const onDeleteRecommentAPI = async (payload: DeleteRecommentData) => {
     try {
         console.log('payload?', payload)
         const savedToken = localStorage.getItem('x-acc-token');
-        const { userId, recommentId, restaurantId } = payload;
+        const { userId, recommentId, restaurantId, parentCommentId } = payload;
         const options: ExtendsRequestInit = {
             method: "DELETE",
             headers: {
@@ -208,7 +208,7 @@ export const onDeleteRecommentAPI = async (payload: DeleteRecommentData) => {
                 "x-acc-token": `Bearer ${savedToken}`,
                 // "Authorization": `Bearer ${token}`,
             },
-            body: JSON.stringify({ restaurantId, userId }),
+            body: JSON.stringify({ restaurantId, userId, parentCommentId }),
             next: { tags: ['recomment', 'delete'] },
             cache: "no-store",
             credentials: 'include'

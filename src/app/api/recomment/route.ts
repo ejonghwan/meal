@@ -27,8 +27,9 @@ export const POST = withAuth(async (req: NextRequest) => {
         await recommentRef.set(recommentData); // ✅ admin SDK로 접근하면 권한 체크 안 함
         const selectData = (await recommentRef.get()).data()
 
+        let recommentLen = null;
         if (selectData) {
-            // 추가. rating 받아서 글에 평점 추가해야함. 코드 검증완료
+            // 개수업데이트
             const commentRef = adminDB.collection("comments").doc(parentCommentId);
             const commentSnapshot = await commentRef.get();
             if (!commentSnapshot.exists) return NextResponse.json({ state: "FAILURE", message: "대댓글이 존재하지 않습니다." }, { status: 404 });
@@ -36,14 +37,17 @@ export const POST = withAuth(async (req: NextRequest) => {
             const commentData = commentSnapshot.data();
             if (!commentData) return NextResponse.json({ state: "FAILURE", message: "대댓글 데이터가 없습니다." }, { status: 404 });
 
-            await commentRef.update({ recommentLen: Number(commentSnapshot.data().recommentLen) + 1 });
+            recommentLen = Number(commentSnapshot.data().recommentLen) + 1
+            await commentRef.update({ recommentLen: recommentLen });
         }
+
 
         return NextResponse.json({
             state: "SUCCESS",
             message: "추가",
             data: {
                 recommentId: recommentRef.id,
+                recommentLen: recommentLen,
                 ...selectData
             },
         }, { status: 201 });

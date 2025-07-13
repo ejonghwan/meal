@@ -4,6 +4,7 @@ import { restaurantKeys } from '@/src/store/queryies/restaurant/restaurantKeys'
 import { onLoadRecommentListAPI, onLoadRecommentDetailAPI, onCreateRecommentAPI, onEditRecommentAPI, onDeleteRecommentAPI, onLikeRecommentAPI } from '@/src/store/queryies/recomment/recommentQueryFn'
 import { RecommentData, DeleteRecommentData, EditRecommentData, LikeRecommentData, LoadRecommentData } from '@/src/types/data/recomment'
 import { useSearchParams } from 'next/navigation'
+import { commentKeys } from '../comment/commentKeys'
 
 
 // 모든 댓글 로드
@@ -24,8 +25,6 @@ export const useLoadRecommentListInfinite = (payload: LoadRecommentData, options
       getNextPageParam: (lastPage) => {
          // 백엔드에서 넘겨준 다음 커서 정보
          // console.log('백엔드에서 넘겨준 다음 커서정보', lastPage)
-         // if (!lastPage?.nextCursor || !lastPage?.nextCursorId) return undefined;
-         // if (lastPage?.data?.length < limet) return undefined;
          if (!lastPage.hasNext) return undefined;
 
          return {
@@ -68,28 +67,30 @@ export const useCreateRecomment = () => {
 
    return useMutation({
       mutationFn: (payload: RecommentData) => {
-         console.log('query fn ? ', payload)
+         // console.log('query fn ? ', payload)
          return onCreateRecommentAPI(payload)
       },
       onSuccess: (data, variables) => {
-         // queryClient.invalidateQueries({ queryKey: recommentKeys.listAll(variables.restaurantId, 5) });
+         queryClient.invalidateQueries({ queryKey: recommentKeys.listAll(variables.parentCommentId, 5) });
          // console.log('쿼리쪽 edit data?', data, variables)
 
-         // 글에 달린 총평점도 업데이트  이거 쿼리키 수정해야됨
-         // queryClient.setQueryData(restaurantKeys.listAll(category), (oldData: any) => {
-         //    if (!oldData) return;
-         //    return {
-         //       ...oldData,
-         //       pages: oldData.pages.map((page) => ({
-         //          ...page,
-         //          data: page.data.map((restaurant) =>
-         //             restaurant.id === variables.restaurantId
-         //                ? { ...restaurant, totalRating: data.data.newTotalRating }
-         //                : restaurant
-         //          ),
-         //       })),
-         //    };
-         // });
+         // 댓글에 달린 총개수 업데이트
+         queryClient.setQueryData(commentKeys.listAll(variables.restaurantId, 5), (oldData: any) => {
+
+            // console.log('대댓 생성 olddata?', oldData, 'data?', data)
+            if (!oldData) return;
+            return {
+               ...oldData,
+               pages: oldData.pages.map((page) => ({
+                  ...page,
+                  data: page.data.map((comment) =>
+                     comment.id === variables.parentCommentId
+                        ? { ...comment, recommentLen: data.data.recommentLen }
+                        : comment
+                  ),
+               })),
+            };
+         });
 
 
       },
@@ -120,7 +121,7 @@ export const useEditreComment = () => {
             // variables : payload 값 
 
             console.log('쿼리쪽 edit data?', data, variables)
-            queryClient.setQueryData(recommentKeys.listAll(variables.restaurantId, 5), (oldData: any) => {
+            queryClient.setQueryData(recommentKeys.listAll(variables.parentCommentId, 5), (oldData: any) => {
                console.log('recomment oldData?', oldData, data)
                // return {
                //    ...oldData,
@@ -203,7 +204,7 @@ export const useLikeRecomment = () => {
       },
       onSuccess: (data, variables) => {
 
-         queryClient.setQueryData(recommentKeys.listAll(variables.restaurantId, 5), (oldData: any) => {
+         queryClient.setQueryData(recommentKeys.listAll(variables.parentCommentId, 5), (oldData: any) => {
             console.log('oldData??', oldData, 'data?', data, '변수?', variables)
             console.log('캐시 ?', queryClient.getQueryCache().findAll());
             if (!oldData) return;
@@ -244,20 +245,22 @@ export const useDeleteRecomment = () => {
          return onDeleteRecommentAPI(payload)
       },
       onSuccess: (data, variables) => {
-         queryClient.invalidateQueries({ queryKey: recommentKeys.listAll(variables.restaurantId, 5) });
+         queryClient.invalidateQueries({ queryKey: recommentKeys.listAll(variables.parentCommentId, 5) });
          console.log('쿼리쪽 delete data?', data, variables)
 
-         // 글에 달린 총평점도 업데이트  이거 쿼리키 수정해야됨
-         queryClient.setQueryData(restaurantKeys.listAll(category), (oldData: any) => {
+         // 댓글에 달린 총개수 업데이트
+         queryClient.setQueryData(commentKeys.listAll(variables.restaurantId, 5), (oldData: any) => {
+
+            // console.log('대댓 생성 olddata?', oldData, 'data?', data)
             if (!oldData) return;
             return {
                ...oldData,
                pages: oldData.pages.map((page) => ({
                   ...page,
-                  data: page.data.map((restaurant) =>
-                     restaurant.id === variables.restaurantId
-                        ? { ...restaurant, totalRating: data.data.newTotalRating }
-                        : restaurant
+                  data: page.data.map((comment) =>
+                     comment.id === variables.parentCommentId
+                        ? { ...comment, recommentLen: data.data.recommentLen }
+                        : comment
                   ),
                })),
             };

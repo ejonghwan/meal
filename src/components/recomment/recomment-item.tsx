@@ -8,6 +8,7 @@ import { Button } from '@heroui/button'
 import { timeForToday } from '@/src/utillity/utils'
 import Like from '../like/like'
 import RecommentCreate from './recomment-create'
+import _ from 'lodash'
 import { Modal, ModalBody, ModalContent, ModalFooter, ModalHeader, useDisclosure, useDraggable } from '@heroui/modal'
 import { PiDotsThreeVerticalBold } from 'react-icons/pi'
 import RecommentEdit from './recomment-edit'
@@ -45,7 +46,7 @@ const RecommentItem = ({ recomment }) => {
    // 의존성 경고때문에  ref로 수정
    const debouncedLike = useRef(_.debounce((userId: string, restaurantId: string, parentCommentId: string, recommentId: string) => {
       likeRecommentMutate({ userId, restaurantId, parentCommentId, recommentId });
-   }, 1200)).current;
+   }, 700)).current;
 
 
    const handleEditPopOpen = () => {

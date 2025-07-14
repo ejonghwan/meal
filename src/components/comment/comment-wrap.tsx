@@ -49,19 +49,7 @@ const CommentWrap = ({ restaurantId, setHasMyComment }: { restaurantId: string; 
    return (
       <div>
          {/* 로딩중 */}
-         {commentLoading && (
-            <>
-               {Array(10).fill('1').map((_, idx) => (
-                  <Fragment key={idx}>
-                     <div className="flex flex-wrap items-center bg-[#18181b] h-[88x] rounded-[12px] p-[5px] mb-[5px]">
-                        <Skeleton className='w-[35%] h-[10px] rounded-[20px]' />
-                        <Skeleton className='w-[70%] h-[10px] rounded-[20px] mt-[13px]' />
-                        <Skeleton className='w-[100%] h-[10px] rounded-[20px] mt-[3px]' />
-                     </div>
-                  </Fragment>
-               ))}
-            </>
-         )}
+         {commentLoading && (<CommentSkeleton len={3} />)}
 
          {/* 에러 발생 */}
          {commentError && <div>에러 발생</div>}

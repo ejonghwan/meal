@@ -19,7 +19,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 const RecommentItem = ({ recomment }) => {
 
    const { mutate: deleteRecommentMutate, isError: deleteRecommentError, isSuccess: deleteRecommentSuccess, isPending: deleteRecommentPending } = useDeleteRecomment()
-   // const { mutate: likeRecommentMutate, isError: likeRecommentError, isSuccess: likeRecommentSuccess, isPending: likeRecommentPending } = useLikeRecomment();
+   const { mutate: likeRecommentMutate, isError: likeRecommentError, isSuccess: likeRecommentSuccess, isPending: likeRecommentPending } = useLikeRecomment();
 
 
    const { userInfo } = useUserStore()
@@ -43,8 +43,8 @@ const RecommentItem = ({ recomment }) => {
    }
 
    // 의존성 경고때문에  ref로 수정
-   const debouncedLike = useRef(_.debounce((userId: string, commentId: string, restaurantId: string) => {
-      // likeCommentMutate({ userId, commentId, restaurantId });
+   const debouncedLike = useRef(_.debounce((userId: string, restaurantId: string, parentCommentId: string, recommentId: string) => {
+      likeRecommentMutate({ userId, restaurantId, parentCommentId, recommentId });
    }, 1200)).current;
 
 
@@ -110,10 +110,10 @@ const RecommentItem = ({ recomment }) => {
                      <Like
                         likeLength={recomment.like}
                         hasMyLike={recomment.hasMyLike}
-                        // isPending={likeCommentPending}
-                        // isSuccess={likeCommentSuccess}
-                        // isError={likeCommentError}
-                        // handleLikeClick={() => debouncedLike(userInfo.uid, comment.id, comment.restaurantId)}
+                        isPending={likeRecommentPending}
+                        isSuccess={likeRecommentSuccess}
+                        isError={likeRecommentError}
+                        handleLikeClick={() => debouncedLike(userInfo.uid, recomment.restaurantId, recomment.parentCommentId, recomment.id)}
                         className='flex items-center mr-[15px]'
                         icoClassName='rounded-[50%] size-[18px] mr-[5px] p-[0px] min-w-0'
                      />

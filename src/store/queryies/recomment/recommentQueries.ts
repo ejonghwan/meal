@@ -193,13 +193,12 @@ export const useEditreComment = () => {
 // 댓글 좋아요
 export const useLikeRecomment = () => {
 
-   const searchParams = useSearchParams()
-   const category = searchParams.get('search') || '전체'
 
    const queryClient = useQueryClient();
+
    return useMutation({
       mutationFn: (payload: LikeRecommentData) => {
-         console.log('payload commnetid', payload)
+         console.log('payload recommnetid', payload)
          return onLikeRecommentAPI(payload)
       },
       onSuccess: (data, variables) => {

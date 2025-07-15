@@ -14,6 +14,8 @@ import Like from '@/src/components/like/like';
 import CommentWrap from '@/src/components/comment/comment-wrap';
 import CommentCreate from '@/src/components/comment/comment-create';
 import { getRelativeTime, changeViewDate, timeForToday } from '@/src/utillity/utils';
+import { PiChatCircleTextDuotone, PiChatCenteredTextDuotone, PiPencilSimpleLineDuotone, PiStarDuotone, PiPhoneDuotone, PiDeviceMobileCameraDuotone, PiMapTrifoldDuotone, PiMapPinSimpleAreaDuotone, PiMapPinLineDuotone, PiPawPrintDuotone, PiCarrotDuotone, PiFileXDuotone, PiGearDuotone, PiXDuotone, PiTrashDuotone, PiCheckDuotone } from "react-icons/pi";
+import { Button } from '@heroui/button';
 
 
 
@@ -94,41 +96,66 @@ const RestaurantItem = ({ restaurant }) => {
     return (
         <div className="asd">
 
-            <div>
-                {/* 좋아요 싫어요 구현 */}
-                <Like
-                    handleLikeClick={() => debouncedLike(userInfo.uid, restaurant.id)}
-                    likeLength={restaurant.like}
-                    hasMyLike={restaurant.hasMyLike}
-                    isPending={likeRestaurantPending}
-                    isError={likeRestaurantError}
-                    isSuccess={likeRestaurantSuccess}
-                    className='flex items-center ml-[15px] gap-[4px]'
+            <div className='flex items-center mb-[10px]'>
+                {restaurant.user && (
+                    <UserFirstName
+                        user={restaurant.user}
+                        className={'rounded-[50%] bg-gray-700 text-white size-[30px] text-[14px] flex items-center justify-center p-[5px] mr-[10px]'}
+                    />
+                )}
+                <span>{restaurant.user.displayName}</span>
+                <div className='flex items-center gap-[15px] ml-auto'>
+                    {/* 좋아요 싫어요 구현 */}
+                    <Like
+                        handleLikeClick={() => debouncedLike(userInfo.uid, restaurant.id)}
+                        likeLength={restaurant.like}
+                        hasMyLike={restaurant.hasMyLike}
+                        isPending={likeRestaurantPending}
+                        isError={likeRestaurantError}
+                        isSuccess={likeRestaurantSuccess}
+                        className='flex items-center ml-[15px] gap-[2px]'
+                    />
 
-                />
-            </div>
-            {restaurant?.user?.uid === userInfo?.uid && (
-                <div>
-                    {isEdit ? (
-                        <>
-                            <button type='button' onClick={() => setIsEdit(prev => !prev)}>취소</button>
-                            <button type='button' onClick={handleEditComplate}>수정완료</button>
-                        </>
-                    ) : (
-                        <>
-                            <button type='button' onClick={() => setIsEdit(prev => !prev)}>수정</button>
-                            <button type='button' onClick={handleDelete}>삭제</button>
-                        </>
+                    {restaurant?.user?.uid === userInfo?.uid && (
+                        <div className='flex justify-end items-center gap-[15px]'>
+                            {isEdit ? (
+                                <>
+                                    {/* 내용 수정되면 디세이블 풀고 프라이마리로  */}
+                                    <button className='flex gap-[2px] items-center' type='button' onClick={() => setIsEdit(prev => !prev)}>
+                                        <span><PiXDuotone className='size-[22px]' /></span>
+                                        <span className='text-[13px] text-[#d3d3d3] mt-[2px]'>취소</span>
+                                    </button>
+                                    <button className='flex gap-[2px] items-center' type='button' onClick={handleEditComplate}>
+                                        <span><PiCheckDuotone className='size-[22px]' /></span>
+                                        <span className='text-[13px] text-[#d3d3d3] mt-[2px]'>완료</span>
+                                    </button>
+
+                                </>
+                            ) : (
+                                <>
+                                    <button className='flex gap-[2px] items-center' type='button' onClick={() => setIsEdit(prev => !prev)}>
+                                        <span><PiGearDuotone className='size-[22px]' /></span>
+                                        <span className='text-[13px] text-[#d3d3d3] mt-[2px]'>수정</span>
+                                    </button>
+                                    <button className='flex gap-[2px] items-center' type='button' onClick={handleDelete}>
+                                        {/* <span><PiFileXDuotone className='size-[22px]' /></span> */}
+                                        <span><PiTrashDuotone className='size-[22px]' /></span>
+                                        <span className='text-[13px] text-[#d3d3d3] mt-[2px]'>삭제</span>
+                                    </button>
+
+                                </>
+                            )}
+                        </div>
                     )}
                 </div>
-            )}
+            </div>
 
-            {restaurant.user && (
-                <UserFirstName
-                    user={restaurant.user}
-                    className={'rounded-[50%] bg-gray-700 text-white size-[40px] p-[5px]'}
-                />
-            )}
+            {/* PiMeteorBold 귀여운 운석 */}
+            {/* PiBowlFoodDuotone 밥아이콘 */}
+            {/* PiChefHatDuotone  요리모자  */}
+            {/* PiCheeseDuotone  치즈 */}
+            {/* PiCookieDuotone  쿠키 */}
+            {/* PiCowFill 흑우 */}
 
             {isEdit ? (
                 <>
@@ -144,22 +171,79 @@ const RestaurantItem = ({ restaurant }) => {
             ) : (
                 <>
                     {restaurant.mapInfo && <MapLoad mapData={{ name: restaurant.mapInfo.name, rating: restaurant.totalRating, location: { lat: restaurant.mapInfo.y, lng: restaurant.mapInfo.x } }} />}
-                    <ul>
-                        {restaurant.title && <li>{restaurant.title}</li>}
-                        {restaurant.content && <li>{restaurant.content}</li>}
-                        {restaurant.rating && <li> 작성자 평점 : {restaurant.rating}</li>}
-                        {restaurant.created_at && (<li>{changeViewDate(restaurant.created_at, 'second')}</li>)}
-                        {restaurant.updated_at && (<li>{timeForToday(restaurant.updated_at)} 수정됨</li>)}
-                        {restaurant.category && <li>{restaurant.category}</li>}
-                        {/* {restaurant.rating && <li>{restaurant.rating}</li>} */}
-                        {restaurant.totalRating && <li>총 평점 : {restaurant.totalRating}</li>}
-                        {/* 5.3.toFixed(1).includes('0') ? 5.0.toFixed(1).slice(0, 1) : 5.3.toFixed(1) */}
+                    <ul className='mt-[20px]'>
+                        {restaurant.title && (
+                            <li className='flex gap-[5px]'>
+                                <span><PiChatCircleTextDuotone className='text-[20px]' /></span>
+                                <span className='text-[14px] text-[#c4c4c4]'>
+                                    <span>상호명</span><br />
+                                    <span className='block mt-[5px] p-[10px] rounded-[14px] bg-[#27272a]'>{restaurant.title}</span>
+                                </span>
+                            </li>
+                        )}
+                        {restaurant.content && (
+                            <li className='flex gap-[5px] mt-[15px] '>
+                                <span><PiPencilSimpleLineDuotone className='text-[20px]' /></span>
+                                <span className='text-[14px] text-[#c4c4c4]'>
+                                    <span>리뷰</span><br />
+                                    <span className='block mt-[5px] p-[10px] rounded-[14px] bg-[#27272a]'>{restaurant.content}</span>
+                                </span>
+                            </li>
+                        )}
+                        {restaurant.mapInfo.adress && (
+                            <li className='flex gap-[5px] mt-[15px]'>
+                                <span><PiMapPinLineDuotone className='text-[20px]' /></span>
+                                <span className='text-[14px] text-[#c4c4c4]'>
+                                    <span>분류 / 주소</span><br />
+                                    <span className='inline-block mt-[5px] p-[10px] rounded-[14px] bg-[#27272a]'>{restaurant.mapInfo.category} 점</span>
+                                    <span className='inline-block mt-[5px] p-[10px] rounded-[14px] bg-[#27272a]'>{restaurant.mapInfo.adress} 점</span>
+                                </span>
+                            </li>
+                        )}
+                        {restaurant.mapInfo.phone && (
+                            <li className='flex gap-[5px] mt-[15px]'>
+                                {/* <span><PiPhoneDuotone className='text-[20px]' /></span> */}
+                                <span><PiDeviceMobileCameraDuotone className='text-[20px]' /></span>
+                                <span className='text-[14px] text-[#c4c4c4]'>
+                                    <span>전화번호</span><br />
+                                    <span className='inline-block mt-[5px] p-[10px] rounded-[14px] bg-[#27272a]'>{restaurant.mapInfo.phone}</span>
+                                </span>
+                            </li>
+                        )}
+                        {restaurant.category && (
+                            <li className='flex gap-[5px] mt-[15px]'>
+                                <span><PiCarrotDuotone className='text-[20px]' /></span>
+                                <span className='text-[14px] text-[#c4c4c4]'>
+                                    <span>카테고리</span><br />
+                                    <span className='inline-block mt-[5px] p-[10px] rounded-[14px] bg-[#27272a]'>{restaurant.category}</span>
+                                </span>
+                            </li>
+                        )}
+                        {restaurant.rating && (
+                            <li className='flex gap-[5px] mt-[15px]'>
+                                <span><PiStarDuotone className='text-[20px]' /></span>
+                                <span className='text-[14px] text-[#c4c4c4]'>
+                                    <span>평점</span><br />
+                                    <span className='inline-block mt-[5px] p-[10px] rounded-[14px] bg-[#27272a]'>글쓴이 점수 {restaurant.rating} 점</span><br />
+                                    <span className='inline-block mt-[5px] p-[10px] rounded-[14px] bg-[#27272a]'>총 점수 {restaurant.totalRating} 점</span>
+                                </span>
+                            </li>
+                        )}
 
-                        {<li>댓글 개수 : {restaurant.commentCount}</li>}
-                        {<li>대댓글 개수 : {restaurant.recommentCount}</li>}
+                        {/* PiPawPrintDuotone  */}
+                        {/* {restaurant.created_at && (<li>{changeViewDate(restaurant.created_at, 'second')}</li>)} */}
+                        {/* {restaurant.updated_at && (<li>{timeForToday(restaurant.updated_at)} 수정됨</li>)} */}
+                        {/* {restaurant.category && <li>카테고리 : {restaurant.category}</li>} */}
+                        {/* {restaurant.rating && <li>{restaurant.rating}</li>} */}
+                        {/* {restaurant.totalRating && <li>총 평점 : {restaurant.totalRating}</li>} */}
+                        {/* 5.3.toFixed(1).includes('0') ? 5.0.toFixed(1).slice(0, 1) : 5.3.toFixed(1) */}
+                        {/* {<li>댓글 개수 : {restaurant.commentCount}</li>} */}
+                        {/* {<li>대댓글 개수 : {restaurant.recommentCount}</li>} */}
                     </ul>
                 </>
             )}
+
+
 
             {/* create comment */}
             {/* ui는 나오게 하고 비로그인 시 로그인 페이지로 넘기는게 나을듯 */}

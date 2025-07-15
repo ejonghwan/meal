@@ -120,7 +120,7 @@ const LoginForm = () => {
 
     // 로그인된 유저는 아예 못접근하게 막아야됨. 로그인 창이 보이는거 로딩으로 변경시키기
     useEffect(() => {
-        if (userInfo) router.push(`/home?search=${prevpage}`)
+        if (userInfo) router.push(`/home?search=${prevpage === null ? '전체' : prevpage}`)
 
     }, [userInfo])
     if (userInfo) return null;

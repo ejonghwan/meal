@@ -5,7 +5,7 @@ import RestaurantItem from "@/src/components/restaurant/restaurant-item";
 
 
 import { Accordion, AccordionItem } from "@heroui/accordion";
-import { PiBowlFoodDuotone, PiStarDuotone, PiStarFill, PiCakeDuotone, PiChatTeardropDotsDuotone } from "react-icons/pi";
+import { PiBowlFoodDuotone, PiStarDuotone, PiStarFill, PiCakeDuotone, PiChatTeardropDotsDuotone, PiHeartDuotone } from "react-icons/pi";
 import { Button } from "@heroui/button";
 import { changeViewDate, timeForToday } from "@/src/utillity/utils";
 import Link from "next/link";
@@ -41,36 +41,52 @@ const RestaurantTable = ({ restaurantData, restaurantSuccess, restaurantLoading,
               key={item.id}
               aria-label={`Accordion ${item.id}`}
               title={
-                <div className="">
+                <>
 
-                  <div className="flex items-center">
-                    <div className="flex items-center">
-                      {/* 평점 */}
-                      <PiStarFill className="size-[16px] text-[#ebdf32] mr-[5px]" />
-                      <span className="text-[13px] text-[#999] flex items-center gap-[1px]">
-                        <span className="text-[#ebdf32] font-medium">{Number(item.totalRating).toFixed(1)}</span>
-                        <span className="text-[13px] ">/</span>5
-                      </span>
+                  <div className="flex ">
+                    <div className="flex flex-wrap items-center">
+                      <span className="text-[13px] text-[#999]">{item.user.displayName}</span>
+                      <i className="block size-[3px] bg-[#505050] rounded-[50%] mx-[5px]"></i>
+                      <div className="text-[13px] text-[#999]">
+                        {changeViewDate(item.created_at, 'day').slice(2)}&nbsp;
+                      </div>
+                      {item.updated_at && <i className="block size-[3px] bg-[#505050] rounded-[50%] mx-[5px]"></i>}
+                      <div className="text-[13px] text-[#999]">
+                        {item.updated_at && <span className="text-[13px]">{timeForToday(item.updated_at)} 수정</span>}
+                      </div>
+
+
                     </div>
-                    <i className="block size-[3px] bg-[#505050] rounded-[50%] mx-[7px]"></i>
-                    <div className="text-[13px] text-[#999]">
-                      {changeViewDate(item.created_at, 'day').slice(2)}
-                    </div>
-                    {item.updated_at && <i className="block size-[3px] bg-[#505050] rounded-[50%] mx-[7px]"></i>}
-                    <div className="text-[13px] text-[#999]">
-                      {item.updated_at && <span className="text-[13px]">{timeForToday(item.updated_at)} 수정됨</span>}
-                    </div>
-                    <div className="ml-auto">
+
+                    <div className="flex gap-[10px] ml-auto mr-[-25px]">
                       {/* 댓글 + 대댓글 개수 */}
                       <span className="flex items-center text-[13px] text-[#999]">
-                        <PiChatTeardropDotsDuotone className="size-[20px] mr-[2px]" />
-                        {Number(item.commentCount) + Number(item.recommentCount)}
+                        <PiHeartDuotone className={`${item.hasMyLike ? 'text-[#ff5151]' : ''} size-[20px] mr-[2px]`} />
+                        {Number(item.like)}
+                      </span>
+                      <span className="flex items-center text-[13px] text-[#999] relative">
+                        {/* <PiChatTeardropDotsDuotone className={`${item.hasMyComment ? 'text-[#e0e5e7]' : ''} size-[20px] mr-[2px]`} /> */}
+                        {item.hasMyComment && <span className="absolute top-[-16px] left-[2px] text-[11px] animate-bounce">my</span>}
+                        <PiChatTeardropDotsDuotone className={`${item.hasMyComment ? 'my_comment' : ''} size-[20px] mr-[2px]`} />
+                        {Number(item.commentCount ? item.commentCount : 0) + Number(item.recommentCount ? item.recommentCount : 0)}
                       </span>
                     </div>
                   </div>
+
+
+                  <div className="flex items-center">
+                    {/* 평점 */}
+                    <PiStarFill className="size-[16px] text-[#ebdf32] mr-[5px]" />
+                    <span className="text-[13px] text-[#999] flex items-center gap-[1px]">
+                      <span className="text-[#ebdf32] font-medium">{Number(item.totalRating).toFixed(1)}</span>
+                      <span className="text-[13px] ">/</span>5
+                    </span>
+
+                  </div>
+
                   <div className="text-[16px] mt-[10px] eps-1">{item.title}</div>
                   <div className="text-[14px] text-[#999] eps-2 mt-[5px]">{item.content}</div>
-                </div>
+                </>
               }
               className="px-[14px]"
             // startContent={''}

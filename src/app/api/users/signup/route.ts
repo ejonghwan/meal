@@ -5,6 +5,11 @@ import { admin, adminDB } from '@/src/data/firebaseAdmin'
 import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } from 'firebase/auth';
 
 
+/*
+  특이사항 : 
+    우선 가입 시키고 이메일 인증 후 인증 되지 않으면 회원 탈퇴 시키는 방식임. 파이어베이스 구조 이슈 
+*/
+
 
 /*
     @ path    POST /api/signup
@@ -20,6 +25,11 @@ export const POST = async (req: NextRequest) => {
     const result = await createUserWithEmailAndPassword(auth, email, password)
     await updateProfile(result.user, { displayName }) //프로필 업데이트
     await sendEmailVerification(result.user)
+
+    // await sendCustomEmail(email, {
+    // subject: "비밀번호를 재설정하세요",
+    // html: `<p>아래 버튼을 눌러 비밀번호를 변경하세요:</p><a href="${result.user.displayName}">재설정</a>`
+    // });
 
     // const signup = await signupEmail(email, password, displayName); //기존소스
 

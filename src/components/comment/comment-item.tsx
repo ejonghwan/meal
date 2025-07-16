@@ -111,8 +111,9 @@ const CommentItem = ({ comment, setHasMyComment }: Props) => {
    // 의존성 경고때문에  ref로 수정
    const debouncedLike = useRef(_.debounce((userId: string, commentId: string, restaurantId: string) => {
       likeCommentMutate({ userId, commentId, restaurantId });
-   }, 1500, { leading: true })).current;
-   // test 중 리딩 삭제 해야됨
+   }, 500, { leading: true, trailing: false })).current;
+   // { leading: true, trailing: false } 이 옵션없으면 1초 이후 마지막에.
+   // { leading: true, trailing: false } 이 옵션있으면 처음 실행 1초동안 동시실행 안함
 
 
 

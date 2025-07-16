@@ -14,6 +14,7 @@ import { PiDotsThreeVerticalBold } from 'react-icons/pi'
 import RecommentEdit from './recomment-edit'
 import { useDeleteRecomment, useLikeRecomment } from '@/src/store/queryies/recomment/recommentQueries'
 import { useRouter, useSearchParams } from 'next/navigation'
+import { PiArrowCircleRightDuotone } from "react-icons/pi";
 
 
 
@@ -46,7 +47,7 @@ const RecommentItem = ({ recomment }) => {
    // 의존성 경고때문에  ref로 수정
    const debouncedLike = useRef(_.debounce((userId: string, restaurantId: string, parentCommentId: string, recommentId: string) => {
       likeRecommentMutate({ userId, restaurantId, parentCommentId, recommentId });
-   }, 700)).current;
+   }, 500, { leading: true, trailing: false })).current;
 
 
    const handleEditPopOpen = () => {

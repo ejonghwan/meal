@@ -14,8 +14,9 @@ import Like from '@/src/components/like/like';
 import CommentWrap from '@/src/components/comment/comment-wrap';
 import CommentCreate from '@/src/components/comment/comment-create';
 import { getRelativeTime, changeViewDate, timeForToday } from '@/src/utillity/utils';
-import { PiChatCircleTextDuotone, PiChatCenteredTextDuotone, PiPencilSimpleLineDuotone, PiStarDuotone, PiPhoneDuotone, PiDeviceMobileCameraDuotone, PiMapTrifoldDuotone, PiMapPinSimpleAreaDuotone, PiMapPinLineDuotone, PiPawPrintDuotone, PiCarrotDuotone, PiFileXDuotone, PiGearDuotone, PiXDuotone, PiTrashDuotone, PiCheckDuotone } from "react-icons/pi";
+import { PiChatCircleTextDuotone, PiChatCenteredTextDuotone, PiPencilSimpleLineDuotone, PiStarDuotone, PiPhoneDuotone, PiDeviceMobileCameraDuotone, PiMapTrifoldDuotone, PiMapPinSimpleAreaDuotone, PiMapPinLineDuotone, PiPawPrintDuotone, PiCarrotDuotone, PiFileXDuotone, PiGearDuotone, PiXDuotone, PiTrashDuotone, PiCheckDuotone, PiArrowCircleRightDuotone } from "react-icons/pi";
 import { Button } from '@heroui/button';
+import Link from 'next/link';
 
 
 
@@ -89,14 +90,14 @@ const RestaurantItem = ({ restaurant }) => {
     // 의존성 경고때문에  ref로 수정
     const debouncedLike = useRef(_.debounce((userId: string, restaurantId: string) => {
         likeRestaurantMutate({ userId, restaurantId });
-    }, 1200)).current;
+    }, 500, { leading: true, trailing: false })).current;
 
 
 
     return (
-        <div className="asd">
+        <div>
 
-            <div className='flex items-center mb-[10px]'>
+            <div className='flex flex-wrap items-center mb-[10px]'>
                 {restaurant.user && (
                     <UserFirstName
                         user={restaurant.user}
@@ -104,7 +105,7 @@ const RestaurantItem = ({ restaurant }) => {
                     />
                 )}
                 <span>{restaurant.user.displayName}</span>
-                <div className='flex items-center gap-[12px] ml-auto'>
+                <div className='flex flex-wrap items-center gap-[12px] ml-auto'>
                     {/* 좋아요 싫어요 구현 */}
                     <Like
                         handleLikeClick={() => debouncedLike(userInfo.uid, restaurant.id)}
@@ -149,6 +150,13 @@ const RestaurantItem = ({ restaurant }) => {
                             )}
                         </div>
                     )}
+
+                </div>
+                <div className='w-full flex items-center gap-[5px]'>
+                    <Link href="/">
+                        <span className='text-[13px] text-[#d3d3d3]'>상세글로 이동</span>
+                        <span><PiArrowCircleRightDuotone /></span>
+                    </Link>
                 </div>
             </div>
 
@@ -197,8 +205,8 @@ const RestaurantItem = ({ restaurant }) => {
                                 <span><PiMapPinLineDuotone className='text-[20px]' /></span>
                                 <span className='text-[14px] text-[#c4c4c4]'>
                                     <span>분류 / 주소</span><br />
-                                    <span className='inline-block mt-[5px] p-[10px] rounded-[14px] bg-[#27272a]'>{restaurant.mapInfo.category} 점</span>
-                                    <span className='inline-block mt-[5px] p-[10px] rounded-[14px] bg-[#27272a]'>{restaurant.mapInfo.adress} 점</span>
+                                    <span className='inline-block mt-[5px] p-[10px] rounded-[14px] bg-[#27272a]'>{restaurant.mapInfo.category}</span><br />
+                                    <span className='inline-block mt-[5px] p-[10px] rounded-[14px] bg-[#27272a]'>{restaurant.mapInfo.adress}</span>
                                 </span>
                             </li>
                         )}

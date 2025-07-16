@@ -111,7 +111,8 @@ const CommentItem = ({ comment, setHasMyComment }: Props) => {
    // 의존성 경고때문에  ref로 수정
    const debouncedLike = useRef(_.debounce((userId: string, commentId: string, restaurantId: string) => {
       likeCommentMutate({ userId, commentId, restaurantId });
-   }, 700)).current;
+   }, 1500, { leading: true })).current;
+   // test 중 리딩 삭제 해야됨
 
 
 

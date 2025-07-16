@@ -65,9 +65,9 @@ const RestaurantTable = ({ restaurantData, restaurantSuccess, restaurantLoading,
                         {Number(item.like)}
                       </span>
                       <span className="flex items-center text-[13px] text-[#999] relative">
-                        {/* <PiChatTeardropDotsDuotone className={`${item.hasMyComment ? 'text-[#e0e5e7]' : ''} size-[20px] mr-[2px]`} /> */}
-                        {item.hasMyComment && <span className="absolute top-[-16px] left-[2px] text-[11px] animate-bounce">my</span>}
-                        <PiChatTeardropDotsDuotone className={`${item.hasMyComment ? 'my_comment' : ''} size-[20px] mr-[2px]`} />
+                        <PiChatTeardropDotsDuotone className={`${item.hasMyComment ? 'text-[#e0e5e7]' : ''} size-[20px] mr-[2px]`} />
+                        {/* {item.hasMyComment && <span className="absolute top-[-16px] left-[2px] text-[11px] animate-bounce">my</span>} */}
+                        {/* <PiChatTeardropDotsDuotone className={`${item.hasMyComment ? 'my_comment' : ''} size-[20px] mr-[2px]`} /> */}
                         {Number(item.commentCount ? item.commentCount : 0) + Number(item.recommentCount ? item.recommentCount : 0)}
                       </span>
                     </div>

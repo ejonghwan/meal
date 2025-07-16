@@ -104,7 +104,7 @@ const RestaurantItem = ({ restaurant }) => {
                     />
                 )}
                 <span>{restaurant.user.displayName}</span>
-                <div className='flex items-center gap-[15px] ml-auto'>
+                <div className='flex items-center gap-[12px] ml-auto'>
                     {/* 좋아요 싫어요 구현 */}
                     <Like
                         handleLikeClick={() => debouncedLike(userInfo.uid, restaurant.id)}
@@ -113,20 +113,22 @@ const RestaurantItem = ({ restaurant }) => {
                         isPending={likeRestaurantPending}
                         isError={likeRestaurantError}
                         isSuccess={likeRestaurantSuccess}
-                        className='flex items-center ml-[15px] gap-[2px]'
+                        className='flex items-center gap-[2px] p-0'
+                        icoClassName='p-[0px] size-[18px] min-w-0'
+                        isLength={false}
                     />
 
                     {restaurant?.user?.uid === userInfo?.uid && (
-                        <div className='flex justify-end items-center gap-[15px]'>
+                        <div className='flex justify-end items-center gap-[10px]'>
                             {isEdit ? (
                                 <>
                                     {/* 내용 수정되면 디세이블 풀고 프라이마리로  */}
                                     <button className='flex gap-[2px] items-center' type='button' onClick={() => setIsEdit(prev => !prev)}>
-                                        <span><PiXDuotone className='size-[22px]' /></span>
+                                        <span><PiXDuotone className='size-[18px]' /></span>
                                         <span className='text-[13px] text-[#d3d3d3] mt-[2px]'>취소</span>
                                     </button>
                                     <button className='flex gap-[2px] items-center' type='button' onClick={handleEditComplate}>
-                                        <span><PiCheckDuotone className='size-[22px]' /></span>
+                                        <span><PiCheckDuotone className='size-[18px]' /></span>
                                         <span className='text-[13px] text-[#d3d3d3] mt-[2px]'>완료</span>
                                     </button>
 
@@ -134,12 +136,12 @@ const RestaurantItem = ({ restaurant }) => {
                             ) : (
                                 <>
                                     <button className='flex gap-[2px] items-center' type='button' onClick={() => setIsEdit(prev => !prev)}>
-                                        <span><PiGearDuotone className='size-[22px]' /></span>
+                                        <span><PiGearDuotone className='size-[18px]' /></span>
                                         <span className='text-[13px] text-[#d3d3d3] mt-[2px]'>수정</span>
                                     </button>
                                     <button className='flex gap-[2px] items-center' type='button' onClick={handleDelete}>
-                                        {/* <span><PiFileXDuotone className='size-[22px]' /></span> */}
-                                        <span><PiTrashDuotone className='size-[22px]' /></span>
+                                        {/* <span><PiFileXDuotone className='size-[18px]' /></span> */}
+                                        <span><PiTrashDuotone className='size-[18px]' /></span>
                                         <span className='text-[13px] text-[#d3d3d3] mt-[2px]'>삭제</span>
                                     </button>
 
@@ -224,8 +226,10 @@ const RestaurantItem = ({ restaurant }) => {
                                 <span><PiStarDuotone className='text-[20px]' /></span>
                                 <span className='text-[14px] text-[#c4c4c4]'>
                                     <span>평점</span><br />
-                                    <span className='inline-block mt-[5px] p-[10px] rounded-[14px] bg-[#27272a]'>글쓴이 점수 {restaurant.rating} 점</span><br />
-                                    <span className='inline-block mt-[5px] p-[10px] rounded-[14px] bg-[#27272a]'>총 점수 {restaurant.totalRating} 점</span>
+                                    <span className='flex gap-[5px]'>
+                                        <span className='inline-block mt-[5px] p-[10px] rounded-[14px] bg-[#27272a]'>글쓴이 점수 {restaurant.rating} 점</span>
+                                        <span className='inline-block mt-[5px] p-[10px] rounded-[14px] bg-[#27272a]'>총 점수 {restaurant.totalRating} 점</span>
+                                    </span>
                                 </span>
                             </li>
                         )}

@@ -100,7 +100,7 @@ export const useCreateRecomment = () => {
 
 
 // 댓글 수정
-export const useEditreComment = () => {
+export const useEditRecomment = () => {
 
    const searchParams = useSearchParams()
    const category = searchParams.get('search') || '전체'

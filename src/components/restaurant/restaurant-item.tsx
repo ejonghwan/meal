@@ -98,6 +98,12 @@ const RestaurantItem = ({ restaurant }) => {
         <div>
 
             <div className='flex flex-wrap items-center mb-[10px]'>
+                <div className='w-full flex items-center gap-[5px] justify-end'>
+                    <Link href={`/restaurant/detail/${restaurant.id}`} className='flex gap-[5px] items-center mb-[5px]'>
+                        <span className='text-[13px] text-[#d3d3d3]'>상세글 보기</span>
+                        <span><PiArrowCircleRightDuotone /></span>
+                    </Link>
+                </div>
                 {restaurant.user && (
                     <UserFirstName
                         user={restaurant.user}
@@ -151,12 +157,6 @@ const RestaurantItem = ({ restaurant }) => {
                         </div>
                     )}
 
-                </div>
-                <div className='w-full flex items-center gap-[5px]'>
-                    <Link href="/">
-                        <span className='text-[13px] text-[#d3d3d3]'>상세글로 이동</span>
-                        <span><PiArrowCircleRightDuotone /></span>
-                    </Link>
                 </div>
             </div>
 

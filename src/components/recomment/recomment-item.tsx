@@ -81,7 +81,7 @@ const RecommentItem = ({ recomment }) => {
          {isEditComment ? (
             <RecommentEdit
                recomment={recomment}
-               isEditComment={isEditComment}
+               isEditRecomment={isEditRecomment}
                setIsEditRecomment={setIsEditRecomment}
             />
          ) : (

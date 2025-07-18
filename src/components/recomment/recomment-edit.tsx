@@ -28,7 +28,7 @@ import { ratingSelectOPT } from '@/src/components/comment/comment-data'
 //     content: string;
 
 
-const RecommentEdit = ({ recomment, isEditComment, setIsEditRecomment }) => {
+const RecommentEdit = ({ recomment, isEditRecomment, setIsEditRecomment }) => {
 
 
    const { mutate: editCommentMutate, isError: editRecommentError, isSuccess: editRecommentSuccess, isPending: editRecommentPending } = useEditRecomment()

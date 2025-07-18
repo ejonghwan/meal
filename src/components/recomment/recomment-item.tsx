@@ -30,6 +30,7 @@ const RecommentItem = ({ recomment }) => {
    const targetRef = useRef(null);
    const { moveProps } = useDraggable({ targetRef, isDisabled: !isOpen });
    const [isEditComment, setIsEditComment] = useState(false)
+   const [isEditRecomment, setIsEditRecomment] = useState(false)
    const router = useRouter()
    const searchParams = useSearchParams()
    const category = searchParams.get('search') || '전체'
@@ -81,7 +82,7 @@ const RecommentItem = ({ recomment }) => {
             <RecommentEdit
                recomment={recomment}
                isEditComment={isEditComment}
-               setIsEditComment={setIsEditComment}
+               setIsEditRecomment={setIsEditRecomment}
             />
          ) : (
             <>

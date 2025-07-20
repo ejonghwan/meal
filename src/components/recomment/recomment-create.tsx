@@ -17,8 +17,8 @@ interface Props {
    restaurantId: string;
    commentId: string;
    hasMyRecomment: boolean;
-   parentReommentId?: string;
-   targetDisplayName?: string;
+   parentReommentId?: string | boolean;
+   targetDisplayName?: string | boolean;
 }
 
 const RecommentCreate = ({ hasMyRecomment, handleRecommentView, setIsRecommentView, restaurantId, commentId, parentReommentId, targetDisplayName }: Props) => {
@@ -32,7 +32,8 @@ const RecommentCreate = ({ hasMyRecomment, handleRecommentView, setIsRecommentVi
       userId: userInfo?.uid,
       restaurantId: restaurantId,
       parentCommentId: commentId,
-      content: `${targetDisplayName && '@' + targetDisplayName} `,
+      // content: '',
+      content: `${targetDisplayName !== false ? '@' + targetDisplayName : ''} `, //여기수정해야됨
       // rating: 3,
    })
 
@@ -91,7 +92,7 @@ const RecommentCreate = ({ hasMyRecomment, handleRecommentView, setIsRecommentVi
       <>
          <form onSubmit={handleCreateComment}>
             <div className='flex gap-[10px]'>
-               {!hasMyRecomment && <Input label="대댓글" type="text" variant={'underlined'} ref={commentRef} onFocus={handleCommentHover} onChange={handleWriteComment} value={`${recommentData.content}`} />}
+               {!hasMyRecomment && <Input label="대댓글" type="text" variant={'underlined'} ref={commentRef} onFocus={handleCommentHover} onChange={handleWriteComment} value={recommentData.content} />}
             </div>
             {isRecommentBtn && (
                <div className='flex justify-end gap-[5px] mt-[8px]'>

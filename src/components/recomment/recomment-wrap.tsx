@@ -59,6 +59,8 @@ const RecommentWrap = ({ isRecomment, handleRecommentView, hasMyRecomment, resta
                   hasMyRecomment={hasMyRecomment}
                   restaurantId={restaurantId}
                   commentId={commentId}
+                  targetDisplayName={false}
+                  parentReommentId={false}
                />}
          </div>
 

@@ -7,7 +7,7 @@ import Logo from '@/src/components/common/logo'
 const Footer = ({ className }) => {
    return (
       <footer className={`${className ? className : ''} bg-[#18181b]`}>
-         <ContentWrap>
+         <ContentWrap className='bg-bg300'>
             <Section variant='footer' size='large' className='py-[40px]'>
                <Link href="/home">
                   <Logo className={'text-[25px] text-gray3'}>MEAL ?</Logo>

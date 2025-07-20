@@ -101,7 +101,7 @@ const CommentItem = ({ comment, setHasMyComment }: Props) => {
          router.push(`/login?prevpage=${category}`)
          return;
       }
-      setIsRecomment(true)
+      setIsRecomment(prev => !prev)
    }
 
    const handleEditPopOpen = () => {
@@ -181,8 +181,13 @@ const CommentItem = ({ comment, setHasMyComment }: Props) => {
                         {/* <button type="button"><PiHeartBreakDuotone /></button> */}
 
                         {/* 대댓글 생성 */}
-                        <div>
-                           <Button type="button" variant="light" className='text-[12px] px-[5px] py-[2px] !w-[20px] h-[20px] min-w-[50px] ml-[auto]' onPress={handleRecommentView}>답글</Button>
+                        <div className='flex items-center'>
+                           <Button type="button" variant="light" className='min-w-[30px] text-[12px] px-[10px] py-[4px] !w-[10px] h-[20px] ml-[auto]' onPress={handleRecommentView}>답글</Button>
+
+                           <span aria-hidden="true" data-slot="indicator" data-open={isRecomment ? true : false} className="text-default-400 data-[open=true]:rotate-[90deg] rotate-[-90deg]">
+                              <svg aria-hidden="true" fill="none" focusable="false" height="1em" role="presentation" viewBox="0 0 24 24" width="1em" ><path d="M15.5 19l-7-7 7-7" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path>
+                              </svg>
+                           </span>
                         </div>
 
                      </div>

@@ -19,6 +19,7 @@ const Darkmode = dynamic(() => import('@/src/components/common/darkmode'), { ssr
 import { PiSignOutBold, PiAlienDuotone, PiKeyDuotone, PiFinnTheHumanDuotone, PiHeartDuotone, PiAtBold, PiBabyBold, PiChatCircleDotsDuotone, PiLinuxLogoDuotone, PiReceiptDuotone, PiFolderOpenDuotone, PiSunDuotone, PiMoonStarsDuotone, PiArrowRightBold } from "react-icons/pi";
 import { useTheme } from 'next-themes'
 import UserFirstName from '@/src/components/common/user-firstName'
+import Divider from './divider'
 
 
 
@@ -45,7 +46,7 @@ const Header = () => {
 
 
    return (
-      <ContentWrap>
+      <ContentWrap className='bg-bg200'>
          <Section variant='header' size='large' className=''>
             <header className='header flex justify-between items-center min-h-[40px]'>
 
@@ -196,12 +197,14 @@ const Header = () => {
                         </section>
                      </DrawerContent>
                   </Drawer>
+
                </section>
 
 
 
             </header>
          </Section>
+         <Divider />
       </ContentWrap>
 
    )

@@ -55,13 +55,13 @@ module.exports = {
         secondary2: 'var(--color-secondary2)', // secondary light color
         rating: 'yellow', // secondary heavy color
         semantic: '#FF4343', // accent
-        gray1: 'var(--color-gray1)', // gray-900
-        gray2: 'var(--color-gray2)', // gray-900
-        gray3: 'var(--color-gray3)', // gray-900
-        gray4: 'var(--color-gray4)', // gray-900
-        gray5: 'var(--color-gray5)', // gray-900
-        gray6: 'var(--color-gray6)', // gray-900
-        gray7: 'var(--color-gray7)', // gray-900
+        bg100: 'var(--color-bg100)', // gray-900
+        bg200: 'var(--color-bg200)', // gray-900
+        bg300: 'var(--color-bg300)', // gray-900
+        line100: 'var(--color-line100)', // gray-900
+        line200: 'var(--color-line200)', // gray-900
+        line300: 'var(--color-line300)', // gray-900
+        divider100: 'var(--color-divider100)', // gray-900
         gray8: 'var(--color-gray8)', // gray-900
         gray9: 'var(--color-gray9)', // gray-900
         gray10: 'var(--color-gray10)', // gray-900

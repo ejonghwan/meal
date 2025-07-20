@@ -9,14 +9,15 @@
 
 :root {
    /* light 모드 기본값 */
-   --color-gray1: #8B8B8B;
-   --color-gray2: #8B8B8B;
-   --color-gray3: #8B8B8B;
-   --color-gray4: #8B8B8B;
-   --color-gray5: #8B8B8B;
-   --color-gray6: #8B8B8B;
-   --color-gray7: #8B8B8B;
-   --color-gray8: #8B8B8B;
+   --color-bg100: #fff;
+   --color-bg200: #f7f7f7;
+   --color-bg300: #dedede;
+   --color-bg400: #e0e0e0;
+   --color-line100: #8B8B8B;
+   --color-line200: #8B8B8B;
+   --color-line300: #8B8B8B;
+   --color-star: #ebdf32;
+   --color-divider100: #8B8B8B;
    --color-gray9: #8B8B8B;
    --color-gray10: #8B8B8B;
    --scroll-color: rgb(108, 108, 108);
@@ -30,11 +31,16 @@
 
 .dark {
    /* 다크 모드에서 변경 */
-   --color-gray1: #8B8B8B;
-   --color-gray2: #8B8B8B;
-   --color-gray3: #3d4047;
-   --color-gray4: #8B8B8B;
-   --color-gray5: #8B8B8B;
+   --color-bg100: #000000;
+   --color-bg200: #111;
+   --color-bg300: #18181b;
+   --color-bg400: #3d4047;
+   /* --color-gray3: #3d4047; */
+   --color-line100: #262626;
+   --color-line200: #363636;
+   --color-line300: #4a4a4a;
+   --color-star: #ebdf32;
+   --color-divider100: #161616;
    --color-gray6: #8B8B8B;
    --color-gray7: #8B8B8B;
    --color-gray8: #8B8B8B;
@@ -53,7 +59,7 @@
 
 @layer base {
    html {
-      @apply text-black;
+      /* @apply text-black; */
    }
 
    html[lang='ko'] {
@@ -67,6 +73,7 @@
    /* 스크롤바 생성시 웹페이지 위치 이동 방지 100vw - 스크롤바넓이 */
    body {
       /* @apply pc:w-[calc(100vw-13px)] */
+      background-color: var(--color-bg200);
    }
 
    /* tailwind reset css가 완벽하지 않아서 추가해야함 */

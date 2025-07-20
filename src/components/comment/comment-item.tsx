@@ -185,7 +185,7 @@ const CommentItem = ({ comment, setHasMyComment }: Props) => {
                            <Button type="button" variant="light" className='min-w-[30px] text-[12px] px-[10px] py-[4px] !w-[10px] h-[20px] ml-[auto]' onPress={handleRecommentView}>답글</Button>
 
                            <span aria-hidden="true" data-slot="indicator" data-open={isRecomment ? true : false} className="text-default-400 data-[open=true]:rotate-[90deg] rotate-[-90deg]">
-                              <svg aria-hidden="true" fill="none" focusable="false" height="1em" role="presentation" viewBox="0 0 24 24" width="1em" ><path d="M15.5 19l-7-7 7-7" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"></path>
+                              <svg aria-hidden="true" fill="none" focusable="false" height="1em" role="presentation" viewBox="0 0 24 24" width="1em" ><path d="M15.5 19l-7-7 7-7" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5"></path>
                               </svg>
                            </span>
                         </div>

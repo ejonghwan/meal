@@ -31,18 +31,20 @@ const RecommentItem = ({ recomment }) => {
    const { moveProps } = useDraggable({ targetRef, isDisabled: !isOpen });
    const [isEditComment, setIsEditComment] = useState(false)
    const [isEditRecomment, setIsEditRecomment] = useState(false)
+   const [isRerecommentView, setIsRerecommentView] = useState(false)
    const router = useRouter()
    const searchParams = useSearchParams()
    const category = searchParams.get('search') || '전체'
 
-   const handleRecommentView = () => {
+   const handleRecommentView = (e) => {
       if (!userInfo?.uid) {
          alert('로그인 후 가능합니다')
          router.push(`/login?prevpage=${category}`)
          return;
       }
       // setIsRecomment(true)
-      setCreateRecomment(true)
+      console.log('ee?', e.target, recomment)
+      setCreateRecomment(prev => !prev)
    }
 
    // 의존성 경고때문에  ref로 수정
@@ -59,7 +61,6 @@ const RecommentItem = ({ recomment }) => {
       confirm('정말로 삭제하시겠습니까?')
       deleteRecommentMutate({ userId: recomment.uid, recommentId: recomment.id, restaurantId: recomment.restaurantId, parentCommentId: recomment.parentCommentId })
       // onClose()
-
    }
 
    const handleEditCommentView = () => {
@@ -97,7 +98,7 @@ const RecommentItem = ({ recomment }) => {
                </div>
 
                {/* 대댓 우측 */}
-               <div className=''>
+               <div className='w-full flex-1'>
                   <div>
                      <Button variant='light' className='min-w-[auto] px-[0px] py-[0px] h-auto'>
                         @{recomment?.user.displayName}
@@ -130,13 +131,19 @@ const RecommentItem = ({ recomment }) => {
 
                   {/* 대댓글에 답글 */}
                   <div>
-                     {/* {createRecomment &&
-                  <RecommentCreate
-                     handleRecommentView={handleRecommentView}
-                     hasMyRecomment={hasMyRecomment}
-                     restaurantId={restaurantId}
-                     commentId={commentId}
-                  />} */}
+
+                     {/* userId: recomment.uid, recommentId: recomment.id, restaurantId: recomment.restaurantId, parentCommentId: recomment.parentCommentId */}
+                     {createRecomment &&
+                        <RecommentCreate
+                           handleRecommentView={handleRecommentView}
+                           setIsRecommentView={setIsRerecommentView}
+                           hasMyRecomment={false}
+                           restaurantId={recomment.restaurantId}
+                           commentId={recomment.parentCommentId}
+                           parentReommentId={recomment.id}
+                           targetDisplayName={recomment.user.displayName}
+
+                        />}
                   </div>
 
                   {/* 자기 댓글이면 */}

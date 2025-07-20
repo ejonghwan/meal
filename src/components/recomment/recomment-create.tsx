@@ -17,9 +17,11 @@ interface Props {
    restaurantId: string;
    commentId: string;
    hasMyRecomment: boolean;
+   parentReommentId?: string;
+   targetDisplayName?: string;
 }
 
-const RecommentCreate = ({ hasMyRecomment, handleRecommentView, setIsRecommentView, restaurantId, commentId }: Props) => {
+const RecommentCreate = ({ hasMyRecomment, handleRecommentView, setIsRecommentView, restaurantId, commentId, parentReommentId, targetDisplayName }: Props) => {
 
 
    const { mutate: createRecommentMutate, isError: createRecommentError, isSuccess: createRecommentSuccess, isPending: createRecommentPending } = useCreateRecomment()
@@ -30,7 +32,7 @@ const RecommentCreate = ({ hasMyRecomment, handleRecommentView, setIsRecommentVi
       userId: userInfo?.uid,
       restaurantId: restaurantId,
       parentCommentId: commentId,
-      content: '',
+      content: `${targetDisplayName && '@' + targetDisplayName} `,
       // rating: 3,
    })
 
@@ -89,7 +91,7 @@ const RecommentCreate = ({ hasMyRecomment, handleRecommentView, setIsRecommentVi
       <>
          <form onSubmit={handleCreateComment}>
             <div className='flex gap-[10px]'>
-               {!hasMyRecomment && <Input label="대댓글" type="text" variant={'underlined'} ref={commentRef} onFocus={handleCommentHover} onChange={handleWriteComment} value={recommentData.content} />}
+               {!hasMyRecomment && <Input label="대댓글" type="text" variant={'underlined'} ref={commentRef} onFocus={handleCommentHover} onChange={handleWriteComment} value={`${recommentData.content}`} />}
             </div>
             {isRecommentBtn && (
                <div className='flex justify-end gap-[5px] mt-[8px]'>

@@ -10,7 +10,7 @@ import { withAuth } from "@/src/app/api/middleware/withAuth";
 export const POST = withAuth(async (req: NextRequest) => {
     try {
 
-        const { userId, restaurantId, content, parentCommentId } = await req.json();
+        const { userId, restaurantId, content, parentCommentId, parentReommentId = null, targetDisplayName = null } = await req.json();
         const recommentRef = adminDB.collection("recomments").doc(); // ✅ adminDB 사용
 
         const recommentData = {
@@ -20,6 +20,8 @@ export const POST = withAuth(async (req: NextRequest) => {
             content,
             like: 0,
             unlike: 0,
+            parentReommentId,
+            targetDisplayName,
             created_at: admin.firestore.Timestamp.fromDate(new Date()),
             updated_at: null,
         };

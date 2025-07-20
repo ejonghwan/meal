@@ -4,6 +4,8 @@ export interface RecommentData {
     restaurantId: string;
     parentCommentId: string;
     content: string;
+    parentReommentId?: string;
+    targetDisplayName?: string;
 }
 
 export interface EditRecommentData {

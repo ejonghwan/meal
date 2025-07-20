@@ -78,7 +78,7 @@ export const onLoadRecommentDetailAPI = async (recommentId: string) => {
 export const onCreateRecommentAPI = async (payload: RecommentData) => {
     try {
         const savedToken = localStorage.getItem('x-acc-token');
-        const { userId, content, restaurantId, parentCommentId } = payload;
+        const { userId, content, restaurantId, parentCommentId, parentReommentId, targetDisplayName } = payload;
 
         // 토큰 컴포넌트말고 여기서 보내서 테스트해보기
 
@@ -89,7 +89,7 @@ export const onCreateRecommentAPI = async (payload: RecommentData) => {
                 "x-acc-token": `Bearer ${savedToken}`,
                 // "Authorization": `Bearer ${token}`,
             },
-            body: JSON.stringify({ userId, content, restaurantId, parentCommentId }),
+            body: JSON.stringify({ userId, content, restaurantId, parentCommentId, parentReommentId, targetDisplayName }),
             next: { tags: ['recomment', 'create'] },
             cache: "no-store",
             credentials: 'include'

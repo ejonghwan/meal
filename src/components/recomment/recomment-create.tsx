@@ -33,7 +33,7 @@ const RecommentCreate = ({ hasMyRecomment, handleRecommentView, setIsRecommentVi
       restaurantId: restaurantId,
       parentCommentId: commentId,
       // content: '',
-      content: `${targetDisplayName !== false ? '@' + targetDisplayName : ''} `, //여기수정해야됨
+      content: '', //여기수정해야됨
       // rating: 3,
    })
 
@@ -92,7 +92,22 @@ const RecommentCreate = ({ hasMyRecomment, handleRecommentView, setIsRecommentVi
       <>
          <form onSubmit={handleCreateComment}>
             <div className='flex gap-[10px]'>
-               {!hasMyRecomment && <Input label="대댓글" type="text" variant={'underlined'} ref={commentRef} onFocus={handleCommentHover} onChange={handleWriteComment} value={recommentData.content} />}
+               {!hasMyRecomment &&
+                  <>
+
+                     <Input
+                        label={targetDisplayName !== false ? <span>{'대댓글 @' + targetDisplayName}</span> : '대댓글'}
+                        type="text"
+                        variant={'flat'}
+                        // underlined
+                        className='h-[50px] mt-[10px]'
+                        ref={commentRef}
+                        onFocus={handleCommentHover}
+                        onChange={handleWriteComment}
+                        value={recommentData.content}
+                     />
+                  </>
+               }
             </div>
             {isRecommentBtn && (
                <div className='flex justify-end gap-[5px] mt-[8px]'>

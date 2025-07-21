@@ -91,19 +91,19 @@ const CommentCreate = ({ userId, restaurantId, hasMyComment, setHasMyComment }: 
    return (
       <>
          <form onSubmit={handleCreateComment}>
-            <div className='flex gap-[10px]'>
+            <div className='flex gap-[10px]  mt-[20px]'>
                {!hasMyComment && (
                   <>
-                     <Input label="댓글" type="text" variant={'underlined'} ref={commentRef} onFocus={handleCommentHover} onChange={handleWriteComment} value={commentData.content} />
                      <SelectWrap
                         defaultSelectedKeys={String(commentData.rating)}
-                        className={'w-[75px] flex-auto flex-shrink-0 flex-grow-0'}
+                        className={'w-[75px] flex-auto flex-shrink-0 flex-grow-0 h-full'}
                         ico={<PiStarFill className='text-[#ebdf32] size-[36px]' />}
                         selectItem={ratingSelectOPT}
                         setSelectValue={setRatingValue}
                         placeholder='3'
 
                      />
+                     <Input label="댓글" type="text" variant={'flat'} ref={commentRef} onFocus={handleCommentHover} onChange={handleWriteComment} value={commentData.content} className='h-[50px]' />
                   </>
                )}
             </div>

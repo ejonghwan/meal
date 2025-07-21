@@ -62,6 +62,7 @@ const SelectWrap = ({ ico, className, selectItem, label = '', placeholder = '', 
          startContent={ico}
          aria-label={'셀렉트박스'}
          onSelectionChange={setSelectValue}
+         variant="flat"
 
       >
          {selectItem.map(item => (

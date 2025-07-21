@@ -17,6 +17,7 @@ import { getRelativeTime, changeViewDate, timeForToday } from '@/src/utillity/ut
 import { PiChatCircleTextDuotone, PiChatCenteredTextDuotone, PiPencilSimpleLineDuotone, PiStarDuotone, PiPhoneDuotone, PiDeviceMobileCameraDuotone, PiMapTrifoldDuotone, PiMapPinSimpleAreaDuotone, PiMapPinLineDuotone, PiPawPrintDuotone, PiCarrotDuotone, PiFileXDuotone, PiGearDuotone, PiXDuotone, PiTrashDuotone, PiCheckDuotone, PiArrowCircleRightDuotone } from "react-icons/pi";
 import { Button } from '@heroui/button';
 import Link from 'next/link';
+import Divider from '../common/divider';
 
 
 
@@ -96,7 +97,7 @@ const RestaurantItem = ({ restaurant }) => {
 
     return (
         <div>
-
+            <Divider className='h-[3px] mb-[15px] bg-bg100 mx-[-20px]' />
             <div className='flex flex-wrap items-center mb-[10px]'>
                 <div className='w-full flex items-center gap-[5px] justify-end'>
                     <Link href={`/restaurant/detail/${restaurant.id}`} className='flex gap-[5px] items-center mb-[5px]'>
@@ -255,12 +256,13 @@ const RestaurantItem = ({ restaurant }) => {
                 </>
             )}
 
+            <Divider className='h-[3px] my-[30px] bg-bg100 mx-[-15px]' />
 
 
             {/* create comment */}
             {/* ui는 나오게 하고 비로그인 시 로그인 페이지로 넘기는게 나을듯 */}
             {userInfo?.uid && !hasMyComment &&
-                < CommentCreate
+                <CommentCreate
                     restaurantId={restaurant.id}
                     userId={restaurant.user.uid}
                     hasMyComment={hasMyComment}

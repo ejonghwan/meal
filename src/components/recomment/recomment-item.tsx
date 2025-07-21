@@ -110,7 +110,7 @@ const RecommentItem = ({ recomment }) => {
                   <div> {recomment.content}</div>
 
                   {/* 좋아요 + 댓글 */}
-                  <div className='flex flex-wrap'>
+                  <div className='flex flex-wrap mt-[10px]'>
                      <Like
                         likeLength={recomment.like}
                         hasMyLike={recomment.hasMyLike}
@@ -124,7 +124,14 @@ const RecommentItem = ({ recomment }) => {
 
                      {/* 답글 */}
                      <div>
-                        <Button type="button" variant="light" className='text-[12px] px-[5px] py-[2px] !w-[20px] h-[20px] min-w-[50px] ml-[auto]' onPress={handleRecommentView}>답글</Button>
+                        {/* <Button type="button" variant="light" className='text-[12px] px-[5px] py-[2px] !w-[20px] h-[20px] min-w-[50px] ml-[auto]' onPress={handleRecommentView}>답글</Button> */}
+                        <Button type="button" variant="light" className='flex items-center gap-[5px] min-w-auto text-[12px] px-[10px] py-[4px] h-[20px]' onPress={handleRecommentView}>
+                           답글
+                           <span aria-hidden="true" data-slot="indicator" data-open={createRecomment ? true : false} className="text-default-400 size-[14px] data-[open=true]:rotate-[90deg] rotate-[-90deg] ml-0">
+                              <svg aria-hidden="true" fill="none" focusable="false" height="14px" role="presentation" viewBox="0 0 24 24" width="14px" ><path d="M15.5 19l-7-7 7-7" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5"></path>
+                              </svg>
+                           </span>
+                        </Button>
                      </div>
 
                   </div>

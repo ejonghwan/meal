@@ -159,7 +159,7 @@ const CommentItem = ({ comment, setHasMyComment }: Props) => {
                      <div className='mt-[2px]'>{comment.content}</div>
 
                      {/* 평점 + 좋아요 */}
-                     <div className="flex items-center mt-[5px]">
+                     <div className="flex items-center mt-[10px]">
                         <PiStarFill className="size-[14px] text-[#ebdf32] mr-[4px]" />
                         <span className="text-[14px] text-[#999] flex items-center gap-[1px]">
                            <span className="text-[#ebdf32] font-medium">{Number(comment.rating).toFixed(1)}</span>
@@ -181,13 +181,14 @@ const CommentItem = ({ comment, setHasMyComment }: Props) => {
                         {/* <button type="button"><PiHeartBreakDuotone /></button> */}
 
                         {/* 대댓글 생성 */}
-                        <div className='flex items-center'>
-                           <Button type="button" variant="light" className='min-w-[30px] text-[12px] px-[10px] py-[4px] !w-[10px] h-[20px] ml-[auto]' onPress={handleRecommentView}>답글</Button>
-
-                           <span aria-hidden="true" data-slot="indicator" data-open={isRecomment ? true : false} className="text-default-400 data-[open=true]:rotate-[90deg] rotate-[-90deg]">
-                              <svg aria-hidden="true" fill="none" focusable="false" height="1em" role="presentation" viewBox="0 0 24 24" width="1em" ><path d="M15.5 19l-7-7 7-7" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5"></path>
-                              </svg>
-                           </span>
+                        <div>
+                           <Button type="button" variant="light" className='flex items-center gap-[5px] min-w-auto text-[12px] px-[10px] py-[4px] h-[20px]' onPress={handleRecommentView}>
+                              답글
+                              <span aria-hidden="true" data-slot="indicator" data-open={isRecomment ? true : false} className="text-default-400 size-[14px] data-[open=true]:rotate-[90deg] rotate-[-90deg] ml-0">
+                                 <svg aria-hidden="true" fill="none" focusable="false" height="14px" role="presentation" viewBox="0 0 24 24" width="14px" ><path d="M15.5 19l-7-7 7-7" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5"></path>
+                                 </svg>
+                              </span>
+                           </Button>
                         </div>
 
                      </div>

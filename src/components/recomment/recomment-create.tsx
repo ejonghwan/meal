@@ -17,8 +17,8 @@ interface Props {
    restaurantId: string;
    commentId: string;
    hasMyRecomment: boolean;
-   parentReommentId?: string | boolean;
-   targetDisplayName?: string | boolean;
+   parentReommentId?: string | boolean | null;
+   targetDisplayName?: string | boolean | null;
 }
 
 const RecommentCreate = ({ hasMyRecomment, handleRecommentView, setIsRecommentView, restaurantId, commentId, parentReommentId, targetDisplayName }: Props) => {
@@ -26,12 +26,15 @@ const RecommentCreate = ({ hasMyRecomment, handleRecommentView, setIsRecommentVi
 
    const { mutate: createRecommentMutate, isError: createRecommentError, isSuccess: createRecommentSuccess, isPending: createRecommentPending } = useCreateRecomment()
    const { userInfo } = useUserStore()
-   const [isRecommentInput, setIsRecommentInput] = useState(false)
+
+   // const [isRecommentInput, setIsRecommentInput] = useState(false)
    const [isRecommentBtn, setIsRecommentBtn] = useState(false)
    const [recommentData, setRecommentData] = useState({
       userId: userInfo?.uid,
       restaurantId: restaurantId,
       parentCommentId: commentId,
+      parentReommentId,
+      targetDisplayName,
       // content: '',
       content: '', //여기수정해야됨
       // rating: 3,
@@ -39,6 +42,7 @@ const RecommentCreate = ({ hasMyRecomment, handleRecommentView, setIsRecommentVi
 
 
    const commentRef = useRef();
+
    const handleCommentHover = () => {
       setIsRecommentBtn(true)
    }
@@ -51,7 +55,7 @@ const RecommentCreate = ({ hasMyRecomment, handleRecommentView, setIsRecommentVi
          setRecommentData(prev => ({
             ...prev,
             rating: 3,
-            content: ''
+            content: '',
          }))
       }
    }
@@ -72,20 +76,11 @@ const RecommentCreate = ({ hasMyRecomment, handleRecommentView, setIsRecommentVi
    useEffect(() => {
       if (createRecommentSuccess) {
          handleCommentClose();
+         setIsRecommentView(true)
          // setHasMyRecomment(true)
       }
    }, [createRecommentSuccess])
 
-
-   // useEffect(() => { console.log(commentData) }, [commentData])
-
-   useEffect(() => {
-      // 댓글 생성 시 답글보기 열림
-      if (createRecommentSuccess) {
-         setIsRecommentView(true)
-      }
-
-   }, [createRecommentSuccess])
 
 
    return (
@@ -94,9 +89,10 @@ const RecommentCreate = ({ hasMyRecomment, handleRecommentView, setIsRecommentVi
             <div className='flex gap-[10px]'>
                {!hasMyRecomment &&
                   <>
-
+                     {/* {targetDisplayName} {parentReommentId} */}
                      <Input
-                        label={targetDisplayName !== false ? <span>{'대댓글 @' + targetDisplayName}</span> : '대댓글'}
+                        // label={targetDisplayName !== false ? (`대댓글 @ ${<span>{targetDisplayName}</span>}`) : '대댓글'}
+                        label={targetDisplayName !== false ? (`대댓글 @${targetDisplayName}`) : '대댓글'}
                         type="text"
                         variant={'flat'}
                         // underlined

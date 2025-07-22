@@ -100,6 +100,8 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string; 
             id: doc.id,
             restaurantId: data.restaurantId,
             parentCommentId: data.parentCommentId,
+            targetDisplayName: data.targetDisplayName,
+            parentRecommentId: data.parentRecommentId,
             userId: data.userId,
             user,
             content: data.content,

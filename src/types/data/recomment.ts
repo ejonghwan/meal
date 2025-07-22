@@ -4,8 +4,8 @@ export interface RecommentData {
     restaurantId: string;
     parentCommentId: string;
     content: string;
-    parentReommentId?: string;
-    targetDisplayName?: string;
+    parentReommentId?: string | null | boolean;
+    targetDisplayName?: string | null | boolean;
 }
 
 export interface EditRecommentData {

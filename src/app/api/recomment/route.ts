@@ -11,6 +11,7 @@ export const POST = withAuth(async (req: NextRequest) => {
     try {
 
         const { userId, restaurantId, content, parentCommentId, parentReommentId = null, targetDisplayName = null } = await req.json();
+        console.log('back 있나 ?', parentReommentId, targetDisplayName)
         const recommentRef = adminDB.collection("recomments").doc(); // ✅ adminDB 사용
 
         const recommentData = {

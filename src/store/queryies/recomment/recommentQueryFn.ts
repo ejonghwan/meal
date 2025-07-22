@@ -80,6 +80,8 @@ export const onCreateRecommentAPI = async (payload: RecommentData) => {
         const savedToken = localStorage.getItem('x-acc-token');
         const { userId, content, restaurantId, parentCommentId, parentReommentId, targetDisplayName } = payload;
 
+
+        console.log('query fnb ?', parentReommentId, targetDisplayName)
         // 토큰 컴포넌트말고 여기서 보내서 테스트해보기
 
         const options: ExtendsRequestInit = {

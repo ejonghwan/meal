@@ -107,7 +107,16 @@ const RecommentItem = ({ recomment }) => {
                         {timeForToday(recomment.created_at)}{recomment.updated_at && <span> (수정됨)</span>}
                      </span>
                   </div>
-                  <div> {recomment.content}</div>
+
+                  {/* 댓글 내용 */}
+                  <div className='mt-[5px]'>
+                     {recomment.targetDisplayName && (
+                        <span className='text-[12px] rounded-[10px] bg-bg100 py-[4px] px-[10px] mr-[5px]'>
+                           @{recomment.targetDisplayName}
+                        </span>
+                     )}
+                     {recomment.content}
+                  </div>
 
                   {/* 좋아요 + 댓글 */}
                   <div className='flex flex-wrap mt-[10px]'>
@@ -149,7 +158,6 @@ const RecommentItem = ({ recomment }) => {
                            commentId={recomment.parentCommentId}
                            parentReommentId={recomment.id}
                            targetDisplayName={recomment.user.displayName}
-
                         />}
                   </div>
 

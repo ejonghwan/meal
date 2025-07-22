@@ -92,7 +92,7 @@ const RecommentCreate = ({ hasMyRecomment, handleRecommentView, setIsRecommentVi
                      {/* {targetDisplayName} {parentReommentId} */}
                      <Input
                         // label={targetDisplayName !== false ? (`대댓글 @ ${<span>{targetDisplayName}</span>}`) : '대댓글'}
-                        label={targetDisplayName !== false ? (`대댓글 @${targetDisplayName}`) : '대댓글'}
+                        label={targetDisplayName !== false ? (`@${targetDisplayName}에게 대댓글`) : '대댓글'}
                         type="text"
                         variant={'flat'}
                         // underlined

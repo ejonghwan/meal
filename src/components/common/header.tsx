@@ -16,7 +16,7 @@ import Link from 'next/link'
 import dynamic from 'next/dynamic'
 // import Darkmode from '@/src/components/common/darkmode'
 const Darkmode = dynamic(() => import('@/src/components/common/darkmode'), { ssr: false });
-import { PiSignOutBold, PiAlienDuotone, PiKeyDuotone, PiFinnTheHumanDuotone, PiHeartDuotone, PiAtBold, PiBabyBold, PiChatCircleDotsDuotone, PiLinuxLogoDuotone, PiReceiptDuotone, PiFolderOpenDuotone, PiSunDuotone, PiMoonStarsDuotone, PiArrowRightBold } from "react-icons/pi";
+import { PiSignOutBold, PiAlienDuotone, PiKeyDuotone, PiFinnTheHumanDuotone, PiHeartDuotone, PiAtBold, PiBabyBold, PiChatCircleDotsDuotone, PiLinuxLogoDuotone, PiReceiptDuotone, PiFolderOpenDuotone, PiSunDuotone, PiMoonStarsDuotone, PiArrowRightBold, PiMapTrifoldDuotone, PiMagnifyingGlassDuotone } from "react-icons/pi";
 import { useTheme } from 'next-themes'
 import UserFirstName from '@/src/components/common/user-firstName'
 import Divider from './divider'
@@ -63,6 +63,7 @@ const Header = () => {
                </section>
 
 
+
                {/* mobile */}
                <section className='pc:hidden'>
                   {/* {loading && <Skeleton className='flex rounded-full size-[40px]' />} */}
@@ -70,16 +71,27 @@ const Header = () => {
                   {/* {isAccToken === null && <Skeleton className='flex rounded-full size-[40px]' />} */}
 
                   {/* header */}
-                  {isAccToken === true && (
-                     <button type="button"
-                        className={'rounded-[50%] bg-gray-700 text-white size-[40px] p-[5px]'}
-                        onClick={handleClick}
-                        style={{ background: userInfo?.bg }}
-                     >
-                        {userInfo?.providerData[0]?.displayName.slice(0, 1).toLocaleUpperCase()}
 
-                     </button>
+
+                  {userInfo && (
+                     <div className='flex items-center gap-[15px]'>
+                        <button type='button' className='py-[10px] px-[4px]'>
+                           <PiMagnifyingGlassDuotone className='text-[23px]' />
+                        </button>
+                        <button type='button' className='py-[10px] px-[4px]'>
+                           <PiMapTrifoldDuotone className='text-[27px]' />
+                        </button>
+                        <button type="button"
+                           className={'rounded-[50%] bg-gray-700 text-white size-[35px] text-[16px] p-[5px]'}
+                           onClick={handleClick}
+                           style={{ background: userInfo?.bg }}
+                        >
+                           {userInfo?.providerData[0]?.displayName.slice(0, 1).toLocaleUpperCase()}
+
+                        </button>
+                     </div>
                   )}
+
 
                   {isAccToken === false && (
                      <div className='flex gap-[12px]'>
@@ -87,6 +99,8 @@ const Header = () => {
                         {!userInfo && <Link href={'/signup'} className='text-[14px]'>회원가입</Link>}
                      </div>
                   )}
+
+
 
                   <Drawer variant="bgcolor" size="none">
                      <DrawerHeader className='drawer__header--wrap'>
@@ -205,7 +219,7 @@ const Header = () => {
             </header>
          </Section>
          <Divider />
-      </ContentWrap>
+      </ContentWrap >
 
    )
 }

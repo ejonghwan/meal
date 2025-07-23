@@ -18,6 +18,8 @@ import { PiChatCircleTextDuotone, PiChatCenteredTextDuotone, PiPencilSimpleLineD
 import { Button } from '@heroui/button';
 import Link from 'next/link';
 import Divider from '../common/divider';
+import CategoryWrap from '../common/category/category-wrap';
+import { categorys } from '../common/category/category-data';
 
 
 
@@ -97,7 +99,7 @@ const RestaurantItem = ({ restaurant }) => {
 
     return (
         <div>
-            <Divider className='h-[3px] mb-[15px] bg-bg100 mx-[-20px]' />
+            <Divider className='h-[2px] mb-[15px] bg-bg100 mx-[0px]' />
             <div className='flex flex-wrap items-center mb-[10px]'>
                 <div className='w-full flex items-center gap-[5px] justify-end'>
                     <Link href={`/restaurant/detail/${restaurant.id}?hoho=zzzz`} className='flex gap-[5px] items-center mb-[5px]'>
@@ -178,6 +180,9 @@ const RestaurantItem = ({ restaurant }) => {
                         restaurant={editRestaurant}
                         setRestaurant={setEditRestaurant}
                     />
+                    <div className="flex flex-col gap-1 w-full mt-[20px]">
+                        <CategoryWrap category={categorys} defaultValue={restaurant.category} setRestaurant={setEditRestaurant} />
+                    </div>
                 </>
             ) : (
                 <>
@@ -256,7 +261,7 @@ const RestaurantItem = ({ restaurant }) => {
                 </>
             )}
 
-            <Divider className='h-[3px] my-[30px] bg-bg100 mx-[-15px]' />
+            <Divider className='h-[2px] my-[30px] bg-bg100 mx-[0px]' />
 
 
             {/* create comment */}

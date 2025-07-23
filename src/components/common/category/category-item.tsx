@@ -10,7 +10,7 @@ const CategoryItem = ({ children, value, ...props }) => {
             value={value}
             classNames={{
                base:
-                  "inline-flex m-0 bg-content1 hover:bg-content2 items-center justify-between  cursor-pointer rounded-[20px] gap-[2px] px-[10px] border-2 border-transparent data-[selected=true]:border-primary",
+                  "inline-flex m-0 bg-content1 hover:bg-content2 items-center justify-between  cursor-pointer rounded-[10px] gap-[2px] px-[10px] border-2 border-transparent data-[selected=true]:border-primary",
             }}
          >
             {children}

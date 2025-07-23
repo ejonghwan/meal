@@ -37,12 +37,12 @@ const RestaurantTable = ({ restaurantData, restaurantSuccess, restaurantLoading,
             <AccordionItem
               classNames={{
                 indicator: "rotate-[270deg] data-[open=true]:rotate-[90deg]",
+                content: "pb-[30px]"
               }}
               key={item.id}
               aria-label={`Accordion ${item.id}`}
               title={
                 <>
-
                   <div className="flex ">
                     <div className="flex flex-wrap items-center">
                       <span className="text-[13px] text-[#999]">{item.user.displayName}</span>

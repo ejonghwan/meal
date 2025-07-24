@@ -9,9 +9,9 @@ interface Props {
 
 const RestaurantDetailPage = async ({ params, searchParams }: Props) => {
 
-
+   // 동기로 안만들어도 가져오긴함
    const { hoho } = await searchParams
-   console.log('searchParams', searchParams  , hoho)
+   console.log('searchParams asdasdasdasdasd', searchParams  , hoho)
 
    return (
       <>

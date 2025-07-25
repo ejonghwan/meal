@@ -196,7 +196,7 @@ const CommentItem = ({ comment, setHasMyComment }: Props) => {
                      {/* 대댓글 */}
                      <div>
                         <RecommentWrap
-                           handleRecommentView={handleRecommentView}
+                           handleRecommentView={handleRecommentView} //코멘트에 있는
                            isRecomment={isRecomment}
                            commentId={comment.id}
                            restaurantId={comment.restaurantId}

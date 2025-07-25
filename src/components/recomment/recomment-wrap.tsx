@@ -25,7 +25,7 @@ const RecommentWrap = ({ isRecomment, handleRecommentView, hasMyRecomment, resta
 
 
    const { userInfo } = useUserStore()
-   const [isRecommentView, setIsRecommentView] = useState(false) // 대댓글 보기
+   const [isRecommentListView, setIsRecommentListView] = useState(false) // 대댓글 리스트 보기
    // const [isAccOpen, setIsAccOpen] = useState(false) // 생성 시 아코디언 열기
 
 
@@ -37,11 +37,11 @@ const RecommentWrap = ({ isRecomment, handleRecommentView, hasMyRecomment, resta
       isError: recommentError,
       isLoading: recommentLoading,
       isSuccess: recommentSuccess
-   } = useLoadRecommentListInfinite({ parentCommentId: commentId, limet: 5, userId: userInfo?.uid }, { enabled: isRecommentView })
+   } = useLoadRecommentListInfinite({ parentCommentId: commentId, limet: 5, userId: userInfo?.uid }, { enabled: isRecommentListView })
 
 
    const handleClickRecommentView = () => {
-      setIsRecommentView(true)
+      setIsRecommentListView(true)
    }
 
    const handleClickNextRecomment = () => {
@@ -54,8 +54,8 @@ const RecommentWrap = ({ isRecomment, handleRecommentView, hasMyRecomment, resta
          <div>
             {isRecomment &&
                <RecommentCreate
-                  handleRecommentView={handleRecommentView}
-                  setIsRecommentView={setIsRecommentView}
+                  handleRecommentView={handleRecommentView} // 코멘트에 있는 답글
+                  setIsRecommentView={setIsRecommentListView}
                   hasMyRecomment={hasMyRecomment}
                   restaurantId={restaurantId}
                   commentId={commentId}
@@ -91,7 +91,7 @@ const RecommentWrap = ({ isRecomment, handleRecommentView, hasMyRecomment, resta
                      {recommentLoading && (<RecommentSkeleton len={3} />)}
 
                      {/* 대댓글 리스트 */}
-                     {isRecommentView && (
+                     {isRecommentListView && (
                         <div>
                            {recommentData?.pages.flatMap(item => (
                               item.data.map(recomment => (

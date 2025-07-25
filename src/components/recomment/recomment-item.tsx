@@ -152,7 +152,7 @@ const RecommentItem = ({ recomment }) => {
                      {createRecomment &&
                         <RecommentCreate
                            handleRecommentView={handleRecommentView}
-                           setIsRecommentView={setIsRerecommentView}
+                           setIsRecommentListView={setIsRerecommentView}
                            hasMyRecomment={false}
                            restaurantId={recomment.restaurantId}
                            commentId={recomment.parentCommentId}

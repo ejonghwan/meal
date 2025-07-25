@@ -13,7 +13,7 @@ import { ratingSelectOPT } from '@/src/components/comment/comment-data'
 
 interface Props {
    handleRecommentView: (val: boolean) => void;
-   setIsRecommentView: (val: boolean) => void;
+   setIsRecommentListView: (val: boolean) => void;
    restaurantId: string;
    commentId: string;
    hasMyRecomment: boolean;
@@ -21,7 +21,7 @@ interface Props {
    targetDisplayName?: string | boolean | null;
 }
 
-const RecommentCreate = ({ hasMyRecomment, handleRecommentView, setIsRecommentView, restaurantId, commentId, parentReommentId, targetDisplayName }: Props) => {
+const RecommentCreate = ({ hasMyRecomment, handleRecommentView, setIsRecommentListView, restaurantId, commentId, parentReommentId, targetDisplayName }: Props) => {
 
 
    const { mutate: createRecommentMutate, isError: createRecommentError, isSuccess: createRecommentSuccess, isPending: createRecommentPending } = useCreateRecomment()
@@ -76,7 +76,7 @@ const RecommentCreate = ({ hasMyRecomment, handleRecommentView, setIsRecommentVi
    useEffect(() => {
       if (createRecommentSuccess) {
          handleCommentClose();
-         setIsRecommentView(true)
+         setIsRecommentListView(true)
          // setHasMyRecomment(true)
       }
    }, [createRecommentSuccess])

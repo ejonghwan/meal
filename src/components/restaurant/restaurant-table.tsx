@@ -85,7 +85,7 @@ const RestaurantTable = ({ restaurantData, restaurantSuccess, restaurantLoading,
                   </div>
 
                   <div className="text-[16px] mt-[10px] eps-1">{item.title}</div>
-                  <div className="text-[14px] text-[#999] eps-2 mt-[5px]">{item.content}</div>
+                  <div className="text-[14px] text-[#999] min-h-[24px] eps-2 mt-[5px]">{item.content}</div>
                 </>
               }
               className="px-[14px]"

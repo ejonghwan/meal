@@ -25,9 +25,10 @@ interface Props {
    restaurant: any;
    setRestaurant: any;
    initialMapData?: string;
+   className?: string;
 }
 
-const MapSelect = ({ keyword, restaurant, setRestaurant, initialMapData }: Props) => {
+const MapSelect = ({ keyword, restaurant, setRestaurant, initialMapData, className }: Props) => {
 
    const mapRef = useRef<HTMLDivElement>(null);
 
@@ -136,7 +137,7 @@ const MapSelect = ({ keyword, restaurant, setRestaurant, initialMapData }: Props
       <>
          <div
             ref={mapRef}
-            className="w-full h-[400px] border border-gray-300 rounded-md"
+            className={`${className ? className : 'w-full h-[400px] border border-gray-300 rounded-md'}`}
          />
          <div>
             <MapInfo restaurant={restaurant} setRestaurant={setRestaurant} />

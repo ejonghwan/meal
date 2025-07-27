@@ -179,6 +179,7 @@ const RestaurantItem = ({ restaurant }) => {
                         keyword={keyword}
                         restaurant={editRestaurant}
                         setRestaurant={setEditRestaurant}
+                        className='w-full h-[250px] border rounded-md'
                     />
                     <div className="flex flex-col gap-1 w-full mt-[20px]">
                         <CategoryWrap category={categorys} defaultValue={restaurant.category} setRestaurant={setEditRestaurant} />
@@ -186,7 +187,16 @@ const RestaurantItem = ({ restaurant }) => {
                 </>
             ) : (
                 <>
-                    {restaurant.mapInfo && <MapLoad mapData={{ name: restaurant.mapInfo.name, rating: restaurant.totalRating, location: { lat: restaurant.mapInfo.y, lng: restaurant.mapInfo.x } }} />}
+                    {restaurant.mapInfo &&
+                        <MapLoad
+                            mapData={{
+                                name: restaurant.mapInfo.name,
+                                rating: restaurant.totalRating,
+                                location: { lat: restaurant.mapInfo.y, lng: restaurant.mapInfo.x }
+                            }}
+                            className='w-full h-[250px] border rounded-md'
+                        />
+                    }
                     <ul className='mt-[20px]'>
                         {restaurant.title && (
                             <li className='flex gap-[5px]'>

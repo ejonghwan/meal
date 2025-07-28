@@ -87,7 +87,7 @@ const CommentEdit = ({ comment, isEditComment, setIsEditComment }) => {
 
 
 
-   useEffect(() => { console.log('payload data?', editCommentData) }, [editCommentData])
+   // useEffect(() => { console.log('payload data?', editCommentData) }, [editCommentData])
 
 
 

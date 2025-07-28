@@ -80,8 +80,8 @@ const CommentItem = ({ comment, setHasMyComment }: Props) => {
    const searchParams = useSearchParams()
    const category = searchParams.get('search') || '전체'
 
-   const [isEditComment, setIsEditComment] = useState(false)
-   const [isRecomment, setIsRecomment] = useState(false)
+   const [isEditComment, setIsEditComment] = useState(false) // 코멘트 수정 상태
+   const [isCreateRecommentView, setIsCreateRecommentView] = useState(false) // 리코멘트 인풋 보이고 안보이고 상태
 
    const handleEditCommentView = () => {
       setIsEditComment(true)
@@ -95,13 +95,13 @@ const CommentItem = ({ comment, setHasMyComment }: Props) => {
 
    }
 
-   const handleRecommentView = () => {
+   const handleCreateRecommentView = () => {
       if (!userInfo?.uid) {
          alert('로그인 후 가능합니다')
          router.push(`/login?prevpage=${category}`)
          return;
       }
-      setIsRecomment(prev => !prev)
+      setIsCreateRecommentView(prev => !prev)
    }
 
    const handleEditPopOpen = () => {
@@ -126,8 +126,9 @@ const CommentItem = ({ comment, setHasMyComment }: Props) => {
 
    return (
       <>
-         {/* 데이터 */}
          <div className='flex gap-[10px] mt-[25px] relative last:pb-[25px]'>
+
+            {/* 유저 정보 */}
             {comment.user && (
                <UserFirstName
                   user={comment.user}
@@ -182,9 +183,9 @@ const CommentItem = ({ comment, setHasMyComment }: Props) => {
 
                         {/* 대댓글 생성 */}
                         <div>
-                           <Button type="button" variant="light" className='flex items-center gap-[5px] min-w-auto text-[12px] px-[10px] py-[4px] h-[20px]' onPress={handleRecommentView}>
+                           <Button type="button" variant="light" className='flex items-center gap-[5px] min-w-auto text-[12px] px-[10px] py-[4px] h-[20px]' onPress={handleCreateRecommentView}>
                               답글
-                              <span aria-hidden="true" data-slot="indicator" data-open={isRecomment ? true : false} className="text-default-400 size-[14px] data-[open=true]:rotate-[90deg] rotate-[-90deg] ml-0">
+                              <span aria-hidden="true" data-slot="indicator" data-open={isCreateRecommentView ? true : false} className="text-default-400 size-[14px] data-[open=true]:rotate-[90deg] rotate-[-90deg] ml-0">
                                  <svg aria-hidden="true" fill="none" focusable="false" height="14px" role="presentation" viewBox="0 0 24 24" width="14px" ><path d="M15.5 19l-7-7 7-7" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5"></path>
                                  </svg>
                               </span>
@@ -196,8 +197,8 @@ const CommentItem = ({ comment, setHasMyComment }: Props) => {
                      {/* 대댓글 */}
                      <div>
                         <RecommentWrap
-                           handleRecommentView={handleRecommentView} //코멘트에 있는
-                           isRecomment={isRecomment}
+                           setIsCreateRecommentView={setIsCreateRecommentView}
+                           isCreateRecommentView={isCreateRecommentView}
                            commentId={comment.id}
                            restaurantId={comment.restaurantId}
                            hasMyRecomment={false} //임시

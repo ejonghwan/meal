@@ -24,28 +24,32 @@ const RecommentItem = ({ recomment }) => {
    const { mutate: likeRecommentMutate, isError: likeRecommentError, isSuccess: likeRecommentSuccess, isPending: likeRecommentPending } = useLikeRecomment();
 
 
-   const { userInfo } = useUserStore()
-   const [createRecomment, setCreateRecomment] = useState(false)
-   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
    const targetRef = useRef(null);
+   const { userInfo } = useUserStore()
+   const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
    const { moveProps } = useDraggable({ targetRef, isDisabled: !isOpen });
+
+   const [isCreateRecommentView, setIsCreateRecommentView] = useState(false)
    const [isEditComment, setIsEditComment] = useState(false)
    const [isEditRecomment, setIsEditRecomment] = useState(false)
-   const [isRerecommentView, setIsRerecommentView] = useState(false)
+
+
    const router = useRouter()
    const searchParams = useSearchParams()
    const category = searchParams.get('search') || '전체'
 
-   const handleRecommentView = (e) => {
+
+   const handleCreateRecommentView = () => {
       if (!userInfo?.uid) {
          alert('로그인 후 가능합니다')
          router.push(`/login?prevpage=${category}`)
          return;
       }
       // setIsRecomment(true)
-      console.log('ee?', e.target, recomment)
-      setCreateRecomment(prev => !prev)
+      // console.log('ee?', e.target, recomment)
+      setIsCreateRecommentView(prev => !prev)
    }
+
 
    // 의존성 경고때문에  ref로 수정
    const debouncedLike = useRef(_.debounce((userId: string, restaurantId: string, parentCommentId: string, recommentId: string) => {
@@ -134,9 +138,9 @@ const RecommentItem = ({ recomment }) => {
                      {/* 답글 */}
                      <div>
                         {/* <Button type="button" variant="light" className='text-[12px] px-[5px] py-[2px] !w-[20px] h-[20px] min-w-[50px] ml-[auto]' onPress={handleRecommentView}>답글</Button> */}
-                        <Button type="button" variant="light" className='flex items-center gap-[5px] min-w-auto text-[12px] px-[10px] py-[4px] h-[20px]' onPress={handleRecommentView}>
+                        <Button type="button" variant="light" className='flex items-center gap-[5px] min-w-auto text-[12px] px-[10px] py-[4px] h-[20px]' onPress={handleCreateRecommentView}>
                            답글
-                           <span aria-hidden="true" data-slot="indicator" data-open={createRecomment ? true : false} className="text-default-400 size-[14px] data-[open=true]:rotate-[90deg] rotate-[-90deg] ml-0">
+                           <span aria-hidden="true" data-slot="indicator" data-open={isCreateRecommentView ? true : false} className="text-default-400 size-[14px] data-[open=true]:rotate-[90deg] rotate-[-90deg] ml-0">
                               <svg aria-hidden="true" fill="none" focusable="false" height="14px" role="presentation" viewBox="0 0 24 24" width="14px" ><path d="M15.5 19l-7-7 7-7" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5"></path>
                               </svg>
                            </span>
@@ -149,10 +153,10 @@ const RecommentItem = ({ recomment }) => {
                   <div>
 
                      {/* userId: recomment.uid, recommentId: recomment.id, restaurantId: recomment.restaurantId, parentCommentId: recomment.parentCommentId */}
-                     {createRecomment &&
+                     {isCreateRecommentView &&
                         <RecommentCreate
-                           handleRecommentView={handleRecommentView}
-                           setIsRecommentListView={setIsRerecommentView}
+                           // setIsRecommentListView={setIsRerecommentView} // 댓글 작성 시 RECOMMNET 열어줘야되니깐. 근데 여기선 필요없음
+                           setIsCreateRecommentView={setIsCreateRecommentView} // 작성 시 처음 상태로 복귀
                            hasMyRecomment={false}
                            restaurantId={recomment.restaurantId}
                            commentId={recomment.parentCommentId}

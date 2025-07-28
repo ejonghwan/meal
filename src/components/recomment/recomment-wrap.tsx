@@ -13,15 +13,15 @@ import '@/src/styles/recomment/recomment.css'
 
 
 interface Props {
+   setIsCreateRecommentView?: (val: boolean) => void;
    restaurantId: string;
    commentId: string;
-   isRecomment: boolean;
+   isCreateRecommentView: boolean;
    hasMyRecomment: boolean;
    childCommentLen: number;
-   handleRecommentView: (val: boolean) => void;
 }
 
-const RecommentWrap = ({ isRecomment, handleRecommentView, hasMyRecomment, restaurantId, commentId, childCommentLen }: Props) => {
+const RecommentWrap = ({ setIsCreateRecommentView, isCreateRecommentView, hasMyRecomment, restaurantId, commentId, childCommentLen }: Props) => {
 
 
    const { userInfo } = useUserStore()
@@ -52,10 +52,10 @@ const RecommentWrap = ({ isRecomment, handleRecommentView, hasMyRecomment, resta
       <>
          {/* 대댓글 생성 */}
          <div>
-            {isRecomment &&
+            {isCreateRecommentView &&
                <RecommentCreate
-                  handleRecommentView={handleRecommentView} // 코멘트에 있는 답글
-                  setIsRecommentView={setIsRecommentListView}
+                  setIsRecommentListView={setIsRecommentListView}
+                  setIsCreateRecommentView={setIsCreateRecommentView}
                   hasMyRecomment={hasMyRecomment}
                   restaurantId={restaurantId}
                   commentId={commentId}
@@ -114,7 +114,7 @@ const RecommentWrap = ({ isRecomment, handleRecommentView, hasMyRecomment, resta
                   </AccordionItem>
 
                </Accordion>
-            </div >
+            </div>
          )}
       </>
    )

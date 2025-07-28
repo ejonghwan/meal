@@ -12,8 +12,8 @@ import { ratingSelectOPT } from '@/src/components/comment/comment-data'
 
 
 interface Props {
-   handleRecommentView: (val: boolean) => void;
-   setIsRecommentListView: (val: boolean) => void;
+   setIsRecommentListView?: (val: boolean) => void; //이 상태는 코멘트에서만 필요함. 대댓글에 댓글을 달 땐 이미 연 상태라 상관없음
+   setIsCreateRecommentView?: (val: boolean) => void; // 작성 완료 시 인풋 닫히게
    restaurantId: string;
    commentId: string;
    hasMyRecomment: boolean;
@@ -21,7 +21,9 @@ interface Props {
    targetDisplayName?: string | boolean | null;
 }
 
-const RecommentCreate = ({ hasMyRecomment, handleRecommentView, setIsRecommentListView, restaurantId, commentId, parentReommentId, targetDisplayName }: Props) => {
+
+
+const RecommentCreate = ({ setIsRecommentListView, setIsCreateRecommentView, hasMyRecomment, restaurantId, commentId, parentReommentId, targetDisplayName }: Props) => {
 
 
    const { mutate: createRecommentMutate, isError: createRecommentError, isSuccess: createRecommentSuccess, isPending: createRecommentPending } = useCreateRecomment()
@@ -76,7 +78,8 @@ const RecommentCreate = ({ hasMyRecomment, handleRecommentView, setIsRecommentLi
    useEffect(() => {
       if (createRecommentSuccess) {
          handleCommentClose();
-         setIsRecommentListView(true)
+         setIsCreateRecommentView(false)
+         setIsRecommentListView && setIsRecommentListView(true)
          // setHasMyRecomment(true)
       }
    }, [createRecommentSuccess])

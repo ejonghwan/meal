@@ -22,8 +22,8 @@ import MapInfo from '@/src/components/maps/map-info';
 
 interface Props {
    keyword: string;
-   restaurant: any;
-   setRestaurant: any;
+   restaurant?: any;
+   setRestaurant?: any;
    initialMapData?: string;
    className?: string;
 }
@@ -70,6 +70,8 @@ const MapSelect = ({ keyword, restaurant, setRestaurant, initialMapData, classNa
       // 지도에 마커를 표시하는 함수
       function displayMarker(place) {
 
+         // use ref 로 수정하기
+         // let str = ''
          // console.log('place?', place)
          // 가게명 추가
          const content = document.createElement('div');
@@ -139,9 +141,13 @@ const MapSelect = ({ keyword, restaurant, setRestaurant, initialMapData, classNa
             ref={mapRef}
             className={`${className ? className : 'w-full h-[400px] border border-gray-300 rounded-md'}`}
          />
-         <div>
-            <MapInfo restaurant={restaurant} setRestaurant={setRestaurant} />
-         </div>
+         {
+            restaurant?.mapInfo && (
+               <div>
+                  <MapInfo restaurant={restaurant} setRestaurant={setRestaurant} />
+               </div>
+            )
+         }
       </>
    );
 }

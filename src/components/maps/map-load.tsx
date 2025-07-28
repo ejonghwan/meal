@@ -8,7 +8,7 @@ interface Props {
    mapData: {
       name: string;
       location: { lat: number; lng: number; }
-      rating: any;
+      rating?: any;
    }
    className?: string;
 }

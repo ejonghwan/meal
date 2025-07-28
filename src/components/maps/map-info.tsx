@@ -32,7 +32,7 @@ const MapInfo = ({ restaurant, setRestaurant }: Props) => {
                placeholder="검색 후 가게를 선택해주세요"
                isRequired
                disabled
-               value={restaurant.mapInfo.name}
+               value={restaurant.mapInfo ? restaurant.mapInfo.name : ''}
                autoComplete='on'
             />
 
@@ -47,7 +47,7 @@ const MapInfo = ({ restaurant, setRestaurant }: Props) => {
                placeholder="-"
                isRequired
                disabled
-               value={restaurant.mapInfo.adress}
+               value={restaurant.mapInfo ? restaurant.mapInfo.adress : ''}
                autoComplete='on'
             />
          </li>

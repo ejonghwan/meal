@@ -21,19 +21,20 @@ import MapInfo from '@/src/components/maps/map-info';
 // y: "37.6533845503663"
 
 interface Props {
-   keyword: string;
+   keyword: string[];
    restaurant?: any;
    setRestaurant?: any;
-   initialMapData?: string;
+   initialMapData?: string[];
    className?: string;
+   isAddressSearch?: boolean;
 }
 
-const MapSelect = ({ keyword, restaurant, setRestaurant, initialMapData, className }: Props) => {
+const MapSelect = ({ keyword, restaurant, setRestaurant, initialMapData , className, isAddressSearch = false }: Props) => {
 
    const mapRef = useRef<HTMLDivElement>(null);
 
    useEffect(() => {
-      if (initialMapData) keyword = initialMapData; //초기 데이터가 있다면 검색
+      if (initialMapData) keyword = [...keyword, ...initialMapData]; //초기 데이터가 있다면 검색
    }, [])
 
    const handleMapLoad = useCallback(() => {
@@ -47,8 +48,16 @@ const MapSelect = ({ keyword, restaurant, setRestaurant, initialMapData, classNa
       // 장소 검색 객체를 생성합니다
       const ps = new window.kakao.maps.services.Places();
 
+      // address search 객체를 생성합니다
+      var geocoder = new window.kakao.maps.services.Geocoder();
+
       // 키워드로 장소를 검색합니다
-      ps.keywordSearch(keyword, placesSearchCB);
+      for(let i = 0; i < keyword.length; i++) {
+         isAddressSearch ? geocoder.addressSearch(keyword[i], placesSearchCB) :  ps.keywordSearch(keyword[i], placesSearchCB)
+         // ps.keywordSearch(keyword[i], placesSearchCB);
+         // geocoder.addressSearch(keyword[i], placesSearchCB);
+      }
+      // ps.keywordSearch(keyword, placesSearchCB);
 
       // 키워드 검색 완료 시 호출되는 콜백함수
       function placesSearchCB(data, status, pagination) {

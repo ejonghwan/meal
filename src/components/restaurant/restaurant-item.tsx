@@ -175,8 +175,8 @@ const RestaurantItem = ({ restaurant }) => {
                     <strong className='block mb-[10px] text-[18px]'>가게명 검색</strong>
                     <Search className='w-full mb-[10px]' onChange={handleSearchInputChange} value={searchValue} setSearchValue={setSearchValue} />
                     <MapSelect
-                        initialMapData={restaurant.mapInfo.name}
-                        keyword={keyword}
+                        initialMapData={[restaurant.mapInfo.name]}
+                        keyword={[keyword]}
                         restaurant={editRestaurant}
                         setRestaurant={setEditRestaurant}
                         className='w-full h-[250px] border rounded-md'

@@ -1,10 +1,10 @@
 import React from 'react'
-import MapLoadList from '@/src/components/maps/map-load-list'
+import MapReslistWrap from '@/src/components/maps/map-reslist-wrap'
 
 const Maps = () => {
   return (
     <>
-        <MapLoadList />
+      <MapReslistWrap />
     </>
   )
 }

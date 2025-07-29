@@ -21,21 +21,18 @@ import MapInfo from '@/src/components/maps/map-info';
 // y: "37.6533845503663"
 
 interface Props {
-   keyword: string;
+   address: string[];
    restaurant?: any;
-   setRestaurant?: any;
-   initialMapData?: string;
+   setMyRestaurantList?: any;
+   initialMapData?: string[];
    className?: string;
    isAddressSearch?: boolean;
 }
 
-const MapSelect = ({ keyword, restaurant, setRestaurant, initialMapData, className }: Props) => {
+const MapResList = ({ address, restaurant, setMyRestaurantList, className }: Props) => {
 
    const mapRef = useRef<HTMLDivElement>(null);
 
-   useEffect(() => {
-      if (initialMapData) keyword = initialMapData; //초기 데이터가 있다면 검색
-   }, [])
 
    const handleMapLoad = useCallback(() => {
       if (!window.kakao || !mapRef.current) return;
@@ -48,14 +45,19 @@ const MapSelect = ({ keyword, restaurant, setRestaurant, initialMapData, classNa
       // 장소 검색 객체를 생성합니다
       const ps = new window.kakao.maps.services.Places();
 
+      // address search 객체를 생성합니다
+      var geocoder = new window.kakao.maps.services.Geocoder();
+
       // 키워드로 장소를 검색합니다
-      ps.keywordSearch(keyword, placesSearchCB)
-      // ps.keywordSearch(keyword, placesSearchCB);
+      for (let i = 0; i < address.length; i++) {
+         geocoder.addressSearch(address[i], placesSearchCB)
+      }
+      // ps.addressSearch(address, placesSearchCB);
 
       // 키워드 검색 완료 시 호출되는 콜백함수
       function placesSearchCB(data, status, pagination) {
          if (status === window.kakao.maps.services.Status.OK) {
-            // console.log('dd?', data)
+            console.log('dd?', data)
             // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해 LatLngBounds 객체에 좌표를 추가
             var bounds = new window.kakao.maps.LatLngBounds();
 
@@ -113,7 +115,7 @@ const MapSelect = ({ keyword, restaurant, setRestaurant, initialMapData, classNa
             customoverlayAll.forEach(item => item.classList.remove('active'))
             content.children[0].classList.add('active')
 
-            setRestaurant(prev => ({
+            setMyRestaurantList(prev => ({
                ...prev,
                title: place.place_name,
                mapInfo: {
@@ -132,19 +134,20 @@ const MapSelect = ({ keyword, restaurant, setRestaurant, initialMapData, classNa
          })
       }
 
-   }, [keyword]);
+   }, [address]);
 
 
    useKakaoMap(handleMapLoad);
 
    return (
-      <div ref={mapRef} className={`${className ? className : 'w-full h-[400px] border border-gray-300 rounded-md'}`} >
-         {restaurant?.mapInfo && (<MapInfo restaurant={restaurant} setRestaurant={setRestaurant} />)}
+
+      <div ref={mapRef} className={`${className ? className : 'w-full h-[400px] border border-gray-300 rounded-md'}`}>
+         {restaurant?.mapInfo && (<MapInfo restaurant={restaurant} setRestaurant={setMyRestaurantList} />)}
       </div>
    );
 }
 
-export default memo(MapSelect)
+export default memo(MapResList)
 
 
 

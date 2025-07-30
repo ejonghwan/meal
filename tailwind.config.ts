@@ -193,7 +193,8 @@ module.exports = {
         shimmer: 'shimmer 1.5s infinite linear'
       },
       boxShadow: {
-        custom: '0px 0px 24px 0px rgba(0, 0, 0, 0.10)'
+        // custom: '0px 0px 24px 0px rgba(0, 0, 0, 0.10)'
+        // 'xl/30': '0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04)',
       },
       minWidth: {
         large: '1280px'

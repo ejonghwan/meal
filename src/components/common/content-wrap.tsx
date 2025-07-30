@@ -10,7 +10,7 @@ import { cn } from '@/src/utillity/cn'
 
 
 interface ContentWrapProps extends ComponentProps<'div'>, VariantProps<typeof ContentWrapVariants> {
-   variant?: 'main';
+   variant?: 'main' | 'sub' | 'map';
    size?: 'none' | 'default';
    className?: string;
    children: React.ReactNode;
@@ -22,6 +22,7 @@ const ContentWrapVariants = cva('content_wrap', {
       variant: {
          main: '',
          sub: '',
+         map: '',
          default: 'w-auto'
          // ...형태가 추가되면 아래로 추가
       },

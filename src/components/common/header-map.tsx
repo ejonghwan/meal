@@ -23,7 +23,7 @@ import Divider from './divider'
 
 
 
-const Header = ({ className = '', variant }: { className?: string, variant?: any }) => {
+const HeaderMap = ({ className = '', variant }: { className?: string, variant?: any }) => {
 
    const { drawerIsOpen, setDrawerIsOpen } = useUIStore();
    const { loading, userInfo, isAccToken, setUserLogout } = useUserStore()
@@ -46,13 +46,13 @@ const Header = ({ className = '', variant }: { className?: string, variant?: any
 
 
    return (
-      <ContentWrap className={`${className} bg-bg200 z-[1]`} variant={variant}>
+      <ContentWrap className={`${className} bg-trans z-[1]`} variant={variant}>
 
          <Section variant='header' size='large' className=''>
             <header className='header flex justify-between items-center min-h-[40px]'>
 
                <Link href="/home">
-                  <Logo className={'text-[25px]'}>MEAL ?</Logo>
+                  <Logo className={'text-[25px] text-primary'}>MEAL ?</Logo>
                </Link>
 
                {/* pc */}
@@ -74,15 +74,13 @@ const Header = ({ className = '', variant }: { className?: string, variant?: any
 
 
                   {userInfo && (
-                     <div className='flex items-center gap-[15px]'>
-                        <button type='button' className='py-[10px] px-[4px]'>
-                           <PiMagnifyingGlassDuotone className='text-[23px]' />
+                     <div className='flex items-center gap-[10px]'>
+                        <button type='button' className='size-[35px] flex justify-center items-center bg-white rounded-[50%] shadow-[1px_7px_10px_rgba(0,0,0,0.4)]'>
+                           <PiMagnifyingGlassDuotone className='text-[17px] text-[#333]' />
                         </button>
-                        <button type='button' className='py-[10px] px-[4px]'>
-                           <PiMapTrifoldDuotone className='text-[27px]' />
-                        </button>
+
                         <button type="button"
-                           className={'rounded-[50%] bg-gray-700 text-white size-[35px] text-[14px] p-[5px]'}
+                           className={'rounded-[50%] bg-gray-700 text-white size-[35px] text-[14px] p-[5px] shadow-[1px_7px_10px_rgba(0,0,0,0.4)]'}
                            onClick={handleClick}
                            style={{ background: userInfo?.bg }}
                         >
@@ -218,10 +216,9 @@ const Header = ({ className = '', variant }: { className?: string, variant?: any
 
             </header>
          </Section>
-         <Divider />
       </ContentWrap >
 
    )
 }
 
-export default Header
+export default HeaderMap

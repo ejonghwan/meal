@@ -46,10 +46,11 @@ const HeaderMap = ({ className = '', variant }: { className?: string, variant?: 
 
 
    return (
-      <ContentWrap className={`${className} bg-trans z-[1]`} variant={variant}>
+      // bg-trans
+      <ContentWrap className={`${className} z-[1] backdrop-blur-[1px]`} variant={variant}>
 
-         <Section variant='header' size='large' className=''>
-            <header className='header flex justify-between items-center min-h-[40px]'>
+         <Section variant='header' size='large' className='py-[10px]'>
+            <header className='header flex justify-between items-center min-h-[20px]'>
 
                <Link href="/home">
                   <Logo className={'text-[25px] text-primary'}>MEAL ?</Logo>

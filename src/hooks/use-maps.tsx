@@ -37,7 +37,9 @@ export const useKakaoMap = (onLoad: () => void) => {
       };
 
       document.head.appendChild(script);
-   }, [onLoad]);
+   }, []);
+
+   // onLoad 이거 의존성에서 지움 테스트
 
    return loaded;
 };

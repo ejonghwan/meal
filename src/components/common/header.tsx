@@ -75,12 +75,12 @@ const Header = ({ className = '', variant }: { className?: string, variant?: any
 
                   {userInfo && (
                      <div className='flex items-center gap-[15px]'>
-                        <button type='button' className='py-[10px] px-[4px]'>
+                        <Link href="/search" className='py-[10px] px-[4px]'>
                            <PiMagnifyingGlassDuotone className='text-[23px]' />
-                        </button>
-                        <button type='button' className='py-[10px] px-[4px]'>
+                        </Link>
+                        <Link href="/maps" className='py-[10px] px-[4px]' >
                            <PiMapTrifoldDuotone className='text-[27px]' />
-                        </button>
+                        </Link>
                         <button type="button"
                            className={'rounded-[50%] bg-gray-700 text-white size-[35px] text-[14px] p-[5px]'}
                            onClick={handleClick}

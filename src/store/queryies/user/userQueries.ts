@@ -32,7 +32,7 @@ export const useUserLoad = (token: string) => {
 // 회원가입
 export const useUserSignup = () => {
     return useMutation({
-        mutationFn: (user: { email: string; password: string, displayName: string }) => {
+        mutationFn: (user: { email: string; password: string, displayName: string, region: string }) => {
             return onUserSignupAPI(user)
         },
     })

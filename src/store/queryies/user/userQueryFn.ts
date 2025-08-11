@@ -5,7 +5,7 @@ import { useUserStore } from "@/src/store/front/user";
 
 
 
-export const onUserSignupAPI = async (user: { email: string; password: string, displayName: string }) => {
+export const onUserSignupAPI = async (user: { email: string; password: string, displayName: string, region: string }) => {
 
     console.log(user)
 
@@ -15,7 +15,7 @@ export const onUserSignupAPI = async (user: { email: string; password: string, d
     const options: ExtendsRequestInit = {
         method: "POST",
         headers: { "Content-Type": "application/json", },
-        body: JSON.stringify({ email: user.email, password: user.password, displayName: user.displayName, darkmode: true }),
+        body: JSON.stringify({ email: user.email, password: user.password, displayName: user.displayName, darkmode: true, region: user.region }),
         // next: { tags: ['user', 'signup'] },
         cache: "no-cache",
     }

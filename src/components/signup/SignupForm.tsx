@@ -41,7 +41,7 @@ const SignupForm = ({ }: Props) => {
 
     const { data, mutate: userSignupMutate, error: userSignupError, isSuccess: userSignupIsSuccess } = useUserSignup(); // signout 
 
-    const [selectValue, setSelectValue] = useState<SharedSelection>(new Set());
+    const [selectValue, setSelectValue] = useState<SharedSelection>(new Set(['서울특별시']));
 
     // passwordChecked()
     const handleChangeUserInfo = (e: ChangeEvent) => {
@@ -166,7 +166,7 @@ const SignupForm = ({ }: Props) => {
                         주로 이용하는 지역
                         <Select
                             className={"max-w-xs"}
-                            defaultSelectedKeys={"서울특별시"}
+                            defaultSelectedKeys={selectValue}
                             label={'지역'}
                             placeholder={'서울특별시'}
                             // startContent={ico}

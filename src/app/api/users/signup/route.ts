@@ -18,7 +18,7 @@ import { createUserWithEmailAndPassword, sendEmailVerification, updateProfile } 
 */
 export const POST = async (req: NextRequest) => {
 
-    const { email, password, displayName, darkmode } = await req.json();
+    const { email, password, displayName, darkmode, region } = await req.json();
     if (!email) return NextResponse.json({ state: 'FAILUE', message: 'email을 넣어주세요', }, { status: 422 });
     if (!password) return NextResponse.json({ state: 'FAILUE', message: 'password을 넣어주세요', }, { status: 422 });
 
@@ -45,6 +45,7 @@ export const POST = async (req: NextRequest) => {
         darkmode: !!darkmode,
         bg: randomColor, // 랜덤으로 수정하기
         role: 'user', // 권한 설정하기
+        region: region,
         createdAt: new Date(),
     });
 

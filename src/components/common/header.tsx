@@ -46,7 +46,7 @@ const Header = ({ className = '', variant }: { className?: string, variant?: any
 
 
    return (
-      <ContentWrap className={`${className} bg-bg200 z-[1]`} variant={variant}>
+      <ContentWrap className={`${className} bg-bg200 z-[5]`} variant={variant}>
 
          <Section variant='header' size='large' className=''>
             <header className='header flex justify-between items-center min-h-[40px]'>

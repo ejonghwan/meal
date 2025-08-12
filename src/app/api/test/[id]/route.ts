@@ -15,6 +15,8 @@ export async function GET(request: NextRequest, { params }: { params: { id: stri
         data: {
             id: params.id,
             title: 'test title',
+            content: '<div> <p>이건 피태그임</p> <strong class="tit">im tit</strong> <div>컴포넌트 호출되는지? : <Test2 /></div></div>',
+            component: "Test2",
             isDone: false,
             query: query
         },

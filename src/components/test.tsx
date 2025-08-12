@@ -1,6 +1,8 @@
 "use client"
 
 import React, { useEffect, useState, useRef } from 'react'
+import parse, { domToReact } from 'html-react-parser'
+
 
 import Test2 from './test2'
 
@@ -61,10 +63,44 @@ const Test = ({ data }) => {
 
     const DynamicComponent = dataCompo;
 
+
+    // lib 이용해서 렌더링 
+    // const parsedComponent = parse(tit, {
+    //   replace: (domNode) => {
+    //     if (domNode.name === 'Test2') {
+    //       // 컴포넌트 이름과 속성을 이용하여 새로운 컴포넌트 생성
+    //       return <div>{domNode}</div>
+    //     }
+    //   },
+    // });
+
+      const parsedComponent = parse(tit, {
+        replace: (domNode) => {
+          // 커스텀 마커 방식
+          if (
+            domNode.name === "component" &&
+            domNode.attribs &&
+            domNode.attribs.is
+          ) {
+            const Comp = componentMap[domNode.attribs.is];
+            if (Comp) {
+              return <Comp />;
+            }
+          }
+        },
+      });
+
   return (
     <div>
-      <div  style={{ border: "1px solid blue" }} className='border border-1 border-[#ddd]' dangerouslySetInnerHTML={{ __html: tit }} ref={testRef}></div>
+      <div style={{ border: "1px solid blue" }} className='border border-1 border-[#ddd]' dangerouslySetInnerHTML={{ __html: tit }} ref={testRef}></div>
       <div style={{ border: "1px solid red" }}>{DynamicComponent && <DynamicComponent />}</div>
+
+      <br /><br /><hr />
+      <div>파서?</div> 
+      {/* {parse(tit)} */}
+      {parsedComponent}
+
+
 
       <br /><br /><hr />
 

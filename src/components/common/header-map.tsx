@@ -47,7 +47,7 @@ const HeaderMap = ({ className = '', variant }: { className?: string, variant?: 
 
    return (
       // bg-trans
-      <ContentWrap className={`${className} z-[1] backdrop-blur-[1px]`} variant={variant}>
+      <ContentWrap className={`${className} z-[1] backdrop-blur-[1px] overflow-hidden`} variant={variant}>
 
          <Section variant='header' size='large' className='py-[10px]'>
             <header className='header flex justify-between items-center min-h-[20px]'>

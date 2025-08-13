@@ -3,6 +3,8 @@ import Footer from '@/src/components/common/footer'
 import HeaderMap from '@/src/components/common/header-map'
 import { AuthProviderAdmin } from '@/src/components/auth/auth-provider-admin'
 
+// overflow-hidden
+
 const layout = ({ children }) => {
    return (
       <AuthProviderAdmin>

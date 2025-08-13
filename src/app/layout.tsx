@@ -32,7 +32,7 @@ export default function RootLayout({ children, }: { children: React.ReactNode; }
 		<html lang="ko" suppressHydrationWarning className={`${fontDefault.variable}`}>
 			<head />
 			{/* min-h-screen bg-background font-sans antialiased */}
-			<body className={`min-h-screen antialiased overflow-hidden`}
+			<body className={`min-h-screen antialiased`}
 			>
 				<DeviceTypeLayout>
 					<Providers themeProps={{ attribute: "class", defaultTheme: "dark" }}>

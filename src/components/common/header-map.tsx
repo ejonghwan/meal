@@ -39,9 +39,9 @@ const HeaderMap = ({ className = '', variant }: { className?: string, variant?: 
       setUserLogout()
    }
 
-   useEffect(() => {
-      console.log(loading)
-   }, [loading])
+   // useEffect(() => {
+   //    console.log(loading)
+   // }, [loading])
 
 
 

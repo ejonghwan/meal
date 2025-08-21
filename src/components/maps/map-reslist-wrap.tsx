@@ -33,16 +33,16 @@ const MapResListWrap = () => {
         isError: restaurantError,
         isLoading: restaurantLoading,
         isSuccess: restaurantSuccess
-    } = useRestaurantListInfinite(10, category);
+    } = useRestaurantListInfinite(100, category);
 
 
 
     const [myRestaurantList, setMyRestaurantList] = useState([])
 
 
-    useEffect(() => {
-        console.log('??restaurantData', restaurantData)
-    }, [])
+    // useEffect(() => {
+    //     console.log('??restaurantData', restaurantData)
+    // }, [restaurantData])
 
 
 
@@ -63,7 +63,7 @@ const MapResListWrap = () => {
                 <MapSelect key={restaurant.id + index} keyword={restaurant.name} />
             ))} */}
 
-            <MapResList address={test} isAddressSearch={true} setMyRestaurantList={setMyRestaurantList} className='w-[100vw] h-[100vh] !fixed top-0' />
+            <MapResList address={test} isAddressSearch={true} restaurant={restaurantData.pages[0].data} setMyRestaurantList={setMyRestaurantList} className='w-[100vw] h-[100vh] !fixed top-0' />
         </>
     )
 }

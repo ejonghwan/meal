@@ -31,6 +31,7 @@ interface Props {
 
 const MapResList = ({ address, restaurant, setMyRestaurantList, className }: Props) => {
 
+
    const mapRef = useRef<HTMLDivElement>(null);
 
 
@@ -50,7 +51,7 @@ const MapResList = ({ address, restaurant, setMyRestaurantList, className }: Pro
          minLevel: 10 // 클러스터 할 최소 지도 레벨 
       });
 
-      console.log('clusterer?', clusterer)
+      // console.log('clusterer?', clusterer)
 
       // var markers = $(data.positions).map(function(i, position) {
       //       return new kakao.maps.Marker({
@@ -158,6 +159,10 @@ const MapResList = ({ address, restaurant, setMyRestaurantList, className }: Pro
 
 
    useKakaoMap(handleMapLoad);
+
+   useEffect(() => {
+      console.log('restaurant?', restaurant)
+   }, [restaurant])
 
    return (
 

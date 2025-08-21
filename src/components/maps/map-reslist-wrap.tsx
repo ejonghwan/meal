@@ -63,7 +63,7 @@ const MapResListWrap = () => {
                 <MapSelect key={restaurant.id + index} keyword={restaurant.name} />
             ))} */}
 
-            <MapResList address={test} isAddressSearch={true} restaurant={restaurantData.pages[0].data} setMyRestaurantList={setMyRestaurantList} className='w-[100vw] h-[100vh] !fixed top-0' />
+            <MapResList address={test} isAddressSearch={true} restaurant={restaurantData?.pages[0].data} setMyRestaurantList={setMyRestaurantList} className='w-[100vw] h-[100vh] !fixed top-0' />
         </>
     )
 }

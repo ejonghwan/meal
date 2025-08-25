@@ -165,13 +165,27 @@ const MapResList = ({ address, restaurant, setMyRestaurantList, className }: Pro
          // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해 LatLngBounds 객체에 좌표를 추가
          var bounds = new window.kakao.maps.LatLngBounds();
 
-         for (var i = 0; i < restaurant.length; i++) {
-            displayMarker(restaurant[i].mapInfo); //마커
-            bounds.extend(new window.kakao.maps.LatLng(restaurant[i].mapInfo.y, restaurant[i].mapInfo.x));
 
-         }
-         // 검색된 장소 위치를 기준으로 지도 범위를 재설정
+
+         var markers = restaurant.map(item => {
+            bounds.extend(new window.kakao.maps.LatLng(item.mapInfo.y, item.mapInfo.x));
+            return new window.kakao.maps.Marker({
+               position: new window.kakao.maps.LatLng(item.mapInfo.y, item.mapInfo.x)
+            });
+         });
+
+         //   // 클러스터러에 마커들을 추가합니다
+         clusterer.addMarkers(markers);
          map.setBounds(bounds);
+
+
+         // for (var i = 0; i < restaurant.length; i++) {
+         //    displayMarker(restaurant[i].mapInfo); //마커
+         //    bounds.extend(new window.kakao.maps.LatLng(restaurant[i].mapInfo.y, restaurant[i].mapInfo.x));
+
+         // }
+         // // 검색된 장소 위치를 기준으로 지도 범위를 재설정
+         // map.setBounds(bounds);
       }
 
       displayMyRestaurant(restaurant);

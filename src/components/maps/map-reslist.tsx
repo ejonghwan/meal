@@ -257,10 +257,12 @@ const MapResList = ({ address, restaurant, setMyRestaurantList, className }: Pro
    }, [restaurant])
 
    return (
+      <>
+         <div ref={mapRef} className={`${className ? className : 'w-full h-[400px] border border-gray-300 rounded-md'}`}>
 
-      <div ref={mapRef} className={`${className ? className : 'w-full h-[400px] border border-gray-300 rounded-md'}`}>
+         </div>
          {restaurant?.mapInfo && (<MapInfo restaurant={restaurant} setRestaurant={setMyRestaurantList} />)}
-      </div>
+      </>
    );
 }
 

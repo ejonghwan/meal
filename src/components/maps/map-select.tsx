@@ -65,6 +65,7 @@ const MapSelect = ({ keyword, restaurant, setRestaurant, initialMapData, classNa
 
             }
             // 검색된 장소 위치를 기준으로 지도 범위를 재설정
+            console.log('data?', data)
             map.setBounds(bounds);
          }
       }
@@ -138,9 +139,12 @@ const MapSelect = ({ keyword, restaurant, setRestaurant, initialMapData, classNa
    useKakaoMap(handleMapLoad);
 
    return (
-      <div ref={mapRef} className={`${className ? className : 'w-full h-[400px] border border-gray-300 rounded-md'}`} >
+      <>
+         <div ref={mapRef} className={`${className ? className : 'w-full h-[400px] border border-gray-300 rounded-md'}`} >
+
+         </div>
          {restaurant?.mapInfo && (<MapInfo restaurant={restaurant} setRestaurant={setRestaurant} />)}
-      </div>
+      </>
    );
 }
 

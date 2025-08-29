@@ -7,18 +7,6 @@ import { Input } from "@heroui/input"
 import Link from 'next/link';
 import MapInfo from '@/src/components/maps/map-info';
 
-// address_name: "서울 도봉구 창동 13"
-// category_group_code: "CE7"
-// category_group_name: "카페"
-// category_name: "음식점 > 카페 > 커피전문점 > 이디야커피"
-// distance: ""
-// id: "16501421"
-// phone: "02-900-9307"
-// place_name: "이디야커피 창동역점"
-// place_url: "http://place.map.kakao.com/16501421"
-// road_address_name: "서울 도봉구 마들로11길 65"
-// x: "127.049616828096"
-// y: "37.6533845503663"
 
 interface Props {
    keyword: string;

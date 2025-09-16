@@ -47,7 +47,8 @@ const HeaderMap = ({ className = '', variant }: { className?: string, variant?: 
 
    return (
       // bg-trans
-      <ContentWrap className={`${className} z-[1] backdrop-blur-[1px] overflow-hidden`} variant={variant}>
+      // backdrop-blur-[1px] 이거쓰면 드로워 짤림
+      <ContentWrap className={`${className} z-[1] overflow-hidden`} variant={variant}>
 
          <Section variant='header' size='large' className='py-[10px]'>
             <header className='header flex justify-between items-center min-h-[20px]'>
@@ -121,6 +122,7 @@ const HeaderMap = ({ className = '', variant }: { className?: string, variant?: 
                            </div>
                         </div>
                      </DrawerHeader>
+
                      <DrawerContent className='drawer__content--wrap'>
                         <section className='drawer__content--sec'>
                            {userInfo &&

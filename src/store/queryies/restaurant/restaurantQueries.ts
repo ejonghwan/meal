@@ -51,6 +51,7 @@ export const useRestaurantListInfinite = (limit: number, categoryName: string) =
 
 // 상세 로드
 export const useRestaurant = (restauranId: string) => {
+
    return useQuery({
       queryKey: restaurantKeys.detail(restauranId),
       queryFn: () => onLoadRestaurantDetailAPI(restauranId),

@@ -102,7 +102,7 @@ const RestaurantItem = ({ restaurant }) => {
             <Divider className='h-[2px] mb-[15px] bg-bg100 mx-[0px]' />
             <div className='flex flex-wrap items-center mb-[10px]'>
                 <div className='w-full flex items-center gap-[5px] justify-end'>
-                    <Link href={`/restaurant/detail/${restaurant.id}?hoho=zzzz`} className='flex gap-[5px] items-center mb-[5px]'>
+                    <Link href={`/restaurant/detail/${restaurant.id}?search=${restaurant.category}`} className='flex gap-[5px] items-center mb-[5px]'>
                         <span className='text-[13px] text-[#d3d3d3]'>상세글 보기</span>
                         <span><PiArrowCircleRightDuotone /></span>
                     </Link>

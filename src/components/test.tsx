@@ -15,7 +15,7 @@ const componentMap = {
 
 
 const Test = ({ data }) => {
-    
+
   const [dd, setDd] = useState([])
   const [tit, setTit] = useState('')
   const testRef = useRef(null);
@@ -37,58 +37,58 @@ const Test = ({ data }) => {
 
 
     setTit(data.data.content)
-  
-     const el = testRef.current.querySelector('.tit');
-      if (el) {
-        el.innerHTML = dataStr;
-      }
+
+    const el = testRef.current.querySelector('.tit');
+    if (el) {
+      el.innerHTML = dataStr;
+    }
   }, [tit])
 
-  
-
-    // console.log('win out?', window )
-    // useEffect(() => {
-    //     console.log('win in?', window )
-    // }, [])
-    
-    const handleLcick = () => {
-      setDd(prev => [...prev, 'dd'])
-      console.log('dd?', dd)
-    }
-
-    const handleSubmit = () => {
-      console.log(dd)
-    }
 
 
-    const DynamicComponent = dataCompo;
+  // console.log('win out?', window )
+  // useEffect(() => {
+  //     console.log('win in?', window )
+  // }, [])
+
+  const handleLcick = () => {
+    setDd(prev => [...prev, 'dd'])
+    console.log('dd?', dd)
+  }
+
+  const handleSubmit = () => {
+    console.log(dd)
+  }
 
 
-    // lib 이용해서 렌더링 
-    // const parsedComponent = parse(tit, {
-    //   replace: (domNode) => {
-    //     if (domNode.name === 'Test2') {
-    //       // 컴포넌트 이름과 속성을 이용하여 새로운 컴포넌트 생성
-    //       return <div>{domNode}</div>
-    //     }
-    //   },
-    // });
+  const DynamicComponent = dataCompo;
 
-      const parsedComponent = parse(tit, {
-        replace: (domNode) => {
-          // 커스텀 마커 방식
-          if (
-            domNode.name === "component" &&
-            domNode.attribs &&
-            domNode.attribs.is
-          ) {
-            const Comp = componentMap[domNode.attribs.is];
-            if (Comp) {
-              return <Comp />;
-            }
-          }
-        },
-      });
+
+  // lib 이용해서 렌더링 
+  // const parsedComponent = parse(tit, {
+  //   replace: (domNode) => {
+  //     if (domNode.name === 'Test2') {
+  //       // 컴포넌트 이름과 속성을 이용하여 새로운 컴포넌트 생성
+  //       return <div>{domNode}</div>
+  //     }
+  //   },
+  // });
+
+  const parsedComponent = parse(tit, {
+    replace: (domNode) => {
+      // 커스텀 마커 방식
+      if (
+        domNode.name === "component" &&
+        domNode.attribs &&
+        domNode.attribs.is
+      ) {
+        const Comp = componentMap[domNode.attribs.is];
+        if (Comp) {
+          return <Comp />;
+        }
+      }
+    },
+  });
 
   return (
     <div>
@@ -96,7 +96,7 @@ const Test = ({ data }) => {
       <div style={{ border: "1px solid red" }}>{DynamicComponent && <DynamicComponent />}</div>
 
       <br /><br /><hr />
-      <div>파서?</div> 
+      <div>파서?</div>
       {/* {parse(tit)} */}
       {parsedComponent}
 
@@ -113,7 +113,7 @@ const Test = ({ data }) => {
 
       <div>
         이건 그냥 호출
-      <Test2 />
+        <Test2 />
       </div>
     </div>
   )

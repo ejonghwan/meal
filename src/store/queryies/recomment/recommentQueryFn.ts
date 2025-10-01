@@ -112,8 +112,6 @@ export const onCreateRecommentAPI = async (payload: RecommentData) => {
 }
 
 
-
-
 /*
     @ path    PUT /api/recomment/:recommentId
     @ doc     댓글 수정

@@ -97,7 +97,7 @@ export const useEditRestaurant = () => {
 
 
 // 글 좋아요
-export const useLikeRestaurant = () => {
+export const useLikeRestaurant = (type: "list" | "detail" = "list") => {
 
    const searchParams = useSearchParams()
    const category = searchParams.get('search') || '전체'
@@ -108,27 +108,51 @@ export const useLikeRestaurant = () => {
          return onLikeRestaurantAPI(payload)
       },
       onSuccess: (data, variables) => {
+         console.log('상세페이지에서 상태 ? ',)
+
+         // 이부분 수정해야됨 
 
          queryClient.setQueryData(restaurantKeys.listAll(category), (oldData: any) => {
-            // console.log('oldData??', oldData, 'data?', data, '변수?', variables)
-            // console.log('캐시 ?', queryClient.getQueryCache().findAll());
+            console.log('oldData??', oldData, 'data?', data, '변수?', variables)
+            console.log('캐시 ?', queryClient.getQueryCache().findAll());
             if (!oldData) return;
 
             // console.log('oldData??', oldData)
             // console.log('data??', data)
             // console.log('variables??', variables)
 
-            return {
-               ...oldData,
-               pages: oldData.pages.map((page) => ({
-                  ...page,
-                  data: page.data.map((restaurant) =>
-                     restaurant.id === variables.restaurantId
-                        ? { ...restaurant, like: data.data.like, hasMyLike: data.data.hasMyLike }
-                        : restaurant
-                  ),
-               })),
-            };
+            console.log('상세페이지에서 업데이트 ? ', oldData,)
+
+            // 리스트페이지일경우
+            if (type === "list") {
+               return {
+                  ...oldData,
+                  pages: oldData.pages.map((page) => ({
+                     ...page,
+                     data: page.data.map((restaurant) =>
+                        restaurant.id === variables.restaurantId
+                           ? { ...restaurant, like: data.data.like, hasMyLike: data.data.hasMyLike }
+                           : restaurant
+                     ),
+                  })),
+               };
+            }
+
+            // 상세페이지일경우 
+            if (type === "detail") {
+               return {
+                  ...oldData,
+                  pages: oldData.pages.map((page) => ({
+                     ...page,
+                     data: page.data.map((restaurant) =>
+                        restaurant.id === variables.restaurantId
+                           ? { ...restaurant, like: data.data.like, hasMyLike: data.data.hasMyLike }
+                           : restaurant
+                     ),
+                  })),
+               };
+            }
+
          });
 
          // // 글에 좋아요 업데이트

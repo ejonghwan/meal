@@ -113,7 +113,7 @@ export const useLikeRestaurant = (type: "list" | "detail" = "list") => {
          // 이부분 수정해야됨 
 
          queryClient.setQueryData(restaurantKeys.listAll(category), (oldData: any) => {
-            console.log('oldData??', oldData, 'data?', data, '변수?', variables)
+            console.log('oldData??', oldData, 'data?', data, '변수?', variables, 'category??', category)
             console.log('캐시 ?', queryClient.getQueryCache().findAll());
             if (!oldData) return;
 
@@ -154,6 +154,8 @@ export const useLikeRestaurant = (type: "list" | "detail" = "list") => {
             }
 
          });
+
+
 
          // // 글에 좋아요 업데이트
          // queryClient.setQueryData(restaurantKeys.listAll(category), (oldData: any) => {

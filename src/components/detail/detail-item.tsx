@@ -25,7 +25,7 @@ import { categorys } from '../common/category/category-data';
 
 const DetailItem = ({ restaurant }) => {
 
-   console.log('restaurant?', restaurant)
+   console.log('restaurant asd?', restaurant)
 
    const { mutate: editMutate, data: editData, isError: editError, isSuccess: editSuccess } = useEditRestaurant()
    const { mutate: deleteMutate, data: deleteData, isError: deleteError, isSuccess: deleteSuccess } = useDeleteRestaurant()
@@ -103,6 +103,7 @@ const DetailItem = ({ restaurant }) => {
             <span>{restaurant.user.displayName}</span>
             <div className='flex flex-wrap items-center gap-[12px] ml-auto'>
                {/* 좋아요 싫어요 구현 */}
+               {restaurant.hasMyLike ? 'true' : 'false'}
                <Like
                   handleLikeClick={() => debouncedLike(userInfo.uid, restaurant.id)}
                   likeLength={restaurant.like}
@@ -128,7 +129,6 @@ const DetailItem = ({ restaurant }) => {
                               <span><PiCheckDuotone className='size-[18px]' /></span>
                               <span className='text-[13px] text-[#d3d3d3] mt-[2px]'>완료</span>
                            </button>
-
                         </>
                      ) : (
                         <>
@@ -141,7 +141,6 @@ const DetailItem = ({ restaurant }) => {
                               <span><PiTrashDuotone className='size-[18px]' /></span>
                               <span className='text-[13px] text-[#d3d3d3] mt-[2px]'>삭제</span>
                            </button>
-
                         </>
                      )}
                   </div>

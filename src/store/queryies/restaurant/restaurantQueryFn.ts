@@ -47,7 +47,7 @@ export const onLoadRestaurantDetailAPI = async (restaurantId: string) => {
     try {
         const savedToken = localStorage.getItem('x-acc-token');
 
-        console.log('savedToken??', savedToken)
+        // console.log('savedToken??', savedToken)
 
         const options: ExtendsRequestInit = {
             method: "GET",

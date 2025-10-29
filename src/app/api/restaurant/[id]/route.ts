@@ -50,12 +50,24 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string }
     const data = docSnap.data();
 
     // 좋아요/댓글 여부 (현재 로그인한 유저 기준)
-    const hasMyLike = !!(
-        data?.likeUsers && Array.isArray(data.likeUsers) && userId && data.likeUsers.includes(userId)
-    );
-    const hasMyComment = !!(
-        data?.commentUsers && Array.isArray(data.commentUsers) && userId && data.commentUsers.includes(userId)
-    );
+    // const hasMyLike = !!(
+    //     data?.likeUsers && Array.isArray(data.likeUsers) && userId && data.likeUsers.includes(userId)
+    // );
+    let hasMyLike = false;
+    let hasMyComment = false;
+    if (userId) {
+        const likeDoc = await adminDB.collection("restaurantLikes").doc(`${userId}_${id}`).get();
+        const commentDoc = await adminDB.collection("comments")
+            .where("restaurantId", "==", id)      // 해당 식당에
+            .where("userId", "==", userId)            // 해당 유저가
+            .limit(1)                                 // 1개만 찾으면 됨
+            .get();
+        hasMyLike = likeDoc.exists; // .exists는 **DocumentSnapshot**에만
+        hasMyComment = !commentDoc.empty; // commentSnapshot은 **QuerySnapshot** 타입
+
+        // console.log('hohohohoho', hasMyLike, 'doc?', `${userId}_${doc.id}`)
+    }
+
 
     const userDoc = await adminDB.collection('users').doc(data.userId).get();
     const userData = userDoc.data();
@@ -83,56 +95,7 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string }
         updated_at: data?.updated_at?.toDate() ?? null,
     };
 
-    // const fetchedRestaurant = await Promise.all(
-    //     // snapshot.docs.map(async (doc) => {
-    //     slicedDocs.map(async (doc) => {
-    //         const data = doc.data();
-    //         let user = null;
 
-    //         try {
-    //             // 어드민 유저 말고 콜렉션 유저 가져오기로 수정
-    //             // const userRecord = await admin.auth().getUser(data.userId);
-    //             // user = {
-    //             //    uid: userRecord.uid,
-    //             //    email: userRecord.email,
-    //             //    displayName: userRecord.displayName,
-    //             //    photoURL: userRecord.photoURL,
-    //             // };
-
-    //             const userDoc = await adminDB.collection('users').doc(data.userId).get();
-    //             const userData = userDoc.data();
-    //             user = { ...userData };
-
-    //         } catch (error) {
-    //             console.error("유저 정보 조회 실패:", data.userId, error);
-    //         }
-
-
-
-
-    //         return {
-    //             ...data,
-    //             id: doc.id,
-    //             user,
-    //             title: data.title,
-    //             content: data.content,
-    //             category: data.category,
-    //             rating: data.rating,
-    //             totalRating: data.totalRating,
-    //             commentCount: data.commentCount,
-    //             recommentCount: data.recommentCount,
-    //             userId: data.userId,
-    //             isEdit: data.isEdit,
-    //             mapInfo: data.mapInfo,
-    //             like: data.like, //count
-    //             unlike: data.unlike,
-    //             hasMyLike: hasMyLike,
-    //             hasMyComment: hasMyComment,
-    //             created_at: data.created_at?.toDate() ?? null,
-    //             updated_at: data.updated_at?.toDate() ?? null,
-    //         };
-    //     })
-    // );
 
 
 

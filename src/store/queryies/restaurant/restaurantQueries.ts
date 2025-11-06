@@ -108,23 +108,24 @@ export const useLikeRestaurant = (type: "list" | "detail" = "list") => {
          return onLikeRestaurantAPI(payload)
       },
       onSuccess: (data, variables) => {
-         console.log('상세페이지에서 상태 ? ',)
+         // console.log('상세페이지에서 상태 ? ',)
 
          // 이부분 수정해야됨 
 
-         queryClient.setQueryData(restaurantKeys.listAll(category), (oldData: any) => {
-            console.log('oldData??', oldData, 'data?', data, '변수?', variables, 'category??', category)
-            console.log('캐시 ?', queryClient.getQueryCache().findAll());
-            if (!oldData) return;
 
-            // console.log('oldData??', oldData)
-            // console.log('data??', data)
-            // console.log('variables??', variables)
+         if (type === "list") {
+            console.log('list')
+            queryClient.setQueryData(restaurantKeys.listAll(category), (oldData: any) => {
+               console.log('oldData??', oldData, 'data?', data, '변수?', variables, 'category??', category)
+               console.log('캐시 ?', queryClient.getQueryCache().findAll());
+               if (!oldData) return;
 
-            console.log('상세페이지에서 업데이트 ? ', oldData,)
 
-            // 리스트페이지일경우
-            if (type === "list") {
+
+               // olddata까지 함 
+               console.log('상세페이지에서 업데이트 ? ', oldData,)
+
+               // 리스트페이지일경우
                return {
                   ...oldData,
                   pages: oldData.pages.map((page) => ({
@@ -136,10 +137,24 @@ export const useLikeRestaurant = (type: "list" | "detail" = "list") => {
                      ),
                   })),
                };
-            }
 
-            // 상세페이지일경우 
-            if (type === "detail") {
+            });
+         }
+
+
+         if (type === "detail") {
+
+            console.log('detail')
+            const { data: { restaurantId } } = data;
+            queryClient.setQueryData(restaurantKeys.detail(restaurantId), (oldData: any) => {
+               console.log('oldData??', oldData, 'data?', data, '변수?', variables, 'category??', category)
+               console.log('캐시 ?', queryClient.getQueryCache().findAll());
+               if (!oldData) return;
+
+
+               console.log('상세페이지에서 업데이트 ? ', oldData,)
+
+               // 리스트페이지일경우
                return {
                   ...oldData,
                   pages: oldData.pages.map((page) => ({
@@ -151,9 +166,10 @@ export const useLikeRestaurant = (type: "list" | "detail" = "list") => {
                      ),
                   })),
                };
-            }
 
-         });
+            });
+         }
+
 
 
 

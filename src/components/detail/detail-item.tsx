@@ -29,7 +29,7 @@ const DetailItem = ({ restaurant }) => {
 
    const { mutate: editMutate, data: editData, isError: editError, isSuccess: editSuccess } = useEditRestaurant()
    const { mutate: deleteMutate, data: deleteData, isError: deleteError, isSuccess: deleteSuccess } = useDeleteRestaurant()
-   const { mutate: likeRestaurantMutate, isError: likeRestaurantError, isPending: likeRestaurantPending, isSuccess: likeRestaurantSuccess } = useLikeRestaurant()
+   const { mutate: likeRestaurantMutate, isError: likeRestaurantError, isPending: likeRestaurantPending, isSuccess: likeRestaurantSuccess } = useLikeRestaurant("detail")
 
    const { userInfo } = useUserStore()
    const [editRestaurant, setEditRestaurant] = useState(restaurant)

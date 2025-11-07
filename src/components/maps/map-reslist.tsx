@@ -20,6 +20,14 @@ import MapInfo from '@/src/components/maps/map-info';
 // x: "127.049616828096"
 // y: "37.6533845503663"
 
+
+/*
+  위도 경도 보내서 디비별로 따로 저장 
+  디비에 저장된 활동지역으로 확대하고 처음엔 그 데이터만 추려서 가져와야됨 
+*/
+ 
+
+
 interface Props {
    address: string[];
    restaurant?: any;
@@ -159,7 +167,6 @@ const MapResList = ({ address, restaurant, setMyRestaurantList, className }: Pro
 
       console.log('haa ?', restaurant, address)
 
-
       function displayMyRestaurant(restaurant) {
          // console.log('dd?', restaurant)
          // 검색된 장소 위치를 기준으로 지도 범위를 재설정하기위해 LatLngBounds 객체에 좌표를 추가
@@ -199,10 +206,7 @@ const MapResList = ({ address, restaurant, setMyRestaurantList, className }: Pro
 
          //   // 클러스터러에 마커들을 추가합니다
          clusterer.addMarkers(markers);
-
-
          map.setBounds(bounds);
-
       }
 
       displayMyRestaurant(restaurant);

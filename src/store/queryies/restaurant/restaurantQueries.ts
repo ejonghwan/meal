@@ -108,22 +108,12 @@ export const useLikeRestaurant = (type: "list" | "detail" = "list") => {
          return onLikeRestaurantAPI(payload)
       },
       onSuccess: (data, variables) => {
-         // console.log('상세페이지에서 상태 ? ',)
-
-         // 이부분 수정해야됨 
-
-
          if (type === "list") {
             console.log('list')
             queryClient.setQueryData(restaurantKeys.listAll(category), (oldData: any) => {
                console.log('oldData??', oldData, 'data?', data, '변수?', variables, 'category??', category)
                console.log('캐시 ?', queryClient.getQueryCache().findAll());
                if (!oldData) return;
-
-
-
-               // olddata까지 함 
-               console.log('상세페이지에서 업데이트 ? ', oldData,)
 
                // 리스트페이지일경우
                return {
@@ -141,30 +131,22 @@ export const useLikeRestaurant = (type: "list" | "detail" = "list") => {
             });
          }
 
-
          if (type === "detail") {
-
             console.log('detail')
             const { data: { restaurantId } } = data;
             queryClient.setQueryData(restaurantKeys.detail(restaurantId), (oldData: any) => {
-               console.log('oldData??', oldData, 'data?', data, '변수?', variables, 'category??', category)
-               console.log('캐시 ?', queryClient.getQueryCache().findAll());
+               // console.log('oldData??', oldData, 'data?', data, '변수?', variables, 'category??', category)
+               // console.log('캐시 ?', queryClient.getQueryCache().findAll());
                if (!oldData) return;
 
-
-               console.log('상세페이지에서 업데이트 ? ', oldData,)
-
-               // 리스트페이지일경우
                return {
                   ...oldData,
-                  pages: oldData.pages.map((page) => ({
-                     ...page,
-                     data: page.data.map((restaurant) =>
-                        restaurant.id === variables.restaurantId
-                           ? { ...restaurant, like: data.data.like, hasMyLike: data.data.hasMyLike }
-                           : restaurant
-                     ),
-                  })),
+                  data: {
+                     ...oldData.data,
+                     like: data.data.like,
+                     hasMyLike: data.data.hasMyLike,
+                  },
+                 
                };
 
             });

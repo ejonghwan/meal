@@ -46,11 +46,11 @@ const RestaurantTable = ({ restaurantData, restaurantSuccess, restaurantLoading,
                   <div className="flex ">
                     <div className="flex flex-wrap items-center">
                       <span className="text-[13px] text-[#999]">{item.user.displayName}</span>
-                      <i className="block size-[3px] bg-[#505050] rounded-[50%] mx-[5px]"></i>
+                      <i className="block size-[2px] bg-[#505050] rounded-[50%] mx-[5px]"></i>
                       <div className="text-[13px] text-[#999]">
                         {changeViewDate(item.created_at, 'day').slice(2)}&nbsp;
                       </div>
-                      {item.updated_at && <i className="block size-[3px] bg-[#505050] rounded-[50%] mx-[5px]"></i>}
+                      {item.updated_at && <i className="block size-[2px] bg-[#505050] rounded-[50%] mx-[5px]"></i>}
                       <div className="text-[13px] text-[#999]">
                         {item.updated_at && <span className="text-[13px]">{timeForToday(item.updated_at)} 수정</span>}
                       </div>

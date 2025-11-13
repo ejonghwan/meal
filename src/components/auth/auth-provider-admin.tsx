@@ -20,7 +20,7 @@ export const AuthProviderAdmin = ({ children }: { children: React.ReactNode }) =
 
    const { data: userLoadData, isError: userLoadError, isSuccess: userLoadSuccess, isLoading: userLoadLoading } = useUserLoad(token.current)
    const { userInfo, setUserInfo, setUserLogout, setIsAccToken } = useUserStore();
-   const [checked, setChecked] = useState(false);
+   // const [checked, setChecked] = useState(false);
 
 
 

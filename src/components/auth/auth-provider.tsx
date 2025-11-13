@@ -33,7 +33,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             try {
                console.log('auth 유저 있음 토큰은?')
 
-               const token = await user.getIdToken(); // ← 갱신 시 자동으로 최신 토큰 제공됨
+               const token = await user.getIdToken(); // 갱신 시 자동으로 최신 토큰 제공됨
                localStorage.setItem('x-acc-token', token);
                setIsAccToken(true);
                setLoading(true);

@@ -10,6 +10,7 @@ export const withAuth = (handler: (req: NextRequest, user: any, ctx: { params: a
          const token = authHeader.replace("Bearer ", "");
 
          const decoded = await admin.auth().verifyIdToken(token);
+         console.log('decoded token?', decoded)
          const user = await admin.auth().getUser(decoded.uid)
 
          // 콜렉션 유저 불러와서 합성
@@ -25,4 +26,5 @@ export const withAuth = (handler: (req: NextRequest, user: any, ctx: { params: a
          return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
       }
    }
+
 

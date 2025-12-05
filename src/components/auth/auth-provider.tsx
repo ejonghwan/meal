@@ -9,8 +9,33 @@ import { verifyToken } from "@/src/components/auth/auth-verifyToken-api"
 import { useRouter, usePathname } from "next/navigation";
 
 
+function parseJwt(token: string) {
+   const base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+   const decodedPayload = JSON.parse(atob(base64));
+   return decodedPayload;
+}
+
+async function checkTokenExpired(token: string) {
+
+   const decoded = parseJwt(token);
+   const exp = decoded.exp; // 초 단위
+   const now = Math.floor(Date.now() / 1000);
+   const diffHours = (now - exp) / 3600;
+
+   console.log('diffHours?', diffHours)
+
+   // exp 지난지 3시간 넘었으면 로그아웃
+   if (diffHours >= 3) {
+      console.log("토큰 만료 후 3시간 경과 → 강제 로그아웃");
+      return true
+   } else {
+      return false
+   }
+}
 
 
+
+// 로그인, 비로그인 유저 모두 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
    const router = useRouter();
@@ -29,11 +54,25 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
       // onAuthStateChanged
       const unsubscribe = onIdTokenChanged(auth, async (user) => {
+
+         /*
+            로그인 이후 3시간이 지나면 로그아웃 기능은 처음 시간 저장 후 그로부터 3시간 후 로직으로 짜야됨 
+            나는 그냥 유저가 로그인하면 쭉 자동 로그인 되게 하고 로그아웃 안하고 껐을 때 저장소에 토큰이 있다면 
+            그 토큰으로는 로그인 안되게 막는 로직만 추가 
+         */
+         // const isAccToken = localStorage.getItem('x-acc-token');
+         // console.log('isAccToken?', isAccToken)
+         // if (isAccToken) {
+         //    const isTokenExp = await checkTokenExpired(isAccToken)
+         //    console.log('token?', isTokenExp)
+         // }
+         // 이승호님 02 3466 4252
+
          if (user) {
             try {
                console.log('auth 유저 있음 토큰은?')
-
                const token = await user.getIdToken(); // 갱신 시 자동으로 최신 토큰 제공됨
+
                localStorage.setItem('x-acc-token', token);
                setIsAccToken(true);
                setLoading(true);
@@ -44,10 +83,6 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
                // console.log('??????????????????, ', verifiedUser)
 
                setUserInfo({
-                  // uid: verifiedUser.data.uid,
-                  // email: verifiedUser.data.email,
-                  // metadata: verifiedUser.data.metadata,
-                  // providerData: verifiedUser.data.providerData
                   ...verifiedUser.data
                });
             } catch (err) {

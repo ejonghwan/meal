@@ -26,18 +26,10 @@ import {
 import { PiEyeClosedDuotone, PiEyeDuotone } from "react-icons/pi";
 
 
-
-
-interface Props {
-    // load: (token: string) => any;
-}
-
 interface User {
     email: string;
     password: string;
 }
-
-
 
 /*
     admin > server 
@@ -50,11 +42,6 @@ interface User {
     - 로드는 acc 보냄
     (auth에 토큰 갱신은 수시로)
 
-    상황	Firebase Admin SDK 필요 여부
-    로그인 UI 구현 / 상태 관리	❌ 클라이언트 SDK로 충분
-    API 서버에서 유저 인증이 필요한 작업 (ex. DB 접근)	✅ 필요!
-    public API, 인증 필요 없는 작업	❌ 필요 없음
-    보안이 중요한 처리 (ex. 결제, 데이터 수정 등)	✅ 무조건 검증 필요
 */
 
 
@@ -78,7 +65,7 @@ const LoginForm = () => {
 
 
     const handleChangeUserInfo = (e: ChangeEvent) => {
-        const target = e.target as HTMLInputElement;;
+        const target = e.target as HTMLInputElement;
         setUser({
             ...user,
             [target.name]: target.value
@@ -117,11 +104,9 @@ const LoginForm = () => {
 
 
 
-
     // 로그인된 유저는 아예 못접근하게 막아야됨. 로그인 창이 보이는거 로딩으로 변경시키기
     useEffect(() => {
         if (userInfo) router.push(`/home?search=${prevpage === null ? '전체' : prevpage}`)
-
     }, [userInfo])
     if (userInfo) return null;
 

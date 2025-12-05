@@ -14,10 +14,10 @@ const DetailWrap = ({ restaurantId }: Props) => {
    // async 함수 안에서는 hoohs 호출불가
    const { data: detailData, isLoading: detailLoading, isError: detailError, isSuccess: detailSuccess } = useRestaurant(restaurantId)
 
-   useEffect(() => {
+   // useEffect(() => {
 
-      console.log('de ?', detailData)
-   }, [detailData])
+   //    console.log('de ?', detailData)
+   // }, [detailData])
 
    return (
       <>

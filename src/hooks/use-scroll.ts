@@ -13,9 +13,12 @@ const useScroll = ({ elem, renderCondition }: ScrollProps) => {
   // addEventListener 반복 방지를 위해 renderCondition은 ref로 고정
   // 하지만 변경되면 적용되야되므로 useEffect로 감지
   const renderConditionRef = useRef(renderCondition)
+
+
   useEffect(() => {
     renderConditionRef.current = renderCondition
   }, [renderCondition])
+
   // 렌더는 트리거하진 않지만 y좌표는 필요한 경우
   const yRef = useRef(0)
 
@@ -37,6 +40,7 @@ const useScroll = ({ elem, renderCondition }: ScrollProps) => {
     },
     [elem, y]
   )
+
 
   useEffect(() => {
     if (elem) {

@@ -25,7 +25,7 @@ import { categorys } from '../common/category/category-data';
 
 const DetailItem = ({ restaurant }) => {
 
-   console.log('restaurant asd?', restaurant)
+   // console.log('restaurant asd?', restaurant)
 
    const { mutate: editMutate, data: editData, isError: editError, isSuccess: editSuccess } = useEditRestaurant()
    const { mutate: deleteMutate, data: deleteData, isError: deleteError, isSuccess: deleteSuccess } = useDeleteRestaurant()

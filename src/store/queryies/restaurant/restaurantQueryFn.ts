@@ -43,7 +43,6 @@ export const onLoadRestaurantListAPI = async (page: number, categoryName: string
     @ access  public
 */
 export const onLoadRestaurantDetailAPI = async (restaurantId: string) => {
-    console.log('실행안해 ?에이피아이 ')
     try {
         const savedToken = localStorage.getItem('x-acc-token');
 
@@ -63,7 +62,7 @@ export const onLoadRestaurantDetailAPI = async (restaurantId: string) => {
         if (!restaurantId) throw new Error('Network response was not ok');
         const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/restaurant/${restaurantId}`, options)
 
-        console.log('res??', res)
+        // console.log('res??', res)
 
         if (!res.ok) { throw new Error('Network response was not ok'); }
         return res.json();

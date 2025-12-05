@@ -60,46 +60,90 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             나는 그냥 유저가 로그인하면 쭉 자동 로그인 되게 하고 로그아웃 안하고 껐을 때 저장소에 토큰이 있다면 
             그 토큰으로는 로그인 안되게 막는 로직만 추가 
          */
-         // const isAccToken = localStorage.getItem('x-acc-token');
-         // console.log('isAccToken?', isAccToken)
-         // if (isAccToken) {
-         //    const isTokenExp = await checkTokenExpired(isAccToken)
-         //    console.log('token?', isTokenExp)
-         // }
-         // 이승호님 02 3466 4252
+         const isAccToken = localStorage.getItem('x-acc-token');
+         try {
+            if (isAccToken) {
 
-         if (user) {
-            try {
-               console.log('auth 유저 있음 토큰은?')
-               const token = await user.getIdToken(); // 갱신 시 자동으로 최신 토큰 제공됨
+               const isTokenExp = await checkTokenExpired(isAccToken)
+               console.log('isAccToken?', isAccToken, isTokenExp)
 
-               localStorage.setItem('x-acc-token', token);
-               setIsAccToken(true);
-               setLoading(true);
+               if (isTokenExp) {
+                  // token이 만료된 경우
+                  const isTokenExp = await checkTokenExpired(isAccToken)
+                  console.log('지난 token?', isTokenExp)
 
-               // 비로그인 페이지에서도 유저가 있으면 load api로 검증 후 유저를 가져옴. 이건 나중에 손보기
-               const verifiedUser = await verifyToken(token);
+               } else if (!isTokenExp && user) {
+                  console.log('토큰 만료되어서 실행되면 안됨 ')
+                  // token이 존재하고 유저가 존재할 경우
+                  console.log('auth 유저 있음 토큰은?')
+                  const token = await user.getIdToken(); // 갱신 시 자동으로 최신 토큰 제공됨
 
-               // console.log('??????????????????, ', verifiedUser)
+                  localStorage.setItem('x-acc-token', token);
+                  setIsAccToken(true);
+                  setLoading(true);
 
-               setUserInfo({
-                  ...verifiedUser.data
-               });
-            } catch (err) {
+                  // 비로그인 페이지에서도 유저가 있으면 load api로 검증 후 유저를 가져옴. 이건 나중에 손보기
+                  const verifiedUser = await verifyToken(token);
 
-               console.log('유효하지 않은 토큰. 로그아웃');
-               setUserLogout();
-               router.replace('/home');
+                  // console.log('??????????????????, ', verifiedUser)
 
-            } finally {
+                  setUserInfo({
+                     ...verifiedUser.data
+                  });
 
-               setLoading(false);
+               } else {
+                  // token도 없고 유저도 없는 경우
+                  setUserInfo(null);
+                  setIsAccToken(false);
+               }
 
             }
-         } else {
-            setUserInfo(null);
-            setIsAccToken(false);
+         } catch (err) {
+
+            console.log('유효하지 않은 토큰. 로그아웃');
+            setUserLogout();
+            router.replace('/home');
+
+         } finally {
+
+            setLoading(false);
+
          }
+
+
+
+         // if (user) {
+         //    try {
+         //       console.log('auth 유저 있음 토큰은?')
+         //       const token = await user.getIdToken(); // 갱신 시 자동으로 최신 토큰 제공됨
+
+         //       localStorage.setItem('x-acc-token', token);
+         //       setIsAccToken(true);
+         //       setLoading(true);
+
+         //       // 비로그인 페이지에서도 유저가 있으면 load api로 검증 후 유저를 가져옴. 이건 나중에 손보기
+         //       const verifiedUser = await verifyToken(token);
+
+         //       // console.log('??????????????????, ', verifiedUser)
+
+         //       setUserInfo({
+         //          ...verifiedUser.data
+         //       });
+         //    } catch (err) {
+
+         //       console.log('유효하지 않은 토큰. 로그아웃');
+         //       setUserLogout();
+         //       router.replace('/home');
+
+         //    } finally {
+
+         //       setLoading(false);
+
+         //    }
+         // } else {
+         //    setUserInfo(null);
+         //    setIsAccToken(false);
+         // }
       });
 
       return () => unsubscribe();

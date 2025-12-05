@@ -39,9 +39,9 @@ const Header = ({ className = '', variant }: { className?: string, variant?: any
       setUserLogout()
    }
 
-   useEffect(() => {
-      console.log(loading)
-   }, [loading])
+   // useEffect(() => {
+   //    console.log(loading)
+   // }, [loading])
 
 
 
@@ -71,7 +71,6 @@ const Header = ({ className = '', variant }: { className?: string, variant?: any
                   {/* {isAccToken === null && <Skeleton className='flex rounded-full size-[40px]' />} */}
 
                   {/* header */}
-
 
                   {userInfo && (
                      <div className='flex items-center gap-[15px]'>

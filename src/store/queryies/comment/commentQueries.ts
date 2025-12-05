@@ -11,8 +11,8 @@ import { useSearchParams } from 'next/navigation'
 export const useLoadCommentListInfinite = (restaurantId: string, limet: number, userId: string) => {
 
    // console.log('cate??', categoryName)
+   // console.log('res??', restaurantId)
 
-   console.log('res??', restaurantId)
    return useInfiniteQuery({
       // queryKey: ['restaurant', 'listInfinite', categoryName],
       queryKey: commentKeys.listAll(restaurantId, limet),

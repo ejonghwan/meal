@@ -25,7 +25,7 @@ async function checkTokenExpired(token: string) {
    console.log('diffHours?', diffHours)
 
    // exp 지난지 3시간 넘었으면 로그아웃
-   if (diffHours >= 3) {
+   if (diffHours >= 1) {
       console.log("토큰 만료 후 3시간 경과 → 강제 로그아웃");
       return true
    } else {

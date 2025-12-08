@@ -15,7 +15,7 @@ interface Props {
 const RestaurantDetailPage = async ({ params, searchParams }: Props) => {
 
    // 동기로 안만들어도 가져오긴함
-   const { hoho } = await searchParams
+   // const { hoho } = await searchParams
    // const { hoho } = searchParams
    // console.log('searchParams', searchParams, hoho)
    const { restaurantId } = await params;

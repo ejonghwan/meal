@@ -10,12 +10,16 @@ import { Button } from "@heroui/button";
 import { changeViewDate, timeForToday } from "@/src/utillity/utils";
 import Link from "next/link";
 import RestaurantSkeleton from "@/src/components/restaurant/restaurant-skeleton";
+import { useSearchParams } from 'next/navigation'
 
 
 const RestaurantTable = ({ restaurantData, restaurantSuccess, restaurantLoading, restaurantError, fetchNextPage, hasNextPage, isFetchingNextPage }) => {
 
   // useEffect(() => { console.log('restaurantData?', restaurantData, 'ㅗㅁㄴ?', hasNextPage) }, [])
 
+
+  const searchParams = useSearchParams()
+  const category = searchParams.get('search') || '전체'
 
   const handleClickNextPage = () => {
     fetchNextPage()
@@ -105,7 +109,7 @@ const RestaurantTable = ({ restaurantData, restaurantSuccess, restaurantLoading,
             <strong className="text-[16px]">등록된 식당이 없습니다</strong>
             <p className="text-[14px] mt-[4px]">또 가고 싶은 식당을 등록해보세요</p>
           </div>
-          <Link href="/restaurant" className="flex flex-wrap w-full justify-center">
+          <Link href={`/restaurant?search=${category}`} className="flex flex-wrap w-full justify-center">
             <div className="flex justify-center w-full">
               <PiBowlFoodDuotone className="text-[70px]" />
             </div>
@@ -115,6 +119,7 @@ const RestaurantTable = ({ restaurantData, restaurantSuccess, restaurantLoading,
       )}
 
       {/* 무한 스크롤 ? 더보기 ? 고민중 */}
+      {/* 캐시수정하면서 이거 쿼리키 캐시 잘못됨  */}
       {hasNextPage && (
         <>
           <div className="mt-[30px] flex justify-center">

@@ -33,6 +33,8 @@ const RestaurantCreateForm = () => {
    const { mutate: createRestaurantMutation, isError: createRestaurantError, isSuccess: createRestaurantSuccess, isPending: createRestaurantPending } = useCreateRestaurant()
    const { userInfo } = useUserStore()
    const router = useRouter()
+   const searchParams = useSearchParams();
+   const category = searchParams.get('search')
 
    const token = useRef(null);
    if (typeof window !== 'undefined') {
@@ -76,10 +78,15 @@ const RestaurantCreateForm = () => {
 
 
    const debounceRef = useRef<(val: string) => void>();
+
    useEffect(() => {
       debounceRef.current = _.debounce((val: string) => {
          setKeyword(val); // 검색어 확정
       }, 1200); //1.2초 후 검색요청
+
+      if (category) {
+         console.log('category?', category)
+      }
    }, []);
 
 
@@ -100,9 +107,10 @@ const RestaurantCreateForm = () => {
 
 
    useEffect(() => {
-      restaurant.title && restaurant.content && restaurant.category ? setIsWrite(true) : setIsWrite(false)
-      console.log('restaurant?', restaurant)
-   }, [restaurant])
+      restaurant.title && restaurant.content && (restaurant.category || category) ? setIsWrite(true) : setIsWrite(false)
+      // 디폴트 밸류가 있어도 생성 활성화 아직작업안함
+      console.log('create restaurant?')
+   }, [restaurant.title, restaurant.content, restaurant.category])
 
    useEffect(() => {
       if (createRestaurantSuccess) router.push(`/home?search=${restaurant.category}`)
@@ -195,7 +203,7 @@ const RestaurantCreateForm = () => {
                   {/* 카테고리는 한종류로 해야되고, 먹은 메뉴는 또 다른 카테고리로 해야겠네 ;; */}
                   <strong className='block mb-[10px] text-[18px]'>카테고리</strong>
                   <div className="flex flex-col gap-1 w-full">
-                     <CategoryWrap category={categorys} setRestaurant={setRestaurant} />
+                     <CategoryWrap initialCategory={category} category={categorys} setRestaurant={setRestaurant} />
                   </div>
                </article>
 

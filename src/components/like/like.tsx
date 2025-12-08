@@ -1,6 +1,5 @@
 "use client"
 
-import React from 'react'
 import { Button } from '@heroui/button';
 import { PiHeartDuotone } from 'react-icons/pi';
 

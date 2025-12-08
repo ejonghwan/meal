@@ -9,29 +9,88 @@ import { verifyToken } from "@/src/components/auth/auth-verifyToken-api"
 import { useRouter, usePathname } from "next/navigation";
 
 
-function parseJwt(token: string) {
-   const base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
-   const decodedPayload = JSON.parse(atob(base64));
-   return decodedPayload;
+// function parseJwt(token: string) {
+//    const base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+//    const decodedPayload = JSON.parse(atob(base64));
+//    return decodedPayload;
+// }
+
+// function checkTokenExpired(token: string) {
+
+//    const decoded = parseJwt(token);
+//    const exp = decoded.exp; // 초 단위
+//    const now = Math.floor(Date.now() / 1000);
+//    const diffHours = (now - exp) / 3600;
+
+//    console.log('diffHours?', diffHours, decoded, exp)
+
+//    // exp 지난지 3시간 넘었으면 로그아웃
+//    if (diffHours >= 0.1) {
+//       // console.log("토큰 만료 후 3시간 경과 → 강제 로그아웃");
+//       return true
+//    } else {
+//       return false
+//    }
+// }
+
+
+
+// 
+
+// 범용 base64url -> utf8 디코더
+function base64UrlDecodeToString(base64Url: string) {
+   // base64url -> base64
+   let base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+   // 패딩 추가
+   const pad = base64.length % 4;
+   if (pad === 2) base64 += '==';
+   else if (pad === 3) base64 += '=';
+   else if (pad === 1) base64 += '===';
+   // 브라우저 / Node 호환 처리
+   if (typeof window !== 'undefined' && typeof window.atob === 'function') {
+      return decodeURIComponent(escape(window.atob(base64))); // utf8 안전 디코딩
+   } else {
+      // Node 환경
+      return Buffer.from(base64, 'base64').toString('utf8');
+   }
 }
 
-async function checkTokenExpired(token: string) {
+function parseJwt(token: string) {
+   try {
+      const parts = token.split('.');
+      if (parts.length < 2) return null;
+      const payloadStr = base64UrlDecodeToString(parts[1]);
+      return JSON.parse(payloadStr);
+   } catch (e) {
+      console.error('parseJwt error', e);
+      return null;
+   }
+}
 
+// thresholdHours 기본값 3 (원하면 바꾸면 됨)
+function checkTokenExpired(token: string, thresholdHours = 0.1) {
    const decoded = parseJwt(token);
-   const exp = decoded.exp; // 초 단위
+   if (!decoded || typeof decoded.exp !== 'number') {
+      // 토큰이 없거나 형식이 이상하면 만료(또는 처리 방침에 따라 true/false)
+      return true;
+   }
+
+   const exp = decoded.exp; // unix seconds
    const now = Math.floor(Date.now() / 1000);
    const diffHours = (now - exp) / 3600;
 
-   console.log('diffHours?', diffHours)
+   console.log('diffHours?', diffHours, 'expDate:', new Date(exp * 1000).toISOString(), 'now:', new Date(now * 1000).toISOString());
 
-   // exp 지난지 3시간 넘었으면 로그아웃
-   if (diffHours >= 1) {
-      console.log("토큰 만료 후 3시간 경과 → 강제 로그아웃");
-      return true
-   } else {
-      return false
-   }
+   // exp 지난지 thresholdHours 이상이면 로그아웃
+   return diffHours >= thresholdHours;
 }
+
+
+// 
+
+
+
+
 
 
 
@@ -59,23 +118,31 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
             로그인 이후 3시간이 지나면 로그아웃 기능은 처음 시간 저장 후 그로부터 3시간 후 로직으로 짜야됨 
             나는 그냥 유저가 로그인하면 쭉 자동 로그인 되게 하고 로그아웃 안하고 껐을 때 저장소에 토큰이 있다면 
             그 토큰으로는 로그인 안되게 막는 로직만 추가 
+
+            25/12/8 변경 =>
+
+            새로고침이나 로드api를 보낼 때 
+            => 로그인 기준 1시간 이전이면 통과 
+            => 로그인 기준 1시간 이후 ~ 2시간 이전이면 통과
+            => 로그인 기준 2시간 이후면 로그아웃, 로그인창으로 보내기
+            
          */
          const isAccToken = localStorage.getItem('x-acc-token');
          try {
             if (isAccToken) {
 
-               const isTokenExp = await checkTokenExpired(isAccToken)
-               console.log('isAccToken?', isAccToken, isTokenExp)
+               const isTokenExp = await checkTokenExpired(isAccToken, 0.1)
+               // console.log('isAccToken?', isAccToken, isTokenExp)
 
                if (isTokenExp) {
                   // token이 만료된 경우
-                  const isTokenExp = await checkTokenExpired(isAccToken)
+                  // const isTokenExp = await checkTokenExpired(isAccToken)
                   console.log('지난 token?', isTokenExp)
+                  alert('로그인 시간이 지났습니다. 다시 로그인 해주세요')
 
                } else if (!isTokenExp && user) {
-                  console.log('토큰 만료되어서 실행되면 안됨 ')
                   // token이 존재하고 유저가 존재할 경우
-                  console.log('auth 유저 있음 토큰은?')
+                  console.log('auth 유저 있음 토큰은?... 토큰 만료되어서 실행되면 안됨')
                   const token = await user.getIdToken(); // 갱신 시 자동으로 최신 토큰 제공됨
 
                   localStorage.setItem('x-acc-token', token);

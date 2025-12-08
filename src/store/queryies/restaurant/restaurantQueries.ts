@@ -13,19 +13,26 @@ import { useSearchParams } from 'next/navigation'
 
 
 // 모든 글 로드
-export const useRestaurantListInfinite = (limit: number, categoryName: string) => {
+export const useRestaurantListInfinite = (limit: number) => {
 
    // console.log('cate??', categoryName)
 
+   const searchParams = useSearchParams()
+   const category = searchParams.get('search') || '전체'
+   const queryClient = useQueryClient()
+
+   console.log('all load 캐시 ?', queryClient.getQueryCache().findAll());
    return useInfiniteQuery({
       // queryKey: ['restaurant', 'listInfinite', categoryName],
-      queryKey: restaurantKeys.listAll(categoryName),
+      // queryKey: restaurantKeys.listAll(categoryName),
+      queryKey: restaurantKeys.listAll(category),
       queryFn: ({ pageParam }) => {
          const { cursor, cursorId } = pageParam || {};
          // pageParam은 요청 보낼 때의 값
          // console.log('언제 실행되는지 ?', pageParam)
 
-         return onLoadRestaurantListAPI(limit, categoryName, cursor, cursorId);
+         // return onLoadRestaurantListAPI(limit, categoryName, cursor, cursorId);
+         return onLoadRestaurantListAPI(limit, category, cursor, cursorId);
       },
       getNextPageParam: (lastPage) => {
          // 백엔드에서 넘겨준 다음 커서 정보
@@ -67,10 +74,22 @@ export const useRestaurant = (restauranId: string) => {
 // 글쓰기
 export const useCreateRestaurant = () => {
 
+   const searchParams = useSearchParams()
+   const category = searchParams.get('search') || '전체'
+   const queryClient = useQueryClient();
+
    return useMutation({
       mutationFn: (payload: RestaurantData) => {
-         console.log('query fn ? ', payload)
+         // console.log('query fn ? ', payload)
          return onCreateRestaurantAPI(payload)
+      },
+      onSuccess: (data, variables) => {
+         queryClient.invalidateQueries({ queryKey: restaurantKeys.listAll(category) });
+         // queryClient.invalidateQueries({ queryKey: restaurantKeys.detail(variables.restaurantId) });
+
+
+         console.log('list 캐시 ?', queryClient.getQueryCache().findAll());
+         console.log('쿼리쪽 edit data?', data, variables)
       },
    })
 }
@@ -90,6 +109,7 @@ export const useEditRestaurant = () => {
       },
       onSuccess: (data, variables) => {
          queryClient.invalidateQueries({ queryKey: restaurantKeys.listAll(category) });
+         queryClient.invalidateQueries({ queryKey: restaurantKeys.detail(variables.restaurantId) });
          console.log('쿼리쪽 edit data?', data, variables)
       },
    })
@@ -97,7 +117,7 @@ export const useEditRestaurant = () => {
 
 
 // 글 좋아요
-export const useLikeRestaurant = (type: "list" | "detail" = "list") => {
+export const useLikeRestaurant = () => {
 
    const searchParams = useSearchParams()
    const category = searchParams.get('search') || '전체'
@@ -108,65 +128,47 @@ export const useLikeRestaurant = (type: "list" | "detail" = "list") => {
          return onLikeRestaurantAPI(payload)
       },
       onSuccess: (data, variables) => {
-         if (type === "list") {
-            console.log('list')
-            queryClient.setQueryData(restaurantKeys.listAll(category), (oldData: any) => {
-               console.log('oldData??', oldData, 'data?', data, '변수?', variables, 'category??', category)
-               console.log('캐시 ?', queryClient.getQueryCache().findAll());
-               if (!oldData) return;
 
-               // 리스트페이지일경우
-               return {
-                  ...oldData,
-                  pages: oldData.pages.map((page) => ({
-                     ...page,
-                     data: page.data.map((restaurant) =>
-                        restaurant.id === variables.restaurantId
-                           ? { ...restaurant, like: data.data.like, hasMyLike: data.data.hasMyLike }
-                           : restaurant
-                     ),
-                  })),
-               };
+         // 리스트 업데이트
+         queryClient.setQueryData(restaurantKeys.listAll(category), (oldData: any) => {
+            console.log('list oldData??', oldData, 'data?', data, '변수?', variables, 'category??', category)
+            console.log('list 캐시 ?', queryClient.getQueryCache().findAll());
+            if (!oldData) return;
 
-            });
-         }
+            // 리스트페이지일경우
+            return {
+               ...oldData,
+               pages: oldData.pages.map((page) => ({
+                  ...page,
+                  data: page.data.map((restaurant) =>
+                     restaurant.id === variables.restaurantId
+                        ? { ...restaurant, like: data.data.like, hasMyLike: data.data.hasMyLike }
+                        : restaurant
+                  ),
+               })),
+            };
 
-         if (type === "detail") {
-            console.log('detail')
+         });
+
+         // 디테일 업데이트
+         queryClient.setQueryData(restaurantKeys.detail(variables.restaurantId), (oldData: any) => {
+            console.log('detail oldData??', oldData, 'data?', data, '변수?', variables)
+            console.log('detail 캐시 ?', queryClient.getQueryCache().findAll());
             const { data: { restaurantId } } = data;
-            queryClient.setQueryData(restaurantKeys.detail(restaurantId), (oldData: any) => {
-               // console.log('oldData??', oldData, 'data?', data, '변수?', variables, 'category??', category)
-               // console.log('캐시 ?', queryClient.getQueryCache().findAll());
-               if (!oldData) return;
 
-               return {
-                  ...oldData,
-                  data: {
-                     ...oldData.data,
-                     like: data.data.like,
-                     hasMyLike: data.data.hasMyLike,
-                  },
-                 
-               };
+            // console.log('캐시 ?', queryClient.getQueryCache().findAll());
+            if (!oldData) return;
 
-            });
-         }
+            return {
+               ...oldData,
+               data: {
+                  ...oldData.data,
+                  like: data.data.like,
+                  hasMyLike: data.data.hasMyLike,
+               },
+            };
+         })
 
-
-
-
-         // // 글에 좋아요 업데이트
-         // queryClient.setQueryData(restaurantKeys.listAll(category), (oldData: any) => {
-
-         //    console.log('oldData??', oldData, 'data?', data, '변수?', variables)
-
-         //    return {
-         //       ...oldData,
-         //       data: oldData.data.map((restaurant) =>
-         //          restaurant.id === variables.restaurantId ? { ...restaurant, like: data.data.like, hasMyLike: data.data.hasMyLike } : restaurant
-         //       ),
-         //    };
-         // });
       },
    })
 }
@@ -188,6 +190,7 @@ export const useDeleteRestaurant = () => {
       },
       onSuccess: (data, variables) => {
          queryClient.invalidateQueries({ queryKey: restaurantKeys.listAll(category) });
+         queryClient.invalidateQueries({ queryKey: restaurantKeys.detail(variables.restaurantId) });
          console.log('쿼리쪽 delete data?', data, variables)
       },
    })

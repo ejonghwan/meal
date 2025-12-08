@@ -10,12 +10,13 @@ interface CategoryItemType {
 }
 interface CategoryWrapProps {
    category: CategoryItemType[];
-   defaultValue?: string;
+   initialCategory?: string;
+   // defaultValue?: string;
    setRestaurant: React.Dispatch<React.SetStateAction<RestaurantData>>;
 }
 
 
-const CategoryWrap = ({ category, defaultValue, setRestaurant }: CategoryWrapProps) => {
+const CategoryWrap = ({ initialCategory, category, setRestaurant }: CategoryWrapProps) => {
 
 
    useEffect(() => {
@@ -36,7 +37,7 @@ const CategoryWrap = ({ category, defaultValue, setRestaurant }: CategoryWrapPro
 
    return (
       <>
-         <RadioGroup description=" " label=" " defaultValue={defaultValue}>
+         <RadioGroup description=" " label=" " defaultValue={initialCategory}>
             <div className='flex gap-[5px] flex-wrap'>
 
                {category.map((item, idx) => {

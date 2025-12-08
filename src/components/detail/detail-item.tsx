@@ -29,7 +29,7 @@ const DetailItem = ({ restaurant }) => {
 
    const { mutate: editMutate, data: editData, isError: editError, isSuccess: editSuccess } = useEditRestaurant()
    const { mutate: deleteMutate, data: deleteData, isError: deleteError, isSuccess: deleteSuccess } = useDeleteRestaurant()
-   const { mutate: likeRestaurantMutate, isError: likeRestaurantError, isPending: likeRestaurantPending, isSuccess: likeRestaurantSuccess } = useLikeRestaurant("detail")
+   const { mutate: likeRestaurantMutate, isError: likeRestaurantError, isPending: likeRestaurantPending, isSuccess: likeRestaurantSuccess } = useLikeRestaurant()
 
    const { userInfo } = useUserStore()
    const [editRestaurant, setEditRestaurant] = useState(restaurant)
@@ -103,7 +103,7 @@ const DetailItem = ({ restaurant }) => {
             <span>{restaurant.user.displayName}</span>
             <div className='flex flex-wrap items-center gap-[12px] ml-auto'>
                {/* 좋아요 싫어요 구현 */}
-               {restaurant.hasMyLike ? 'true' : 'false'}
+               {/* {restaurant.hasMyLike ? 'true' : 'false'} */}
                <Like
                   handleLikeClick={() => debouncedLike(userInfo.uid, restaurant.id)}
                   likeLength={restaurant.like}

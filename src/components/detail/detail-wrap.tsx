@@ -1,9 +1,9 @@
 "use client"
 
-import React, { useEffect } from 'react'
+import { useEffect } from 'react'
 import DetailItem from '@/src/components/detail/detail-item'
 import { useRestaurant } from '@/src/store/queryies/restaurant/restaurantQueries'
-
+import { useRouter, useSearchParams } from 'next/navigation'
 
 interface Props {
    restaurantId: string
@@ -13,11 +13,16 @@ const DetailWrap = ({ restaurantId }: Props) => {
 
    // async 함수 안에서는 hoohs 호출불가
    const { data: detailData, isLoading: detailLoading, isError: detailError, isSuccess: detailSuccess } = useRestaurant(restaurantId)
+   const router = useRouter()
 
-   // useEffect(() => {
+   useEffect(() => {
+      if (detailError) {
+         alert('해당 글이 존재하지 않습니다.')
+         router.push('/home')
 
-   //    console.log('de ?', detailData)
-   // }, [detailData])
+      }
+   }, [detailError])
+
 
    return (
       <>

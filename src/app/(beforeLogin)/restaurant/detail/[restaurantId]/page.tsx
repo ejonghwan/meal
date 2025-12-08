@@ -18,6 +18,7 @@ const RestaurantDetailPage = async ({ params, searchParams }: Props) => {
    const { hoho } = await searchParams
    // const { hoho } = searchParams
    // console.log('searchParams', searchParams, hoho)
+   const { restaurantId } = await params;
 
 
    return (
@@ -25,7 +26,7 @@ const RestaurantDetailPage = async ({ params, searchParams }: Props) => {
          <Section>
             {/* <div>RestaurantDetailPage : {params.restaurantId}</div> */}
             {/* <div>RestaurantDetailPage : {hoho}</div> */}
-            <DetailWrap restaurantId={params.restaurantId} />
+            <DetailWrap restaurantId={restaurantId} />
          </Section>
 
 

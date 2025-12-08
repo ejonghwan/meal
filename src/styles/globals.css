@@ -1,10 +1,9 @@
+@import url('./reset.css');
+@import url('./common/input.css');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
-
-@import url('./reset.css');
-@import url('./common/input.css');
 
 
 :root {
@@ -257,8 +256,6 @@
    /* 스크롤바의 색상 */
    border-radius: 4px;
 }
-
-;
 
 *::-webkit-scrollbar-track {
    background: var(--scroll-bg-color);

@@ -12,7 +12,7 @@ import { Query, DocumentData, Timestamp } from "firebase-admin/firestore";
     @ access  public
 */
 export const GET = async (req: NextRequest, { params }: { params: { id: string } }) => {
-    const { id } = params;
+    const { id } = await params;
 
 
     console.log('restaurantId?', id)
@@ -121,7 +121,7 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string }
 */
 export const PUT = withAuth(async (req: NextRequest, user, context: { params: { id: string } }) => {
 
-    const { params: { id: restaurantId } } = context;
+    const { id: restaurantId } = await context.params;
 
 
     try {
@@ -178,7 +178,7 @@ export const PUT = withAuth(async (req: NextRequest, user, context: { params: { 
     @ access  public
 */
 export const PATCH = withAuth(async (req: NextRequest, user, context: { params: { id: string } }) => {
-    const { params: { id: restaurantId } } = context;
+    const { id: restaurantId } = await context.params;
 
     try {
         const { userId } = await req.json();
@@ -253,7 +253,7 @@ export const PATCH = withAuth(async (req: NextRequest, user, context: { params: 
 */
 export const DELETE = withAuth(async (req: NextRequest, user, context: { params: { id: string } }) => {
 
-    const { params: { id: restaurantId } } = context;
+    const { id: restaurantId } = await context.params;
 
     try {
         // 문서 조회

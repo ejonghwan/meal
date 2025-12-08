@@ -18,7 +18,7 @@ import { Query, DocumentData, Timestamp } from "firebase-admin/firestore";
     @ access  public
 */
 export const GET = async (req: NextRequest, { params }: { params: { id: string; search: string } }) => {
-   const { id: page, search } = params;
+   const { id: page, search } = await params;
    const url = new URL(req.url);
 
    const limit = Number(page);

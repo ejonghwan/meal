@@ -11,7 +11,7 @@ import { withAuth } from "@/src/app/api/middleware/withAuth";
 */
 export const PUT = withAuth(async (req: NextRequest, user, context: { params: { id: string } }) => {
 
-    const { params: { id: commentId } } = context;
+    const { id: commentId } = await context.params;
 
     try {
         const body = await req.json(); // 수정할 데이터
@@ -75,7 +75,7 @@ export const PUT = withAuth(async (req: NextRequest, user, context: { params: { 
     @ access  public
 */
 export const PATCH = withAuth(async (req: NextRequest, user, context: { params: { id: string } }) => {
-    const { params: { id: commentId } } = context;
+    const { id: commentId } = await context.params;
 
     try {
         const { userId } = await req.json();
@@ -144,7 +144,7 @@ export const PATCH = withAuth(async (req: NextRequest, user, context: { params: 
 */
 export const DELETE = withAuth(async (req: NextRequest, user, context: { params: { id: string } }) => {
     try {
-        const { params: { id: commentId } } = context;
+        const { id: commentId } = await context.params;
         // console.log('back commentid ??', commentId)
 
         const body = await req.json(); // 수정할 데이터

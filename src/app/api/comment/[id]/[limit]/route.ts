@@ -12,7 +12,7 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string; 
 
    // console.log('params????????????????????????????????', params)
 
-   const { id: restaurantId, limit: page } = params;
+   const { id: restaurantId, limit: page } = await params;
    const limit = Number(page) //client에서 page로 보냄
    const url = new URL(req.url);
    const cursor = url.searchParams.get('cursor');  // cursor는 ISO 문자열 형태의 날짜 (created_at)

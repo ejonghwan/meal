@@ -27,6 +27,7 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string; 
    const cursor = url.searchParams.get("cursor"); // ISO String
    const cursorId = url.searchParams.get("cursorId"); // Firestore Document ID
 
+   console.log('cursorId??????', cursor, cursorId)
 
 
    // 🔐 로그인 유저 확인
@@ -162,7 +163,7 @@ export const GET = async (req: NextRequest, { params }: { params: { id: string; 
          message: "성공",
          data: fetchedRestaurant,
          nextCursor,
-         nextCursorId,
+         nextCursorId
       },
       { status: 200 }
    );

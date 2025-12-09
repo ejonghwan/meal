@@ -128,9 +128,7 @@ const MapSelect = ({ keyword, restaurant, setRestaurant, initialMapData, classNa
 
    return (
       <>
-         <div ref={mapRef} className={`${className ? className : 'w-full h-[400px] border border-gray-300 rounded-md'}`} >
-
-         </div>
+         <div ref={mapRef} className={`${className ? className : 'w-full h-[400px] border border-gray-300 rounded-md'}`} ></div>
          {restaurant?.mapInfo && (<MapInfo restaurant={restaurant} setRestaurant={setRestaurant} />)}
       </>
    );

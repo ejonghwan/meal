@@ -182,7 +182,7 @@ const RestaurantItem = ({ restaurant }) => {
                         className='w-full h-[250px] border rounded-md'
                     />
                     <div className="flex flex-col gap-1 w-full mt-[20px]">
-                        <CategoryWrap category={categorys} defaultValue={restaurant.category} setRestaurant={setEditRestaurant} />
+                        <CategoryWrap category={categorys} setRestaurant={setEditRestaurant} />
                     </div>
                 </>
             ) : (

@@ -33,7 +33,7 @@ const MapResListWrap = () => {
         isError: restaurantError,
         isLoading: restaurantLoading,
         isSuccess: restaurantSuccess
-    } = useRestaurantListInfinite(100, category);
+    } = useRestaurantListInfinite(100);
 
 
 

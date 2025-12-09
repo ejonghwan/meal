@@ -9,6 +9,8 @@ declare global {
 }
 
 
+
+
 // const loaded = useKakaoMap(() => { });
 
 export const useKakaoMap = (onLoad: () => void) => {

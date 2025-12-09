@@ -19,14 +19,14 @@ export const useRestaurantListInfinite = (limit: number) => {
 
    const searchParams = useSearchParams()
    const category = searchParams.get('search') || '전체'
-   const queryClient = useQueryClient()
+   // const queryClient = useQueryClient()
 
-   console.log('all load 캐시 ?', queryClient.getQueryCache().findAll());
+   // console.log('all load 캐시 ?', queryClient.getQueryCache().findAll(), category);
    return useInfiniteQuery({
       // queryKey: ['restaurant', 'listInfinite', categoryName],
       // queryKey: restaurantKeys.listAll(categoryName),
       queryKey: restaurantKeys.listAll(category),
-      queryFn: ({ pageParam }) => {
+      queryFn: async ({ pageParam }) => {
          const { cursor, cursorId } = pageParam || {};
          // pageParam은 요청 보낼 때의 값
          // console.log('언제 실행되는지 ?', pageParam)
@@ -36,10 +36,11 @@ export const useRestaurantListInfinite = (limit: number) => {
       },
       getNextPageParam: (lastPage) => {
          // 백엔드에서 넘겨준 다음 커서 정보
-         // console.log('백엔드에서 넘겨준 다음 커서정보', lastPage)
+         // console.log('백엔드에서 넘겨준 다음 커서정보', lastPage,)
          // if (!lastPage?.nextCursor || !lastPage?.nextCursorId) return undefined;
          // if (lastPage?.data?.length < limit) return undefined;
-         if (!lastPage.hasNext) return undefined;
+         // if (!lastPage.hasNext) return undefined; //이거 언제 수정한거지 ? 백에서 값을 안내려주는데 
+         if (!lastPage?.nextCursorId) return undefined; //이거 언제 수정한거지 ? 백에서 값을 안내려주는데 
 
          return {
             cursor: lastPage.nextCursor,
@@ -58,7 +59,6 @@ export const useRestaurantListInfinite = (limit: number) => {
 
 // 상세 로드
 export const useRestaurant = (restauranId: string) => {
-
    return useQuery({
       queryKey: restaurantKeys.detail(restauranId),
       queryFn: () => onLoadRestaurantDetailAPI(restauranId),
@@ -73,7 +73,6 @@ export const useRestaurant = (restauranId: string) => {
 
 // 글쓰기
 export const useCreateRestaurant = () => {
-
    const searchParams = useSearchParams()
    const category = searchParams.get('search') || '전체'
    const queryClient = useQueryClient();
@@ -195,11 +194,3 @@ export const useDeleteRestaurant = () => {
       },
    })
 }
-
-
-
-
-
-
-
-

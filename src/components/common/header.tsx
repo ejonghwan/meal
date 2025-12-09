@@ -26,7 +26,7 @@ import Divider from './divider'
 const Header = ({ className = '', variant }: { className?: string, variant?: any }) => {
 
    const { drawerIsOpen, setDrawerIsOpen } = useUIStore();
-   const { loading, userInfo, isAccToken, setUserLogout } = useUserStore()
+   const { loading, userInfo, isAccToken, setUserLogout, initializeTokenStatus } = useUserStore()
    const { theme, setTheme } = useTheme()
 
    const handleClick = () => {
@@ -39,9 +39,10 @@ const Header = ({ className = '', variant }: { className?: string, variant?: any
       setUserLogout()
    }
 
-   // useEffect(() => {
-   //    console.log(loading)
-   // }, [loading])
+   useEffect(() => {
+      if (loading) initializeTokenStatus()
+      console.log('user store: ', loading, 'userInfo?', userInfo, 'isAccToken?', isAccToken)
+   }, [])
 
 
 
@@ -67,12 +68,49 @@ const Header = ({ className = '', variant }: { className?: string, variant?: any
                {/* mobile */}
                <section className='pc:hidden'>
                   {/* {loading && <Skeleton className='flex rounded-full size-[40px]' />} */}
-                  {!userInfo && isAccToken === null && <Skeleton className='flex rounded-full size-[35px]' />}
-                  {/* {isAccToken === null && <Skeleton className='flex rounded-full size-[40px]' />} */}
+                  {/* {!userInfo && isAccToken === null && <Skeleton className='flex rounded-full size-[35px]' />} */}
+                  {loading ? (
+                     <div className='flex items-center gap-[15px]'>
+                        <Skeleton className='flex rounded-full size-[35px]' />
+                        <Skeleton className='flex rounded-full size-[35px]' />
+                        <Skeleton className='flex rounded-full size-[35px]' />
+                     </div>
+                  ) : (
+                     <>
+                        {isAccToken ? (
+                           <div className='flex items-center gap-[15px]'>
+                              <Link href="/search" className='py-[6px] px-[4px]'>
+                                 <PiMagnifyingGlassDuotone className='text-[23px]' />
+                              </Link>
+                              <Link href="/maps" className='py-[6px] px-[4px]' >
+                                 <PiMapTrifoldDuotone className='text-[27px]' />
+                              </Link>
+                              <button type="button"
+                                 className={'rounded-[50%] bg-gray-700 text-white size-[35px] text-[14px] p-[5px]'}
+                                 onClick={handleClick}
+                                 style={{ background: userInfo?.bg }}
+                              >
+                                 {userInfo?.providerData[0]?.displayName.slice(0, 1).toLocaleUpperCase()}
+                              </button>
+                           </div>
+                        ) : (
+                           <div className='flex gap-[12px]'>
+                              {!userInfo && <Link href={'/login'} className='text-[14px]'>로그인</Link>}
+                              {!userInfo && <Link href={'/signup'} className='text-[14px]'>회원가입</Link>}
+                           </div>
+                        )}
+
+
+
+                     </>
+
+
+
+                  )}
 
                   {/* header */}
 
-                  {userInfo && (
+                  {/* {userInfo && !loading && (
                      <div className='flex items-center gap-[15px]'>
                         <Link href="/search" className='py-[10px] px-[4px]'>
                            <PiMagnifyingGlassDuotone className='text-[23px]' />
@@ -86,18 +124,17 @@ const Header = ({ className = '', variant }: { className?: string, variant?: any
                            style={{ background: userInfo?.bg }}
                         >
                            {userInfo?.providerData[0]?.displayName.slice(0, 1).toLocaleUpperCase()}
-
                         </button>
                      </div>
                   )}
 
 
-                  {isAccToken === false && (
+                  {isAccToken === null && !loading && (
                      <div className='flex gap-[12px]'>
                         {!userInfo && <Link href={'/login'} className='text-[14px]'>로그인</Link>}
                         {!userInfo && <Link href={'/signup'} className='text-[14px]'>회원가입</Link>}
                      </div>
-                  )}
+                  )} */}
 
 
 
@@ -210,10 +247,7 @@ const Header = ({ className = '', variant }: { className?: string, variant?: any
                         </section>
                      </DrawerContent>
                   </Drawer>
-
                </section>
-
-
 
             </header>
          </Section>

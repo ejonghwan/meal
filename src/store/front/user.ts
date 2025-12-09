@@ -16,6 +16,7 @@ interface UserStore {
    setUserLogin: (user: any) => void;
    setUserLogout: () => void;
    setAutuInfo: (info: any) => void;
+   initializeTokenStatus: () => void;
 
 
    arr: { id: string, content: string }[];
@@ -27,11 +28,11 @@ interface UserStore {
 
 
 
-export const useUserStore = create(devtools<UserStore>(set => ({
+export const useUserStore = create(devtools<UserStore>((set, get) => ({
 
    authInfo: null,
    userInfo: null,
-   loading: false,
+   loading: true,
    isAccToken: null,
 
    setLoading: (loading) => set({ loading }),
@@ -46,6 +47,7 @@ export const useUserStore = create(devtools<UserStore>(set => ({
 
    // setUserLogin: (user) => set({ user }),
    setUserLogin: (payload: UserPayload) => set((prev: UserStore) => {
+      get().initializeTokenStatus();
       return { userInfo: payload.data }
    }),
 
@@ -56,6 +58,23 @@ export const useUserStore = create(devtools<UserStore>(set => ({
       auth.signOut().then(() => { set({ userInfo: null }) });
       // set({ userInfo: null });
       //logout
+   },
+
+   initializeTokenStatus: () => {
+      if (typeof window !== 'undefined') {
+         const token = localStorage.getItem('x-acc-token');
+         // const hasToken = !!token;
+
+         // 현재 상태와 다를 경우에만 업데이트
+         // if (get().isAccToken !== hasToken) set({ isAccToken: hasToken });
+         // console.log('hasToken??', hasToken)
+         if (token) {
+            set({ isAccToken: true, loading: true })
+         } else {
+            set({ isAccToken: false, loading: false });
+         }
+
+      }
    },
 
 

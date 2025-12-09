@@ -29,6 +29,7 @@ const HeaderMap = ({ className = '', variant }: { className?: string, variant?: 
    const { loading, userInfo, isAccToken, setUserLogout } = useUserStore()
    const { theme, setTheme } = useTheme()
 
+
    const handleClick = () => {
       // console.log(drawerIsOpen)
       setDrawerIsOpen(true)
@@ -39,9 +40,10 @@ const HeaderMap = ({ className = '', variant }: { className?: string, variant?: 
       setUserLogout()
    }
 
-   // useEffect(() => {
-   //    console.log(loading)
-   // }, [loading])
+   useEffect(() => {
+
+      // console.log('user store: ', loading, userInfo, isAccToken)
+   }, [])
 
 
 

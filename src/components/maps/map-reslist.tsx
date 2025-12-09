@@ -25,7 +25,7 @@ import MapInfo from '@/src/components/maps/map-info';
   위도 경도 보내서 디비별로 따로 저장 
   디비에 저장된 활동지역으로 확대하고 처음엔 그 데이터만 추려서 가져와야됨 
 */
- 
+
 
 
 interface Props {
@@ -39,9 +39,7 @@ interface Props {
 
 const MapResList = ({ address, restaurant, setMyRestaurantList, className }: Props) => {
 
-
    const mapRef = useRef<HTMLDivElement>(null);
-
 
    const handleMapLoad = useCallback(() => {
       if (!window.kakao || !mapRef.current) return;
@@ -215,7 +213,6 @@ const MapResList = ({ address, restaurant, setMyRestaurantList, className }: Pro
    }, [restaurant]);
 
 
-
    useKakaoMap(handleMapLoad);
 
    useEffect(() => {
@@ -225,10 +222,10 @@ const MapResList = ({ address, restaurant, setMyRestaurantList, className }: Pro
 
    return (
       <>
-         <div ref={mapRef} className={`${className ? className : 'w-full h-[400px] border border-gray-300 rounded-md'}`}>
-
-         </div>
-         {restaurant?.mapInfo && (<MapInfo restaurant={restaurant} setRestaurant={setMyRestaurantList} />)}
+         <div ref={mapRef} className={`${className ? className : 'w-full h-[400px] border border-gray-300 rounded-md'}`}></div>
+         {restaurant?.mapInfo && (
+            <MapInfo restaurant={restaurant} setRestaurant={setMyRestaurantList} />
+         )}
       </>
    );
 }

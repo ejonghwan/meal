@@ -42,6 +42,7 @@ export const useUserStore = create(devtools<UserStore>((set, get) => ({
    }),
 
    setUserInfo: (payload: UserPayload) => set((prev: UserStore) => {
+      console.log('userInfo??', get().userInfo)
       return { userInfo: payload }
    }),
 

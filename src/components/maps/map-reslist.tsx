@@ -7,6 +7,7 @@ import { Input } from "@heroui/input"
 import Link from 'next/link';
 import MapInfo from '@/src/components/maps/map-info';
 
+
 // address_name: "서울 도봉구 창동 13"
 // category_group_code: "CE7"
 // category_group_name: "카페"
@@ -27,7 +28,152 @@ import MapInfo from '@/src/components/maps/map-info';
 */
 
 
+// utill로 뺼거 
+const haversineDistance = (
+   lat1: number,
+   lng1: number,
+   lat2: number,
+   lng2: number
+): number => {
+   const R = 6371;
+   const dLat = (lat2 - lat1) * (Math.PI / 180);
+   const dLng = (lng2 - lng1) * (Math.PI / 180);
+   const a =
+      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(lat1 * (Math.PI / 180)) *
+      Math.cos(lat2 * (Math.PI / 180)) *
+      Math.sin(dLng / 2) *
+      Math.sin(dLng / 2);
+   const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+   return R * c;
+};
 
+interface MarkerRes {
+   latitude: any
+   longitude: any
+   marker: {
+      latitude: any;
+      longitude: any;
+   }
+}
+export const findNearbyMarkers = ({
+   markers,
+   latitude,
+   longitude,
+   maxDistance,
+}: {
+   markers: MarkerRes[];
+   latitude: number;
+   longitude: number;
+   maxDistance: number;
+}): MarkerRes[] => {
+   return markers.filter((marker) => {
+      const distance = haversineDistance(
+         latitude,
+         longitude,
+         marker.latitude,
+         marker.longitude
+      );
+      return distance <= maxDistance;
+   });
+};
+
+const getDistance = (level: number) => {
+   switch (true) {
+      case level <= 3:
+         return 1;
+      case level <= 5:
+         return 2;
+      case level <= 6:
+         return 4;
+      case level <= 7:
+         return 7;
+      case level <= 8:
+         return 14;
+      case level <= 9:
+         return 21;
+      case level <= 10:
+         return 30;
+      case level <= 11:
+         return 40;
+      default:
+         return 120;
+   }
+};
+
+const getCellSize = (level: number) => {
+   switch (true) {
+      case level === 6:
+         return 0.02;
+      case level === 7:
+         return 0.04;
+      case level === 8:
+         return 0.08;
+      case level === 9:
+         return 0.2;
+      case level === 10:
+         return 0.5;
+      case level === 11:
+         return 0.8;
+      default:
+         return 1.6;
+   }
+};
+
+
+
+interface MarkerGroup {
+   centerLatitude: number;
+   centerLongitude: number;
+   count: number;
+}
+
+const getGridCoordinates = (
+   lat: number,
+   lng: number,
+   cellSize: number
+): { x: number; y: number } => {
+   const x = Math.floor(lng / cellSize);
+   const y = Math.floor(lat / cellSize);
+   return { x, y };
+};
+
+export const clusterMarkers = (
+   markers: MarkerRes[],
+   cellSize: number
+): MarkerGroup[] => {
+   const groups: { [key: string]: MarkerGroup } = {};
+
+   markers.forEach((marker) => {
+      const { x, y } = getGridCoordinates(
+         marker.latitude,
+         marker.longitude,
+         cellSize
+      );
+      const key = `${x},${y}`;
+
+      if (!groups[key]) {
+         groups[key] = { centerLatitude: 0, centerLongitude: 0, count: 0 };
+      }
+
+      groups[key].centerLatitude += marker.latitude;
+      groups[key].centerLongitude += marker.longitude;
+      groups[key].count += 1;
+   });
+
+   return Object.values(groups).map((group) => ({
+      centerLatitude: group.centerLatitude / group.count,
+      centerLongitude: group.centerLongitude / group.count,
+      count: group.count,
+   }));
+};
+
+
+
+
+
+
+// 원본소스
 interface Props {
    address: string[];
    restaurant?: any;
@@ -40,15 +186,14 @@ interface Props {
 const MapResList = ({ address, restaurant, setMyRestaurantList, className }: Props) => {
 
    const mapRef = useRef<HTMLDivElement>(null);
-
    const handleMapLoad = useCallback(() => {
       if (!window.kakao || !mapRef.current) return;
 
+      // 맵
       const map = new window.kakao.maps.Map(mapRef.current, {
          center: new window.kakao.maps.LatLng(37.5665, 126.9780),
          level: 3,
       });
-
 
       // 클러스터 테스트 
       var clusterer = new window.kakao.maps.MarkerClusterer({
@@ -58,7 +203,6 @@ const MapResList = ({ address, restaurant, setMyRestaurantList, className }: Pro
       });
 
       // console.log('clusterer?', clusterer)
-
       // var markers = $(data.positions).map(function(i, position) {
       //       return new kakao.maps.Marker({
       //           position : new kakao.maps.LatLng(position.lat, position.lng)
@@ -93,7 +237,6 @@ const MapResList = ({ address, restaurant, setMyRestaurantList, className }: Pro
             for (var i = 0; i < data.length; i++) {
                displayMarker(data[i]); //마커
                bounds.extend(new window.kakao.maps.LatLng(data[i].y, data[i].x));
-
             }
             // 검색된 장소 위치를 기준으로 지도 범위를 재설정
             map.setBounds(bounds);
@@ -126,7 +269,6 @@ const MapResList = ({ address, restaurant, setMyRestaurantList, className }: Pro
                         <p class="group_name text-[10px] mt-[2px] leading-none">${place.category_group_name}</p>
                      </div>
                   </div>
-
                </div>
             `
          const customOverlay = new window.kakao.maps.CustomOverlay({
@@ -202,7 +344,7 @@ const MapResList = ({ address, restaurant, setMyRestaurantList, className }: Pro
             });
          });
 
-         //   // 클러스터러에 마커들을 추가합니다
+         // 클러스터러에 마커들을 추가합니다
          clusterer.addMarkers(markers);
          map.setBounds(bounds);
       }

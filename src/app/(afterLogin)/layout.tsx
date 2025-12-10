@@ -6,7 +6,7 @@ import { AuthProvider } from '@/src/components/auth/auth-provider'
 
 const layout = ({ children }) => {
    return (
-      <AuthProvider>
+      <AuthProvider isLogin={true}>
          <Header />
          <div>
             {children}

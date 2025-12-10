@@ -65,7 +65,7 @@ function checkTokenExpired(token: string, thresholdHours = 0.1) {
 
 interface Props {
    children: React.ReactNode;
-   isLogin: boolean;
+   isLogin?: boolean;
 }
 
 
@@ -116,12 +116,13 @@ export const AuthProvider = ({ children, isLogin = false }: Props) => {
                const isTokenExp = await checkTokenExpired(isAccToken, 0.1)
                // console.log('isAccToken?', isAccToken, isTokenExp)
 
-               if (isTokenExp) {
+               if (isTokenExp && isAccToken) {
                   // token이 만료된 경우
                   localStorage.removeItem('x-acc-token');
-                  console.log('지난 token?', isTokenExp)
+                  console.log('지난 token?', isTokenExp, isAccToken)
+                  // 재렌더링 계속 일어나는데 여기 문제인거같음. 간헐적으로 발생
                   // 얼럿 무한뜨는거 해결못함
-                  // alert('로그인 시간이 지났습니다. 다시 로그인 해주세요')
+                  alert('로그인 시간이 지났습니다. 다시 로그인 해주세요')
                   setUserInfo(null);
                   setIsAccToken(false);
                   setUserLogout();

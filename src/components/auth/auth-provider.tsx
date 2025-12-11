@@ -99,6 +99,7 @@ export const AuthProvider = ({ children, isLogin = false }: Props) => {
 
       // onAuthStateChanged
       const unsubscribe = onIdTokenChanged(auth, async (user) => {
+         console.log('unsubscribe? 1111')
          /*
             로그인 이후 3시간이 지나면 로그아웃 기능은 처음 시간 저장 후 그로부터 3시간 후 로직으로 짜야됨 
             나는 그냥 유저가 로그인하면 쭉 자동 로그인 되게 하고 로그아웃 안하고 껐을 때 저장소에 토큰이 있다면 
@@ -113,13 +114,14 @@ export const AuthProvider = ({ children, isLogin = false }: Props) => {
          */
          try {
             if (isAccToken) {
+               console.log('in if? 2222', isAccToken)
                const isTokenExp = await checkTokenExpired(isAccToken, 0.1)
                // console.log('isAccToken?', isAccToken, isTokenExp)
 
                if (isTokenExp && isAccToken) {
                   // token이 만료된 경우
                   localStorage.removeItem('x-acc-token');
-                  console.log('지난 token?', isTokenExp, isAccToken)
+                  console.log('지난 token?', isTokenExp, 'isAccToken?', isAccToken)
                   // 재렌더링 계속 일어나는데 여기 문제인거같음. 간헐적으로 발생
                   // 얼럿 무한뜨는거 해결못함
                   alert('로그인 시간이 지났습니다. 다시 로그인 해주세요')

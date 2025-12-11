@@ -1,6 +1,6 @@
 import React from 'react'
 import MapReslistWrap from '@/src/components/maps/map-reslist-wrap'
-// import MapPageLoad from '@/src/components/maps/map-page-load'
+import MapPageLoad from '@/src/components/maps/map-page-load'
 
 /*
   맵 최적화 
@@ -13,8 +13,8 @@ import MapReslistWrap from '@/src/components/maps/map-reslist-wrap'
 const Maps = () => {
   return (
     <>
-      <MapReslistWrap />
-      {/* <MapPageLoad /> */}
+      {/* <MapReslistWrap /> */}
+      <MapPageLoad />
     </>
   )
 }
